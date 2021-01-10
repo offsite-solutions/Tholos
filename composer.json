@@ -1,0 +1,26 @@
+{
+  "name": "offsite-solutions/tholos",
+  "description": "Tholos Framework",
+  "type": "library",
+  "authors": [
+    {
+      "name": "Offsite Solutions Ltd.",
+      "email": "info@offsite-solutions.com"
+    }
+  ],
+  "minimum-stability": "dev",
+  "require": {
+    "php": ">=7.4",
+    "offsite-solutions/eisodos": "1.*",
+    "offsite-solutions/eisodos-db-connector-mdb2": "1.*"
+  },
+  "require-dev": {
+  },
+  "suggest": {
+  },
+  "autoload": {
+    "psr-0": {
+      "Tholos\\": "src/"
+    }
+  }
+}
