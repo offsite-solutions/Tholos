@@ -5,8 +5,8 @@
   use Eisodos\Eisodos;
   use Exception;
   use RuntimeException;
-
-
+  
+  
   class TAPIPost extends TStoredProcedure {
     
     private function StringToJSON($text_, $dataType_) {
@@ -17,7 +17,7 @@
         return 1 * $text_;
       }
       if ($dataType_ === 'bool') {
-        if (!in_array($text_, ['1', 'Y', 'I', 'true'], false)) {
+        if (in_array($text_, ['1', 'Y', 'I', 'true'], false)) {
           return true;
         }
         
@@ -198,6 +198,7 @@
         
         header('X-Tholos-Error-Code: ' . $this->getProperty('ResultErrorCode'));
         header('X-Tholos-Error-Message: ' . $this->getProperty('ResultErrorMessage'));
+        header('X-Tholos-Error-Message-B64: ' . base64_encode($this->getProperty('ResultErrorMessage')));
         
         // generating result set
         $result = array();
@@ -224,7 +225,7 @@
           
         } else {
           
-          Tholos::$app->debug('Execution failed', $this);
+          Tholos::$app->error('Execution failed', $this);
           Tholos::$app->eventHandler($this, 'onError');
           
           if ($this->getProperty('WriteErrorLogOnError', 'false') === 'true') {

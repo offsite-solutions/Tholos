@@ -5,7 +5,7 @@
   use Eisodos\Eisodos;
   use Exception;
   use Mpdf\HTMLParserMode;
-
+  
   /**
    * TPage Component class
    *
@@ -74,7 +74,7 @@
         $this->generateEvents();
         
         if ($this->getProperty('CSSFile') !== false) {
-          Tholos::$app->debug('PDF with CSS: ' . $this->getProperty('CSSFile'), $this);
+          Tholos::$app->trace('PDF with CSS: ' . $this->getProperty('CSSFile'), $this);
           $css = file_get_contents($this->getProperty('CSSFile'));
           Tholos::$app->responsePDF->WriteHTML($css, HTMLParserMode::HEADER_CSS);
         }
@@ -102,6 +102,19 @@
           Tholos::$app->responseType = 'BINARY'; // force application not to modify output
           
         } else {
+          if ($this->getProperty('Download') == 'true') {
+            Tholos::$app->responsePDF->Output();
+            header("Content-Type: application/force-download");
+            header("Content-Type: application/octet-stream");
+            header("Content-Type: application/download");
+            if (!$this->getProperty('FileName')) {
+              $this->setProperty('FileName', date('YmdHis'));
+            }
+            header('Content-Disposition: attachment;filename="' . $this->getProperty("FileName") . '.pdf"');
+            Tholos::$app->responseType = "BINARY";
+          } else {
+            Tholos::$app->responseType = 'PDF';
+          }
           Eisodos::$parameterHandler->setParam('Tholos.WriteLanguageFile', 'T');
           Tholos::$app->responseType = 'PDF';
         }
@@ -110,6 +123,7 @@
         Eisodos::$logger->writeErrorLog($e);
         header('X-Tholos-Error-Code: -1');
         header('X-Tholos-Error-Message: ' . $e->getMessage());
+        header('X-Tholos-Error-Message-B64: ' . base64_encode($e->getMessage()));
         http_response_code(400);
         Tholos::$app->responseType = 'BINARY';
       }

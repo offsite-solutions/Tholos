@@ -7,7 +7,7 @@
   use Exception;
   use RuntimeException;
   use Throwable;
-
+  
   /**
    * TPage Component class
    *
@@ -79,6 +79,13 @@
               if (!in_array($value, ['1', '0', 'Y', 'N', 'I', 'true', 'false'], false)) {
                 throw new RuntimeException('');
               }
+              if (Eisodos::$parameterHandler->eq("Tholos.UseLogicalBool", "true")) {
+                if (in_array($value, explode(',', strtoupper(Eisodos::$parameterHandler->getParam("Tholos.BoolFalse", ""))), false)) {
+                  $value = 'false';
+                } else {
+                  $value = 'true';
+                }
+              }
             } elseif (in_array($dt, ['date', 'datetime', 'time', 'datetimehm', 'timestamp'])) {
               if ($this->getProperty('DateFormatParameter', '') === '') {
                 $dateformat = Eisodos::$parameterHandler->getParam('UNIVERSAL.PHP' . $dt . 'Format');
@@ -94,7 +101,7 @@
               if ($r['warning_count'] > 0 or $r['error_count'] > 0) {
                 throw new RuntimeException('');
               }
-              $value = 'to_date(' . n($value) . ",'" . $dbdateformat . "')";
+              $value = 'to_date(' . Eisodos::$dbConnectors->connector(Tholos::$app->findComponentByID($this->_parent_id)->getProperty('DBIndex'))->nullStr($value) . ",'" . $dbdateformat . "')";
             } elseif ($dt === 'time') {
               if ($this->getProperty('DateFormatParameter', '') === '') {
                 $dateformat = Eisodos::$parameterHandler->getParam('UNIVERSAL.PHP' . $dt . 'Format');
@@ -110,7 +117,7 @@
               if ($r['warning_count'] > 0 or $r['error_count'] > 0) {
                 throw new RuntimeException('');
               }
-              $value = 'to_date(' . n($value) . ",'" . $dbdateformat . "')";
+              $value = 'to_date(' . Eisodos::$dbConnectors->connector(Tholos::$app->findComponentByID($this->_parent_id)->getProperty('DBIndex'))->nullStr($value) . ",'" . $dbdateformat . "')";
             } elseif ($dt === 'float') {
               $value = Eisodos::$utils->replace_all($value, ',', '.');
               if (!Eisodos::$utils->isInteger($value, true)) {
@@ -125,11 +132,10 @@
             if ($this->getProperty('Fieldname', '') === '') {
               $this->setProperty('SQL', sprintf($this->getProperty('Relation'), $value));
             } elseif ($this->getProperty('ValueList', 'false') === 'true') {
-              $this->setProperty('SQL', $this->getProperty('FieldName') . ' ' . $this->getProperty('Relation') . ' ',
-                $value);
+              $this->setProperty('SQL', $this->getProperty('FieldName') . ' ' . $this->getProperty('Relation') . ' ' . $value);
             } else {
               $this->setProperty('SQL', $this->getProperty('FieldName') . ' ' . $this->getProperty('Relation') . ' ' .
-                n($value, !in_array($this->getProperty('DataType'), ['integer', 'float', 'date', 'datetime', 'time', 'datetimehm', 'timestamp'])));
+                Eisodos::$dbConnectors->connector(Tholos::$app->findComponentByID($this->_parent_id)->getProperty('DBIndex'))->nullStr($value, !in_array($this->getProperty('DataType'), ['integer', 'float', 'date', 'datetime', 'time', 'datetimehm', 'timestamp'])));
             }
           } catch (Exception $e) {
             Tholos::$app->trace('END', $this);

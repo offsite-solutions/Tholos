@@ -141,7 +141,12 @@
           }
         } catch (Exception $e) {
           $em = $e->getMessage();
-          throw new RuntimeException($this->getProperty('Name') . ' raised parameter type error [' . $em . ']!');
+          if ($this->getProperty('SuppressDataTypeError', 'false') == 'true') {
+            $value='';
+            Tholos::$app->trace($this->getProperty('Name') . ' raised parameter type error [' . $em . ']!');
+          } else {
+            throw new RuntimeException($this->getProperty('Name') . ' raised parameter type error [' . $em . ']!');
+          }
         }
       }
       $this->setProperty('Value', $value, 'STRING', '', $this->getProperty('ParseValue', 'true') === 'false');

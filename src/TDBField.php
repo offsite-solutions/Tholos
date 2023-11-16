@@ -6,7 +6,7 @@
   use Eisodos\Eisodos;
   use Exception;
   use RuntimeException;
-
+  
   /**
    * TGridColumn Component class
    *
@@ -91,6 +91,13 @@
           $this->setProperty('Value',
             $datevalue, 'STRING', '', $raw_
           );
+        } elseif ($this->getProperty('DataType', 'string') === 'bool' && Eisodos::$parameterHandler->eq('Tholos.UseLogicalBool', 'true')
+        ) {
+          if (in_array($value_, [1, '1', 'Y', 'I', 'true', 't', true], true)) {
+            $this->setProperty('Value', 'true', 'STRING', '', $raw_);
+          } else {
+            $this->setProperty('Value', 'false', 'STRING', '', $raw_);
+          }
         } elseif ($this->getProperty('DataType', 'string') === 'JSON') {
           
           try {

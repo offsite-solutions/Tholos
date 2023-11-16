@@ -144,7 +144,7 @@
         && Eisodos::$parameterHandler->neq('LoginID', '')
         && $this->getProperty('AccessDeniedURL', '') !== '') { // ha nincs role-ja de be van jelentkezve
         Eisodos::$parameterHandler->setParam('REDIRECT', $this->getProperty('AccessDeniedURL', ''));
-        Tholos::$app->debug('Redirect to ' . $this->getProperty('AccessDeniedURL', ''));
+        Tholos::$app->trace('Redirect to ' . $this->getProperty('AccessDeniedURL', ''));
       }
       
       if ($generateRedirect_
@@ -156,7 +156,7 @@
           Eisodos::$render->storeCurrentURL('URLBeforeLogin');
         }
         Eisodos::$parameterHandler->setParam('REDIRECT', $this->getProperty('LoginURL', ''));
-        Tholos::$app->debug('Redirect to ' . $this->getProperty('LoginURL', ''));
+        Tholos::$app->trace('Redirect to ' . $this->getProperty('LoginURL', ''));
       }
       
       if (!$hasRole && $throwException_) {
@@ -193,7 +193,7 @@
      */
     public function login($loginID): void {
       Tholos::$app->trace('BEGIN', $this);
-      Tholos::$app->debug('Login ID: ' . $loginID, $this);
+      Tholos::$app->trace('Login ID: ' . $loginID, $this);
       
       Eisodos::$parameterHandler->setParam('LoginID', $loginID, true);
       $this->refreshFunctionCodes();

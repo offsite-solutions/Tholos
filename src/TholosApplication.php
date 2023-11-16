@@ -90,6 +90,11 @@
     public int $action_id;
     
     /**
+     * @var number ID of the partially addressed component
+     */
+    public $partial_id;
+    
+    /**
      * Render ID all rendered components name will be prefixed with this ID
      *      (ex: ID of TButton component named 'btnOK' will be asdfghjk_btnOK ($prop_ID), while its name will be kept as btnOK ($prop_name)).
      *      renderID is automatically generated in case of no tholos_renderID parameter received.
@@ -441,6 +446,13 @@
         uksort($this->components, function ($cid1, $cid2) {
           return ($this->componentCreationOrder[$cid1] - $this->componentCreationOrder[$cid2]);
         });
+        
+        if (Eisodos::$parameterHandler->neq('tholos_partial', '')) {
+          $partial = $this->findChildByName($this->findComponentByID($this->action_id), Eisodos::$parameterHandler->getParam('tholos_partial'));
+          if ($partial !== NULL) {
+            $this->partial_id = $this->findComponentId($partial);
+          }
+        }
         
         Tholos::$app->trace('END', $this);
         
@@ -1463,9 +1475,10 @@
       } else if (Eisodos::$parameterHandler->eq('Tholos.CacheMethod', 'redis')) {
         $this->openCacheServer();
         if ($validity_) {
-          $this->cacheServer->expire($filename_, 1 * $validity_);
+          $this->cacheServer->setex($filename_, 1 * $validity_*60, $content_);
+        } else {
+          $this->cacheServer->setex($filename_, 1*24*60*60*7, $content_);
         }
-        $this->cacheServer->set($filename_, $content_);
       }
       
     }
@@ -1529,7 +1542,7 @@
           
           $cacheFilename = ($cacheScope_ === 'Private' ? Eisodos::$parameterHandler->getParam('Tholos_sessionID') . '_' : '') . $cacheID_ . '.cache';
           
-          $this->writeCacheContent(Eisodos::$parameterHandler->getParam('Tholos.CacheDir') . '/' . $cacheFilename, json_encode($content_, JSON_THROW_ON_ERROR));
+          $this->writeCacheContent(Eisodos::$parameterHandler->getParam('Tholos.CacheDir') . '/' . $cacheFilename, json_encode($content_, JSON_THROW_ON_ERROR), $validity_);
           
           $cacheIndex[] = array(
             'validity' => $validityTime,

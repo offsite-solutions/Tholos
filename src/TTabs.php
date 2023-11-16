@@ -3,7 +3,7 @@
   namespace Tholos;
   
   use Eisodos\Eisodos;
-
+  
   class TTabs extends TComponent {
     
     /**
@@ -20,8 +20,16 @@
       $this->renderedContent = '';
       Tholos::$app->eventHandler($this, 'onBeforeRender');
       
+      $defaultTabPane = Eisodos::$parameterHandler->getParam($this->getProperty('Name') . ':tabPane');
+      
+      Tholos::$app->debug('tabpane: ' . $defaultTabPane);
+      
       $partialHead = '';
       foreach (Tholos::$app->findChildIDsByType($this, 'TTabPane') as $TabPaneId) {
+        $tabPane = Tholos::$app->findComponentByID($TabPaneId);
+        if ($defaultTabPane == $tabPane->getProperty('Name')) {
+          $this->setProperty('DefaultTabPane', NULL, 'COMPONENT', $TabPaneId);
+        }
         $partialHead .= Tholos::$app->findComponentByID($TabPaneId)->renderPartial($sender, 'head');
       }
       

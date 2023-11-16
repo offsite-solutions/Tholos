@@ -9,9 +9,7 @@
   use PhpOffice\PhpSpreadsheet\Cell\DataType as CellDataType;
   use PhpOffice\PhpSpreadsheet\Spreadsheet;
   use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
-  use RuntimeException;
-  use Throwable;
-
+  
   /**
    * TGrid Component class
    *
@@ -331,6 +329,24 @@
     }
     
     /**
+     * @param $value
+     * @return string
+     */
+    private function boolConvert($value) {
+      if (Eisodos::$parameterHandler->eq('Tholos.UseLogicalBool', 'true')) {
+        if (in_array($value, explode(',', strtoupper(Eisodos::$parameterHandler->getParam('Tholos.BoolFalse', ''))), false)) {
+          $value = 'false';
+        } else {
+          $value = 'true';
+        }
+      } else {
+        $value = n($value, true);
+      }
+      
+      return $value;
+    }
+    
+    /**
      * @param $filters
      */
     private function generateFilterSQL($filters): void {
@@ -374,7 +390,7 @@
                 Eisodos::$utils->ODecode(array($dbField->getProperty('datatype'),
                     'string', (in_array($filterParam[1], ['in', 'notin']) ? nlist(@$filterParam[2], true) : n(@$filterParam[2], true)),
                     'text', n(@$filterParam[2], true),
-                    'bool', @$filterParam[2] === '*' ? $dbField->getProperty('FieldName') : n(@$filterParam[2], true),
+                    'bool', @$filterParam[2] === '*' ? $dbField->getProperty('FieldName') : $this->boolConvert(@$filterParam[2]),
                     'boolYN', @$filterParam[2] === '*' ? $dbField->getProperty('FieldName') : n(@$filterParam[2], true),
                     'boolIN', @$filterParam[2] === '*' ? $dbField->getProperty('FieldName') : n(@$filterParam[2], true),
                     'bool10', @$filterParam[2] === '-1' ? $dbField->getProperty('FieldName') : n(@$filterParam[2], false),
@@ -385,7 +401,8 @@
                     'time', "to_date('" . @$filterParam[2] . "','" . Eisodos::$parameterHandler->getParam("timeformat") . "')",
                     'timestamp', "to_date('" . @$filterParam[2] . "','" . Eisodos::$parameterHandler->getParam("timestampformat") . "')",
                     'datebetween', "to_date('" . @$filterParam[2] . "','" . Eisodos::$parameterHandler->getParam("dateformat") . "')",
-                    'integer', (in_array($filterParam[1], ['in', 'notin']) ? nlist(@$filterParam[2], false) : n(@$filterParam[2], false))
+                    'integer', (in_array($filterParam[1], ['in', 'notin']) ? nlist(@$filterParam[2], false) : n(@$filterParam[2], false)),
+                    'float', (in_array($filterParam[1], ["in", "notin"]) ? nlist(@$filterparam[2], false) : n(@$filterparam[2], false))
                   )
                 )
               ) . " \n";
@@ -395,7 +412,10 @@
       
       if ($this->getPropertyComponentId('MasterDBField', NULL) !== NULL) {
         if ($this->getProperty('MasterValue', '') === '') {
-          $this->filterSQL .= ' and 0=1 ';
+          $this->filterSQL .= "\n and 0=1 ";
+          $listSource = Tholos::$app->findComponentByID($this->getPropertyComponentId('ListSource'));
+          $listSource->setProperty('StructureInfoOnly', 'true');
+          $listSource->setProperty('StructureRequester', $this->_id);
         } else {
           $dbField = Tholos::$app->findComponentByID($this->getPropertyComponentId('MasterDBField', NULL));
           $masterValue = $this->getProperty('MasterValue', '');
@@ -409,7 +429,8 @@
                   'datetimehm', "to_date('" . $masterValue . "','" . Eisodos::$parameterHandler->getParam("datetimehmformat") . "')",
                   'time', "to_date('" . $masterValue . "','" . Eisodos::$parameterHandler->getParam("timeformat") . "')",
                   'timestamp', "to_date('" . $masterValue . "','" . Eisodos::$parameterHandler->getParam("timestampformat") . "')",
-                  'integer', n($masterValue, false)
+                  'integer', n($masterValue, false),
+                  'float', n($masterValue, false)
                 )
               )
             ) . " \n";
@@ -490,7 +511,7 @@
             }
           }
         }
-        if (!$transposed && count($items) > 0) {
+        if (count($items) > 0 and !$transposed and Tholos::$app->findComponentByID($rowid)->getProperty('ShowColumnHead', '') == 'true') {
           $this->columnHeadItems .= $this->renderPartial($this, 'headitems', implode($items));
         }
       }
@@ -1084,7 +1105,10 @@
       
       $this->generateProps();
       
-      $this->setProperty('DataGenerated', ($this->getProperty('AJAXMode', 'false') === 'true' && Eisodos::$parameterHandler->neq('IsAJAXRequest', 'T')) ? 'false' : 'true');
+      $this->setProperty('DataGenerated',
+        ($this->getProperty('AJAXMode', 'false') == 'false' or (Eisodos::$parameterHandler->eq('IsAJAXRequest', 'T') and (Tholos::$app->partial_id == $this->_id))) ? "true" : "false");
+      Tholos::$app->debug('DataGenerated: ' . $this->getProperty('DataGenerated', ''), $this);
+      
       
       if ($this->getPropertyComponentId('ChartXAxis')) {
         $this->chartComponents[] = Tholos::$app->findComponentByID($this->getPropertyComponentId('ChartXAxis'));
@@ -1128,8 +1152,14 @@
       $listSource = Tholos::$app->findComponentByID($this->getPropertyComponentId('ListSource'));
       $listSource->setProperty('DisableQueryFilters', 'true');
       $listSource->setProperty('FilterArray', $listSource->buildFilters($this));
-      $listSource->setProperty('Filter', $this->filterSQL .
-        (($this->getProperty('AJAXMode', 'false') === 'true' && Eisodos::$parameterHandler->neq('IsAJAXRequest', 'T')) ? "\n and 0=1" : ''));
+      // request only headers
+      $emptyWhere = '';
+      if (!($this->getProperty('AJAXMode', 'false') == 'false' or (Eisodos::$parameterHandler->eq('IsAJAXRequest', 'T') and (Tholos::$app->partial_id == $this->_id)))) {
+        $emptyWhere = "\n and 0=1";
+        $listSource->setProperty('StructureInfoOnly', 'true');
+        $listSource->setProperty('StructureRequester', $this->_id);
+      }
+      $listSource->setProperty('Filter', $this->filterSQL . $emptyWhere); // TODO a zero based-et lecacheltetni a listSource-val
       if ($this->getPropertyComponentId('SortedBy', NULL) !== NULL
         && $this->getProperty('SortedByAlways', '') === '') {
         $listSource->setProperty('OrderBy', Tholos::$app->findComponentByID(
@@ -1145,7 +1175,7 @@
       }
       $listSource->setProperty('CountTotalRows', 'true');
       
-      if ($this->getProperty('AJAXMode', 'false') === 'true' && Eisodos::$parameterHandler->neq('IsAJAXRequest', 'T')) {
+      if ($this->getProperty('AJAXMode', 'false') == 'false' or (Eisodos::$parameterHandler->eq("IsAJAXRequest", "T") and (Tholos::$app->partial_id == $this->_id))) {
         $this->setProperty('Caching', 'false');
       }
       
@@ -1160,8 +1190,12 @@
         Tholos::$app->debug('Query caching turned on by grid', $this);
       }
       
-      if (!$this->reloadStateNeeded &&
-        !($this->getProperty('AJAXMode', 'false') === 'true' && Eisodos::$parameterHandler->neq('IsAJAXRequest', 'T'))) {
+      if (!$this->reloadStateNeeded and
+        ($this->getProperty('AJAXMode', 'false') == 'false' or
+          (Eisodos::$parameterHandler->eq('IsAJAXRequest', 'T') and Tholos::$app->partial_id == $this->_id))) {
+        if ($this->getProperty('ListsourceAlwaysReopen','false')=='true') {
+          $listSource->setProperty('Opened','false');
+        }
         $listSource->run($this);
       }
       $this->setProperty('RowCount', $listSource->getProperty('RowCount', '0'));

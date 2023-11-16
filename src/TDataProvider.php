@@ -100,7 +100,7 @@
           Tholos::$app->findComponentByID($componentId)->init();
         }
         
-        Tholos::$app->trace('Auto opening query', $this);
+        Tholos::$app->debug('Auto opening query', $this);
         $this->run(NULL);
       }
       Tholos::$app->trace('END', $this);
@@ -165,14 +165,14 @@
           //  return;
           //}
           if (Tholos::$c->openDBA($this->getProperty('DatabaseIndex', '1'))) {
-            Tholos::$app->debug('Opening database connection by ' . $this->getProperty('Name'));
+            Tholos::$app->trace('Opening database connection by ' . $this->getProperty('Name'));
           } else {
-            Tholos::$app->debug('Database connection already on for ' . $this->getProperty('Name'));
+            Tholos::$app->trace('Database connection already on for ' . $this->getProperty('Name'));
           }
           if (Tholos::$app->roleManager !== NULL) {
             Tholos::$app->roleManager->initDBSession();
           }
-          Tholos::$app->debug('Database connection is ready to use');
+          Tholos::$app->trace('Database connection is ready to use');
         }
       } else {
         Tholos::$app->debug('Opening database connection is disabled by active DataProxy');
@@ -255,7 +255,7 @@
             foreach ($this->getPropertyNames() as $key) {
               $proxyValue = Eisodos::$parameterHandler->getParam($this->getProperty('Name') . '<' . $key);
               if ($proxyValue === 'response') {
-                Tholos::$app->debug('Pushing back ' . $key . ' property with value ' . $this->getProperty($key, ''));
+                Tholos::$app->trace('Pushing back ' . $key . ' property with value ' . $this->getProperty($key, ''));
                 Tholos::$app->responseARRAY[$this->getProperty('Name') . '>' . $key] = $this->getProperty($key, '');
               }
             }

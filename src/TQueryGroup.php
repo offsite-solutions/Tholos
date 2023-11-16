@@ -12,7 +12,6 @@
      */
     public function init(): void {
       Tholos::$app->trace('BEGIN', $this);
-      Tholos::$app->trace('abc (' . $this->_componentType . ') (ID ' . $this->_id . ')', $this);
       $this->initialized = true;
       // set runtime properties
       

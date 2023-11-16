@@ -192,7 +192,7 @@
         $prop_value = substr($property_value_, strpos($property_value_, '.') + 1);
         if (strpos($prop_value, '|') !== false) {
           $prop_default_value = substr($prop_value, strpos($prop_value, '|') + 1);
-          if (strlen($prop_default_value) > 2 && $prop_default_value[0] === '@') {
+          if (strlen($prop_default_value) > 2 && ($prop_default_value[0] == '@' || $prop_default_value[0] == '%')) {
             $prop_default_value = $this->parsePropertyValue2($prop_default_value);
             if ($prop_default_value === false) {
               $prop_default_value = $notFound_;

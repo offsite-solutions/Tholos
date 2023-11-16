@@ -6,7 +6,7 @@
   use Exception;
   use RuntimeException;
   use Throwable;
-
+  
   /**
    * Class TQuery
    * @package Tholos
@@ -96,8 +96,8 @@
         if ($this->getProperty('DisableQueryFilters', 'false') === 'false') {
           $this->setProperty('FilterArray', $this->buildFilters($sender));
         }
-        Tholos::$app->debug(print_r($this->getProperty('FilterArray', array()), true), $this);
-        Tholos::$app->debug("Additional filters: \n" . $this->getProperty('Filter', ''), $this);
+        Tholos::$app->trace(print_r($this->getProperty('FilterArray', array()), true), $this);
+        Tholos::$app->trace("Additional filters: \n" . $this->getProperty('Filter', ''), $this);
         
         $filter_array = $this->getProperty('FilterArray', array());
         if ($filter_array && count($filter_array) > 0) {
@@ -107,12 +107,11 @@
             }
             $sql = str_replace($filter_key, $filter_values, $sql);
           }
-        } else {
-          $sql = str_replace(':filter', $this->getProperty('filter', ''), $sql);
         }
+        $sql = str_replace(':filter', $this->getProperty('filter', ''), $sql);
         
         if ($this->getProperty('FilterError', 'false') === 'true') {
-          Tholos::$app->debug('Missing required filter', $this);
+          Tholos::$app->error('Missing required filter', $this);
           Tholos::$app->trace('END', $this);
           
           return;
@@ -132,12 +131,12 @@
             || $this->getProperty('CacheRefresh', 'false') === 'true') {
             if ($this->getProperty('CountTotalRows', 'false') === 'true' &&
               $this->getProperty('TotalRowCountField', '') === '') {
-              Tholos::$app->debug('Counting rows started', $this);
+              Tholos::$app->trace('Counting rows started', $this);
               $this->openDatabase(true);
               $this->setProperty('TotalRowCount',
                 getSQLback(Tholos::$c->getDBByIndex((integer)$this->getProperty('DatabaseIndex', '1')),
                   'select count(1) from (' . $sql . ') q'));
-              Tholos::$app->debug('Counting rows finished', $this);
+              Tholos::$app->trace('Counting rows finished', $this);
             }
           }
           
@@ -207,6 +206,7 @@
             if (Tholos::$app->findComponentByID($authproc_id)->getProperty('Success') === 'false') {
               header('X-Tholos-Error-Code: 403');
               header('X-Tholos-Error-Message: Authentication error');
+              header('X-Tholos-Error-Message-B64: ' . base64_encode('Authentication error'));
               Tholos::$app->eventHandler($this, 'onAuthError');
               
               return;
@@ -247,7 +247,7 @@
               $n_ = strtolower($this->getProperty('Name'));
               foreach ($this->getPropertyNames() as $key) {
                 if (array_key_exists($n_ . '>' . $key, $a_)) {
-                  Tholos::$app->debug('Setting property <' . $key . '> to ' . Eisodos::$utils->safe_array_value($a_, $n_ . '>' . $key) . ' by proxy response', $this);
+                  Tholos::$app->trace('Setting property <' . $key . '> to ' . Eisodos::$utils->safe_array_value($a_, $n_ . '>' . $key) . ' by proxy response', $this);
                   if ($this->getPropertyType($key) === 'ARRAY') {
                     $this->setProperty($key, json_decode(Eisodos::$utils->safe_array_value($a_, $n_ . '>' . $key), true, 512, JSON_THROW_ON_ERROR));
                   } else {
@@ -263,54 +263,92 @@
           }
           
           if ($cacheResult === false
-            && is_null($dataProxy)
-            && $sql !== ''
-            && $this->getProperty('CacheMode') !== 'ReadOnly') {
+            and is_null($dataProxy)
+            and $sql != ''
+            and $this->getProperty('CacheMode') != 'ReadOnly') {
             
             // InitProcedure
             
-            if (($initproc_id = $this->getPropertyComponentId('InitProcedure'))
-              &&
+            if ($initproc_id = $this->getPropertyComponentId("InitProcedure")
+              and
               (
-                (!Tholos::$app->findComponentByID($initproc_id)->getPropertyComponentId('DataProxy') // nincs proxyzva
-                  && Eisodos::$parameterHandler->eq('TholosProxy:ProxyComponentID', '') // nem proxy modban fut
+                (!Tholos::$app->findComponentByID($initproc_id)->getPropertyComponentId("DataProxy") // nincs proxyzva
+                  and Eisodos::$parameterHandler->eq("TholosProxy:ProxyComponentID", "") // nem proxy modban fut
                 )
-                ||
-                (Tholos::$app->findComponentByID($initproc_id)->getPropertyComponentId('DataProxy') // van proxy-ja es ez a nem proxy oldal
+                or
+                (Tholos::$app->findComponentByID($initproc_id)->getPropertyComponentId("DataProxy") // van proxy-ja
+                  and is_null($dataProxy) // es ez a nem proxy oldal
                 )
               )
             ) {
               /* @var TDataProvider $initproc */
               $initproc = Tholos::$app->findComponentByID($initproc_id);
-              $initproc->setProperty('Opened', 'false');
+              $initproc->setProperty("Opened", "false");
               $initproc->run($this);
-              if (Tholos::$app->findComponentByID($initproc_id)->getProperty('Success') === 'false') {
-                Tholos::$app->eventHandler($this, 'onInitError');
+              if (Tholos::$app->findComponentByID($initproc_id)->getProperty('Success') == 'false') {
+                Tholos::$app->eventHandler($this, "onInitError");
                 
                 return;
               }
             }
             
-            Tholos::$app->debug('SQL query opening', $this);
-            $this->openDatabase(true);
-            try {
-              getSQLtoArrayFull(Tholos::$c->getDBByIndex((integer)$this->getProperty('DatabaseIndex', '1')),
+            // check if structure info only and if it is already cached
+            if ($this->getProperty('StructureInfoOnly', 'false') == 'true') {
+              $cacheResult = Tholos::$app->readCache(
+                $this,
+                'Private',
+                $this->getProperty("CacheID") . '.StructureOnly.'.$this->getProperty('StructureRequester', ''),
+                '',
                 $sql,
-                $back);
-            } catch (Exception $e) {
-              Eisodos::$logger->writeErrorLog($e);
-              Tholos::$app->eventHandler($this, 'onError');
-              throw $e;
+                'ReadCache');
+              // clear cache info
+              $this->setProperty("CacheInfo", array());
             }
             
-          } else if (is_array($cacheResult)) {
-            $back = $cacheResult;
+            if (!is_array($cacheResult)) {
+              Tholos::$app->debug("SQL query opening", $this);
+              $this->openDatabase(true);
+              try {
+                getSQLtoArrayFull(Tholos::$c->getDBByIndex((integer)$this->getProperty("DatabaseIndex", "1")),
+                  $sql,
+                  $back);
+                
+                if ($this->getProperty('StructureInfoOnly', 'false') == 'true') {
+                  Tholos::$app->debug('Structure written to cache for grid', $this);
+                  Tholos::$app->writeCache('Private',
+                    $this->getProperty("CacheID") . '.StructureOnly.'.$this->getProperty('StructureRequester', ''),
+                    $back,
+                    '',
+                    24*60,
+                    '',
+                    $sql
+                  );
+                }
+                
+              } catch (Exception $e) {
+                Eisodos::$logger->writeErrorLog($e);
+                Tholos::$app->eventHandler($this, "onError");
+                throw $e;
+              }
+            } else {
+              Tholos::$app->debug('Structure read from cache for grid', $this);
+            }
+            
           } else {
-            $back = array();
-            $this->setProperty('CacheRefresh', 'false');
+            if (is_array($cacheResult)) {
+              $back = $cacheResult;
+            } else {
+              $back = [];
+              $this->setProperty('CacheRefresh', 'false');
+            }
           }
           
-          Tholos::$app->eventHandler($this, 'onSuccess');
+          // reseting structure info cache property to its default for parallel usage
+          Tholos::$app->debug('Resetting structure info cache', $this);
+          $this->setProperty('StructureInfoOnly','false');
+          $this->setProperty('StructureRequester','');
+          
+          Tholos::$app->eventHandler($this, "onSuccess");
           
           Tholos::$app->debug('SQL query has finished', $this);
           

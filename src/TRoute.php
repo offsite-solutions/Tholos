@@ -2,8 +2,9 @@
   
   namespace Tholos;
   
+  use Eisodos\Eisodos;
   use Throwable;
-
+  
   /**
    * TAction Component class
    *
@@ -26,12 +27,17 @@
       
       if ($this->getPropertyComponentId("InitSessionProvider") !== false) {
         /* @var TDataProvider $component */
-        $component = Tholos::$app->findComponentByID($this->getPropertyComponentId("InitSessionProvider"));
+        $component = Tholos::$app->findComponentByID($this->getPropertyComponentId('InitSessionProvider'));
         $component->init();
         $component->run($this);
-        if ($component->getProperty("Success") === "false") {
+        if ($component->getProperty('Success') === 'false') {
           exit;
         }
+      }
+      
+      if ($this->getProperty('PersistentSession', 'true') == 'false') {
+        Eisodos::$parameterHandler->setParam('DestroySessionOnFinish', 'T');
+        Tholos::$app->debug('This is not a persistent session');
       }
       
     }

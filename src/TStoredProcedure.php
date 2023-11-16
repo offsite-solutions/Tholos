@@ -123,6 +123,7 @@
         
         header('X-Tholos-Error-Code: ' . $this->getProperty('ResultErrorCode'));
         header('X-Tholos-Error-Message: ' . $this->getProperty('ResultErrorMessage'));
+        header('X-Tholos-Error-Message-B64: ' . base64_encode($this->getProperty('ResultErrorMessage')));
         
         //$this->setProperty('Result',$resultParameters);
         // generating result set

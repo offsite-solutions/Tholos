@@ -90,7 +90,7 @@
           }
         }
         
-        Tholos::$app->debug(print_r($data, true));
+        Tholos::$app->trace(print_r($data, true));
         
         // creating http header info
         $options = array(
@@ -117,7 +117,7 @@
         
         Tholos::$app->trace($result);
         $header = $this->parseHeaders($http_response_header);
-        Tholos::$app->debug(print_r($header, true), $this);
+        Tholos::$app->trace(print_r($header, true), $this);
         
         if (array_key_exists('Location', $header)) {
           Eisodos::$parameterHandler->setParam('REDIRECT', $header['Location']);
