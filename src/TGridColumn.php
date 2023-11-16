@@ -20,7 +20,7 @@
     /**
      * @inheritdoc
      */
-    public function render(TComponent $sender, string $content): string {
+    public function render(?TComponent $sender, string $content): string {
       if (!$this->parentGrid) {
         $this->parentGrid = Tholos::$app->findParentByType($this, 'TGrid');
       }
@@ -40,7 +40,7 @@
     /**
      * @inheritdoc
      */
-    public function renderPartial(TComponent $sender, string $partialID, $content = '', $parameters = array()): string {
+    public function renderPartial(?TComponent $sender, string $partialID, string $content = '', array $parameters = array()): string {
       
       if (!Tholos::$app->checkRole($this)) {
         return '';

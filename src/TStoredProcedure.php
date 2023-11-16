@@ -14,7 +14,7 @@
      * @inheritDoc
      * @throws Throwable
      */
-    protected function open(?TComponent $sender, $nativeSQL = ''): void {
+    protected function open(?TComponent $sender, string $nativeSQL = ''): void {
       if ($this->getProperty('Opened') === 'true') {
         return;
       } // ha mar meg volt nyitva, akkor ne fusson le meg egyszer
@@ -134,7 +134,7 @@
           $param->setProperty('DBValue', $resultParameters[$param->getProperty('ParameterName')]);
           //$param->setProperty('Value',$resultParameters[$param->getProperty('ParameterName')]);
           if ($this->getProperty('GenerateDataResult', 'true') === 'true'
-            and $param->getProperty('AddToResult', 'true') === 'true') {
+            && $param->getProperty('AddToResult', 'true') === 'true') {
             $result[$param->getProperty('ParameterName')] = $resultParameters[$param->getProperty('ParameterName')];
           }
         }
@@ -201,8 +201,8 @@
         Tholos::$app->error('ERROR', $this);
         
         if (is_null($dataProxy)
-          and $this->getProperty('TransactionMode', 'true') === 'true'
-          and Tholos::$c->getDBByIndex((integer)$this->getProperty('db', '1'))->inTransaction()) {
+          && $this->getProperty('TransactionMode', 'true') === 'true'
+          && Tholos::$c->getDBByIndex((integer)$this->getProperty('db', '1'))->inTransaction()) {
           Tholos::$c->getDBByIndex((integer)$this->getProperty('db', '1'))->rollback();
         }
         

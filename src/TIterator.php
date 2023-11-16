@@ -16,7 +16,7 @@
     /**
      * @inheritdoc
      */
-    public function render(TComponent $sender, string $content): string {
+    public function render(?TComponent $sender, string $content): string {
       
       Tholos::$app->trace('Render start', $this);
       
@@ -33,7 +33,7 @@
       $result = '';
       
       if ($this->getPropertyComponentId('JSONSource') !== false) {
-        NULL;
+        assert(true);
       } elseif ($this->getPropertyComponentId('ListSource') !== false) {
         
         /* @var TQuery $listSource */

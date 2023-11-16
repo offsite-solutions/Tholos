@@ -6,11 +6,10 @@
   use Exception;
   use RuntimeException;
   
-  
   class TAPIPost extends TStoredProcedure {
     
     private function StringToJSON($text_, $dataType_) {
-      if ($text_ === NULL or $text_ === '') {
+      if ($text_ === NULL || $text_ === '') {
         return NULL;
       }
       if ($dataType_ === 'integer') {
@@ -34,7 +33,7 @@
      * @inheritDoc
      * @throws Exception
      */
-    protected function open(?TComponent $sender, $nativeSQL = ''): void {
+    protected function open(?TComponent $sender, string $nativeSQL = ''): void {
       if ($this->getProperty('Opened', 'false') === 'true') {
         return;
       } // ha mar meg volt nyitva, akkor ne fusson le meg egyszer
@@ -62,7 +61,7 @@
           $boundParameters = array();
           foreach (Tholos::$app->findChildIDsByType($this, 'TDBParam') as $paramId) {
             $param = Tholos::$app->findComponentByID($paramId);
-            if (!$param or $param->getProperty('ParameterMode') === 'OUT') {
+            if (!$param || $param->getProperty('ParameterMode') === 'OUT') {
               continue;
             }
             /* @var TDBParam $param */
@@ -112,8 +111,6 @@
           Tholos::$app->trace('HTTP Response: ' . $httpResponse);
           Tholos::$app->trace('HTTP Error: ' . $httpError);
           
-          // TODO 401-es hibat kezelni RoleManagerre
-          
           // hard error
           if ($httpError || !$httpCode || $httpResponse === false) {
             throw new RuntimeException($httpResponse === false ? 'Service is not available' : ($httpError ? $httpCode : 'Unknown error'));
@@ -122,7 +119,7 @@
           // soft error
           if (1 * $httpCode === 401) {
             Tholos::$app->roleManager->logout();
-          } else if (1 * $httpCode >= 200 and 1 * $httpCode < 300) {
+          } else if (1 * $httpCode >= 200 && 1 * $httpCode < 300) {
             if (strpos($httpResponse, 'HTTP/') === 0) {
               $httpNormalResponse = explode("\r\n\r\n", $httpResponse, 2);
               if (count($httpNormalResponse) > 1) {

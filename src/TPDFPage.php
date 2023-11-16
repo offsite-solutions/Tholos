@@ -31,7 +31,7 @@
     /**
      * @inheritdoc
      */
-    public function render(TComponent $sender, string $content): string {
+    public function render(?TComponent $sender, string $content): string {
       
       try {
         
@@ -91,7 +91,7 @@
           $PAdES->signPDF($this, false);
           
           header('Content-Type: application/pdf');
-          if (!isset($_SERVER['HTTP_ACCEPT_ENCODING']) || empty($_SERVER['HTTP_ACCEPT_ENCODING'])) {
+          if (empty($_SERVER['HTTP_ACCEPT_ENCODING'])) {
             header('Content-Length: ' . strlen($PAdES->OutputPDF));
           }
           header('Content-disposition: inline; filename="' . date('YmdHis') . '.pdf"');

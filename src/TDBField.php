@@ -1,4 +1,4 @@
-<?php
+<?php /** @noinspection DuplicatedCode SpellCheckingInspection PhpUnusedFunctionInspection NotOptimalIfConditionsInspection */
   
   namespace Tholos;
   
@@ -52,7 +52,7 @@
       Tholos::$app->trace('END', $this);
     }
     
-    public function setProperty(string $name_, $value_, $type_ = 'STRING', $value_component_id_ = '', $raw_ = false): void {
+    public function setProperty(string $name_, $value_, string $type_ = 'STRING', string $value_component_id_ = '', bool $raw_ = false): void {
       if (strtolower($name_) === 'value') {
         $lastValue = $this->getProperty('value', '');
         $value_ = Tholos::$app->eventHandler($this, 'onSetValue', $value_);
@@ -105,7 +105,7 @@
           } catch (Exception $e) {
             $json_data = NULL;
           }
-          if (!is_null($json_data) && is_array($json_data) && count($json_data) > 0) {
+          if (is_array($json_data) && count($json_data) > 0) {
             foreach (Tholos::$app->findChildIDsByType($this, 'TJSONField') as $component) {
               $JSONField = Tholos::$app->findComponentByID($component);
               if (!$JSONField) {

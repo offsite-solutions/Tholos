@@ -152,7 +152,7 @@
     }
     $result = '';
     if (is_array($ls->getProperty('result')) && count($ls->getProperty('result')) > 0) {
-      foreach ($ls->getProperty('result') as $_key => $_val) {
+      foreach ($ls->getProperty('result') as $_val) {
         $result .= Eisodos::$templateEngine->getTemplate('tholos/' . $compType . '.item',
           array('prop_itemactive' => (in_array($_val[$fieldId], $value, false) ? 'true' : 'false'),
             'prop_itemid' => htmlspecialchars($_val[$fieldId]),

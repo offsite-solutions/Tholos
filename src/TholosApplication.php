@@ -20,6 +20,7 @@
   use Exception;
   use Mpdf\Mpdf;
   use Redis;
+  use RedisException;
   use RuntimeException;
   use Throwable;
 
@@ -247,10 +248,10 @@
      *
      * @param string $text_ Message to be displayed in the log message
      * @param string $debugLevel_ Message debug level, defaults to `debug`
-     * @param null $sender_ Sender object
+     * @param ?Object|null $sender_ Sender object
      * @internal param null|TComponent $sender Sender object. When specified debug will display the name of the sender object. Defaults to `null`.
      */
-    private function log(string $text_, $debugLevel_ = 'debug', $sender_ = NULL): void {
+    private function log(string $text_, string $debugLevel_ = 'debug', ?object $sender_ = NULL): void {
       
       $d = explode(',', $this->debugLevel);
       
@@ -289,9 +290,9 @@
      * Log a critical message
      *
      * @param string $text_ Message to be displayed in the log message
-     * @param TComponent|null $sender_ Sender object. When specified debug will display the name of the sender object. Defaults to `null`.
+     * @param Object|null $sender_ Sender object. When specified debug will display the name of the sender object. Defaults to `null`.
      */
-    public function critical(string $text_, $sender_ = NULL): void {
+    public function critical(string $text_, ?Object $sender_ = NULL): void {
       $this->log($text_, 'critical', $sender_);
     }
     
@@ -299,9 +300,9 @@
      * Log an error message
      *
      * @param string $text_ Message to be displayed in the log message
-     * @param TComponent|null $sender_ Sender object. When specified debug will display the name of the sender object. Defaults to `null`.
+     * @param Object|null $sender_ Sender object. When specified debug will display the name of the sender object. Defaults to `null`.
      */
-    public function error(string $text_, $sender_ = NULL): void {
+    public function error(string $text_, ?Object $sender_ = NULL): void {
       $this->log($text_, 'error', $sender_);
     }
     
@@ -309,9 +310,9 @@
      * Log an info message
      *
      * @param string $text_ Message to be displayed in the log message
-     * @param TComponent|null $sender_ Sender object. When specified debug will display the name of the sender object. Defaults to `null`.
+     * @param Object|null $sender_ Sender object. When specified debug will display the name of the sender object. Defaults to `null`.
      */
-    public function info(string $text_, $sender_ = NULL): void {
+    public function info(string $text_, ?Object $sender_ = NULL): void {
       $this->log($text_, 'info', $sender_);
     }
     
@@ -319,9 +320,9 @@
      * Log a warning message
      *
      * @param string $text_ Message to be displayed in the log message
-     * @param TComponent|null $sender_ Sender object. When specified debug will display the name of the sender object. Defaults to `null`.
+     * @param Object|null $sender_ Sender object. When specified debug will display the name of the sender object. Defaults to `null`.
      */
-    public function warning(string $text_, $sender_ = NULL): void {
+    public function warning(string $text_, ?Object $sender_ = NULL): void {
       $this->log($text_, 'warning', $sender_);
     }
     
@@ -329,9 +330,9 @@
      * Log a debug message
      *
      * @param string $text_ Message to be displayed in the log message
-     * @param TComponent|null $sender_ Sender object. When specified debug will display the name of the sender object. Defaults to `null`.
+     * @param Object|null $sender_ Sender object. When specified debug will display the name of the sender object. Defaults to `null`.
      */
-    public function debug(string $text_, $sender_ = NULL): void {
+    public function debug(string $text_, ?Object $sender_ = NULL): void {
       $this->log($text_, 'debug', $sender_);
     }
     
@@ -339,9 +340,9 @@
      * Log a trace message
      *
      * @param string $text_ Message to be displayed in the log message
-     * @param TComponent|null $sender_ Sender object. When specified debug will display the name of the sender object. Defaults to `null`.
+     * @param Object|null $sender_ Sender object. When specified debug will display the name of the sender object. Defaults to `null`.
      */
-    public function trace(string $text_, $sender_ = NULL): void {
+    public function trace(string $text_, ?Object $sender_ = NULL): void {
       $this->log($text_, 'trace', $sender_);
     }
     
@@ -498,7 +499,7 @@
      * @throws Throwable
      * @see TAction
      */
-    public function instantiateComponent(int $componentID_, $createChildren_ = true): ?TComponent {
+    public function instantiateComponent(int $componentID_, bool $createChildren_ = true): ?TComponent {
       
       if (!isset($this->componentDefinitions[$componentID_])) {
         $this->loadDefinitionFile($componentID_);
@@ -532,15 +533,15 @@
       $this->components[$component['id']]['parent_id'] = $component['pid'];
       $this->components[$component['id']]['class_name'] = explode('.', $this->componentTypeIndex[$component['t']]['h'])[0];
       
-      $mainclass = '';
+      $mainClass = '';
       foreach (explode('.', $this->componentTypeIndex[$component['t']]['h']) as $class) {
-        if ($mainclass === '') {
-          $mainclass = $class;
+        if ($mainClass === '') {
+          $mainClass = $class;
         }
         $class = Tholos::THOLOS_CLASS_PREFIX . $class;
         if (class_exists($class)) {
           $this->components[$component['id']]['object'] =
-            new $class($mainclass,
+            new $class($mainClass,
               $component['id'],
               $component['pid'],
               json_decode($component['p'], true, 512, JSON_THROW_ON_ERROR),
@@ -608,10 +609,10 @@
      * @return TComponent TComponent object
      * @see TComponent
      */
-    public function findComponentByName(string $name_, $class_name_ = ''): ?TComponent {
+    public function findComponentByName(string $name_, string $class_name_ = ''): ?TComponent {
       
       $name_ = strtolower($name_);
-      foreach ($this->components as $component_id => $component) {
+      foreach ($this->components as $component) {
         if ($component['name'] === $name_ && ($class_name_ === '' || is_a($component['object'], Tholos::THOLOS_CLASS_PREFIX . $class_name_))) {
           return $component['object'];
         }
@@ -621,15 +622,15 @@
     }
     
     /**
-     * Finds and returns array of TComponents by its class. Class name can not be wildcarded.
+     * Finds and returns array of TComponents by its class. Class name can not be wild carded.
      *
      * @param string $class_name_ Class name of the component
      * @return TComponent[]
      * @see TComponent
      */
-    public function findComponentsByClass($class_name_ = ''): array {
+    public function findComponentsByClass(string $class_name_ = ''): array {
       $a = array();
-      foreach ($this->components as $component_id => $component) {
+      foreach ($this->components as $component) {
         if (is_a($component['object'], Tholos::THOLOS_CLASS_PREFIX . $class_name_)) {
           $a[] = $component['object'];
         }
@@ -702,7 +703,7 @@
      * @param string $root_type Root object type where the search terminates
      * @return bool|TComponent Component object that matches the search or `false` when not found
      */
-    public function findParentByType(TComponent $component_, string $type_, $root_type = 'TApplication') {
+    public function findParentByType(TComponent $component_, string $type_, string $root_type = 'TApplication') {
       
       $component_id_ = $this->findComponentId($component_);
       if ($component_id_
@@ -710,7 +711,7 @@
         && array_key_exists($this->components[$component_id_]['parent_id'], $this->components)
       ) {
         
-        if ($this->components[$this->components[$component_id_]['parent_id']]['object']->getComponentType() === $type_ || $type_ === '') {
+        if ($type_ === '' || $this->components[$this->components[$component_id_]['parent_id']]['object']->getComponentType() === $type_) {
           return $this->components[$this->components[$component_id_]['parent_id']]['object'];
         }
         
@@ -763,7 +764,7 @@
     public function findChildByName(TComponent $component_, string $name_): ?TComponent {
       $found = NULL;
       $parent_id = $this->findComponentId($component_);
-      foreach ($this->components as $id => $component) {
+      foreach ($this->components as $component) {
         if ($component['object']->getProperty('Name', '') === $name_) {
           return $component['object'];
         }
@@ -794,12 +795,12 @@
     public function findComponentIDByNameClassFromIndex(string $objectName_, string $componentType_, $parentId_ = NULL) {
       
       foreach ($this->componentIndex as $_component) {
-        if ((explode('.', $this->componentTypeIndex[$_component['p']]['h'])[0] === $componentType_
-            or (strpos($componentType_, '*') !== false
-              and strpos($this->componentTypeIndex[$_component['p']]['h'], str_replace('*', '', $componentType_)) !== false)
+        if ((($parentId_ === NULL) || ((string)$_component['pid'] === (string)$parentId_))
+          && ($_component['n'] === $objectName_)
+          && (explode('.', $this->componentTypeIndex[$_component['p']]['h'])[0] === $componentType_
+            || (strpos($componentType_, '*') !== false
+              && strpos($this->componentTypeIndex[$_component['p']]['h'], str_replace('*', '', $componentType_)) !== false)
           )
-          and (($parentId_ === NULL) || ((string)$_component['pid'] === (string)$parentId_))
-          and ($_component['n'] === $objectName_)
         ) {
           return $_component['id'];
         }
@@ -902,12 +903,12 @@
      * Checks if a component's FunctionCode parameter is exists in the loaded Functions list.
      *
      * @param TComponent $sender_ Sender object
-     * @param bool|false $throwException_ In case of no access right exception is thrown
+     * @param bool $throwException_ In case of no access right exception is thrown
      * @param bool $generateRedirect_
      * @return bool
      * @throws Exception
      */
-    public function checkRole(TComponent $sender_, $throwException_ = false, $generateRedirect_ = false): bool {
+    public function checkRole(TComponent $sender_, bool $throwException_ = false, bool $generateRedirect_ = false): bool {
       
       if ($this->roleManager === NULL) {
         return true;
@@ -997,7 +998,7 @@
      * @return string Rendered content
      * @throws Exception
      */
-    public function render(?object $sender_, int $component_id_, $childOnly_ = false): string {
+    public function render(?object $sender_, int $component_id_, bool $childOnly_ = false): string {
       
       try {
         Tholos::$app->trace('BEGIN', $this);
@@ -1060,7 +1061,7 @@
      *
      * @param TComponent $sender_ Sender Object
      * @param string $eventName_ Name of the event
-     * @param boolean $notFound_
+     * @param mixed $notFound_
      * @return bool Returns the return of the handled event or false
      */
     public function eventHandler(TComponent $sender_, string $eventName_, $notFound_ = false): bool {
@@ -1073,7 +1074,8 @@
       if (class_exists($class)) {
         $evt = call_user_func(array($class, 'getInstance'));
         if (method_exists($evt, $eventParams[1])) {
-          return call_user_func(array($evt, $eventParams[1]), $sender_);
+          return $evt->{$eventParams[1]}($sender_);
+          // return call_user_func(array($evt, $eventParams[1]), $sender_);
         }
         
         return $notFound_;
@@ -1117,7 +1119,7 @@
           
           $this->autoOpen();
           
-          if ($this->renderer !== NULL) {
+          if (isset($this->renderer)) {
             Tholos::$app->debug('Render phase started', $this->renderer);
             $response_ = $this->render(NULL, $this->renderer->getId());
             Tholos::$app->debug('Render phase finished');
@@ -1155,7 +1157,7 @@
             $this->response = Tholos::$app->cleanupRenderedHTML($response_);
             
             if (($this->responseType === 'JSON' && Eisodos::$parameterHandler->eq('responseType', ''))
-              or Eisodos::$parameterHandler->eq('responseType', 'JSON')) {
+              || Eisodos::$parameterHandler->eq('responseType', 'JSON')) {
               header('Content-type: application/json');
               Eisodos::$render->Response = '';
               $this->responseARRAY['success'] = (($this->responseErrorCode === '' || $this->responseErrorCode === '0') ? 'OK' : 'ERROR');
@@ -1181,29 +1183,29 @@
               Eisodos::$templateEngine->addToResponse(json_encode($this->responseARRAY, JSON_THROW_ON_ERROR));
               Tholos::$app->trace('END', $this);
               Eisodos::$render->finishRaw(true); // save session variables
-            } elseif (($this->responseType === 'JSONDATA' and Eisodos::$parameterHandler->eq('responseType', ''))
-              or Eisodos::$parameterHandler->eq('responseType', 'JSONDATA')) {
+            } elseif (($this->responseType === 'JSONDATA' && Eisodos::$parameterHandler->eq('responseType', ''))
+              || Eisodos::$parameterHandler->eq('responseType', 'JSONDATA')) {
               header('Content-type: application/json');
               Eisodos::$render->Response = '';
               Eisodos::$templateEngine->addToResponse($this->responseARRAY['data']);
               Tholos::$app->trace('END', $this);
               Eisodos::$render->finishRaw(true); // save session variables
-            } elseif (($this->responseType === 'XML' and Eisodos::$parameterHandler->eq('responseType', ''))
-              or Eisodos::$parameterHandler->eq('responseType', 'XML')) {
+            } elseif (($this->responseType === 'XML' && Eisodos::$parameterHandler->eq('responseType', ''))
+              || Eisodos::$parameterHandler->eq('responseType', 'XML')) {
               header('Content-type: application/xml');
               Eisodos::$render->Response = '';
               Eisodos::$templateEngine->addToResponse($this->responseARRAY['data']);
               Tholos::$app->trace('END', $this);
               Eisodos::$render->finishRaw(true); // save session variables
-            } elseif (($this->responseType === 'PLAINTEXT' and Eisodos::$parameterHandler->eq('responseType', ''))
-              or Eisodos::$parameterHandler->eq('responseType', 'PLAINTEXT')) {
+            } elseif (($this->responseType === 'PLAINTEXT' && Eisodos::$parameterHandler->eq('responseType', ''))
+              || Eisodos::$parameterHandler->eq('responseType', 'PLAINTEXT')) {
               header('Content-type: text/plain');
               Eisodos::$render->Response = '';
               Eisodos::$templateEngine->addToResponse($this->responseARRAY['data']);
               Tholos::$app->trace('END', $this);
               Eisodos::$render->finishRaw(true, true); // save session variables and create language tags
-            } elseif (($this->responseType === 'PDF' and Eisodos::$parameterHandler->eq('responseType', ''))
-              or Eisodos::$parameterHandler->eq('responseType', 'PDF')) {
+            } elseif (($this->responseType === 'PDF' && Eisodos::$parameterHandler->eq('responseType', ''))
+              || Eisodos::$parameterHandler->eq('responseType', 'PDF')) {
               header('Content-type: application/pdf');
               Eisodos::$render->Response = '';
               $this->responsePDF->Output();
@@ -1231,11 +1233,13 @@
      * @param array $config
      * @throws Throwable
      */
-    public function initResponsePDF($config = []): void {
+    public function initResponsePDF(array $config = []): void {
       $this->responsePDF = new Mpdf(array_merge(json_decode(Eisodos::$parameterHandler->getParam('Tholos.mPDF'), true, 512, JSON_THROW_ON_ERROR), $config));
     }
     
-    /** Open cache server connection */
+    /** Open cache server connection
+     * @throws RedisException
+     */
     private function openCacheServer(): void {
       if (!isset($this->cacheServer)) {
         $this->cacheServer = new Redis();
@@ -1248,7 +1252,7 @@
     
     /** Close cache server connection */
     private function closeCacheServer(): void {
-      if (Eisodos::$parameterHandler->eq('Tholos.CacheMethod', 'redis') && isset($this->cacheServer)) {
+      if (isset($this->cacheServer) && Eisodos::$parameterHandler->eq('Tholos.CacheMethod', 'redis')) {
         $this->cacheServer->close();
         unset($this->cacheServer);
         Tholos::$app->trace('Redis cache disconnected');
@@ -1257,15 +1261,15 @@
     
     /**
      * @param TComponent $sender
-     * @param $cacheScope_ string
-     * @param $cacheID_ string
-     * @param string $partition_ string
-     * @param string $sql_ string
-     * @param string $sqlConflictMode_ string
+     * @param string $cacheScope_
+     * @param string $cacheID_
+     * @param string $partition_
+     * @param string $sql_
+     * @param string $sqlConflictMode_
      * @return bool|mixed|string
      * @throws Throwable
      */
-    public function readCache(TComponent $sender, string $cacheScope_, string $cacheID_, $partition_ = '', $sql_ = '', $sqlConflictMode_ = '') {
+    public function readCache(TComponent $sender, string $cacheScope_, string $cacheID_, string $partition_ = '', string $sql_ = '', string $sqlConflictMode_ = '') {
       
       $sender->setProperty('CacheInfo', array());
       
@@ -1277,7 +1281,7 @@
           $cacheID_ .
           '.index';
         
-        if (file_exists($cacheIndexFilename) and ($filesize = filesize($cacheIndexFilename))) {
+        if (file_exists($cacheIndexFilename) && ($filesize = filesize($cacheIndexFilename))) {
           $file = fopen($cacheIndexFilename, 'rb');
           $currentCacheIndex = fread($file, $filesize);
           fclose($file);
@@ -1322,7 +1326,7 @@
           $cacheID_ .
           ($partition_ !== '' ? '@' . $partition_ : '') .
           '.cache';
-        if (file_exists($filename) and ($filesize = filesize($filename))) {
+        if (file_exists($filename) && ($filesize = filesize($filename))) {
           $file = fopen($filename, 'rb');
           $content_ = fread($file, $filesize);
           fclose($file);
@@ -1428,12 +1432,12 @@
     
     /**
      * Writes cache file in exclusive mode
-     * @param $filename_
-     * @param $content_
-     * @param $mode_
+     * @param string $filename_
+     * @param mixed $content_
+     * @param string $mode_
      * @return bool
      */
-    private function writeCacheFileLock($filename_, $content_, $mode_): bool {
+    private function writeCacheFileLock(string $filename_, $content_, string $mode_): bool {
       
       $file = fopen($filename_, $mode_);
       if (flock($file, LOCK_EX)) {
@@ -1457,7 +1461,7 @@
      * @param string $validity_ Validity in seconds
      * @throws Exception
      */
-    private function writeCacheContent(string $filename_, $content_, $validity_ = ''): void {
+    private function writeCacheContent(string $filename_, $content_, string $validity_ = ''): void {
       
       if (Eisodos::$parameterHandler->eq('Tholos.CacheMethod', 'file')) {
         $lockWait = 1 * Eisodos::$parameterHandler->getParam('Tholos.CacheLockWait', '100');
@@ -1477,7 +1481,7 @@
         if ($validity_) {
           $this->cacheServer->setex($filename_, 1 * $validity_*60, $content_);
         } else {
-          $this->cacheServer->setex($filename_, 1*24*60*60*7, $content_);
+          $this->cacheServer->setex($filename_, 24 * 60 * 60 * 7, $content_);
         }
       }
       
@@ -1495,7 +1499,7 @@
      * @return bool
      * @throws Exception
      */
-    public function writeCache($cacheScope_, $cacheID_, $content_, $partitionedBy_ = '', $validity_ = '', $partition_ = '', $sql_ = ''): bool {
+    public function writeCache($cacheScope_, $cacheID_, $content_, string $partitionedBy_ = '', string $validity_ = '', string $partition_ = '', string $sql_ = ''): bool {
       
       $contents_ = array();
       
@@ -1567,10 +1571,10 @@
             
             foreach ($currentCacheIndex as $indexRow) {
               if ($partition_ === ''
-                || ($indexRow['validity'] !== '' and $indexRow['validity'] < $currentTime)) {
+                || ($indexRow['validity'] !== '' && $indexRow['validity'] < $currentTime)) {
                 @unlink(Eisodos::$parameterHandler->getParam('Tholos.CacheDir') . '/' . $indexRow['filename']);
-              } elseif ($partition_ !== '' && $indexRow['partition'] === $partition_) {
-                NULL;
+              } elseif ($indexRow['partition'] === $partition_) {
+                assert(true);
               } else {
                 $cacheIndex[] = $indexRow;
               }

@@ -1,9 +1,9 @@
-<?php
+<?php /** @noinspection DuplicatedCode SpellCheckingInspection PhpUnusedFunctionInspection NotOptimalIfConditionsInspection */
   
   namespace Tholos;
   
   use Eisodos\Eisodos;
-
+  
   /**
    * TAction Component class
    *
@@ -30,7 +30,7 @@
      *
      * @inheritdoc
      */
-    public function render(TComponent $sender, string $content): string {
+    public function render(?TComponent $sender, string $content): string {
       
       Tholos::$app->trace('BEGIN', $this);
       
@@ -44,7 +44,7 @@
       $this->generateProps();
       $this->generateEvents();
       
-      $content = Eisodos::$templateEngine->getTemplate('tholos/' . $this->_componentType . '.main',
+      $newContent = Eisodos::$templateEngine->getTemplate('tholos/' . $this->_componentType . '.main',
         ['content' => $content,
           'sender' => ($sender === NULL ? '' : $sender->getProperty('Name', '')),
           'component_id' => $this->_id,
@@ -53,9 +53,9 @@
         false);
       
       if ($this->getPropertyComponentId('Page')) {
-        $return = (Tholos::$app->findComponentByID($this->getPropertyComponentId('Page'))->render($this, $content));
+        $return = (Tholos::$app->findComponentByID($this->getPropertyComponentId('Page'))->render($this, $newContent));
       } else {
-        $return = $content;
+        $return = $newContent;
       }
       
       $this->renderedContent = $return;

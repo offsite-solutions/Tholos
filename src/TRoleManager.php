@@ -53,7 +53,7 @@
       $this->setProperty('LoginID', Eisodos::$parameterHandler->getParam('LoginID'));
       
       $functionCodes_ = Eisodos::$parameterHandler->getParam('TRoleManager.FunctionCodes');
-      if (!$functionCodes_ === '') {
+      if (!$functionCodes_ == '') {
         $this->setProperty('FunctionCodes', unserialize($functionCodes_, false), 'ARRAY');
       }
       
@@ -68,12 +68,12 @@
     /**
      * @inheritDoc
      */
-    public function setProperty(string $name_, $value_, $type_ = 'STRING', $value_component_id_ = '', $raw_ = false): void {
-      if (mb_strtolower($name_) === 'functioncodes' && is_array($value_)) {
+    public function setProperty(string $name_, $value_, string $type_ = 'STRING', string $value_component_id_ = '', bool $raw_ = false): void {
+      if (is_array($value_) && mb_strtolower($name_) === 'functioncodes') {
         $value_ = array_map('strtoupper', $value_);
       }
       parent::setProperty($name_, $value_, $type_, $value_component_id_, $raw_);
-      if (mb_strtolower($name_) === 'functioncodes' && is_array($value_)) {
+      if (is_array($value_) && mb_strtolower($name_) === 'functioncodes') {
         Eisodos::$parameterHandler->setParam('TRoleManager.FunctionCodes', serialize($value_), true);
       }
     }
@@ -119,7 +119,7 @@
      * @return bool|mixed
      * @throws Exception
      */
-    public function checkRole($functionCode_, $throwException_ = false, $generateRedirect_ = false): bool {
+    public function checkRole($functionCode_, bool $throwException_ = false, bool $generateRedirect_ = false): bool {
       if ($this->getProperty('Enabled', 'true') === 'false') {
         return (true);
       }

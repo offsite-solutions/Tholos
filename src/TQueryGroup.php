@@ -18,11 +18,11 @@
       if (Tholos::$app->action_id === $this->_id) { // a dataprovider direktben meg lett hivva
         
         // initializing all child component -- a run miatt ezek kesobb inicializalodnak
-        foreach (Tholos::$app->findChildIDsByType($this, 'TLinkedComponent') as $componentid) {
-          $queryGroupSource = Tholos::$app->findComponentByID($componentid);
+        foreach (Tholos::$app->findChildIDsByType($this, 'TLinkedComponent') as $componentID) {
+          $queryGroupSource = Tholos::$app->findComponentByID($componentID);
           $queryGroupSource->init();
           $linkedComponent = Tholos::$app->findComponentByID($queryGroupSource->getPropertyComponentId('Component'));
-          if ($linkedComponent and is_a($linkedComponent, Tholos::THOLOS_CLASS_PREFIX . 'TQuery')) {
+          if ($linkedComponent && is_a($linkedComponent, Tholos::THOLOS_CLASS_PREFIX . 'TQuery')) {
             $linkedComponent->setProperty('AutoOpenAllowed', 'false');
             Tholos::$app->trace('Autoopening disabled', $linkedComponent);
           } else {
@@ -38,17 +38,17 @@
      * @inheritDoc
      * @throws Throwable
      */
-    protected function open(?TComponent $sender, $nativeSQL = ''): void {
+    protected function open(?TComponent $sender, string $nativeSQL = ''): void {
       
       Tholos::$app->trace('BEGIN', $this);
       
       $result = array();
       
-      foreach (Tholos::$app->findChildIDsByType($this, 'TLinkedComponent') as $componentid) {
-        $queryGroupSource = Tholos::$app->findComponentByID($componentid);
+      foreach (Tholos::$app->findChildIDsByType($this, 'TLinkedComponent') as $componentID) {
+        $queryGroupSource = Tholos::$app->findComponentByID($componentID);
         $queryGroupSource->init();
         $linkedComponent = Tholos::$app->findComponentByID($queryGroupSource->getPropertyComponentId('Component'));
-        if ($linkedComponent and is_a($linkedComponent, Tholos::THOLOS_CLASS_PREFIX . 'TQuery')) {
+        if ($linkedComponent && is_a($linkedComponent, Tholos::THOLOS_CLASS_PREFIX . 'TQuery')) {
           /* @var TQuery $linkedComponent */
           $linkedComponent->run($this);
           $result[$linkedComponent->getProperty('Name')] = $linkedComponent->getProperty('Result');

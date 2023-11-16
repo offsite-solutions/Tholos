@@ -9,6 +9,8 @@
   use PhpOffice\PhpSpreadsheet\Cell\DataType as CellDataType;
   use PhpOffice\PhpSpreadsheet\Spreadsheet;
   use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
+  use RuntimeException;
+  use Throwable;
   
   /**
    * TGrid Component class
@@ -29,7 +31,7 @@
     /**
      * @var array
      */
-    private array $usersettings = array();
+    private array $userSettings = array();
     
     /**
      * @var string
@@ -118,7 +120,7 @@
             )->getPropertyComponentId('DBField'))->getProperty('Index') . ' ' .
           $this->getProperty('SortingDirection', 'ASC');
       } else {
-        $origOrderBy = $this->getProperty('SortedByAlways', '1 ASC');
+        $origOrderBy = $this->getProperty('SortedByAlways', '1 ASC'); // todo - not used?
       }
       
       $this->loadState();
@@ -134,8 +136,8 @@
             }
           }
           if (!$found) {
-            foreach (Tholos::$app->findChildIDsByType($this, 'TGridRow') as $rowid) {
-              $gridRow = Tholos::$app->findComponentByID($rowid);
+            foreach (Tholos::$app->findChildIDsByType($this, 'TGridRow') as $rowID) {
+              $gridRow = Tholos::$app->findComponentByID($rowID);
               foreach (Tholos::$app->findChildIDsByType($gridRow, 'TGridColumn') as $id) {
                 if (Tholos::$app->findComponentByID($id)->getProperty('Name') === Eisodos::$parameterHandler->getParam('TGrid_SortedBy_')) {
                   $this->setProperty('SortedBy', Tholos::$app->findComponentByID($id)->getProperty('Name'), 'COMPONENT', $id);
@@ -192,31 +194,27 @@
       
       // loading previous state
       $n = $this->getProperty('name', '') . '_f_';
-      if (Eisodos::$parameterHandler->eq('TGrid_todo_', 'reloadState') and $this->getProperty('UUID', '') !== '') { // grid visszatoltese az utolso allapotra
+      if (Eisodos::$parameterHandler->eq('TGrid_todo_', 'reloadState') && $this->getProperty('UUID', '') !== '') { // grid visszatoltese az utolso allapotra
         if ($this->getProperty('Persistent', '') === 'DATABASE') {  // utolso filterek
           $this->last_filters = @unserialize(getSQLback(Tholos::$c->db, 'select value from cor_session_parameters where session_id=' . n(session_id()) . ' and parameter_name=' . n($this->getProperty('Name', '') . '.filters.' . $this->getProperty('UUID', ''))), false);
-          $this->usersettings = @unserialize(getSQLback(Tholos::$c->db, 'select value from cor_session_parameters where session_id=' . n(session_id()) . ' and parameter_name=' . n($this->getProperty('Name', '') . '.grid.' . $this->getProperty('UUID', ''))), false);
+          $this->userSettings = @unserialize(getSQLback(Tholos::$c->db, 'select value from cor_session_parameters where session_id=' . n(session_id()) . ' and parameter_name=' . n($this->getProperty('Name', '') . '.grid.' . $this->getProperty('UUID', ''))), false);
         } elseif ($this->getProperty('Persistent', '') === 'SESSION') {
           if ($prefix = $this->getProperty('PersistencyPrefix')) {
             $prefix = '';
           }
           $this->last_filters = @unserialize($prefix . Eisodos::$parameterHandler->getParam($this->getProperty('Name', '') . '.filters.' . $this->getProperty('UUID', '')), false);
-          $this->usersettings = @unserialize($prefix . Eisodos::$parameterHandler->getParam($this->getProperty('Name', '') . '.grid.' . $this->getProperty('UUID', '')), false);
+          $this->userSettings = @unserialize($prefix . Eisodos::$parameterHandler->getParam($this->getProperty('Name', '') . '.grid.' . $this->getProperty('UUID', '')), false);
         }
         
         for ($i = 1; $i < 100; $i++) {
           Eisodos::$parameterHandler->setParam($n . $i);
         }
-        if (is_array($this->last_filters)) {
-          foreach ($this->last_filters as $filter => $value) {
-            Eisodos::$parameterHandler->setParam($filter, $value);
-          }
-        }
         
-        if (is_array($this->usersettings)) {
-          foreach ($this->usersettings as $key => $value) {
-            Eisodos::$parameterHandler->setParam($key, $value);
-          }
+        foreach ($this->last_filters as $filter => $value) {
+          Eisodos::$parameterHandler->setParam($filter, $value);
+        }
+        foreach ($this->userSettings as $key => $value) {
+          Eisodos::$parameterHandler->setParam($key, $value);
         }
         
       } else {
@@ -269,11 +267,11 @@
      */
     private function saveUserSettings(): void {
       
-      $this->usersettings['TGrid_SortedBy_'] = Eisodos::$parameterHandler->getParam('TGrid_SortedBy_');
-      $this->usersettings['TGrid_SortingDirection_'] = Eisodos::$parameterHandler->getParam('TGrid_SortingDirection_');
-      $this->usersettings['TGrid_ActivePage_'] = Eisodos::$parameterHandler->getParam('TGrid_ActivePage_');
-      $this->usersettings['TGrid_RowsPerPage_'] = Eisodos::$parameterHandler->getParam('TGrid_RowsPerPage_');
-      $this->usersettings['TGrid_Scrollable_'] = Eisodos::$parameterHandler->getParam('TGrid_Scrollable_');
+      $this->userSettings['TGrid_SortedBy_'] = Eisodos::$parameterHandler->getParam('TGrid_SortedBy_');
+      $this->userSettings['TGrid_SortingDirection_'] = Eisodos::$parameterHandler->getParam('TGrid_SortingDirection_');
+      $this->userSettings['TGrid_ActivePage_'] = Eisodos::$parameterHandler->getParam('TGrid_ActivePage_');
+      $this->userSettings['TGrid_RowsPerPage_'] = Eisodos::$parameterHandler->getParam('TGrid_RowsPerPage_');
+      $this->userSettings['TGrid_Scrollable_'] = Eisodos::$parameterHandler->getParam('TGrid_Scrollable_');
       
       if ($this->getProperty('Persistent', '') === 'DATABASE') {
         if (getSQLback(Tholos::$c->db, 'select session_id from cor_session_parameters where session_id=' . n(session_id()) . ' and parameter_name=' . n($this->getProperty('Name', '') . '.grid.' . $this->getProperty('UUID', ''))) !== '') {
@@ -286,14 +284,14 @@
         runSQLPrep(Tholos::$c->db,
           $sql,
           array('text'),
-          array(serialize($this->usersettings))
+          array(serialize($this->userSettings))
         );
         Tholos::$c->getDBByIndex(1)->commit();
       } elseif ($this->getProperty('Persistent', '') === 'SESSION') {
         if ($prefix = $this->getProperty('PersistencyPrefix')) {
           $prefix = '';
         }
-        Eisodos::$parameterHandler->setParam($prefix . $this->getProperty('Name', '') . '.grid.' . $this->getProperty('UUID', ''), serialize($this->usersettings), true);
+        Eisodos::$parameterHandler->setParam($prefix . $this->getProperty('Name', '') . '.grid.' . $this->getProperty('UUID', ''), serialize($this->userSettings), true);
       }
     }
     
@@ -305,9 +303,9 @@
       
       $this->filterDropdown = '';
       
-      foreach ($filters as $filterid) {
+      foreach ($filters as $filterID) {
         /* @var TGridFilter $filter */
-        $filter = Tholos::$app->findComponentByID($filterid);
+        $filter = Tholos::$app->findComponentByID($filterID);
         $this->filterDropdown .= $filter->render($this, '');
         $filter->generateDefault($this->getProperty('name', ''));
       }
@@ -329,10 +327,10 @@
     }
     
     /**
-     * @param $value
+     * @param mixed $value
      * @return string
      */
-    private function boolConvert($value) {
+    private function boolConvert($value): string {
       if (Eisodos::$parameterHandler->eq('Tholos.UseLogicalBool', 'true')) {
         if (in_array($value, explode(',', strtoupper(Eisodos::$parameterHandler->getParam('Tholos.BoolFalse', ''))), false)) {
           $value = 'false';
@@ -360,14 +358,14 @@
           $filterParam = explode(':', Eisodos::$parameterHandler->getParam($n . $i), 3);
           $filter = false;
           $dbField = NULL;
-          foreach ($filters as $filterid) {
-            $filter = Tholos::$app->findComponentByID($filterid);
+          foreach ($filters as $filterID) {
+            $filter = Tholos::$app->findComponentByID($filterID);
             if ($filter->getProperty('Name') === $filterParam[0]) {
               $dbField = Tholos::$app->findComponentByID($filter->getPropertyComponentId('DBField'));
               break;
             }
           }
-          if (!$filter or $dbField === NULL) {
+          if (!$filter || $dbField === NULL) {
             Tholos::$app->error('No filter defined: ' . $filterParam[0], $this);
           } else {
             $this->filterSQL .= ' and ' .
@@ -402,7 +400,7 @@
                     'timestamp', "to_date('" . @$filterParam[2] . "','" . Eisodos::$parameterHandler->getParam("timestampformat") . "')",
                     'datebetween', "to_date('" . @$filterParam[2] . "','" . Eisodos::$parameterHandler->getParam("dateformat") . "')",
                     'integer', (in_array($filterParam[1], ['in', 'notin']) ? nlist(@$filterParam[2], false) : n(@$filterParam[2], false)),
-                    'float', (in_array($filterParam[1], ["in", "notin"]) ? nlist(@$filterparam[2], false) : n(@$filterparam[2], false))
+                    'float', (in_array($filterParam[1], ["in", "notin"]) ? nlist(@$filterParam[2], false) : n(@$filterParam[2], false))
                   )
                 )
               ) . " \n";
@@ -476,7 +474,8 @@
             $items[$column->getProperty('Name')] = $column->renderPartial($this, 'head');
             $hasAnyStandaloneGridColumn = true;
           }
-          if ((Tholos::$app->findComponentByID($id)->getComponentType() === 'TGridColumn') && $column->getProperty('Exportable') === 'true') {
+          if ($column->getProperty('Exportable') === 'true'
+            && (Tholos::$app->findComponentByID($id)->getComponentType() === 'TGridColumn')) {
             $exportable = true;
           }
         }
@@ -484,18 +483,16 @@
       
       if (!$transposed && $hasAnyStandaloneGridColumn) {
         $this->columnHeadItems .= $this->renderPartial($this, 'headitems', implode($items));
+        $items = [];
       }
       
-      foreach (Tholos::$app->findChildIDsByType($this, 'TGridRow') as $rowid) {
-        if (!$transposed && $hasAnyStandaloneGridColumn) {
-          $items = array();
-        }
-        if ($transposed || Tholos::$app->findComponentByID($rowid)->getProperty('ShowColumnHead', '') === 'true') {
+      foreach (Tholos::$app->findChildIDsByType($this, 'TGridRow') as $rowID) {
+        if ($transposed || Tholos::$app->findComponentByID($rowID)->getProperty('ShowColumnHead', '') === 'true') {
           if (!$transposed && $this->getPropertyComponentId('DBField') !== false) {
             $items['__TransposedHeader'] = '<' . $this->getProperty('cellHeadType', '') . ' class="TGrid-resp-header" style="width: 25px; max-width: 25px;" data-resizable-column-id="">&nbsp;</' . $this->getProperty('cellHeadType', '') . '>';
           }
         }
-        foreach (Tholos::$app->findChildIDsByType(Tholos::$app->findComponentByID($rowid), 'TComponent') as $id) {
+        foreach (Tholos::$app->findChildIDsByType(Tholos::$app->findComponentByID($rowID), 'TComponent') as $id) {
           $column = Tholos::$app->findComponentByID($id);
           if ($column->getComponentType() === 'TGridColumn'
             || $column->getComponentType() === 'TGridRowActions') {
@@ -511,7 +508,7 @@
             }
           }
         }
-        if (count($items) > 0 and !$transposed and Tholos::$app->findComponentByID($rowid)->getProperty('ShowColumnHead', '') == 'true') {
+        if (!$transposed && count($items) > 0 && Tholos::$app->findComponentByID($rowID)->getProperty('ShowColumnHead', '') == 'true') {
           $this->columnHeadItems .= $this->renderPartial($this, 'headitems', implode($items));
         }
       }
@@ -547,10 +544,10 @@
         if (!$column) {
           throw new RuntimeException('Invalid reference');
         }
-        if (Tholos::$app->findComponentByID($id)->getComponentType() === 'TGridColumn'
-          && $column->getProperty('Exportable') === 'true'
-          && Tholos::$app->checkRole($column)) {
-          $objPHPExcel->getActiveSheet()->getCellByColumnAndRow($j, 1)->
+        if ($column->getProperty('Exportable') === 'true'
+          && Tholos::$app->checkRole($column)
+          && Tholos::$app->findComponentByID($id)->getComponentType() === 'TGridColumn') {
+          $objPHPExcel->getActiveSheet()->getCell([$j, 1])->
           setValueExplicit(Eisodos::$translator->translateText($column->getProperty('Label')),
             CellDataType::TYPE_STRING);
           $objPHPExcel->getActiveSheet()->getStyle(CellCoordinate::stringFromColumnIndex($j) . '1')->applyFromArray(array('font' => array('bold' => 'false')));
@@ -567,13 +564,13 @@
         }
       }
       
-      foreach (Tholos::$app->findChildIDsByType($this, 'TGridRow') as $rowid) {
-        foreach (Tholos::$app->findChildIDsByType(Tholos::$app->findComponentByID($rowid), 'TComponent') as $id) {
+      foreach (Tholos::$app->findChildIDsByType($this, 'TGridRow') as $rowID) {
+        foreach (Tholos::$app->findChildIDsByType(Tholos::$app->findComponentByID($rowID), 'TComponent') as $id) {
           $column = Tholos::$app->findComponentByID($id);
-          if (Tholos::$app->findComponentByID($id)->getComponentType() === 'TGridColumn'
-            && $column->getProperty('Exportable') === 'true'
-            && Tholos::$app->checkRole($column)) {
-            $objPHPExcel->getActiveSheet()->getCellByColumnAndRow($j, 1)->
+          if ($column->getProperty('Exportable') === 'true'
+            && Tholos::$app->checkRole($column)
+            && Tholos::$app->findComponentByID($id)->getComponentType() === 'TGridColumn') {
+            $objPHPExcel->getActiveSheet()->getCell([$j, 1])->
             setValueExplicit(Eisodos::$translator->translateText($column->getProperty('Label')),
               CellDataType::TYPE_STRING);
             $objPHPExcel->getActiveSheet()->getStyle(CellCoordinate::stringFromColumnIndex($j) . '1')->applyFromArray(array('font' => array('bold' => 'false')));
@@ -622,7 +619,7 @@
           $j = 1;
           
           foreach ($columns as $column) {
-            $objPHPExcel->getActiveSheet()->getCellByColumnAndRow($j, $i)->setValueExplicit($column['object']->getProperty('Value'), $column['etype']);
+            $objPHPExcel->getActiveSheet()->getCell([$j, $i])->setValueExplicit($column['object']->getProperty('Value'), $column['etype']);
             $j++;
           }
           
@@ -640,23 +637,23 @@
       $n = $this->getProperty('name', '') . '_f_';
       for ($i = 1; $i < 100; $i++) {
         if (Eisodos::$parameterHandler->neq($n . $i, '')) { // ha van az adott parameterben valami
-          $filterparam = explode(':', Eisodos::$parameterHandler->getParam($n . $i), 3);
+          $filterParam = explode(':', Eisodos::$parameterHandler->getParam($n . $i), 3);
           $filter = false;
-          $dbfield = NULL;
-          foreach (Tholos::$app->findChildIDsByType($this, 'TGridFilter') as $filterid) {
-            $filter = Tholos::$app->findComponentByID($filterid);
-            if ($filter->getProperty('Name') === $filterparam[0]) {
-              $dbfield = Tholos::$app->findComponentByID($filter->getPropertyComponentId('DBField'));
+          $DBField = NULL;
+          foreach (Tholos::$app->findChildIDsByType($this, 'TGridFilter') as $filterID) {
+            $filter = Tholos::$app->findComponentByID($filterID);
+            if ($filter->getProperty('Name') === $filterParam[0]) {
+              $DBField = Tholos::$app->findComponentByID($filter->getPropertyComponentId('DBField'));
               break;
             }
           }
-          if (!$filter or $dbfield === NULL) {
-            Tholos::$app->error('No filter definied: ' . $filterparam[0], $this);
+          if (!$filter || $DBField === NULL) {
+            Tholos::$app->error('No filter definied: ' . $filterParam[0], $this);
           } else {
-            $objPHPExcel->getActiveSheet()->getCellByColumnAndRow(1, $j)->
+            $objPHPExcel->getActiveSheet()->getCell([1, $j])->
             setValueExplicit(Eisodos::$translator->translateText($filter->getProperty('Label')), CellDataType::TYPE_STRING);
-            $objPHPExcel->getActiveSheet()->getCellByColumnAndRow(2, $j)->
-            setValueExplicit(Eisodos::$utils->ODecode(array($filterparam[1],
+            $objPHPExcel->getActiveSheet()->getCell([2, $j])->
+            setValueExplicit(Eisodos::$utils->ODecode(array($filterParam[1],
                 'NULL', ' IS NULL',
                 'NOT NULL', 'IS NOT NULL',
                 'eq', '=',
@@ -673,7 +670,7 @@
               )
             ),
               CellDataType::TYPE_STRING);
-            $objPHPExcel->getActiveSheet()->getCellByColumnAndRow(3, $j)->setValueExplicit($filterparam[2], CellDataType::TYPE_STRING);
+            $objPHPExcel->getActiveSheet()->getCell([3, $j])->setValueExplicit($filterParam[2], CellDataType::TYPE_STRING);
             $j++;
           }
         }
@@ -708,13 +705,12 @@
         $separator = "\t";
         header('Content-Type: text/tab-separated-values');
         header('Content-Disposition: attachment;filename="' . date('YmdHis') . '.tsv"');
-        header('Cache-Control: max-age=0');
       } else {
         $separator = ';';
         header('Content-Type: text/csv');
         header('Content-Disposition: attachment;filename="' . date('YmdHis') . '.csv"');
-        header('Cache-Control: max-age=0');
       }
+      header('Cache-Control: max-age=0');
       
       $columns = array();
       
@@ -722,9 +718,9 @@
       
       foreach (Tholos::$app->findChildIDsByType($this, 'TComponent') as $id) {
         $column = Tholos::$app->findComponentByID($id);
-        if ((Tholos::$app->findComponentByID($id)->getComponentType() === 'TGridColumn')
-          && $column->getProperty('Exportable') === 'true'
-          && Tholos::$app->checkRole($column)) {
+        if ($column->getProperty('Exportable') === 'true'
+          && Tholos::$app->checkRole($column)
+          (Tholos::$app->findComponentByID($id)->getComponentType() === 'TGridColumn')) {
           $exp_row .= ($exp_row === '' ? '' : $separator) . '"' . Eisodos::$translator->translateText($column->getProperty('Label')) . '"';
           $i++;
           /* @var array[] $columns
@@ -736,12 +732,12 @@
         }
       }
       
-      foreach (Tholos::$app->findChildIDsByType($this, 'TGridRow') as $rowid) {
-        foreach (Tholos::$app->findChildIDsByType(Tholos::$app->findComponentByID($rowid), 'TComponent') as $id) {
+      foreach (Tholos::$app->findChildIDsByType($this, 'TGridRow') as $rowID) {
+        foreach (Tholos::$app->findChildIDsByType(Tholos::$app->findComponentByID($rowID), 'TComponent') as $id) {
           $column = Tholos::$app->findComponentByID($id);
-          if ((Tholos::$app->findComponentByID($id)->getComponentType() === 'TGridColumn')
-            && $column->getProperty('Exportable') === 'true'
-            && Tholos::$app->checkRole($column)) {
+          if ($column->getProperty('Exportable') === 'true'
+            && Tholos::$app->checkRole($column)
+            && (Tholos::$app->findComponentByID($id)->getComponentType() === 'TGridColumn')) {
             $exp_row .= ($exp_row === '' ? '' : $separator) . '"' . Eisodos::$translator->translateText($column->getProperty('Label')) . '"';
             $i++;
             /* @var array[] $columns
@@ -784,17 +780,15 @@
       
       Tholos::$app->debug('Export started', $this);
       
-      $i = 1;
       if (1 * $listSource->getProperty('RowCount') > 0) {
         foreach ($listSource->getProperty('Result') as $row) {
           $exp_row = '';
           $listSource->propagateResult($row);
-          $i++;
-          $rowstarted = false;
+          $rowStarted = false;
           
           foreach ($columns as $column) {
             $v = $column['object']->getProperty('Value');
-            if ($column['dtype'] === 'integer' or $column['dtype'] === 'float') {
+            if ($column['dtype'] === 'integer' || $column['dtype'] === 'float') {
               $str = Eisodos::$utils->replace_all($v, '.', ',');
             } else {
               $str = Eisodos::$utils->replace_all($v, '"', '""');
@@ -802,8 +796,8 @@
                 $str = '"' . $str . '"';
               }
             }
-            $exp_row .= (($exp_row === '' and !$rowstarted) ? '' : $separator) . $str;
-            $rowstarted = true;
+            $exp_row .= (($exp_row === '' and !$rowStarted) ? '' : $separator) . $str;
+            $rowStarted = true;
           }
           
           $exp_rows .= $exp_row . "\n";
@@ -869,29 +863,28 @@
         $separator = "\t";
         header('Content-Type: text/tab-separated-values');
         header('Content-Disposition: attachment;filename="' . date('YmdHis') . '.tsv"');
-        header('Cache-Control: max-age=0');
       } elseif (strtolower($type_) === 'rawjson') {
         $separator = "\t";
         header('Content-Type: application/json');
         header('Content-Disposition: attachment;filename="' . date('YmdHis') . '.json"');
-        header('Cache-Control: max-age=0');
       } else {
         $separator = ';';
         header('Content-Type: text/csv');
         header('Content-Disposition: attachment;filename="' . date('YmdHis') . '.csv"');
-        header('Cache-Control: max-age=0');
       }
+      header('Cache-Control: max-age=0');
       
       foreach (Tholos::$app->findChildIDsByType($this, 'TComponent') as $id) {
         $column = Tholos::$app->findComponentByID($id);
-        if ((Tholos::$app->findComponentByID($id)->getComponentType() === 'TGridColumn') && $column->getProperty('Exportable') === 'true'
-          && Tholos::$app->checkRole($column)) {
+        if ($column->getProperty('Exportable') === 'true'
+          && Tholos::$app->checkRole($column)
+          && (Tholos::$app->findComponentByID($id)->getComponentType() === 'TGridColumn')) {
           if (strtolower($type_) !== 'rawjson') {
             $exp_row .= ($exp_row === '' ? '' : $separator) . '"' . Eisodos::$translator->translateText($column->getProperty('Label')) . '"';
           }
           if ($column->getPropertyComponentId('DBField') !== false) {
-            $dbfieldId = $column->getPropertyComponentId('DBField');
-            $fieldName_clean = mb_strtolower(Tholos::$app->findComponentByID($dbfieldId)->getProperty('FieldName', ''));
+            $DBFieldID = $column->getPropertyComponentId('DBField');
+            $fieldName_clean = mb_strtolower(Tholos::$app->findComponentByID($DBFieldID)->getProperty('FieldName', ''));
             if (strpos($fieldName_clean, '.')) {
               $fieldName_clean = explode('.', $fieldName_clean, 2)[1];
             }
@@ -902,18 +895,18 @@
         }
       }
       
-      foreach (Tholos::$app->findChildIDsByType($this, 'TGridRow') as $rowid) {
-        foreach (Tholos::$app->findChildIDsByType(Tholos::$app->findComponentByID($rowid), 'TComponent') as $id) {
+      foreach (Tholos::$app->findChildIDsByType($this, 'TGridRow') as $rowID) {
+        foreach (Tholos::$app->findChildIDsByType(Tholos::$app->findComponentByID($rowID), 'TComponent') as $id) {
           $column = Tholos::$app->findComponentByID($id);
-          if ((Tholos::$app->findComponentByID($id)->getComponentType() === 'TGridColumn')
-            && $column->getProperty('Exportable') === 'true'
-            && Tholos::$app->checkRole($column)) {
+          if ($column->getProperty('Exportable') === 'true'
+            && Tholos::$app->checkRole($column)
+            && (Tholos::$app->findComponentByID($id)->getComponentType() === 'TGridColumn')) {
             if (strtolower($type_) !== 'rawjson') {
               $exp_row .= ($exp_row === '' ? '' : $separator) . '"' . Eisodos::$translator->translateText($column->getProperty('Label')) . '"';
             }
             if ($column->getPropertyComponentId('DBField') !== false) {
-              $dbfieldId = $column->getPropertyComponentId('DBField');
-              $fieldName_clean = mb_strtolower(Tholos::$app->findComponentByID($dbfieldId)->getProperty('FieldName', ''));
+              $DBFieldID = $column->getPropertyComponentId('DBField');
+              $fieldName_clean = mb_strtolower(Tholos::$app->findComponentByID($DBFieldID)->getProperty('FieldName', ''));
               if (strpos($fieldName_clean, '.')) {
                 $fieldName_clean = explode('.', $fieldName_clean, 2)[1];
               }
@@ -995,7 +988,9 @@
         if (!$column) {
           throw new RuntimeException('Invalid reference');
         }
-        if ((Tholos::$app->findComponentByID($id)->getComponentType() === 'TGridColumn') && $column->getProperty('Exportable') === 'true' and $column->getProperty('DBField', '') !== '') {
+        if ($column->getProperty('Exportable') === 'true'
+          && $column->getProperty('DBField', '') !== ''
+          && (Tholos::$app->findComponentByID($id)->getComponentType() === 'TGridColumn')) {
           Tholos::$app->trace('Rendering', $column);
           $result .= Eisodos::$templateEngine->getTemplate('tholos/' . $this->_componentType . '.details.row',
             array('label' => $column->getProperty('Label'),
@@ -1009,13 +1004,15 @@
         }
       }
       
-      foreach (Tholos::$app->findChildIDsByType($this, 'TGridRow') as $rowid) {
-        foreach (Tholos::$app->findChildIDsByType(Tholos::$app->findComponentByID($rowid), 'TComponent') as $id) {
+      foreach (Tholos::$app->findChildIDsByType($this, 'TGridRow') as $rowID) {
+        foreach (Tholos::$app->findChildIDsByType(Tholos::$app->findComponentByID($rowID), 'TComponent') as $id) {
           $column = Tholos::$app->findComponentByID($id);
           if (!$column) {
             throw new RuntimeException('Invalid reference');
           }
-          if ((Tholos::$app->findComponentByID($id)->getComponentType() === 'TGridColumn') && $column->getProperty('Exportable') === 'true' && $column->getProperty('DBField', '') !== '') {
+          if ($column->getProperty('Exportable') === 'true'
+            && $column->getProperty('DBField', '') !== ''
+            && (Tholos::$app->findComponentByID($id)->getComponentType() === 'TGridColumn')) {
             $result .= Eisodos::$templateEngine->getTemplate('tholos/' . $this->_componentType . '.details.row',
               array('label' => $column->getProperty('Label'),
                 'value' => Eisodos::$utils->ODecode(array(Tholos::$app->findComponentByID($column->getPropertyComponentId('DBField'))->getProperty('DataType'),
@@ -1038,7 +1035,7 @@
      * @inheritdoc
      */
     
-    public function render(TComponent $sender, string $content): string {
+    public function render(?TComponent $sender, string $content): string {
       
       Tholos::$app->eventHandler($this, 'onBeforeRender');
       
@@ -1050,7 +1047,7 @@
       }
       
       // checking export role
-      if (Tholos::$app->roleManager !== NULL and !Tholos::$app->roleManager->checkRole($this->getProperty('ExportFunctionCode', ''))) {
+      if (Tholos::$app->roleManager !== NULL && !Tholos::$app->roleManager->checkRole($this->getProperty('ExportFunctionCode', ''))) {
         $this->setProperty('ShowExportButton', 'false');
       }
       
@@ -1078,8 +1075,8 @@
         return '';
       }
       
-      if (Eisodos::$parameterHandler->eq('TGrid_todo_', 'tsv') or
-        Eisodos::$parameterHandler->eq('TGrid_todo_', 'csv')) {
+      if (Eisodos::$parameterHandler->eq('TGrid_todo_', 'tsv')
+        || Eisodos::$parameterHandler->eq('TGrid_todo_', 'csv')) {
         if ($this->getProperty('ShowExportButton', 'false') === 'true') {
           $this->renderPlainTextExport(Eisodos::$parameterHandler->getParam('TGrid_todo_'));
         }
@@ -1087,9 +1084,9 @@
         return '';
       }
       
-      if (Eisodos::$parameterHandler->eq('TGrid_todo_', 'rawtsv') or
-        Eisodos::$parameterHandler->eq('TGrid_todo_', 'rawcsv') or
-        Eisodos::$parameterHandler->eq('TGrid_todo_', 'rawjson')) {
+      if (Eisodos::$parameterHandler->eq('TGrid_todo_', 'rawtsv')
+        || Eisodos::$parameterHandler->eq('TGrid_todo_', 'rawcsv')
+        || Eisodos::$parameterHandler->eq('TGrid_todo_', 'rawjson')) {
         if ($this->getProperty('ShowExportButton', 'false') === 'true') {
           $this->renderRawTSV(Eisodos::$parameterHandler->getParam('TGrid_todo_'));
         }
@@ -1116,8 +1113,8 @@
         foreach (Tholos::$app->findChildIDsByType($this, 'TComponent') as $id) {
           $component = Tholos::$app->findComponentByID($id);
           if ($component->getComponentType() === 'TGridColumn'
-            and Tholos::$app->checkRole($component)
-            and $component->getProperty('ChartType')) {
+            && Tholos::$app->checkRole($component)
+            && $component->getProperty('ChartType')) {
             $this->chartComponents[] = $component;
             $this->chartDatasets[] = array();
             $co = $component->getProperty('ChartOptions');
@@ -1154,7 +1151,7 @@
       $listSource->setProperty('FilterArray', $listSource->buildFilters($this));
       // request only headers
       $emptyWhere = '';
-      if (!($this->getProperty('AJAXMode', 'false') == 'false' or (Eisodos::$parameterHandler->eq('IsAJAXRequest', 'T') and (Tholos::$app->partial_id == $this->_id)))) {
+      if (!($this->getProperty('AJAXMode', 'false') == 'false' || (Eisodos::$parameterHandler->eq('IsAJAXRequest', 'T') && (Tholos::$app->partial_id == $this->_id)))) {
         $emptyWhere = "\n and 0=1";
         $listSource->setProperty('StructureInfoOnly', 'true');
         $listSource->setProperty('StructureRequester', $this->_id);
@@ -1175,7 +1172,7 @@
       }
       $listSource->setProperty('CountTotalRows', 'true');
       
-      if ($this->getProperty('AJAXMode', 'false') == 'false' or (Eisodos::$parameterHandler->eq("IsAJAXRequest", "T") and (Tholos::$app->partial_id == $this->_id))) {
+      if ($this->getProperty('AJAXMode', 'false') == 'false' || (Eisodos::$parameterHandler->eq("IsAJAXRequest", "T") && (Tholos::$app->partial_id == $this->_id))) {
         $this->setProperty('Caching', 'false');
       }
       
@@ -1190,11 +1187,11 @@
         Tholos::$app->debug('Query caching turned on by grid', $this);
       }
       
-      if (!$this->reloadStateNeeded and
-        ($this->getProperty('AJAXMode', 'false') == 'false' or
-          (Eisodos::$parameterHandler->eq('IsAJAXRequest', 'T') and Tholos::$app->partial_id == $this->_id))) {
-        if ($this->getProperty('ListsourceAlwaysReopen','false')=='true') {
-          $listSource->setProperty('Opened','false');
+      if (!$this->reloadStateNeeded
+        && ($this->getProperty('AJAXMode', 'false') == 'false' ||
+          (Eisodos::$parameterHandler->eq('IsAJAXRequest', 'T') && Tholos::$app->partial_id == $this->_id))) {
+        if ($this->getProperty('ListsourceAlwaysReopen', 'false') == 'true') {
+          $listSource->setProperty('Opened', 'false');
         }
         $listSource->run($this);
       }
@@ -1209,12 +1206,12 @@
       
       if ($this->getProperty('ViewMode', 'GRID') === 'GRID') {
         
-        $rownum = 0;
+        $rowNum = 0;
         
         if (1 * $listSource->getProperty('RowCount', '0') > 0) {
           foreach ($listSource->getProperty('Result') as $row) {
             $columns = '';
-            $rownum++;
+            $rowNum++;
             $listSource->propagateResult($row);
             
             if (!$selection_found
@@ -1263,20 +1260,20 @@
               }
               
               // a row-ba rendezett komponensek jonnek
-              foreach (Tholos::$app->findChildIDsByType($this, 'TGridRow') as $rowid) {
+              foreach (Tholos::$app->findChildIDsByType($this, 'TGridRow') as $rowID) {
                 $columns = '';
                 $isEmptyRow = true;
-                foreach (Tholos::$app->findChildIDsByType(Tholos::$app->findComponentByID($rowid), 'TComponent') as $id) {
+                foreach (Tholos::$app->findChildIDsByType(Tholos::$app->findComponentByID($rowID), 'TComponent') as $id) {
                   $component = Tholos::$app->findComponentByID($id);
-                  if ($this->getPropertyComponentId('DBField') !== false
-                    and $columns === ''
-                    and $hasAnyStandaloneGridColumn
-                    and $rownum === 1) {
+                  if ($columns === ''
+                    && $hasAnyStandaloneGridColumn
+                    && $rowNum === 1
+                    && $this->getPropertyComponentId('DBField') !== false) {
                     $component->setProperty('ColumnOffset', 1 * $component->getProperty('ColumnOffset', '0') + 1);
                   }
                   if ($component->getComponentType() === 'TGridColumn') {
                     if ($component->getProperty('Visible', 'false') === 'true'
-                      and Tholos::$app->checkRole($component)) {
+                      && Tholos::$app->checkRole($component)) {
                       $isEmptyRow = ($isEmptyRow and ($component->getProperty('Value', '') === ''));
                       if ($component->getProperty('Template', '') !== '') {
                         $component->generateProps();
@@ -1290,8 +1287,8 @@
                       }
                     }
                   } elseif ($component->getComponentType() === 'TGridRowActions'
-                    and $component->getProperty('Visible', 'false') === 'true'
-                    and Tholos::$app->checkRole($component)) {
+                    && $component->getProperty('Visible', 'false') === 'true'
+                    && Tholos::$app->checkRole($component)) {
                     $isEmptyRow = false;
                     $columns .= '<' . $this->getProperty('cellType', '') . ' ' .
                       ' class="TGrid-resp-cell text-nowrap ' . $component->getProperty('Class', '') . ' ' . ($component->getProperty('Align', '') ? ' text-' . $component->getProperty('Align', '') : '') . '" ' .
@@ -1300,7 +1297,7 @@
                       ' >' . Tholos::$app->render($this, $id, true) . '</' . $this->getProperty('cellType', '') . '>';
                   }
                 }
-                if (!$isEmptyRow || Tholos::$app->findComponentByID($rowid)->getProperty('HideWhenEmpty', 'false') === 'false') {
+                if (!$isEmptyRow || Tholos::$app->findComponentByID($rowID)->getProperty('HideWhenEmpty', 'false') === 'false') {
                   if ($this->getPropertyComponentId('DBField') !== false) {
                     if ($hasAnyStandaloneGridColumn) {
                       $columns = $this->renderPartial($this, 'noselectable') . $columns;
@@ -1308,7 +1305,7 @@
                       $columns = $this->renderPartial($this, 'selectable') . $columns;
                     }
                   }
-                  $result .= Tholos::$app->findComponentByID($rowid)->render($this, $columns) . "\n";
+                  $result .= Tholos::$app->findComponentByID($rowID)->render($this, $columns) . "\n";
                 }
               }
             } else {
@@ -1343,8 +1340,8 @@
                 }
               }
               
-              foreach (Tholos::$app->findChildIDsByType($this, 'TGridRow') as $rowid) {
-                foreach (Tholos::$app->findChildIDsByType(Tholos::$app->findComponentByID($rowid), 'TComponent') as $id) {
+              foreach (Tholos::$app->findChildIDsByType($this, 'TGridRow') as $rowID) {
+                foreach (Tholos::$app->findChildIDsByType(Tholos::$app->findComponentByID($rowID), 'TComponent') as $id) {
                   $component = Tholos::$app->findComponentByID($id);
                   if (!$component) {
                     throw new RuntimeException('Invalid reference');
@@ -1382,50 +1379,50 @@
         }
         
         if ($this->getProperty('Transposed', 'false') === 'true') {
-          foreach ($this->transposedRows as $key => $transposedRow) {
+          foreach ($this->transposedRows as $transposedRow) {
             $result .= $this->renderPartial($this, 'rowtransposed', $transposedRow) . "\n";
           }
         }
         
         if ($this->getProperty('RowsPerPage', '0') === '0') {
-          $pagecount = 1;
+          $pageCount = 1;
         } else {
-          $pagecount = ceil((1 * $this->getProperty('TotalRowCount', '0')) / $this->getProperty('RowsPerPage', '0'));
+          $pageCount = ceil((1 * $this->getProperty('TotalRowCount', '0')) / $this->getProperty('RowsPerPage', '0'));
         }
-        $activepage = 1 * ($this->getProperty('ActivePage', '1'));
-        $this->setProperty('PageCount', $pagecount);
+        $activePage = 1 * ($this->getProperty('ActivePage', '1'));
+        $this->setProperty('PageCount', $pageCount);
         
         $this->generateProps();
         
-        $pageitems = '';
+        $pageItems = '';
         
-        if ((integer)$this->getProperty('RowsPerPage', '0') > 0 /* and $pagecount>1 */) {
-          if (max(min($activepage - 5, $pagecount - 10), 1) > 1) {
-            $pageitems .= Eisodos::$templateEngine->getTemplate('tholos/' . $this->_componentType . '.pagination.item',
-              array('pagenum' => max(min($activepage - 5, $pagecount - 10), 1) - 1,
+        if ((integer)$this->getProperty('RowsPerPage', '0') > 0 /* and $pageCount>1 */) {
+          if (max(min($activePage - 5, $pageCount - 10), 1) > 1) {
+            $pageItems .= Eisodos::$templateEngine->getTemplate('tholos/' . $this->_componentType . '.pagination.item',
+              array('pagenum' => max(min($activePage - 5, $pageCount - 10), 1) - 1,
                 'pagenumtext' => '..',
                 'pageactive' => ''
               ), false);
           }
-          for ($i = max(min($activepage - 5, $pagecount - 10), 1); $i <= min(max($activepage - 5, 1) + 10, $pagecount); $i++) {
-            $pageitems .= Eisodos::$templateEngine->getTemplate('tholos/' . $this->_componentType . '.pagination.item',
+          for ($i = max(min($activePage - 5, $pageCount - 10), 1); $i <= min(max($activePage - 5, 1) + 10, $pageCount); $i++) {
+            $pageItems .= Eisodos::$templateEngine->getTemplate('tholos/' . $this->_componentType . '.pagination.item',
               array('pagenum' => $i,
                 'pagenumtext' => $i,
-                'pageactive' => ($i === $activepage ? 'active' : '')
+                'pageactive' => ($i === $activePage ? 'active' : '')
               ), false);
           }
-          if (min(max($activepage - 5, 1) + 10, $pagecount) < $pagecount) {
-            $pageitems .= Eisodos::$templateEngine->getTemplate('tholos/' . $this->_componentType . '.pagination.item',
-              array('pagenum' => min(max($activepage - 5, 1) + 10, $pagecount) + 1,
+          if (min(max($activePage - 5, 1) + 10, $pageCount) < $pageCount) {
+            $pageItems .= Eisodos::$templateEngine->getTemplate('tholos/' . $this->_componentType . '.pagination.item',
+              array('pagenum' => min(max($activePage - 5, 1) + 10, $pageCount) + 1,
                 'pagenumtext' => '..',
                 'pageactive' => ''
               ), false);
           }
           
           $pagination = Eisodos::$templateEngine->getTemplate('tholos/' . $this->_componentType . '.pagination.main',
-              array('items' => $pageitems,
-                'lastpage' => $pagecount,
-                'isfirstpage' => ($activepage === 0 || $activepage === 1) ? 'T' : 'F'),
+              array('items' => $pageItems,
+                'lastpage' => $pageCount,
+                'isfirstpage' => ($activePage === 0 || $activePage === 1) ? 'T' : 'F'),
               false) . "\n";
           
         } else {
@@ -1435,17 +1432,17 @@
 //      \PC::debug(array($this->getProperty('Selectable','false')=='true',$selection_found,$this->getProperty('DBField','')!='',$this->getProperty('LookupValue','')));
         
         if ($listSource->getProperty('CacheUsed', 'false') === 'true'
-          and $this->getProperty('ShowCacheInfo', 'true') === 'true'
-          and Eisodos::$utils->safe_array_value($listSource->getProperty('CacheInfo'), 'updated') !== '') {
-          $datevalue_obj = DateTime::createFromFormat('YmdHis', Eisodos::$utils->safe_array_value($listSource->getProperty('CacheInfo'), 'updated'));
-          $datevalue = $datevalue_obj->format(Eisodos::$parameterHandler->getParam('PHP' . $this->getProperty('DateFormatParameter', 'datetime') . 'Format'));
-          $since_start = $datevalue_obj->diff(new DateTime());
+          && $this->getProperty('ShowCacheInfo', 'true') === 'true'
+          && Eisodos::$utils->safe_array_value($listSource->getProperty('CacheInfo'), 'updated') !== '') {
+          $dateValueObj = DateTime::createFromFormat('YmdHis', Eisodos::$utils->safe_array_value($listSource->getProperty('CacheInfo'), 'updated'));
+          $dateValue = $dateValueObj->format(Eisodos::$parameterHandler->getParam('PHP' . $this->getProperty('DateFormatParameter', 'datetime') . 'Format'));
+          $since_start = $dateValueObj->diff(new DateTime());
           $minutes = $since_start->days * 24 * 60;
           $minutes += $since_start->h * 60;
           $minutes += $since_start->i;
-          $cacheinfo = Eisodos::$templateEngine->getTemplate('tholos/' . $this->_componentType . '.cache.info', ['cacheupdated' => $datevalue . ' (' . $minutes . ') '], false);
+          $cacheInfo = Eisodos::$templateEngine->getTemplate('tholos/' . $this->_componentType . '.cache.info', ['cacheupdated' => $dateValue . ' (' . $minutes . ') '], false);
         } else {
-          $cacheinfo = '';
+          $cacheInfo = '';
         }
         
         $result .= $this->renderPartial($this, 'foot', '',
@@ -1454,7 +1451,7 @@
               && !$selection_found
               && $this->getProperty('DBField', '') !== ''
               && $this->getProperty('LookupValue', '') !== '') ? $this->getProperty('LabelSelectionOutOfList', '') : ''),
-            'cacheinfo' => $cacheinfo
+            'cacheinfo' => $cacheInfo
           )
         );
       } else if ($this->getProperty('ViewMode') === 'CHART') {

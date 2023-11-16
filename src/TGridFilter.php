@@ -19,7 +19,7 @@
      * @inheritdoc
      */
     
-    public function render(TComponent $sender, string $content): string {
+    public function render(?TComponent $sender, string $content): string {
       if ($sender !== NULL) {
         return parent::render($sender, $content);
       }

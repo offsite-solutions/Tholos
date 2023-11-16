@@ -23,7 +23,7 @@
     /**
      * @inheritdoc
      */
-    public function render(TComponent $sender, string $content): string {
+    public function render(?TComponent $sender, string $content): string {
       return '';
     }
     
@@ -35,7 +35,7 @@
      * @return bool Returns false if any error occurs
      * @throws Exception
      */
-    public function signPDF(?TComponent $sender, $returnIfDisabled = true): bool {
+    public function signPDF(?TComponent $sender, bool $returnIfDisabled = true): bool {
       
       Tholos::$app->trace('BEGIN', $this);
       
@@ -71,7 +71,7 @@
      * @param bool $returnIfDisabled Return if component is disabled
      * @return bool Returns false if any error occurs
      */
-    public function validatePDF(?TComponent $sender, $returnIfDisabled = true): bool {
+    public function validatePDF(?TComponent $sender, bool $returnIfDisabled = true): bool {
       
       if ($this->getProperty('Enabled', 'true') !== 'true') {
         return $returnIfDisabled;

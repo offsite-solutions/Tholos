@@ -36,7 +36,7 @@
           $component->init();
           $component->initValue($sender);
           $filter_SQL = $component->getProperty('SQL');
-          if ($this->getProperty('SQL') && $filter_SQL !== '') {
+          if ($filter_SQL !== '' && $this->getProperty('SQL')) {
             $this->setProperty('SQL', $this->getProperty('SQL') . "\n" . $this->getProperty('InternalOperator') . ' ' . $filter_SQL . ' ');
           } else if ($filter_SQL !== '') {
             $this->setProperty('SQL', ' ' . $filter_SQL . ' ');
@@ -59,7 +59,7 @@
     /**
      * @inheritdoc
      */
-    public function render(TComponent $sender, string $content): string {
+    public function render(?TComponent $sender, string $content): string {
       return '';
     }
   }

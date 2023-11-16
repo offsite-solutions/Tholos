@@ -3,7 +3,7 @@
   namespace Tholos;
   
   use Eisodos\Eisodos;
-
+  
   /**
    * TPartial Component class
    *
@@ -15,7 +15,7 @@
     /**
      * @inheritdoc
      */
-    public function render(TComponent $sender, string $content): string {
+    public function render(?TComponent $sender, string $content): string {
       
       if (!Tholos::$app->checkRole($this)) {
         return '';
@@ -29,13 +29,11 @@
       
       if ($this->getProperty('Cacheable', 'false') === 'true') {
         $cachedResult = Eisodos::$parameterHandler->getParam('Tholos.Cache.' . $this->getProperty('ParameterName'));
-        if ($cachedResult !== '') {
-          Eisodos::$parameterHandler->setParam($this->getProperty('ParameterName'), $cachedResult);
-        } else {
+        if ($cachedResult === '') {
           $cachedResult = parent::render($sender, $content);
           Eisodos::$parameterHandler->setParam('Tholos.Cache.' . $this->getProperty('ParameterName'), $cachedResult, true);
-          Eisodos::$parameterHandler->setParam($this->getProperty('ParameterName'), $cachedResult);
         }
+        Eisodos::$parameterHandler->setParam($this->getProperty('ParameterName'), $cachedResult);
       } else {
         Eisodos::$parameterHandler->setParam($this->getProperty('ParameterName'), parent::render($sender, $content));
       }

@@ -1,4 +1,4 @@
-<?php
+<?php /** @noinspection DuplicatedCode SpellCheckingInspection PhpUnusedFunctionInspection NotOptimalIfConditionsInspection */
   
   namespace Tholos;
   
@@ -16,11 +16,11 @@
     /**
      * @param TComponent|null $sender
      * @param string $nativeSQL
-     * @return string|void
+     * @return void
      * @throws RuntimeException
      * @throws Exception
      */
-    protected function open(?TComponent $sender, $nativeSQL = ''): void {
+    protected function open(?TComponent $sender, string $nativeSQL = ''): void {
       
       if ($this->getProperty('Opened', 'false') == 'true') {
         Tholos::$app->trace('Already opened, exiting');
@@ -42,7 +42,7 @@
         if (!empty($_FILES)) {
           $fileSet = array();
           $i = 0;
-          foreach ($_FILES['file']['name'] as $item) { // Bug!!!
+          foreach ($_FILES['file']['name'] as $tempFile) { // Bug!!!
             //$tempFile = $_FILES['file']['tmp_name'][$i];
             $extension = mb_strtolower(pathinfo($_FILES['file']['name'][$i])["extension"]);
             Tholos::$app->trace('Extension is ' . $extension . ', ExtractArchive is ' . $this->getProperty('ExtractArchive', 'false') . ', TempFile is ' . $tempFile);

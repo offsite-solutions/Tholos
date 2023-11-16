@@ -3,9 +3,9 @@
   namespace Tholos;
   
   use Eisodos\Eisodos;
-  use http\Exception\RuntimeException;
+  use RuntimeException;
   use Throwable;
-
+  
   /**
    * Tholos Component class
    *
@@ -82,7 +82,7 @@
      * @param array $events_ list of events associated with the component
      * @throws Throwable
      */
-    public function __construct(string $componentType_, int $id_, int $parent_id_, $properties_ = array(), $events_ = array()) {
+    public function __construct(string $componentType_, int $id_, int $parent_id_, array $properties_ = array(), array $events_ = array()) {
       
       $this->_componentType = $componentType_;
       $this->_id = $id_;
@@ -122,7 +122,7 @@
     private function setProperties(?array $properties): void {
       
       if (is_array($properties)) {
-        foreach ($properties as $key => $prop) {
+        foreach ($properties as $prop) {
           
           $n = strtolower($prop['n']);
           
@@ -130,7 +130,7 @@
           $this->_properties[$n]['type'] = $prop['t'];
           $this->_properties[$n]['nodata'] = $prop['d'];
           
-          if ($prop['t'] === 'COMPONENT' and $prop['c']) {
+          if (($prop['t'] === 'COMPONENT') && $prop['c']) {
             $this->_properties[$n]['component_id'] = $prop['c'];
             // register referencing component
             Tholos::$app->setReferencingComponent($prop['c'], $this->_id);
@@ -160,7 +160,7 @@
     private function setEvents($events): void {
       
       if (is_array($events)) {
-        foreach ($events as $key => $event) {
+        foreach ($events as $event) {
           $n = strtolower($event['n']);
           $this->_events[$n]['value'] = $event['v'];
           $this->_events[$n]['type'] = $event['t'];
@@ -177,7 +177,7 @@
      * Method for parsing a property value. Iteration through default value list.
      *
      * @param mixed $property_value_
-     * @param bool|false $notFound_
+     * @param mixed $notFound_
      * @return mixed
      * @see getProperty
      */
@@ -216,7 +216,7 @@
               if ($component) {
                 $component_ = explode('.', $prop_value);
                 if ($this->getPropertyType($component_[0]) === 'COMPONENT'
-                  and Tholos::$app->findComponentByID($component->getPropertyComponentId($component_[0])) !== NULL) {
+                  && Tholos::$app->findComponentByID($component->getPropertyComponentId($component_[0])) !== NULL) {
                   return Tholos::$app->findComponentByID($component->getPropertyComponentId($component_[0]))->getProperty($component_[1], $prop_default_value);
                 }
                 
@@ -233,7 +233,7 @@
           if ($component) {
             $component_ = explode('.', $prop_value);
             if ($this->getPropertyType($component_[0]) === 'COMPONENT'
-              and Tholos::$app->findComponentByID($component->getPropertyComponentId($component_[0])) !== NULL) {
+              && Tholos::$app->findComponentByID($component->getPropertyComponentId($component_[0])) !== NULL) {
               return Tholos::$app->findComponentByID($component->getPropertyComponentId($component_[0]))->getProperty($component_[1], $prop_default_value);
             }
             
@@ -261,7 +261,7 @@
         if ($component !== NULL) {
           $component_ = explode('.', $prop_value);
           if ($component->getPropertyType($component_[0]) === 'COMPONENT'
-            and Tholos::$app->findComponentByID($component->getPropertyComponentId($component_[0])) !== NULL) {
+            && Tholos::$app->findComponentByID($component->getPropertyComponentId($component_[0])) !== NULL) {
             return Tholos::$app->findComponentByID($component->getPropertyComponentId($component_[0]))->getProperty($component_[1], $prop_default_value);
           }
           
@@ -283,7 +283,7 @@
     /**
      * Parsing concatenated property value
      * @param mixed $property_value__
-     * @param bool|false $notFound_
+     * @param mixed $notFound_
      * @return bool|string
      */
     private function parsePropertyValue($property_value__, $notFound_ = false) {
@@ -463,7 +463,7 @@
      * @param string $value_component_id_ when property type is `COMPONENT`, referenced component's ID will be required. Otherwise it's an empty string.
      * @param bool $raw_ value is a raw value, do not parse
      */
-    public function setProperty(string $name_, $value_, $type_ = 'STRING', $value_component_id_ = '', $raw_ = false): void {
+    public function setProperty(string $name_, $value_, string $type_ = 'STRING', string $value_component_id_ = '', bool $raw_ = false): void {
       
       $name_ = strtolower($name_);
       
@@ -538,7 +538,7 @@
       foreach ($this->_properties as $key => $prop) {
         if (!isset($prop['nodata']) || $prop['nodata'] !== 'Y') {
           $return .= 'data-' . $key . '="' . str_replace('"', '&quot;', $this->getProperty($key, '')) . '" ';
-          if ($prop['type'] === 'COMPONENT' and $prop['component_id']) {
+          if ($prop['type'] === 'COMPONENT' && $prop['component_id']) {
             $component_route = Tholos::$app->getComponentRouteActionFromIndex($prop['component_id']);
             if ($self_route !== $component_route) {
               $return .= 'data-' . $key . 'Route="' . $component_route . '" ';
@@ -581,7 +581,7 @@
         $v = $this->getProperty($key, '');
         $prop_value = (strpos($v, 'HTML::') === 0 ? str_replace('HTML::', '', $v) : str_replace('"', '&quot;', $v));
         Eisodos::$parameterHandler->setParam('prop_' . $key, $prop_value);
-        if ($prop['type'] === 'COMPONENT' and $prop['component_id']) {
+        if ($prop['type'] === 'COMPONENT' && $prop['component_id']) {
           $component_route = Tholos::$app->getComponentRouteActionFromIndex($prop['component_id']);
           Eisodos::$parameterHandler->setParam('prop_' . $key . '_route', $component_route);
         }
@@ -679,14 +679,14 @@
     /**
      * Renders a partial - section of a component
      *
-     * @param TComponent $sender Caller object
+     * @param ?TComponent $sender Caller object
      * @param string $partialID Partial identifier, defines the main template: TComponentType.partial.$partialID
      * @param string $content Caller generated content which will be passed to the template in $content variable
      * @param array $parameters Parameters will be passed to the template
      * @return string Rendered template
      * @throws Throwable
      */
-    public function renderPartial(TComponent $sender, string $partialID, $content = '', $parameters = array()): string {
+    public function renderPartial(?TComponent $sender, string $partialID, string $content = '', array $parameters = array()): string {
       
       if (!Tholos::$app->checkRole($this)
         || $this->getProperty('Generate', 'true') !== 'true') {
@@ -720,13 +720,13 @@
      * A special parameter called `$content` is passed to the renderer which contains the previously rendered HTML content
      * received from the underlying component(s). `$content` value will automatically be injected into the template.
      *
-     * @param TComponent $sender sender object
+     * @param ?TComponent $sender sender object
      * @param string $content Content
      * @return string Rendered template as string
      * @throws Throwable
      */
     
-    public function render(TComponent $sender, string $content): string {
+    public function render(?TComponent $sender, string $content): string {
       
       $this->renderedContent = '';
       Tholos::$app->eventHandler($this, 'onBeforeRender');

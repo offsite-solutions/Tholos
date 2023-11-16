@@ -1,4 +1,4 @@
-<?php
+<?php /** @noinspection DuplicatedCode SpellCheckingInspection PhpUnusedFunctionInspection NotOptimalIfConditionsInspection */
   
   namespace Tholos;
   
@@ -10,13 +10,13 @@
     
     private function parseHeaders($headers): array {
       $head = array();
-      foreach ($headers as $k => $v) {
+      foreach ($headers as $v) {
         $t = explode(':', $v, 2);
         if (isset($t[1])) {
           $head[trim($t[0])] = trim($t[1]);
         } else {
           $head[] = $v;
-          if (preg_match("#HTTP/[\d.]+\s+([\d]+)#", $v, $out)) {
+          if (preg_match("#HTTP/[\d.]+\s+(\d+)#", $v, $out)) {
             $head['response_code'] = (int)$out[1];
           }
         }
@@ -34,7 +34,7 @@
      * @return array|string
      * @throws Exception
      */
-    public function open(?TComponent $sender, $requestPropertyNames_ = array(), $responsePropertyNames_ = array()) {
+    public function open(?TComponent $sender, array $requestPropertyNames_ = array(), array $responsePropertyNames_ = array()) {
       
       try {
         

@@ -18,7 +18,7 @@
     /**
      * @inheritdoc
      */
-    public function render(TComponent $sender, string $content): string {
+    public function render(?TComponent $sender, string $content): string {
       
       if (!Tholos::$app->checkRole($this)) {
         return '';

@@ -1,4 +1,4 @@
-<?php
+<?php /** @noinspection DuplicatedCode SpellCheckingInspection PhpUnusedFunctionInspection NotOptimalIfConditionsInspection */
   
   namespace Tholos;
   
@@ -110,7 +110,7 @@
               throw new RuntimeException('string length is greater than 1000 - use text instead');
             }
           } elseif ($dt === 'text') {
-            NULL;
+            assert(true);
           } elseif ($dt === 'bool') {
             if (!in_array($value, ['1', '0', 'Y', 'N', 'I', 'true', 'false'], false)) {
               throw new RuntimeException('');
@@ -159,7 +159,7 @@
      * @param string $value_component_id_
      * @param bool $raw_
      */
-    public function setProperty(string $name_, $value_, $type_ = 'STRING', $value_component_id_ = '', $raw_ = false): void {
+    public function setProperty(string $name_, $value_, string $type_ = 'STRING', string $value_component_id_ = '', bool $raw_ = false): void {
       parent::setProperty($name_, $value_, $type_, $value_component_id_, $raw_);
       if (mb_strtolower($name_) === 'value') { // setting value with formatting
         if ($value_ === '') {

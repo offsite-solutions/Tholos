@@ -1,10 +1,10 @@
-<?php
+<?php /** @noinspection DuplicatedCode SpellCheckingInspection PhpUnusedFunctionInspection NotOptimalIfConditionsInspection */
   
   namespace Tholos;
   
   use Eisodos\Eisodos;
   use Exception;
-  use http\Exception\RuntimeException;
+  use RuntimeException;
   use LSS\Array2XML;
   use Throwable;
 
@@ -112,7 +112,7 @@
      * @param ?TComponent $sender
      * @param string $nativeSQL
      */
-    protected function open(?TComponent $sender, $nativeSQL = ''): void { }
+    protected function open(?TComponent $sender, string $nativeSQL = ''): void { }
     
     /**
      * Closes the connection and clears result
@@ -142,7 +142,7 @@
      * @param bool $force_ Force open database connection if it's not proxied
      * @throws Throwable
      */
-    public function openDatabase($force_ = false): void {
+    public function openDatabase(bool $force_ = false): void {
       
       if ($this->getPropertyComponentId('DataProxy')) {
         $dataProxy = Tholos::$app->findComponentByID($this->getPropertyComponentId('DataProxy'));
@@ -220,12 +220,12 @@
      * but generates its result to the application's response array.
      * Inherited components usually don't need to override this method.
      *
-     * @param TComponent $sender
+     * @param ?TComponent $sender
      * @param string $content
      * @return string
      * @throws Exception
      */
-    public function render(TComponent $sender, string $content): string {
+    public function render(?TComponent $sender, string $content): string {
       
       if (!Tholos::$app->checkRole($this)) {
         return '';
@@ -268,7 +268,7 @@
           }
         } elseif (Tholos::$app->responseType === 'XML') {
           
-          Array2XML::init($version = '1.0', $encoding = 'UTF-8');
+          Array2XML::init('1.0', 'UTF-8');
           $xml = NULL;
           
           $a = array('@attributes' => array('xmlns' => $this->getProperty('XMLNamespace', '')));
@@ -317,7 +317,7 @@
             }
           }
         } elseif (Tholos::$app->responseType === 'NONE') {
-          NULL;
+          assert(true);
         }
         
         $this->renderedContent = '';

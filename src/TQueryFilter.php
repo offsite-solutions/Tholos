@@ -21,14 +21,14 @@
     
     /**
      *
-     * @param TComponent $sender
+     * @param ?TComponent $sender
      * @throws Throwable
      */
-    public function initValue(TComponent $sender): void {
+    public function initValue(?TComponent $sender): void {
       Tholos::$app->trace('BEGIN', $this);
       Tholos::$app->trace('(' . $this->_componentType . ') (ID ' . $this->_id . ')', $this);
-      if (($sender === NULL and $this->getProperty('RecordSelector', '') === 'false')
-        or ($sender !== NULL and $this->getProperty('RecordSelector', '') === 'true')) {
+      if (($sender === NULL && $this->getProperty('RecordSelector', '') === 'false')
+        || ($sender !== NULL && $this->getProperty('RecordSelector', '') === 'true')) {
         Tholos::$app->debug('QueryFilter skipped', $this);
       } else {
         Tholos::$app->debug('QueryFilter applied', $this);
@@ -40,7 +40,7 @@
           $value = $this->getProperty('Value', $this->getProperty('DefaultValue', ''));
         }
         
-        if ($this->getProperty('Required', 'false') === 'true' && $value === '') {
+        if ($value === '' && $this->getProperty('Required', 'false') === 'true') {
           Tholos::$app->findComponentByID($this->_parent_id)->setProperty('FilterError', 'true');
         } // ha required es nincs kitoltve, akkor megallitani a query futtatast
         
@@ -74,7 +74,7 @@
                 throw new RuntimeException('');
               }
             } elseif ($dt === 'text') {
-              NULL;
+              assert(true);
             } elseif ($dt === 'bool') {
               if (!in_array($value, ['1', '0', 'Y', 'N', 'I', 'true', 'false'], false)) {
                 throw new RuntimeException('');
@@ -86,38 +86,38 @@
                   $value = 'true';
                 }
               }
-            } elseif (in_array($dt, ['date', 'datetime', 'time', 'datetimehm', 'timestamp'])) {
+            } elseif (in_array($dt, ['date', 'datetime', 'datetimehm', 'timestamp'])) {
               if ($this->getProperty('DateFormatParameter', '') === '') {
-                $dateformat = Eisodos::$parameterHandler->getParam('UNIVERSAL.PHP' . $dt . 'Format');
-                $dbdateformat = Eisodos::$parameterHandler->getParam('UNIVERSAL.' . $dt . 'Format');
+                $dateFormat = Eisodos::$parameterHandler->getParam('UNIVERSAL.PHP' . $dt . 'Format');
+                $DBDateFormat = Eisodos::$parameterHandler->getParam('UNIVERSAL.' . $dt . 'Format');
               } else {
-                $dateformat = Eisodos::$parameterHandler->getParam('PHP' . $this->getProperty('DateFormatParameter', 'datetime') . 'Format');
-                $dbdateformat = Eisodos::$parameterHandler->getParam($this->getProperty('DateFormatParameter', 'datetime') . 'Format');
+                $dateFormat = Eisodos::$parameterHandler->getParam('PHP' . $this->getProperty('DateFormatParameter', 'datetime') . 'Format');
+                $DBDateFormat = Eisodos::$parameterHandler->getParam($this->getProperty('DateFormatParameter', 'datetime') . 'Format');
               }
-              DateTime::createFromFormat('!' . $dateformat,
+              DateTime::createFromFormat('!' . $dateFormat,
                 $value
               )->format('Y-m-d');
               $r = DateTime::getLastErrors();
-              if ($r['warning_count'] > 0 or $r['error_count'] > 0) {
+              if ($r['warning_count'] > 0 || $r['error_count'] > 0) {
                 throw new RuntimeException('');
               }
-              $value = 'to_date(' . Eisodos::$dbConnectors->connector(Tholos::$app->findComponentByID($this->_parent_id)->getProperty('DBIndex'))->nullStr($value) . ",'" . $dbdateformat . "')";
+              $value = 'to_date(' . Eisodos::$dbConnectors->connector(Tholos::$app->findComponentByID($this->_parent_id)->getProperty('DBIndex'))->nullStr($value) . ",'" . $DBDateFormat . "')";
             } elseif ($dt === 'time') {
               if ($this->getProperty('DateFormatParameter', '') === '') {
-                $dateformat = Eisodos::$parameterHandler->getParam('UNIVERSAL.PHP' . $dt . 'Format');
-                $dbdateformat = Eisodos::$parameterHandler->getParam('UNIVERSAL.' . $dt . 'Format');
+                $dateFormat = Eisodos::$parameterHandler->getParam('UNIVERSAL.PHP' . $dt . 'Format');
+                $DBDateFormat = Eisodos::$parameterHandler->getParam('UNIVERSAL.' . $dt . 'Format');
               } else {
-                $dateformat = Eisodos::$parameterHandler->getParam('PHP' . $this->getProperty('DateFormatParameter', 'datetime') . 'Format');
-                $dbdateformat = Eisodos::$parameterHandler->getParam($this->getProperty('DateFormatParameter', 'datetime') . 'Format');
+                $dateFormat = Eisodos::$parameterHandler->getParam('PHP' . $this->getProperty('DateFormatParameter', 'datetime') . 'Format');
+                $DBDateFormat = Eisodos::$parameterHandler->getParam($this->getProperty('DateFormatParameter', 'datetime') . 'Format');
               }
-              DateTime::createFromFormat('!' . $dateformat,
+              DateTime::createFromFormat('!' . $dateFormat,
                 $value
               )->format('h:n');
               $r = DateTime::getLastErrors();
-              if ($r['warning_count'] > 0 or $r['error_count'] > 0) {
+              if ($r['warning_count'] > 0 || $r['error_count'] > 0) {
                 throw new RuntimeException('');
               }
-              $value = 'to_date(' . Eisodos::$dbConnectors->connector(Tholos::$app->findComponentByID($this->_parent_id)->getProperty('DBIndex'))->nullStr($value) . ",'" . $dbdateformat . "')";
+              $value = 'to_date(' . Eisodos::$dbConnectors->connector(Tholos::$app->findComponentByID($this->_parent_id)->getProperty('DBIndex'))->nullStr($value) . ",'" . $DBDateFormat . "')";
             } elseif ($dt === 'float') {
               $value = Eisodos::$utils->replace_all($value, ',', '.');
               if (!Eisodos::$utils->isInteger($value, true)) {
@@ -151,7 +151,7 @@
     /**
      * @inheritDoc
      */
-    public function render(TComponent $sender, string $content): string {
+    public function render(?TComponent $sender, string $content): string {
       return '';
     }
   }

@@ -1,4 +1,4 @@
-<?php
+<?php /** @noinspection DuplicatedCode SpellCheckingInspection PhpUnusedFunctionInspection NotOptimalIfConditionsInspection */
   
   namespace Tholos;
   
@@ -26,7 +26,7 @@
     /**
      * @inheritdoc
      */
-    public function render(TComponent $sender, string $content): string {
+    public function render(?TComponent $sender, string $content): string {
       
       Eisodos::$parameterHandler->setParam($this->getProperty('ParameterName'), $this->getProperty('Value'));
       // must add this parameter the $_POST array for correct TDataProxy functionality
