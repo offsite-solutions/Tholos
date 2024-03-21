@@ -1,0 +1,4 @@
+## <!--  Hidden $prop_name -->
+  $templateabs_tholos__TComponent_properties
+  <input id="$prop_id" name="$prop_name" type="hidden" value="$prop_value"/>
+## <!-- /Hidden $prop_name -->

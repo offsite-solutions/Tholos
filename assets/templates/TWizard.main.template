@@ -1,0 +1,50 @@
+## <!--  Wizard $prop_name -->
+$templateabs_tholos__TComponent_properties
+<div id="$prop_id" class="wizard">
+  <div class="steps-container">
+    <ul class="steps">
+      $partialHead
+    </ul>
+  </div>
+  <div class="actions" id="$prop_id-actions">
+      <button type="button" class="btn btn-prev $prop_btnprevclass"> <i class="$prop_btnprevicon"></i>$prop_btnprevlabel</button>
+      <button type="button" class="btn btn-next $prop_btnnextclass" data-last="$prop_btnfinishlabel">$prop_btnnextlabel<i class="$prop_btnnexticon"></i></button>
+  </div>
+  <div id="$prop_id-steps" class="step-content">
+      $content
+  </div>
+</div>
+<script>
+  $('#$prop_id').wizard({disablePreviousStep : $prop_disablebackbutton});
+  $(function () {
+    if ($prop_rememberwizardstep!==true) {
+      store.remove("$prop_route$prop_name");
+    }
+
+    var newStep = store.get("$prop_route$prop_name", "$prop_defaultwizardstep");
+
+    if (newStep === null) {
+      Tholos.eventHandler("$prop_id","$prop_id","TWizard","first","$prop_route");
+    } else {
+      Tholos.eventHandler("$prop_id",newStep,"TWizardStep","activate","$prop_route");
+    }
+  });
+
+  $('#$prop_id').on('actionclicked.fu.wizard', function (e, eventData) {
+    $event_onbeforestepshow
+  });
+
+  $('#$prop_id').on('changed.fu.wizard', function (e, eventData) {
+    if ($prop_rememberwizardstep===true && $('#$prop_id').wizard('selectedItem').stepname !== undefined) {
+      store.set("$prop_route$prop_name", $('#$prop_id').wizard('selectedItem').stepname);
+    }
+    $event_onafterstepshow
+  });
+
+  $('#$prop_id').on('finished.fu.wizard', function (e, eventData) {
+    $event_onwizardcomplete
+  });
+
+</script>
+$templateabs_tholos__TContainer_baseevents
+## <!-- /Wizard $prop_name -->

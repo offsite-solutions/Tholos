@@ -1,0 +1,46 @@
+## <!--  TTimer $prop_name -->
+$templateabs_tholos__TComponent_properties
+<input id="$prop_id" name="$prop_name" type="hidden" value="" $prop_datavalues />
+<script>
+
+$('#$prop_id').on('activate', function (event,eventData) {
+  setTimeout(function () { if ($prop_enabled) Tholos.eventHandler('$prop_id','$prop_id','TTimer','execute'); },$prop_startinterval);
+});
+
+<%FUNC%
+_include=tholos/tholos_callback.php
+_function_name=_eqs
+param=prop_AutoStart
+value=true
+true=$( document ).ready(function() { Tholos.eventHandler('$prop_id','$prop_id','TTimer','activate'); });
+false=
+%FUNC%>
+
+<%FUNC%
+_include=tholos/tholos_callback.php
+_function_name=_eqs
+param=event_onExecute
+value=
+true=
+false>>=
+$('#$prop_id').on('onExecute', function (event,eventData) {
+  if (($prop_waitoninactivetab==false || isActiveTab==true) && ($prop_async==true || $.active==0)) {
+    Tholos.pageLoader(false);
+    $event_onExecute
+## ha interval, akkor megint meghivni automatikusan
+<%FUNC%
+_include=tholos/tholos_callback.php
+_function_name=_eqs
+param=prop_timermode
+value=interval
+true=if ($prop_enabled) setTimeout(function () { Tholos.eventHandler('$prop_id','$prop_id','TTimer','execute'); },$prop_interval);
+false=
+%FUNC%>
+  } else {
+    if ($prop_enabled) setTimeout(function () { Tholos.eventHandler('$prop_id','$prop_id','TTimer','execute'); },$prop_retryinterval);
+  }
+});
+<<
+%FUNC%>
+</script>
+## <!-- /TTimer $prop_name -->

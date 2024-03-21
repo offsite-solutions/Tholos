@@ -1,0 +1,29 @@
+<!-- pagination -->
+<div class="col-md-12 TGrid-pagination">
+  <div class="col-md-2"><select class="form-control input-sm" onchange="TGrid_setRowsPerPage('$prop_id',this.value);">
+<%FUNC%
+_include=tholos/tholos_callback.php
+_function_name=_listToOptions
+options=prop_RowsPerPageList
+separator=,
+selected=prop_RowsPerPage
+%FUNC%>
+</select></div>
+  <div class="col-md-2">[:GRID.PAGINATION.NUMBER_OF_ROWS,%s sor:$prop_TotalRowCount:]</div>
+  <div class="col-md-8 text-right">
+    <ul class="pagination pagination-sm">
+<%FUNC%
+_include=tholos/tholos_callback.php
+_function_name=_eqs
+param=prop_PageCount
+value=1
+true=
+false>>=
+<li class="[%_include=tholos/tholos_callback.php;_function_name=_eqs;param=isfirstpage;value=T;true=disabled;false=;%]"><a href="javascript:TGrid_setPage('$prop_id', '1');">«</a></li>
+$items
+<li class="[%_include=tholos/tholos_callback.php;_function_name=_eqs;param=islastpage;value=T;true=disabled;false=;%]"><a href="javascript:TGrid_setPage('$prop_id', '$lastpage');">»</a></li>
+<<
+%FUNC%>
+    </ul>
+  </div>
+</div><!-- pagination end -->

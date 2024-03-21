@@ -1,0 +1,1 @@
+<input type="hidden" name="f_$slot" id="f_$slot" value="$value">

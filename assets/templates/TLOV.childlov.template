@@ -1,0 +1,3 @@
+$("#$prop_id").on("masterDataChange", function (e, edata) {
+      Tholos.methods.TLOV_refresh("$prop_id", "$prop_id", null);
+    });

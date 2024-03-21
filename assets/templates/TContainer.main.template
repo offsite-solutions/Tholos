@@ -1,0 +1,5 @@
+## <!--  Container $prop_name -->
+$templateabs_tholos__TComponent_properties
+<$prop_containertype id="$prop_id" $templateabs_tholos__TComponent_basedata [%_include=tholos/tholos_callback.php;_function_name=_eqs;param=prop_class;value=;true=</>;false=class="$prop_class"%][%_include=tholos/tholos_callback.php;_function_name=_eqs;param=prop_donotaddclosetag;value=true;true=/>;false=>$content</$prop_containertype>%]
+$templateabs_tholos__TContainer_baseevents
+## <!-- /Container $prop_name -->

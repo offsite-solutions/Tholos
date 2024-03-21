@@ -1,0 +1,14 @@
+no: {
+                label: "[:CONFIRMDIALOG.NO,Nem:]",
+                className: "btn-danger",
+                callback: function() {
+<%FUNC%
+_include=tholos/tholos_callback.php
+_function_name=_eqs
+param=event_onclickno
+value=
+true=Tholos.eventHandler('$prop_id','$prop_id','TConfirmDialog','triggerConfirmFalse',null);
+false=$event_onclickno
+%FUNC%>
+                }
+            },

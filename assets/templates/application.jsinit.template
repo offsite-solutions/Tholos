@@ -1,0 +1,9 @@
+<script>
+  /* Tholos global variables, caching=$Tholos_Config_Caching */
+  const TholosComponentTypes = $TholosComponentTypes;
+  const TholosJSDebugLevel = '$TholosJSDebugLevel';
+  const TholosHelpFile = '$TholosHelpFile';
+</script>
+<script src="$TholosAssetsDir/js/TGrid.js?v=$last_tholos_release"></script>
+<script src="$TholosAssetsDir/js/tholos_application.js?v=$last_tholos_release"></script>
+$templateabs_tholos__application_jstranslate

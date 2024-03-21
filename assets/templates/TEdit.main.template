@@ -1,0 +1,22 @@
+## <!--  Edit $prop_name -->
+<div class="form-group [%_include=tholos/tholos_callback.php;_function_name=_eqs;param=prop_required;value=true;true=required;false=%]">
+  $templateabs_tholos__TComponent_properties
+  <label id="$prop_id-label" for="$prop_id" class="control-label $templateabs_tholos__TFormControl_labelsize">$templateabs_tholos__TComponent_labelicon</label>
+  <div class="$templateabs_tholos__TFormControl_controlsize">
+  <input id="$prop_id" $templateabs_tholos__TComponent_basedata
+    name="$prop_name" type="$prop_htmlinputtype~='text';" placeholder="$prop_placeholder"
+    class="form-control $prop_class"
+    [%_include=tholos/tholos_callback.php;_function_name=_eqs;param=prop_autocomplete;value=true;false=autocomplete="off";true=</>%]
+    [%_include=tholos/tholos_callback.php;_function_name=_eqs;param=prop_readonly;value=true;true=readonly="readonly";false=</>%]
+    [%_include=tholos/tholos_callback.php;_function_name=_eqs;param=prop_enabled;value=false;true=disabled="disabled";false=</>%]
+    [%_include=tholos/tholos_callback.php;_function_name=_eqs;param=prop_required;value=true;true=required;false=</>%]
+    [%_include=tholos/tholos_callback.php;_function_name=_eqs;param=prop_maxlength;value=;true=;false=maxlength="$prop_maxlength"</>%]
+    value="$prop_value"
+    />
+    $templateabs_tholos__TControl_helpblock
+    </div>
+</div>
+$templateabs_tholos__TControl_baseevents
+$templateabs_tholos__TControl_customevents
+[%_include=tholos/tholos_callback.php;_function_name=_eqs;param=event_onenterkeypressed;value=;false=<script>$("#$prop_id").on("keydown",function(e){13==e.which&&$event_onenterkeypressed})</script>;true=</>%]
+## <!-- /Edit $prop_name -->

@@ -1,0 +1,7 @@
+## <!--  WizardStep $prop_name -->
+$templateabs_tholos__TComponent_properties
+<div id="$prop_id" class="step-pane $prop_class" data-step="$prop_sequence">
+  $content
+</div>
+$templateabs_tholos__TContainer_baseevents
+## <!-- /WizardStep $prop_name -->

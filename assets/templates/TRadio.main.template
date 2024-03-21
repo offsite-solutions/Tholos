@@ -1,0 +1,14 @@
+## <!--  Radio $prop_name -->
+<div class="form-group [%_include=tholos/tholos_callback.php;_function_name=_eqs;param=prop_required;value=true;true=required;false=%]">
+  $templateabs_tholos__TComponent_properties
+  <div class="$templateabs_tholos__TFormControl_controlsize">
+    <label class="control-label $prop_labelclass">$templateabs_tholos__TComponent_labelicon</label>
+    <div id="$prop_id" $templateabs_tholos__TComponent_basedata
+      class="control-group [%_include=tholos/tholos_callback.php;_function_name=_eqs;param=prop_required;value=true;true=required;false=%]">
+      [%_include=tholos/tholos_callback.php;_function_name=_generateListValues;component_id=$component_id%]
+    </div>
+    $templateabs_tholos__TControl_helpblock
+  </div>
+</div>
+$templateabs_tholos__TControl_customevents
+## <!-- /Radio $prop_name -->

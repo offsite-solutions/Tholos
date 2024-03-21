@@ -1,0 +1,49 @@
+## <!--  Datetimepicker $prop_name -->
+<div class="form-group [%_include=tholos/tholos_callback.php;_function_name=_eqs;param=prop_required;value=true;true=required;false=%]">
+  $templateabs_tholos__TComponent_properties
+  <label id="$prop_id-label" for="$prop_id" class="control-label $templateabs_tholos__TFormControl_labelsize">$prop_label</label>
+
+  <div class="$prop_class $templateabs_tholos__TFormControl_controlsize">
+    <div id="$prop_id-dtpicker" class="input-group date">
+      <input
+        [%_include=tholos/tholos_callback.php;_function_name=_eqs;param=prop_readonly;value=true;true=readonly="readonly";false=</>%]
+        [%_include=tholos/tholos_callback.php;_function_name=_eqs;param=prop_enabled;value=false;true=disabled="disabled";false=</>%]
+        id="$prop_id"
+        $templateabs_tholos__TComponent_basedata
+        name="$prop_name" type="text"
+        value="$prop_value"
+        class="form-control"
+        data-date-format="$prop_jsdatetimeformat"
+        data-date-locale="$lang"
+        data-date-side-by-side="$prop_sidebyside~='true';"
+        data-date-stepping="$prop_stepping~='1';"
+        data-date-calendar-weeks="$prop_showcalendarweeks~='true';"
+        data-date-allow-input-toggle="$prop_showonfocus~='false';"
+        data-date-show-close="$prop_showclose~='false';"
+        data-date-show-clear="$prop_showclear~='false';"
+        data-date-show-today-button="$prop_showtoday~='false';"
+        [%_include=tholos/tholos_callback.php;_function_name=_eqs;param=prop_disableddaysofweek;value=;false=data-date-days-of-week-disabled="$prop_disableddaysofweek";true=</>%]
+        [%_include=tholos/tholos_callback.php;_function_name=_eqs;param=prop_disabledhours;value=;false=data-date-disabled-hours="$prop_disabledhours";true=</>%]
+        [%_include=tholos/tholos_callback.php;_function_name=_eqs;param=prop_required;value=true;true=required;false=%]
+        />
+
+      <span class="input-group-addon">
+        <span class="[%_include=tholos/tholos_callback.php;_function_name=_eqs;param=prop_calendaricon;value=;false=$prop_calendaricon;true=glyphicon glyphicon-calendar%]"></span>
+      </span>
+    </div>
+    $templateabs_tholos__TControl_helpblock
+  </div>
+</div>
+$templateabs_tholos__TControl_baseevents
+$templateabs_tholos__TControl_customevents
+<script type="text/javascript">
+  $(function () {
+    $('#$prop_id-dtpicker').datetimepicker( {
+      widgetPositioning: {
+        horizontal: '$prop_poshorizontal~='auto';',
+        vertical: '$prop_posvertical~='auto';'
+      }
+    });
+  });
+</script>
+## <!-- /Datetimepicker $prop_name -->

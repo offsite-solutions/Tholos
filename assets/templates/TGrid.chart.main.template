@@ -1,0 +1,44 @@
+<div id="chart_$prop_id" class="subscribers-$prop_id" style="display:none;position:relative;margin: auto;height:100vh;width:80vw">
+<div><canvas id="canvas-$prop_id" style="border: 1px solid #aaaaaa;"></canvas></div>
+</div>
+<script>
+<%FUNC%
+funcjob=eqs
+param=chartDatasetsOptions
+value=
+true=
+false>>=
+$(function() {
+  $("#chart_$prop_id").on("leavingChartTab", function (e) {
+  if (window.hasOwnProperty('mixedChart_$prop_id')) {
+    delete window.mixedChart_$prop_id;
+    }
+  });
+
+  $("#chart_$prop_id").on("chartDataRefresh", function (e, eData) {
+    var chartOptions_$prop_id = {}
+    chartOptions_$prop_id.options = $prop_chartoptions;
+    chartOptions_$prop_id.data = eData;
+    chartOptions_$prop_id.type = 'bar';
+
+    for (var i=0; i<$chartDatasetsOptions.length;i++) {
+      jQuery.extend(chartOptions_$prop_id.data.datasets[i], $chartDatasetsOptions[i]);
+    }
+
+    if (window.hasOwnProperty('mixedChart_$prop_id')
+        && chartOptions_$prop_id.data.hasOwnProperty('labels')
+        && chartOptions_$prop_id.data.hasOwnProperty('datasets')) {
+      window.mixedChart_$prop_id.config.data.labels = chartOptions_$prop_id.data.labels;
+      for (var i=0; i<eData.datasets.length; i++) {
+        window.mixedChart_$prop_id.config.data.datasets[i].data = chartOptions_$prop_id.data.datasets[i].data;
+      }
+      window.mixedChart_$prop_id.update();
+      } else {
+      var ctx_$prop_id  = document.getElementById("canvas-$prop_id").getContext("2d");
+      window.mixedChart_$prop_id = new Chart(ctx_$prop_id, chartOptions_$prop_id);
+      }
+      });
+});
+<<
+%FUNC%>
+</script>

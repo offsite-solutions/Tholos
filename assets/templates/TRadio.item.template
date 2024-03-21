@@ -1,0 +1,10 @@
+[%_include=tholos/tholos_callback.php;_function_name=_eqs;param=prop_radioinline;value=true;true=</>;false=<div class="radio">%]
+  <label class="[%_include=tholos/tholos_callback.php;_function_name=_eqs;param=prop_radioinline;value=true;true=radio-inline;false=%]">
+    <input name="$prop_name" type="radio" class="$prop_class" value="$prop_itemid" [%_include=tholos/tholos_callback.php;_function_name=_eqs;param=prop_itemactive;value=true;true=checked="checked";false=%]
+    [%_include=tholos/tholos_callback.php;_function_name=_eqs;param=prop_required;value=true;true=required;false=</>%]
+    [%_include=tholos/tholos_callback.php;_function_name=_eqs;param=prop_enabled;value=false;true=disabled="disabled";false=</>%]
+    />
+    <span class="text">$prop_itemtext</span>
+  </label>
+[%_include=tholos/tholos_callback.php;_function_name=_eqs;param=prop_radioinline;value=true;true=</>;false=</div>%]
+$templateabs_tholos__TControl_baseevents

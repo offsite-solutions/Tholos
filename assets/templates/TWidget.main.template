@@ -1,0 +1,52 @@
+## <!--  Widget $prop_name -->
+$templateabs_tholos__TComponent_properties
+<div class="widget [%_include=tholos/tholos_callback.php;_function_name=_eqs;param=prop_collapsible;value=initialclosed;true=collapsed;false=%]" id="$prop_id"
+     $templateabs_tholos__TComponent_basedata
+>
+    <div class="widget-header $prop_headerclass">
+<%FUNC%
+_include=tholos/tholos_callback.php
+_function_name=_eqs
+param=prop_icon
+value=
+true=<span class="widget-caption">$prop_label</span>
+false>>=
+<%FUNC%
+_include=tholos/tholos_callback.php
+_function_name=_eqs
+param=prop_iconalign
+value=right
+false=<i class="widget-icon $prop_icon"></i><span class="widget-caption">$prop_label</span>
+true=<span class="widget-caption">$prop_label</span><i class="widget-icon $prop_icon"></i>
+%FUNC%>
+<<
+%FUNC%>
+<div class="widget-buttons" style="height: auto;">[%_include=tholos/tholos_callback.php;_function_name=_param2;param=prop_HeaderControlsParameter%]</div>
+<div class="widget-buttons">[%_include=tholos/tholos_callback.php;_function_name=_eqs;param=prop_collapsible;value=initialclosed;true=<a href="#" data-toggle="collapse"><i class="fa fa-plus"></i></a>;false=</>%][%_include=tholos/tholos_callback.php;_function_name=_eqs;param=prop_collapsible;value=initialopen;true=<a href="#" data-toggle="collapse"><i class="fa fa-minus"></i></a>;false=</>%][%_include=tholos/tholos_callback.php;_function_name=_eqs;param=prop_disposable;value=true;true=<a href="#" data-toggle="dispose"><i class="fa fa-times"></i></a>;false=</>%]&nbsp;</div>
+    </div>
+    <div class="widget-body $prop_class">
+        $content
+    </div>
+</div>
+<script>
+<%FUNC%
+_include=tholos/tholos_callback.php
+_function_name=_eqs
+param=event_onCollapse
+value=
+true=
+false=$("#$prop_id").on("onWidgetCollapse", function (event,eventData) { $event_onCollapse });
+%FUNC%>
+
+<%FUNC%
+_include=tholos/tholos_callback.php
+_function_name=_eqs
+param=event_onExpand
+value=
+true=
+false=$("#$prop_id").on("onWidgetExpand", function (event,eventData) { $event_onExpand });
+%FUNC%>
+
+</script>
+$templateabs_tholos__TContainer_baseevents
+## <!-- /Widget $prop_name -->

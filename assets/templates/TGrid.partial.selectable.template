@@ -1,0 +1,17 @@
+<td class="TGrid-selectable <%FUNC%
+_include=tholos/tholos_callback.php
+_function_name=_eqs
+param=prop_dbfield
+value=
+false>>=
+<%FUNC%
+_include=tholos/tholos_callback.php
+_function_name=_eqs
+param=prop_value
+value=^prop_lookupvalue
+true=active
+false=
+%FUNC%>
+<<
+true=
+%FUNC%>"><span class="activeicon"><i class="fa fa-chevron-right"></i></span></td>

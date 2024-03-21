@@ -1,0 +1,62 @@
+<div id="TGrid_$prop_id" class="row">
+<input id="$prop_id-props" type="hidden" $prop_datavalues class="[%_include=tholos/tholos_callback.php;_function_name=_eqs;param=prop_master;value=;false=subscribers-$tholos_renderid$_$prop_master;true=%]" data-initialized="false" />
+<div id="loader_$prop_id" class="text-center" style="display: none"><i class="fa fa-spin fa-spinner"></i> [:grid.label.loading_last_state,Előző állapot betöltése...:]</div>
+<div id="container_$prop_id" class="$prop_containerclass">
+<script>
+  if (typeof TGrid_filters === 'undefined') { var TGrid_filters = []; }
+  if (typeof TGrid_filters_$prop_id === 'undefined') { var TGrid_filters_$prop_id = []; }
+  var TGrid_registerFilters=true;
+  for (var i=0; i<TGrid_filters.length; i++) if (TGrid_filters[i]=='$prop_id') TGrid_registerFilters=false;
+  if (TGrid_registerFilters) TGrid_filters[TGrid_filters.length]='$prop_id';
+</script>
+$templateabs_tholos__TGrid_details_main
+$chartInit
+[%_include=tholos/tholos_callback.php;_function_name=_eqs;param=prop_helpindex;value=;true=;false=<a href="javascript:Tholos.showHelp('$prop_helpindex')" class="btn btn-xs btn-sky tholos-help"><i class="fa fa-question-circle"></i>   [:HELP.BUTTON,Súgó:]</a>%]
+## <div class="TGrid-gridmenu $headclass">
+## $headbuttons
+## </div>
+<div class="row" id="body_$prop_id"><div class="col-xs-12">
+<form action="$prop_route$prop_name/"
+      method="post"
+      id="helper_$prop_id"
+      class="form-horizontal TGrid-helperform"
+      onsubmit="if($(this).prop('target').length<1){Tholos.eventHandler('$prop_id','$prop_id','TGrid','refresh');return false;}">
+<input type="hidden" id="TGrid_SortedBy_" name="TGrid_SortedBy_" value="$prop_SortedBy">
+<input type="hidden" id="TGrid_SortingDirection_" name="TGrid_SortingDirection_" value="$prop_SortingDirection">
+<input type="hidden" id="TGrid_ActivePage_" name="TGrid_ActivePage_" value="$prop_ActivePage">
+<input type="hidden" id="TGrid_RowsPerPage_" name="TGrid_RowsPerPage_" value="$prop_RowsPerPage">
+<input type="hidden" id="TGrid_Scrollable_" name="TGrid_Scrollable_" value="$prop_Scrollable">
+<input type="hidden" id="TGrid_Transposed_" name="TGrid_Transposed_" value="$prop_Transposed">
+<input type="hidden" id="TGrid_uuid_" name="TGrid_uuid_" value="$prop_UUID">
+<input type="hidden" id="TGrid_todo_" name="TGrid_todo_" value="">
+<input type="hidden" id="TGrid_MasterValue_" name="TGrid_MasterValue_" value="$prop_MasterValue">
+<input type="hidden" id="tholos_renderID" name="tholos_renderID" value="$tholos_renderID">
+<input type="hidden" id="TGrid_Value_" name="TGrid_Value_" value="$prop_value">
+<input type="hidden" id="TGrid_ViewMode_" name="TGrid_ViewMode_" value="$prop_ViewMode">
+<%FUNC%
+_include=tholos/tholos_callback.php
+_function_name=_eqs
+param=prop_publishfiltersql
+value=true
+true=<input type="hidden" id="TGrid_FilterSQL_" name="TGrid_FilterSQL_" value="$prop_FilterSQL">
+false=
+%FUNC%>
+$filterslots
+<div class="row TGrid-gridcontrols $ShowGridControls" id="header_$prop_id">
+  <div class="col-xs-12">
+    <div class="btn-toolbar">
+$filters
+$templateabs_tholos__TGrid_export
+    </div>
+  </div>
+  <div class="col-xs-12" style="margin-top: 5px;" $filtervisible>
+    <div id="filters_text">
+      <a class="btn btn-danger btn-xs icon-only" href="javascript:Tholos.eventHandler('$prop_id','$prop_id','TGrid','refresh');" id="filter_refresh"><i class="fa fa-filter"></i></a>&nbsp;<span class="label label-default $hidenofilter" id="filterslot-nofilter">$prop_LabelNoFilter</span> $filtertexts
+    </div>
+  </div>
+</div>
+</form>
+$templateabs_tholos__TGrid_filter_inline
+<div class="TGrid-grid col-xs-12">
+[%_include=tholos/tholos_callback.php;_function_name=_eq;param=prop_chartxaxis;value=;true=empty;false=tholos/TGrid.chart.head%]
+[%_include=tholos/tholos_callback.php;_function_name=_case;param=prop_gridhtmltype;div=tholos/TGrid.partial.div.head;div-responsive=tholos/TGrid.partial.divresponsive.head;else=tholos/TGrid.partial.table.head%]

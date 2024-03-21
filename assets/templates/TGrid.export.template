@@ -1,0 +1,36 @@
+<div class="btn-group pull-right [%_include=tholos/tholos_callback.php;_function_name=_eqs;param=prop_showexportbutton;value=true;true=;false=hidden%]" style="margin-right: 10px;">
+          <a class="btn btn-xs dropdown-toggle danger" data-toggle="dropdown">
+            $prop_LabelExportButton~='Export'; <i class="fa fa-angle-down"></i>
+          </a>
+          <ul class="dropdown-menu">
+            <li>
+              <a href="javascript:void();" onclick="Tholos.eventHandler('$prop_id','$prop_id','TGrid','downloadExcel');">XLS</a>
+            </li>
+            <li>
+              <a href="javascript:void();" onclick="Tholos.eventHandler('$prop_id','$prop_id','TGrid','downloadTSV');">TSV</a>
+            </li>
+            <li>
+              <a href="javascript:void();" onclick="Tholos.eventHandler('$prop_id','$prop_id','TGrid','downloadCSV');">CSV</a>
+            </li>
+            <li>
+              <a href="javascript:void();" onclick="Tholos.eventHandler('$prop_id','$prop_id','TGrid','downloadRAWTSV');">Raw TSV</a>
+            </li>
+            <li>
+              <a href="javascript:void();" onclick="Tholos.eventHandler('$prop_id','$prop_id','TGrid','downloadRAWCSV');">Raw CSV</a>
+            </li>
+            <li>
+              <a href="javascript:void();" onclick="Tholos.eventHandler('$prop_id','$prop_id','TGrid','downloadRAWJSON');">Raw JSON</a>
+            </li>
+          </ul>
+        </div>
+        <button type="button" class="btn btn-default btn-xs btn-success pull-right [%_include=tholos/tholos_callback.php;_function_name=_eqs;param=prop_showrefreshbutton;value=true;true=;false=hidden%]" onclick="Tholos.eventHandler('$prop_id','$prop_id','TGrid','refresh','',{'TGrid_RefreshCache':'true'});" ><i class="fa fa-refresh"></i> $prop_labelrefresh</button>
+        <div class="pull-right [%_include=tholos/tholos_callback.php;_function_name=_eqs;param=prop_showscrollcheckbox;value=true;true=;false=hidden%]" style="margin-right: 10px;">
+          <label>
+            <input id="scrollable-check" class="colored-danger" type="checkbox" onchange="TGrid_setScrollable('$prop_id',(this.checked?'true':'false'));" [%_include=tholos/tholos_callback.php;_function_name=_eqs;param=prop_scrollable;value=true;true=checked;false=%]><span class="text"><i class="fa fa-arrows-h"></i>&nbsp;</span>
+          </label>
+        </div>
+        <div class="pull-right [%_include=tholos/tholos_callback.php;_function_name=_eqs;param=prop_showtransposecheckbox;value=true;true=;false=hidden%]" style="margin-right: 10px;">
+          <label>
+            <input id="transpose-check" class="colored-danger" type="checkbox" onchange="TGrid_setTransposed('$prop_id',(this.checked?'true':'false'));" [%_include=tholos/tholos_callback.php;_function_name=_eqs;param=prop_transposed;value=true;true=checked;false=%]><span class="text"><i class="fa fa-rotate-left"></i>&nbsp;</span>
+          </label>
+        </div>

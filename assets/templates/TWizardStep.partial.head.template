@@ -1,0 +1,3 @@
+<li class="$prop_class" data-step="$prop_sequence" data-name="$prop_name">
+    <span class="step">$prop_sequence</span>$prop_label<span class="chevron"></span>
+</li>

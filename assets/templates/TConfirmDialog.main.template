@@ -1,0 +1,46 @@
+## <!--  TConfirmDialog $prop_name -->
+$templateabs_tholos__TComponent_properties
+<input id="$prop_id" type="hidden" />
+<script>
+    if ($("#$prop_id-props").data("enabled")=="false") {
+        $event_ondisabled
+    } else {
+    $("#$prop_id").on("showdialog",function(event, eventData){
+        bootbox.dialog({
+            message: $("#$prop_id-props").data("label"),
+            title: $("#$prop_id-props").data("title"),
+            backdrop: $prop_backdrop,
+            closeButton: false,
+            buttons: {
+<%FUNC%
+_include=tholos/tholos_callback.php
+_function_name=_cases
+param=prop_confirmtype
+YesNo>>=
+$templateabs_tholos__TConfirmDialog_partial_yes
+$templateabs_tholos__TConfirmDialog_partial_no
+<<
+OKCancel>>=
+$templateabs_tholos__TConfirmDialog_partial_ok
+$templateabs_tholos__TConfirmDialog_partial_cancel
+<<
+OK>>=
+$templateabs_tholos__TConfirmDialog_partial_ok
+<<
+YesNoCancel>>=
+$templateabs_tholos__TConfirmDialog_partial_yes
+$templateabs_tholos__TConfirmDialog_partial_no
+$templateabs_tholos__TConfirmDialog_partial_cancel
+<<
+Custom>>=
+$templateabs_tholos__TConfirmDialog_partial_custom
+<<
+%FUNC%>
+        }
+        })
+        });
+    }
+</script>
+
+$templateabs_tholos__TContainer_baseevents
+## <!-- /TConfirmDialog $prop_name -->

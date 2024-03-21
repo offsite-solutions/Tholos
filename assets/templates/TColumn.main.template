@@ -1,0 +1,19 @@
+## <!--  Column $prop_name -->
+$templateabs_tholos__TComponent_properties
+[%_include=tholos/tholos_callback.php;_function_name=_eqs;param=prop_surroundwithrow;value=true;false=</>;true=<div class="row">%]
+<div   id="$prop_id"
+       $templateabs_tholos__TComponent_basedata
+     class="
+[%_include=tholos/tholos_callback.php;_function_name=_eqs;param=prop_sizeextrasmall;value=;true=</>;false=col-xs-$prop_sizeextrasmall%]
+[%_include=tholos/tholos_callback.php;_function_name=_eqs;param=prop_sizesmall;value=;true=</>;false=col-sm-$prop_sizesmall%]
+[%_include=tholos/tholos_callback.php;_function_name=_eqs;param=prop_sizemedium;value=;true=</>;false=col-md-$prop_sizemedium%]
+[%_include=tholos/tholos_callback.php;_function_name=_eqs;param=prop_sizelarge;value=;true=</>;false=col-lg-$prop_sizelarge%]
+[%_include=tholos/tholos_callback.php;_function_name=_eqs;param=prop_offsetextrasmall;value=;true=</>;false=col-xs-offset-$prop_offsetextrasmall%]
+[%_include=tholos/tholos_callback.php;_function_name=_eqs;param=prop_offsetsmall;value=;true=</>;false=col-sm-offset-$prop_offsetsmall%]
+[%_include=tholos/tholos_callback.php;_function_name=_eqs;param=prop_offsetmedium;value=;true=</>;false=col-md-offset-$prop_offsetmedium%]
+[%_include=tholos/tholos_callback.php;_function_name=_eqs;param=prop_offsetlarge;value=;true=</>;false=col-lg-offset-$prop_offsetlarge%]
+$prop_class">$content
+</div>
+[%_include=tholos/tholos_callback.php;_function_name=_eqs;param=prop_surroundwithrow;value=true;false=</>;true=</div>%]
+$templateabs_tholos__TContainer_baseevents
+## <!-- /Column $prop_name -->

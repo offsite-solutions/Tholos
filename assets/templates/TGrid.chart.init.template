@@ -1,0 +1,9 @@
+<script>
+/*
+  console.info('CHART.INIT');
+  var chartSeries_$prop_id = {
+            data: { datasets: $chartDatasetsOptions},
+            options: $prop_chartOptions
+        };
+        */
+</script>

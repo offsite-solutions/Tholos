@@ -16,7 +16,7 @@
     }
   ],
   "require": {
-    "php": ">=7.4",
+    "php": ">=8.2",
     "offsite-solutions/eisodos": "1.*",
     "offsite-solutions/eisodos-db-connector-mdb2": "1.*",
     "ext-json": "*",

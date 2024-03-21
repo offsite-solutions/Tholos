@@ -1,0 +1,5 @@
+{
+  label: "$dataset_label",
+  backgroundColor: "$dataset_backgroundcolor",
+  borderWidth: 0
+},

@@ -1,0 +1,8 @@
+##<script src="https://maps.googleapis.com/maps/api/js?key=$gmapsapikey" type="text/javascript"></script>
+<script>
+//if (typeof google !== "object" || typeof google.maps !== "object") {
+//    $.getScript("https://maps.googleapis.com/maps/api/js?key=$gmapsapikey");
+//}
+</script>
+<script src="/tholos/vendor/bower-asset/gmaps/gmaps.min.js"></script>
+<script src="/tholos/vendor/bower-asset/google-maps-utility-library-v3/markerclustererplus/src/markerclusterer_packed.js"></script>

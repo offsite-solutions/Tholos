@@ -1,0 +1,9 @@
+<%FUNC%
+_include=tholos/tholos_callback.php
+_function_name=_eqs
+param=prop_ColumnOffset
+defaultvalue=0
+value=0
+true=
+false=<$prop_cellheadtype colspan="$prop_ColumnOffset">&nbsp;</$prop_cellheadtype>
+%FUNC%><$prop_cellheadtype class="TGrid-resp-cell text-$prop_align $prop_class" data-resizable-column-id="$prop_name" id="$prop_parent_id.$prop_id" [%_include=tholos/tholos_callback.php;_function_name=_eqs;param=prop_columnspan;value=;true=;false=colspan="$prop_columnspan"%] style="$prop_style">$prop_Label&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</$prop_cellheadtype>

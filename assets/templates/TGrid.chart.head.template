@@ -1,0 +1,4 @@
+<div class="btn-group">
+  <button class="btn btn-xs active" id="GRID_button_$prop_id" onclick="javascript:TGrid_changeViewMode('$prop_id', 'GRID');">Lista</button>
+  <button class="btn btn-xs" id="CHART_button_$prop_id" onclick="javascript:TGrid_changeViewMode('$prop_id', 'CHART');">Grafikon</button>
+</div>

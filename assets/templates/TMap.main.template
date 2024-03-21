@@ -1,0 +1,90 @@
+## <!--  Map $prop_name -->
+$templateabs_tholos__TComponent_properties
+<div
+id="$prop_id"
+class="$prop_class"
+>
+</div>
+<script>
+  $(document).ready(function(){
+    ## We will create the map in the global window scope so avoid using var
+    map_$prop_name = new GMaps({
+      width: "$prop_mapwidth",
+      height: "$prop_mapheight",
+      el: '#$prop_id',
+      lat: $prop_centerlatitude,
+      lng: $prop_centerlongitude,
+      zoom: $prop_zoomlevel,
+      zoomControl : $prop_zoomcontrol,
+      zoomControlOpt: {
+        style : 'SMALL',
+        position: '$prop_zoomcontrolposition'
+      },
+      panControl : $prop_pancontrol,
+      streetViewControl : $prop_streetviewcontrol,
+      mapTypeControl: $prop_maptypecontrol,
+      overviewMapControl: false,
+      [%_include=tholos/tholos_callback.php;_function_name=_eqs;param=prop_markerclusterer;value=true;true=markerClusterer: function(map_$prop_name) {return new MarkerClusterer(map_$prop_name)};false=%]
+    });
+
+    map_$prop_name["tholos"] = {
+      $content
+    };
+
+    if ($prop_refreshonload === true) {
+      Tholos.eventHandler("$prop_id", "$prop_id", "TMap", "refresh", "$prop_route");
+    }
+
+    if ($prop_showrefresh === true) {
+        map_$prop_name.addControl({
+          position: "right_top",
+          content: '<i class="fa fa-refresh"></i>&nbsp;[:TMAP.REFRESH,Frissítés:]',
+          style: {
+            margin: "5px",
+            padding: "2px 6px",
+            border: "solid 1px #717B87",
+            background: "#fff"
+          },
+          events: {
+            click: function(){
+              Tholos.eventHandler("$prop_id", "$prop_id", "TMap", "refresh", "$prop_route");
+            }
+          }
+        });
+    }
+
+    if ($prop_showfitzoom === true) {
+        map_$prop_name.addControl({
+          position: "right_top",
+          content: '<i class="fa fa-arrows-alt"></i>&nbsp;[:TMAP.FITZOOM,Nagyítás:]',
+          style: {
+            margin: "5px",
+            padding: "2px 6px",
+            border: "solid 1px #717B87",
+            background: "#fff"
+          },
+          events: {
+            click: function(){
+              Tholos.eventHandler("$prop_id", "$prop_id", "TMap", "fitZoom", "$prop_route");
+            }
+          }
+        });
+    }
+
+    if ($prop_showlegend === true)
+    {
+      map_$prop_name.addControl({
+        position: "right_bottom",
+        content: '$partialMenu',
+        style: {
+          margin: '5px',
+          padding: '2px 6px',
+          border: 'solid 1px #717B87',
+          background: '#fff'
+        }
+      });
+    }
+  });
+</script>
+$partialHead
+## <!-- /Map $prop_name -->

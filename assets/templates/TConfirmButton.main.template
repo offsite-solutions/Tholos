@@ -1,0 +1,7 @@
+            $prop_id: {
+                label: "$prop_label",
+                className: "$prop_class",
+                callback: function() {
+                $event_onclick
+                }
+            },

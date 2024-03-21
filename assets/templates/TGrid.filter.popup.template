@@ -1,0 +1,160 @@
+<div class="modal fade" id="modal_$prop_id" role="dialog" >
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal"><span >&times;</span><span class="sr-only">X</span></button>
+        <h4 class="modal-title">&nbsp;</h4>
+      </div>
+      <div class="modal-body">
+        <form class="form-horizontal" onsubmit="return false;">
+          <div class="form-group">
+            <div id="nullfilter" class="col-lg-4">
+              <select id="operator" class="pull-right">
+                <option value="bw" class="datebetween">[:GRID.FILTER.BETWEEN,között:]</option>
+                <option value="like" class="string text">[:GRID.FILTER.LIKE,része:]</option>
+                <option value="eq" class="string text integer bool boolYN boolIN bool10 date datetime datetimehm list">[:GRID.FILTER.EQUAL,egyenlő:]</option>
+                <option value="neq" class="string text integer bool boolYN boolIN bool10 date datetime datetimehm list">[:GRID.FILTER.NOTEQUAL,nem egyenlő:]</option>
+                <option value="nlike" class="string text">[:GRID.FILTER.NOTLIKE,nem része:]</option>
+                <option value="gt" class="string text integer date datetime datetimehm">[:GRID.FILTER.GREATER,nagyobb:]</option>
+                <option value="gteq" class="string text integer date datetime datetimehm">[:GRID.FILTER.GREATER_OR_EQUAL,nagyobb vagy egyenlő:]</option>
+                <option value="lt" class="string text integer date datetime datetimehm">[:GRID.FILTER.LESS,kisebb:]</option>
+                <option value="lteq" class="string text integer date datetime datetimehm">[:GRID.FILTER.LESS_OR_EQUAL,kisebb vagy egyenlő:]</option>
+                <option value="in" class="string text integer">[:GRID.FILTER.IN,eleme:]</option>
+                <option value="notin" class="string text integer">[:GRID.FILTER.NOTIN,nem eleme:]</option>
+
+                <option value="NULL">[:GRID.FILTER.EMPTY,üres:]</option>
+                <option value="NOT NULL">[:GRID.FILTER.NOT_EMPTY,nem üres:]</option>
+              </select>
+            </div>
+            <div class="TGrid-filter-container TGrid-filter-string col-lg-8">
+              <span class="input-icon">
+                <input type="text" class="form-control value1">
+                <i class="glyphicon glyphicon-chevron-right blue"></i>
+              </span>
+            </div>
+            <div class="TGrid-filter-container TGrid-filter-text col-lg-8">
+              <span class="input-icon">
+                <input type="text" class="form-control value1">
+                <i class="glyphicon glyphicon-chevron-right blue"></i>
+              </span>
+            </div>
+            <div class="TGrid-filter-container TGrid-filter-integer col-lg-8">
+              <span class="input-icon">
+                <input type="text" class="form-control value1">
+                <i class="glyphicon glyphicon-chevron-right blue"></i>
+              </span>
+            </div>
+            <div class="TGrid-filter-container TGrid-filter-boolIN col-lg-8">
+              <select class="value1">
+                <option value="I" >[:GRID.FILTER.bool_yes,Igen:]</option>
+                <option value="N" >[:GRID.FILTER.bool_no,Nem:]</option>
+                <option value="*" >[:GRID.FILTER.bool_all,Összes:]</option>
+              </select>
+            </div>
+            <div class="TGrid-filter-container TGrid-filter-bool col-lg-8">
+              <select class="value1">
+                <option value="Y" >[:GRID.FILTER.bool_yes,Igen:]</option>
+                <option value="N" >[:GRID.FILTER.bool_no,Nem:]</option>
+                <option value="*" >[:GRID.FILTER.bool_all,Összes:]</option>
+              </select>
+            </div>
+            <div class="TGrid-filter-container TGrid-filter-boolYN col-lg-8">
+              <select class="value1">
+                <option value="Y" >[:GRID.FILTER.bool_yes,Igen:]</option>
+                <option value="N" >[:GRID.FILTER.bool_no,Nem:]</option>
+                <option value="*" >[:GRID.FILTER.bool_all,Összes:]</option>
+              </select>
+            </div>
+            <div class="TGrid-filter-container TGrid-filter-bool10 col-lg-8">
+              <select class="value1">
+                <option value="1" >[:GRID.FILTER.bool_yes,Igen:]</option>
+                <option value="0" >[:GRID.FILTER.bool_no,Nem:]</option>
+                <option value="-1" >[:GRID.FILTER.bool_all,Összes:]</option>
+              </select>
+            </div>
+            <div class="TGrid-filter-container TGrid-filter-list col-lg-8">
+              <input id="value1-props" type="hidden" data-searchable="true" data-name="value1" data-componenttype="TLOV" data-fieldid="id" data-fieldtext="text" data-listsource="" data-listsourceroute="" data-listfilter="" data-multiselect="false">
+              <select id="value1" class="value1" style="width: 90%" data-diacritics="true" data-allow-clear="false" data-placeholder="">
+                <option></option>
+              </select>
+            </div>
+
+            <div class="TGrid-filter-container TGrid-filter-date col-lg-8">
+                <div class="input-group date tholos-datetime-picker">
+                  <input class="form-control value1" data-date-format="$jsdateformat" data-date-locale="$lang"
+                         data-date-side-by-side="false" data-date-calendar-weeks="true" data-date-allow-input-toggle="true"
+                         data-date-show-close="true" data-date-show-clear="true" data-date-show-today-button="true"
+                    />
+                  <span class="input-group-addon">
+                    <span class="glyphicon glyphicon-calendar"></span>
+                  </span>
+                </div>
+            </div>
+
+            <div class="TGrid-filter-container TGrid-filter-datetime col-lg-8">
+              <div class="input-group date tholos-datetime-picker">
+                <input class="form-control value1" data-date-format="$jsdatetimeformat" data-date-locale="$lang"
+                       data-date-side-by-side="false" data-date-calendar-weeks="true" data-date-allow-input-toggle="true"
+                       data-date-show-close="true" data-date-show-clear="true" data-date-show-today-button="true"
+                  />
+                  <span class="input-group-addon">
+                    <span class="glyphicon glyphicon-calendar"></span>
+                  </span>
+              </div>
+            </div>
+
+            <div class="TGrid-filter-container TGrid-filter-timestamp col-lg-8">
+              <div class="input-group date tholos-timestamp-picker">
+                <input class="form-control value1" data-date-format="$jstimestampformat" data-date-locale="$lang"
+                       data-date-side-by-side="false" data-date-calendar-weeks="true" data-date-allow-input-toggle="true"
+                       data-date-show-close="true" data-date-show-clear="true" data-date-show-today-button="true"
+                  />
+                  <span class="input-group-addon">
+                    <span class="glyphicon glyphicon-calendar"></span>
+                  </span>
+              </div>
+            </div>
+
+            <div class="TGrid-filter-container TGrid-filter-datebetween col-lg-8">
+              <div class="input-group date tholos-datetime-picker">
+                <input class="form-control value1" data-date-format="$jsdateformat" data-date-locale="$lang"
+                       data-date-side-by-side="false" data-date-calendar-weeks="true" data-date-allow-input-toggle="true"
+                       data-date-show-close="true" data-date-show-clear="true" data-date-show-today-button="true"
+                  />
+                  <span class="input-group-addon">
+                    <span class="glyphicon glyphicon-calendar"></span>
+                  </span>
+              </div>
+            </div>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">[:GRID.FILTER.BUTTON.CLOSE,Bezár:]</button>
+        <button type="button" class="btn btn-primary setbutton">[:GRID.FILTER.BUTTON.SET_FILTER,Szűrő beállítása:]</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+/*
+(function($) {
+    var el = $.fn['show'];
+    $.fn['show'] = function() {
+        this.trigger('TGrid.show');
+        return el.apply(this, arguments);
+    };
+})(jQuery);
+*/
+
+$(document).ready(function() {
+  $('#modal_$prop_id .TGrid-filter-list').on('TGrid.show', function (event, filterData) {
+
+    $("#modal_$prop_id .TGrid-filter-list > #value1-props").data("listsource", filterData.filterListSource);
+    $("#modal_$prop_id .TGrid-filter-list > #value1-props").data("listsourceroute", filterData.filterListSourceRoute);
+    $("#modal_$prop_id .TGrid-filter-list > #value1-props").data("listfilter", filterData.filterListFilter);
+    Tholos.methods.TLOV_refresh("value1", "value1", "$prop_route", {container : "#modal_$prop_id .TGrid-filter-list"} );
+  })
+})
+</script>

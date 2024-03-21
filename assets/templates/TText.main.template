@@ -1,0 +1,28 @@
+## <!--  Text $prop_name -->
+<div class="form-group [%_include=tholos/tholos_callback.php;_function_name=_eqs;param=prop_required;value=true;true=required;false=%]">
+  $templateabs_tholos__TComponent_properties
+
+  <label id="$prop_id-label" for="$prop_id" class="control-label $templateabs_tholos__TFormControl_labelsize">$templateabs_tholos__TComponent_labelicon</label>
+
+  <div class="$templateabs_tholos__TFormControl_controlsize">
+  <textarea id="$prop_id" $templateabs_tholos__TComponent_basedata
+    name="$prop_name" class="form-control $prop_class" cols="$prop_cols" rows="$prop_rows~='6';" placeholder="$prop_placeholder"
+    [%_include=tholos/tholos_callback.php;_function_name=_eqs;param=prop_readonly;value=true;true=readonly="readonly";false=</>%]
+    [%_include=tholos/tholos_callback.php;_function_name=_eqs;param=prop_enabled;value=false;true=disabled="disabled";false=</>%]
+    [%_include=tholos/tholos_callback.php;_function_name=_eqs;param=prop_required;value=true;true=required;false=</>%]
+    [%_include=tholos/tholos_callback.php;_function_name=_eqs;param=prop_maxlength;value=;true=</>;false=maxlength="$prop_maxlength"%]
+    >$prop_value</textarea>
+    $templateabs_tholos__TControl_helpblock
+  </div>
+</div>
+$templateabs_tholos__TControl_baseevents
+$templateabs_tholos__TControl_customevents
+<%FUNC%
+_include=tholos/tholos_callback.php
+_function_name=_eqs
+param=prop_autosize
+value=true
+true=<script>autosize($("#$prop_id"));</script>
+false=
+%FUNC%>
+## <!-- /Text $prop_name -->

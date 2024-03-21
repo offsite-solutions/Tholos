@@ -1,0 +1,3 @@
+$("#$prop_id").on("change", function (e) {
+      $('.subscribers-$prop_id').trigger('masterDataChange',[e.target.value]);
+    });

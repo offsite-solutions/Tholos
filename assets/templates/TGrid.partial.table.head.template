@@ -1,0 +1,4 @@
+<div id="data_$prop_id" class="[%_include=tholos/tholos_callback.php;_function_name=_eqs;param=prop_scrollable;value=true;true=table-scrollable;false=%] $prop_DataContainerClass"><table class="table $prop_class table-condensed TGrid [%_include=tholos/tholos_callback.php;_function_name=_eqs;param=prop_selectable;value=true;true=TGrid-selectable;false=%] [%_include=tholos/tholos_callback.php;_function_name=_eqs;param=prop_transposed;value=true;true=TGrid-transposed;false=table-hover%]" [%_include=tholos/tholos_callback.php;_function_name=_eqs;param=prop_transposed;value=true;true=;false=data-resizable-columns-id="$prop_name"%]  id="$prop_id">
+<thead class="right-border bordered-gray">
+  $columnHeadItems
+</thead>

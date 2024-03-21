@@ -1,0 +1,51 @@
+[%_include=tholos/tholos_callback.php;_function_name=_case;param=prop_gridhtmltype;div=tholos/TGrid.partial.div.foot;div-responsive=tholos/TGrid.partial.divresponsive.foot;else=tholos/TGrid.partial.table.foot%]
+$showdataerror
+</div>
+$templateabs_tholos__TGrid_chart_main
+</div>
+<%FUNC%
+_include=tholos/tholos_callback.php
+_function_name=_eqs
+param=selectionoutoflist
+value=
+true=
+false=<div id="$prop_id-selectionoutoflist" class="col-md-12"><div class="alert alert-warning" style="margin-bottom: 0px"><i class="fa fa-exclamation-triangle"></i> $selectionoutoflist</div></div>
+%FUNC%>
+<%FUNC%
+_include=tholos/tholos_callback.php
+_function_name=_eqs
+param=prop_datagenerated
+value=true
+true=
+false=<div class="col-md-12"><div class="alert alert-warning" style="margin-bottom: 0px"><i class="fa fa-exclamation-triangle"></i> $prop_labelnodatagenerated</div></div>
+%FUNC%>
+$pagination
+$cacheinfo
+</div>
+</div><!-- body_$prop_name -->
+</div><!-- container_$prop_name -->
+</div>
+
+<%FUNC%
+_include=tholos/tholos_callback.php
+_function_name=_eqs
+param=event_onchange
+value=
+true=
+false=<script>$("#$prop_id").on('onChange', function (e) { $event_onchange });</script>
+%FUNC%>
+<%FUNC%
+_include=tholos/tholos_callback.php
+_function_name=_eqs
+param=event_onafterrefresh
+value=
+true=
+false=<script>$("#$prop_id").on('onAfterRefresh', function (e) { $event_onafterrefresh });</script>
+%FUNC%>
+
+<script>
+  TGrid_ready('$prop_id');
+  if ($(".tholos-datetime-picker").length>0) {
+    $(".tholos-datetime-picker").datetimepicker();
+  }
+</script>

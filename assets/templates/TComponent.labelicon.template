@@ -1,0 +1,16 @@
+<%FUNC%
+_include=tholos/tholos_callback.php
+_function_name=_eqs
+param=prop_icon
+value=
+true=[%_include=tholos/tholos_callback.php;_function_name=_eqs;param=prop_labelclass;value=;true=$prop_label;false=<span class="$prop_labelclass">$prop_label</span>%]
+false>>=<%FUNC%
+_include=tholos/tholos_callback.php
+_function_name=_eqs
+param=prop_iconalign
+value=right
+false=<i class="$prop_icon"></i>&nbsp;[%_include=tholos/tholos_callback.php;_function_name=_eqs;param=prop_labelclass;value=;true=$prop_label;false=<span class="$prop_labelclass">$prop_label</span>%]
+true=[%_include=tholos/tholos_callback.php;_function_name=_eqs;param=prop_labelclass;value=;true=$prop_label;false=<span class="$prop_labelclass">$prop_label</span>%]&nbsp;<i class="$prop_icon"></i>
+%FUNC%>
+<<
+%FUNC%>

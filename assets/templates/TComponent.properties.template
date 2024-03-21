@@ -1,0 +1,8 @@
+<%FUNC%
+_include=tholos/tholos_callback.php
+_function_name=_eqs
+param=TholosViewMode
+value=print
+true=
+false=<input id="$prop_id-props" type="hidden" $prop_datavalues />
+%FUNC%>

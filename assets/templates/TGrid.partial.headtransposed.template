@@ -1,0 +1,41 @@
+<!-- $prop_value ? $prop_lookupvalue --><td class="TGrid-transpose-selectable text-center <%FUNC%
+_include=tholos/tholos_callback.php
+_function_name=_eqs
+param=prop_dbfield
+value=
+false>>=
+<%FUNC%
+_include=tholos/tholos_callback.php
+_function_name=_eqs
+param=prop_value
+value=^prop_lookupvalue
+true=active
+false=
+%FUNC%>
+<<
+true=
+%FUNC%>" <%FUNC%
+_include=tholos/tholos_callback.php
+_function_name=_eqs
+param=prop_dbfield
+value=
+true=
+false>>=id="$prop_id-$prop_value" data-value="$prop_value"
+<%FUNC%
+_include=tholos/tholos_callback.php
+_function_name=_eqs
+param=prop_selectable
+value=true
+true=onclick="Tholos.eventHandler('$prop_id-$prop_value','$prop_id','TGrid','setValue','',$(this).data());"
+false=
+%FUNC%>
+<%FUNC%
+_include=tholos/tholos_callback.php
+_function_name=_eqs
+param=prop_selectable
+value=true
+true=ondblclick="Tholos.eventHandler('$prop_id-$prop_value','$prop_id','TGrid','setValueForce','',$(this).data());"
+false=
+%FUNC%>
+<<
+%FUNC%>><span class="activeicon"><i class="fa fa-chevron-down"></i></span></td>

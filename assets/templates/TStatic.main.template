@@ -1,0 +1,14 @@
+## <!--  Static $prop_name -->
+<div class="form-group [%_include=tholos/tholos_callback.php;_function_name=_eqs;param=prop_required;value=true;true=required;false=%] readonly">
+  $templateabs_tholos__TComponent_properties
+  <label id="$prop_id-label" for="$prop_id" class="control-label $templateabs_tholos__TFormControl_labelsize">$templateabs_tholos__TComponent_labelicon</label>
+  <div class="$templateabs_tholos__TFormControl_controlsize">
+  <input id="$prop_id" name="$prop_name" type="hidden" value="$prop_value"/>
+  <p
+    $templateabs_tholos__TComponent_basedata
+    class="form-control-static $prop_class"
+    >$prop_value</p>
+    </div>
+</div>
+$templateabs_tholos__TControl_baseevents
+## <!-- /Static $prop_name -->

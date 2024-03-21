@@ -1,0 +1,10 @@
+<%FUNC%
+_include=tholos/tholos_callback.php
+_function_name=_eqs
+param=prop_ColumnOffset
+value=0
+true=
+false=<$prop_celltype colspan="$prop_ColumnOffset">&nbsp;</prop_celltype>
+%FUNC%><$prop_celltype class="TGrid-resp-cell text-$prop_align~='left'; $prop_class  [%_include=tholos/tholos_callback.php;_function_name=_eqs;param=prop_valuechanged;value=true;true=$prop_valuechangedclass~='TGrid-changed';;false=%]" [%_include=tholos/tholos_callback.php;_function_name=_eqs;param=prop_columnspan;value=;true=;false=colspan="$prop_columnspan"%]
+[%_include=tholos/tholos_callback.php;_function_name=_eqs;param=prop_style;value=;true=;false=style="$prop_style"%]
+ data-resptitle="$prop_label">$prop_value</$prop_celltype>

@@ -1,0 +1,5 @@
+<li class="$prop_class">
+  <a data-toggle="tab" href="#$prop_id">
+    $templateabs_tholos__TComponent_labelicon
+  </a>
+</li>
