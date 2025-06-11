@@ -1,0 +1,8 @@
+<%FUNC%
+_include=tholos/tholos_callback.php
+_function_name=_case
+param=prop_menutype
+menu=tholos/TMenuItem.menu
+submenu=tholos/TMenuItem.submenu
+submenuitem=tholos/TMenuItem.submenuitem
+%FUNC%>

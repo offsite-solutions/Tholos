@@ -35,7 +35,11 @@
         $queryResult = $resultRow_;
       } elseif ($this->getProperty('RowCount', '0') > 0) {
         if ($this->getProperty('ResultType', '') === 'ARRAY') {
-          $queryResult = $this->getProperty('Result', array())[0];
+          if (count($this->getProperty('Result', array())) > 0) {
+            $queryResult = $this->getProperty('Result', array())[0];
+          } else {
+            $queryResult=[];
+          }
         } else {
           $queryResult = json_decode($this->getProperty('Result', ''), true, 512, JSON_THROW_ON_ERROR)[0];
         }
@@ -43,9 +47,9 @@
         $queryResult = array();
       }
       
-      // if (!empty($queryResult)) {
-      //  array_change_key_case($queryResult);
-      // }
+      if (!empty($queryResult)) {
+        $queryResult = array_change_key_case($queryResult);
+      }
       
       foreach (Tholos::$app->findChildIDsByType($this, 'TDBField') as $component) {
         $dbField = Tholos::$app->findComponentByID($component);
@@ -59,9 +63,27 @@
         }
         
         /* @var $dbField TDBField */
-        $dbField->setProperty('DBValue', Eisodos::$utils->safe_array_value($queryResult, $fieldName_clean, $dbField->getProperty('NullResultParameter', '')), 'STRING', '', $dbField->getProperty('ParseValue', 'true') === 'false');
+        // handling native bools
+        if (array_key_exists($fieldName_clean,$queryResult) && is_bool($queryResult[$fieldName_clean])) {
+          $dbField->setProperty('DBValue', $queryResult[$fieldName_clean], 'STRING', '', $dbField->getProperty('ParseValue', 'true') == 'false');
+        } else {
+          $dbField->setProperty('DBValue', Eisodos::$utils->safe_array_value($queryResult, $fieldName_clean, $dbField->getProperty('NullResultParameter', '')), 'STRING', '', $dbField->getProperty('ParseValue', 'true') == 'false');
+        }
         $dbField->propagateValue();
       }
+      
+      // find TJSONDataProviders
+      
+      foreach (Tholos::$app->findChildIDsByType($this, 'TJSONDataProvider') as $component) {
+        $TJSONDataProvider = Tholos::$app->findComponentByID($component);
+        $fieldName_clean = mb_strtolower($TJSONDataProvider->getProperty('DataResultField', ''));
+        
+        /* @var $TJSONDataProvider TDataProvider */
+        $TJSONDataProvider->close();
+        $TJSONDataProvider->open($this, json_encode(Eisodos::$utils->safe_array_value($queryResult, $fieldName_clean), JSON_THROW_ON_ERROR));
+        $TJSONDataProvider->propagateResult(NULL);
+      }
+      
       Tholos::$app->trace('END', $this);
     }
     
@@ -133,6 +155,7 @@
       if ($this->getProperty('RowCount') !== false) {
         $this->setProperty('Rowcount', 0);
       }
+      $this->setProperty('JSONFilters',NULL);
       
       Tholos::$app->trace('END', $this);
     }
@@ -186,7 +209,7 @@
     public function run(?TComponent $sender): void {
       try {
         Tholos::$app->trace('BEGIN', $this);
-        $this->openDatabase();
+        $this->openDatabase(false);
         Tholos::$app->checkRole($this, true);
         Tholos::$app->eventHandler($this, 'onBeforeOpen');
         $this->open($sender);

@@ -5,24 +5,24 @@ _include=tholos/tholos_callback.php
 _function_name=_eqs
 param=prop_static
 value=true
-true=data-backdrop="static" data-keyboard="false"
+true=data-bs-backdrop="static" data-bs-keyboard="false"
 false=
 %FUNC%> style="$prop_style">
-  <div class="modal-dialog $prop_class">
+  <div class="modal-dialog modal-lg $prop_class [%_include=tholos/tholos_callback.php;_function_name=_eqs;param=prop_scrollable;value=;true=modal-dialog-scrollable;false=</>%]">
     <div class="modal-content">
-      <div class="modal-header">
-        <h4 class="modal-title">$prop_title~='&nbsp;';</h4>
+      <div class="modal-header labely-primary">
+        <h5 class="modal-title">$prop_title~='&nbsp;';</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body">
 $content
       </div>
-      <div class="modal-footer">
-      </div>
+
     </div>
   </div>
 </div>
 $templateabs_tholos__TContainer_baseevents
-<script>
+<script type="text/javascript" nonce="$Tholos_nonce">
 <%FUNC%
 _include=tholos/tholos_callback.php
 _function_name=_eqs

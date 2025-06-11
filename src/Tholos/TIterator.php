@@ -13,6 +13,12 @@
    */
   class TIterator extends TComponent {
     
+    /** @inheritDoc */
+    public function init(): void {
+      parent::init();
+      $this->selfRenderer = true;
+    }
+    
     /**
      * @inheritdoc
      */
@@ -50,7 +56,6 @@
           foreach ($listSource->getProperty('Result') as $row) {
             $listSource->propagateResult($row);
             foreach ($subComponents as $id) {
-              //$component = Tholos::$app->findComponentByID($id);
               $result .= Tholos::$app->render($this, $id);
             }
           }

@@ -38,4 +38,15 @@ true=ondblclick="Tholos.eventHandler('$prop_id-$prop_value','$prop_id','TGrid','
 false=
 %FUNC%>
 <<
-%FUNC%>>$content</$prop_cellrowtype>
+%FUNC%>
+<%FUNC%
+_include=tholos/tholos_callback.php
+_function_name=_eqs
+param=prop_markerdbfield
+value=
+true=
+false>>=data-marker-value="$prop_markervalue"
+onclick="Tholos.eventHandler('$prop_id-$prop_value','$prop_id','TGrid','setMarkerValue','',$(this).data());"
+<<
+%FUNC%>
+>$content</$prop_cellrowtype>

@@ -137,7 +137,7 @@
   </div>
 </div>
 
-<script>
+<script type="text/javascript" nonce="$Tholos_nonce">
 /*
 (function($) {
     var el = $.fn['show'];

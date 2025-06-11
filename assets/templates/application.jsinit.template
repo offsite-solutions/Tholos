@@ -1,9 +1,40 @@
-<script>
+## Anti csrf token handling - https://blog.mailixa.io/strong-cross-site-request-forgery-prevention-csrf-for-php-and-jquery
+<!-- CSRF check ($CSRFEnabled,$csrf_header_name,$csrf_token_value) -->
+<%FUNC%
+_include=tholos/tholos_callback.php
+_function_name=_eqs
+param=CSRFEnabled
+value=true
+false=
+true>>=
+  <meta content="authenticity_token" name="csrf-param" />
+  <meta content="$csrf_token_value" name="csrf-token" />
+<<
+%FUNC%>
+<script type="text/javascript" nonce="$Tholos_nonce">
   /* Tholos global variables, caching=$Tholos_Config_Caching */
   const TholosComponentTypes = $TholosComponentTypes;
   const TholosJSDebugLevel = '$TholosJSDebugLevel';
   const TholosHelpFile = '$TholosHelpFile';
+
+<%FUNC%
+_include=tholos/tholos_callback.php
+_function_name=_eqs
+param=CSRFEnabled
+value=true
+false=
+true>>=
+  /* CSRF token handling */
+  var csrf_token = $('meta[name="csrf-token"]').attr('content');
+
+function csrfSafeMethod(method) {
+  return (/^(GET|HEAD|OPTIONS)$/.test(method));
+}
+
+$.ajaxSetup({ beforeSend: function(xhr, settings) { if (!csrfSafeMethod(settings.type) && !this.crossDomain) { xhr.setRequestHeader("$csrf_header_name", csrf_token); }}});
+<<
+%FUNC%>
 </script>
 <script src="$TholosAssetsDir/js/TGrid.js?v=$last_tholos_release"></script>
-<script src="$TholosAssetsDir/js/tholos_application.js?v=$last_tholos_release"></script>
+<script src="$TholosAssetsDir/js/TholosApplication.js?v=$last_tholos_release"></script>
 $templateabs_tholos__application_jstranslate

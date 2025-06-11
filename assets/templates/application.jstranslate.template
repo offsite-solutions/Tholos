@@ -1,5 +1,5 @@
 ## JavaScript translation file
-<script>
+<script type="text/javascript" nonce="$Tholos_nonce">
   Tholos.i18n = {
     TFileUpload_UploadError: "[:TFILEUPLOAD.UPLOADERROR,Feltöltési hiba:]",
     TLOV_Loading : "[:TLOV.LOADING,Kérem várjon...:]"

@@ -24,7 +24,7 @@ _function_name=_eqs
 param=event_onclick
 value=
 true=
-false=<script>$("#$prop_id").on('mouseup', function (e) { if( e.which <= 2 || e.altKey) { Tholos.setClickType(e.altKey?2:e.which); e.preventDefault(); $event_onclick }});</script>
+false=<script type="text/javascript" nonce="$Tholos_nonce">$("#$prop_id").on('mouseup', function (e) { if( e.which <= 2 || e.altKey) { Tholos.setClickType(e.altKey?2:e.which); e.preventDefault(); $event_onclick }});</script>
 %FUNC%>
 <%FUNC%
 _include=tholos/tholos_callback.php
@@ -32,7 +32,7 @@ _function_name=_eqs
 param=event_onconfirmtrue
 value=
 true=
-false=<script>$("#$prop_id").on('onConfirmTrue', function () { $event_onconfirmtrue });</script>
+false=<script type="text/javascript" nonce="$Tholos_nonce">$("#$prop_id").on('onConfirmTrue', function () { $event_onconfirmtrue });</script>
 %FUNC%>
 <%FUNC%
 _include=tholos/tholos_callback.php
@@ -40,5 +40,5 @@ _function_name=_eqs
 param=event_onconfirmfalse
 value=
 true=
-false=<script>$("#$prop_id").on('onConfirmFalse', function () { $event_onconfirmfalse });</script>
+false=<script type="text/javascript" nonce="$Tholos_nonce">$("#$prop_id").on('onConfirmFalse', function () { $event_onconfirmfalse });</script>
 %FUNC%>

@@ -1,7 +1,7 @@
 ## <!--  Form $prop_name -->
 $templateabs_tholos__TComponent_properties
 <form id="$prop_id" $templateabs_tholos__TComponent_basedata
-  class="$prop_class"
+  class="$prop_class needs-validation" novalidate
   name="$prop_name"
 [%_include=tholos/tholos_callback.php;_function_name=_eqs;param=prop_url;value=;true=</>;false=action="$prop_url"%]
 [%_include=tholos/tholos_callback.php;_function_name=_eqs;param=prop_method;value=;true=</>;false=method="$prop_method"%]
@@ -13,7 +13,7 @@ $templateabs_tholos__TComponent_properties
   </fieldset>
 </form>
 $templateabs_tholos__TContainer_baseevents
-<script>
+<script type="text/javascript" nonce="$Tholos_nonce">
 <%FUNC%
 _include=tholos/tholos_callback.php
 _function_name=_eqs

@@ -1,8 +1,8 @@
-<div class="btn-group $filtervisible">
-        <a class="btn btn-xs dropdown-toggle btn-info" data-toggle="dropdown">
-          $prop_LabelFilterButton <i class="fa fa-angle-down"></i>
-        </a>
-        <ul class="dropdown-menu">
-          $items
-        </ul>
-      </div>
+<div class="dropdown $filtervisible">
+  <button type="button" class="btn btn-sm dropdown-toggle btn-info" data-bs-toggle="dropdown">
+    <li class="fa-regular fa-filters"></li> $prop_LabelFilterButton
+  </button>
+  <ul class="dropdown-menu">
+    $items
+  </ul>
+</div>

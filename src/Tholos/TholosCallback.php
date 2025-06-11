@@ -1,5 +1,9 @@
 <?php
   
+  /**
+   * Callback functions used in Tholos templates
+   */
+  
   use Eisodos\Eisodos;
   use Tholos\TDataProvider;
   use Tholos\Tholos;

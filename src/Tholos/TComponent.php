@@ -71,6 +71,11 @@
      * @var string contains rendered content
      */
     public string $renderedContent = '';
+  
+     /**
+      * @var bool this component handles calls its children render method
+      */
+    public bool $selfRenderer = false;
     
     /**
      * Constructor
@@ -344,9 +349,10 @@
      *
      * @param string $name_ Name of the property to get
      * @param mixed $notFound_ Value to return when name is not found. Defaults to `false`.
+     * @param bool $parse_ Parse property value
      * @return mixed Property data or $notFound_ value when property is not found
      */
-    public function getProperty(string $name_, mixed $notFound_ = false): mixed {
+    public function getProperty(string $name_, mixed $notFound_ = false, bool $parse_ = true): mixed {
       
       $propName = strtolower($name_);
       
@@ -384,10 +390,11 @@
           if ($prop_value === '@') {
             $prop_value = '';
           }
-          if (!isset($this->_properties[$propName]['raw']) || $this->_properties[$propName]['raw'] === false) {
-            $returnValue = $this->parsePropertyValue($prop_value, $notFound_);
-          } else {
-            $returnValue = ($prop_value === '' ? $notFound_ : $prop_value);
+          if ((isset($this->_properties[$propName]['raw']) && $this->_properties[$propName]['raw']) && $parse_===false) {
+            $returnValue=((@strlen($prop_value)==0)?$notFound_:$prop_value);
+          }
+          else {
+            $returnValue=$this->parsePropertyValue($prop_value,$notFound_);
           }
           if ($returnValue === $prop_value && !str_contains($prop_value, '@')) {
             $this->_properties[$propName]['cached_value'] = $returnValue;
@@ -654,7 +661,7 @@
               $event['method_name'] . "','" .
               $target_route_action . "'," .
               "(typeof eventData !== 'undefined'?eventData:null)," . // feluletrol erkezo data - nem biztos, hogy letezik
-              (trim($event['parameters']) === '' ? 'null' : trim($event['parameters'])) . ");";
+              (trim($event['parameters']) === '' ?'null':trim($event['parameters'])) . ");";
           }
           Eisodos::$parameterHandler->setParam('event_' . $key, $jsEvent);
         }

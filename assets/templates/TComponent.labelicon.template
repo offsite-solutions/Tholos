@@ -1,3 +1,4 @@
+## BS5
 <%FUNC%
 _include=tholos/tholos_callback.php
 _function_name=_eqs
@@ -9,8 +10,16 @@ _include=tholos/tholos_callback.php
 _function_name=_eqs
 param=prop_iconalign
 value=right
-false=<i class="$prop_icon"></i>&nbsp;[%_include=tholos/tholos_callback.php;_function_name=_eqs;param=prop_labelclass;value=;true=$prop_label;false=<span class="$prop_labelclass">$prop_label</span>%]
 true=[%_include=tholos/tholos_callback.php;_function_name=_eqs;param=prop_labelclass;value=;true=$prop_label;false=<span class="$prop_labelclass">$prop_label</span>%]&nbsp;<i class="$prop_icon"></i>
+false>>>=<i class="$prop_icon"></i><%FUNC%
+_include=tholos/tholos_callback.php
+_function_name=_eqs
+param=prop_label
+value=
+true=
+false=&nbsp;
+%FUNC%>[%_include=tholos/tholos_callback.php;_function_name=_eqs;param=prop_labelclass;value=;true=$prop_label;false=<span class="$prop_labelclass">$prop_label</span>%]
+<<<
 %FUNC%>
 <<
 %FUNC%>

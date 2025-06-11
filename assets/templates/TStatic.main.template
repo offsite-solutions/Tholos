@@ -1,14 +1,15 @@
-## <!--  Static $prop_name -->
-<div class="form-group [%_include=tholos/tholos_callback.php;_function_name=_eqs;param=prop_required;value=true;true=required;false=%] readonly">
+## BS5 <!--  Static $prop_name -->
+<div class="row mb-1 readnoly $prop_rowclass [%_include=tholos/tholos_callback.php;_function_name=_eqs;param=prop_visible;value=true;false=hidden;true=</>%]" style="$prop_rowstyle">
   $templateabs_tholos__TComponent_properties
-  <label id="$prop_id-label" for="$prop_id" class="control-label $templateabs_tholos__TFormControl_labelsize">$templateabs_tholos__TComponent_labelicon</label>
+  <label id="$prop_id-label" for="$prop_id" class="col-form-label $templateabs_tholos__TFormControl_labelsize [%_include=tholos/tholos_callback.php;_function_name=_eqs;param=prop_required;value=true;true=required;false=%]">$templateabs_tholos__TComponent_labelicon</label>
   <div class="$templateabs_tholos__TFormControl_controlsize">
-  <input id="$prop_id" name="$prop_name" type="hidden" value="$prop_value"/>
-  <p
+    <input id="$prop_id" type="hidden" name="$prop_name" value="$prop_value" />
+    <span
     $templateabs_tholos__TComponent_basedata
-    class="form-control-static $prop_class"
-    >$prop_value</p>
-    </div>
+    class="form-control-plaintext $prop_class"
+    >$prop_value</span>
+  </div>
+$templateabs_tholos__TControl_helpblock
 </div>
 $templateabs_tholos__TControl_baseevents
 ## <!-- /Static $prop_name -->

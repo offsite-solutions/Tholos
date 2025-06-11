@@ -14,7 +14,7 @@ $templateabs_tholos__TComponent_properties
       $content
   </div>
 </div>
-<script>
+<script type="text/javascript" nonce="$Tholos_nonce">
   $('#$prop_id').wizard({disablePreviousStep : $prop_disablebackbutton});
   $(function () {
     if ($prop_rememberwizardstep!==true) {

@@ -10,8 +10,8 @@ _include=tholos/tholos_callback.php
 _function_name=_eqs
 param=prop_middleclick
 value=true
-true=<script>$("#$prop_id").on('mouseup', function (e) { if( e.which <= 2 || e.altKey) { Tholos.setClickType(e.altKey?2:e.which); e.preventDefault(); $event_onclick }});</script>
-false=<script>$("#$prop_id").on('click', function () { $event_onclick });</script>
+true=<script type="text/javascript" nonce="$Tholos_nonce">$("#$prop_id").on('mouseup', function (e) { if( e.which <= 2 || e.altKey) { Tholos.setClickType(e.altKey?2:e.which); e.preventDefault(); $event_onbeforeclick; $event_onclick }});</script>
+false=<script type="text/javascript" nonce="$Tholos_nonce">$("#$prop_id").on('click', function () { $event_onbeforeclick $event_onclick });</script>
 %FUNC%>
 <<
 %FUNC%>
@@ -20,8 +20,8 @@ _include=tholos/tholos_callback.php
 _function_name=_eqs
 param=event_onchange
 value=
-true=<script>$("#$prop_id").on('change', function (e) { $('.subscribers-$prop_id').trigger('masterDataChange',[e.target.value]);});</script>
-false=<script>$("#$prop_id").on('change', function (e) { $('.subscribers-$prop_id').trigger('masterDataChange',[e.target.value]); $event_onchange });</script>
+true=<script type="text/javascript" nonce="$Tholos_nonce">$("#$prop_id").on('change', function (e) { $('.subscribers-$prop_id').trigger('masterDataChange',[e.target.value]);});</script>
+false=<script type="text/javascript" nonce="$Tholos_nonce">$("#$prop_id").on('change', function (e) { $('.subscribers-$prop_id').trigger('masterDataChange',[e.target.value]); $event_onchange });</script>
 %FUNC%>
 <%FUNC%
 _include=tholos/tholos_callback.php
@@ -29,7 +29,7 @@ _function_name=_eqs
 param=event_onmousedown
 value=
 true=
-false=<script>$("#$prop_id").on('mousedown', function () { $event_onmousedown });</script>
+false=<script type="text/javascript" nonce="$Tholos_nonce">$("#$prop_id").on('mousedown', function () { $event_onmousedown });</script>
 %FUNC%>
 <%FUNC%
 _include=tholos/tholos_callback.php
@@ -37,7 +37,7 @@ _function_name=_eqs
 param=event_onmouseup
 value=
 true=
-false=<script>$("#$prop_id").on('mouseup', function () { $event_onmouseup });</script>
+false=<script type="text/javascript" nonce="$Tholos_nonce">$("#$prop_id").on('mouseup', function () { $event_onmouseup });</script>
 %FUNC%>
 <%FUNC%
 _include=tholos/tholos_callback.php
@@ -45,7 +45,7 @@ _function_name=_eqs
 param=event_onmouseover
 value=
 true=
-false=<script>$("#$prop_id").on('mouseover', function () { $event_onmouseover });</script>
+false=<script type="text/javascript" nonce="$Tholos_nonce">$("#$prop_id").on('mouseover', function () { $event_onmouseover });</script>
 %FUNC%>
 <%FUNC%
 _include=tholos/tholos_callback.php
@@ -53,7 +53,7 @@ _function_name=_eqs
 param=event_onmouseout
 value=
 true=
-false=<script>$("#$prop_id").on('mouseout', function () { $event_onmouseout });</script>
+false=<script type="text/javascript" nonce="$Tholos_nonce">$("#$prop_id").on('mouseout', function () { $event_onmouseout });</script>
 %FUNC%>
 <%FUNC%
 _include=tholos/tholos_callback.php
@@ -61,7 +61,7 @@ _function_name=_eqs
 param=event_onblur
 value=
 true=
-false=<script>$("#$prop_id").on('blur', function () { $event_onblur });</script>
+false=<script type="text/javascript" nonce="$Tholos_nonce">$("#$prop_id").on('blur', function () { $event_onblur });</script>
 %FUNC%>
 <%FUNC%
 _include=tholos/tholos_callback.php
@@ -69,7 +69,7 @@ _function_name=_eqs
 param=event_onconfirmtrue
 value=
 true=
-false=<script>$("#$prop_id").on('onConfirmTrue', function () { $event_onconfirmtrue });</script>
+false=<script type="text/javascript" nonce="$Tholos_nonce">$("#$prop_id").on('onConfirmTrue', function () { $event_onconfirmtrue });</script>
 %FUNC%>
 <%FUNC%
 _include=tholos/tholos_callback.php
@@ -77,5 +77,5 @@ _function_name=_eqs
 param=event_onconfirmfalse
 value=
 true=
-false=<script>$("#$prop_id").on('onConfirmFalse', function () { $event_onconfirmfalse });</script>
+false=<script type="text/javascript" nonce="$Tholos_nonce">$("#$prop_id").on('onConfirmFalse', function () { $event_onconfirmfalse });</script>
 %FUNC%>

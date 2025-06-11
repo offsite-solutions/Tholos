@@ -1,10 +1,15 @@
 ## <!--  TTimer $prop_name -->
 $templateabs_tholos__TComponent_properties
 <input id="$prop_id" name="$prop_name" type="hidden" value="" $prop_datavalues />
-<script>
+<script type="text/javascript" nonce="$Tholos_nonce">
 
 $('#$prop_id').on('activate', function (event,eventData) {
-  setTimeout(function () { if ($prop_enabled) Tholos.eventHandler('$prop_id','$prop_id','TTimer','execute'); },$prop_startinterval);
+  setTimeout(function () {
+    if ($prop_enabledonactivate==true) {
+      Tholos.eventHandler('$prop_id','$prop_id','TTimer','setEnabled',null,null,{"enabled":"true"});
+    }
+    Tholos.eventHandler('$prop_id','$prop_id','TTimer','execute');
+  },$prop_startinterval);
 });
 
 <%FUNC%
@@ -33,11 +38,11 @@ _include=tholos/tholos_callback.php
 _function_name=_eqs
 param=prop_timermode
 value=interval
-true=if ($prop_enabled) setTimeout(function () { Tholos.eventHandler('$prop_id','$prop_id','TTimer','execute'); },$prop_interval);
+true=if ($("#$prop_id-props").data("enabled")=="true") setTimeout(function () { if ($("#$prop_id-props").data("enabled")=="true") Tholos.eventHandler('$prop_id','$prop_id','TTimer','execute'); },$prop_interval);
 false=
 %FUNC%>
   } else {
-    if ($prop_enabled) setTimeout(function () { Tholos.eventHandler('$prop_id','$prop_id','TTimer','execute'); },$prop_retryinterval);
+    if ($("#$prop_id-props").data("enabled")=="true") setTimeout(function () { if ($("#$prop_id-props").data("enabled")=="true") Tholos.eventHandler('$prop_id','$prop_id','TTimer','execute'); },$prop_retryinterval);
   }
 });
 <<

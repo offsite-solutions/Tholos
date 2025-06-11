@@ -1,4 +1,4 @@
-## <!--  Button $prop_name -->
+## BS5 <!--  Button $prop_name -->
 $templateabs_tholos__TComponent_properties
 <button
   id="$prop_id"
@@ -7,7 +7,8 @@ $templateabs_tholos__TComponent_properties
   name="$prop_name"
   class="btn
          [%_include=tholos/tholos_callback.php;_function_name=_eqs;param=prop_bootstrapsize;value=;true=</>;false=btn-$prop_bootstrapsize%]
-         $prop_class"
+         [%_include=tholos/tholos_callback.php;_function_name=_eqs;param=prop_class;value=;true=btn-primary;false=$prop_class%]
+        "
   [%_include=tholos/tholos_callback.php;_function_name=_eqs;param=prop_enabled;value=false;true=disabled="disabled" ;false=</>%]
 >
 $templateabs_tholos__TComponent_labelicon

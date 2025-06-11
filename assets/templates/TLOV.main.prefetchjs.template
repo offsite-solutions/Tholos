@@ -1,4 +1,4 @@
-<script>
+<script type="text/javascript" nonce="$Tholos_nonce">
   $(document).ready(function() {
     $("#$prop_id").select2({
       [%_include=tholos/tholos_callback.php;_function_name=_eqs;param=prop_searchable;value=false;true=minimumResultsForSearch: Infinity,;false=</>%]

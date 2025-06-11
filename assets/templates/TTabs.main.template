@@ -1,15 +1,16 @@
-## <!--  Tabs $prop_name -->
+## BS5 <!--  Tabs $prop_name -->
+## TODO events, visibility?
 $templateabs_tholos__TComponent_properties
-<div class="tabbable">
-  <ul class="nav nav-tabs $prop_headerclass" id="$prop_id">
+<div class="[%_include=tholos/tholos_callback.php;_function_name=_eqs;param=prop_visible;value=true;true=visible;false=invisible%]" $templateabs_tholos__TComponent_basedata>
+  <ul class="nav nav-tabs nav-line-tabs $prop_headerclass" id="$prop_id" role="tablist">
     $partialHead
   </ul>
   <div class="tab-content $prop_containerclass">
     $content
   </div>
 </div>
-<script>
-  $('#$prop_id a[data-toggle="tab"]').on('show.bs.tab', function (e, d) {
+<script type="text/javascript" nonce="$Tholos_nonce">
+  $('#$prop_id a[data-bs-toggle="tab"]').on('show.bs.tab', function (e, d) {
     var eventData = {
       oldTab: $(e.relatedTarget).attr("href"),
       newTab: $(e.target).attr("href")
@@ -17,11 +18,11 @@ $templateabs_tholos__TComponent_properties
     $event_onbeforetabshow
   });
 
-  $('#$prop_id a[data-toggle="tab"]').on('shown.bs.tab', function (e, d) {
+  $('#$prop_id a[data-bs-toggle="tab"]').on('shown.bs.tab', function (e, d) {
     $($(e.target).attr("href")).find(" :input[type='hidden'][id$='-props'][data-componenttype='TMap']").each(function () {
         var o = window["map_" + $(this).data("name")];
         if (o) {
-          o.refresh();
+          Tholos.eventHandler('$prop_id', $(this).data('id'), "TMap", "refresh", null);
         }
       }
     );
@@ -69,12 +70,21 @@ $templateabs_tholos__TComponent_properties
 
     var newTab = store.get("$prop_route$prop_name", defaultTabPane);
 
-    if (newTab === null) {
+    if (newTab === null || newTab == undefined || newTab == "") {
       newTab = $("#$prop_id > li:first-of-type > a:first-of-type").attr("href").slice(1);
     }
 
     Tholos.eventHandler("$prop_id", newTab, "TTabPane", "activate", "$prop_route");
   });
+
+    $(document).ready(function() {
+      $('#$prop_id.nav-tabs .nav-link').click(function() {
+        $('#$prop_id.nav-tabs .nav-link').removeClass('active');
+        $(this).addClass('active');
+      });
+
+      $('a[href$="$prop_defaulttabpane"]').click();
+    });
 </script>
 $templateabs_tholos__TContainer_baseevents
 ## <!-- /Tabs $prop_name -->

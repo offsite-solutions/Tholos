@@ -1,4 +1,4 @@
-<script>
+<script type="text/javascript" nonce="$Tholos_nonce">
   $(document).ready(function() {
     Tholos.methods.TLOV_refresh("$prop_id", "$prop_id", "$prop_route");
 ##    $templateabs_tholos__TLOV_masterlov

@@ -36,13 +36,12 @@
     public function propagateValue(): void {
       Tholos::$app->trace('BEGIN', $this);
       $parseValue = $this->getProperty('ParseValue', 'true');
-      $refIds = Tholos::$app->findReferencingComponents($this->_id);
-      foreach ($refIds as $compId) {
+      foreach (Tholos::$app->findReferencingComponents($this->_id) as $compId) {
         $comp = Tholos::$app->findComponentByID($compId);
         if (!$comp) {
           continue;
         }
-        if (($this->_id !== $comp->getPropertyComponentId('DBField')) !== false) {
+        if (($this->_id !== $comp->getPropertyComponentId('DBField')) !== false && $comp->getPropertyComponentId("DBField")) {
           continue;
         }
         $comp->setProperty('ParseValue', $parseValue);
@@ -70,7 +69,7 @@
         parent::setProperty($name_, $value_, $type_, $value_component_id_, $raw_);
       }
       if (strtolower($name_) === 'dbvalue') { // setting value with formatting
-        if ($value_ === '') {
+        if ($value_ !== 0 && $value_ == '' && !is_bool($value_)) {
           $this->setProperty('Value', $value_, 'STRING', '', $raw_);
         } elseif (in_array($this->getProperty('DataType', 'string'), ['date', 'datetime', 'time', 'datetimehm', 'timestamp'])) { // date formatting
           try {
@@ -101,11 +100,16 @@
         } elseif ($this->getProperty('DataType', 'string') === 'JSON') {
           
           try {
-            $json_data = json_decode($value_, true, 512, JSON_THROW_ON_ERROR);
+            if (!is_array($value_)) {
+              $json_data = json_decode($value_, true, 512, JSON_THROW_ON_ERROR);
+            } else {
+              $json_data = $value_;
+            }
           } catch (Exception) {
             $json_data = NULL;
           }
           if (is_array($json_data) && count($json_data) > 0) {
+            $json_data = array_change_key_case($json_data, CASE_LOWER);
             foreach (Tholos::$app->findChildIDsByType($this, 'TJSONField') as $component) {
               $JSONField = Tholos::$app->findComponentByID($component);
               if (!$JSONField) {
@@ -125,7 +129,7 @@
         } elseif (str_starts_with($value_, '.') && in_array($this->getProperty('DataType', 'string'), ['integer', 'float'])
         ) {
           $this->setProperty('Value', '0' . $value_, 'STRING', '', $raw_);
-        } elseif (str_starts_with($value_, '-.') && in_array($this->getProperty('DataType', 'string'), ['integer', 'float'], false)
+        } elseif (str_starts_with($value_, '-.') && in_array($this->getProperty('DataType', 'string'), ['integer', 'float'])
         ) {
           $this->setProperty('Value', '-0' . substr($value_, 1), 'STRING', '', $raw_);
         } else {

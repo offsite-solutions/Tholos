@@ -1,7 +1,7 @@
 ## <!--  TConfirmDialog $prop_name -->
 $templateabs_tholos__TComponent_properties
 <input id="$prop_id" type="hidden" />
-<script>
+<script type="text/javascript" nonce="$Tholos_nonce">
     if ($("#$prop_id-props").data("enabled")=="false") {
         $event_ondisabled
     } else {

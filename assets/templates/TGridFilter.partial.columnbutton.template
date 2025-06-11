@@ -1,1 +1,1 @@
-<a class="filterbutton" href="javascript:TGrid_setFilter('$prop_parent_id','$prop_name',0);" title="$prop_label"><i class="fa fa-filter"></i></a>
+<a class="filterbutton" href="javascript:TGrid_setFilter('$prop_parent_id','$prop_name',0);" title="$prop_label"><i class="fa-regular fa-filter text-info"></i></a>

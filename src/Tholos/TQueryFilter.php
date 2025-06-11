@@ -41,13 +41,27 @@
         }
         
         if ($value === '' && $this->getProperty('Required', 'false') === 'true') {
+          Tholos::$app->debug('Mandatory QueryFilter missing', $this);
           Tholos::$app->findComponentByID($this->_parent_id)->setProperty('FilterError', 'true');
         } // ha required es nincs kitoltve, akkor megallitani a query futtatast
         
+        $JSONFilter = [
+          'fieldName' => $this->getProperty('Fieldname', ''),
+          'value' => NULL,
+          'valueArray' => NULL,
+          'operator' => NULL,
+          'relation' => $this->getProperty('Relation', '='),
+          'nativeDataType' => NULL,
+          'dataType' => $this->getProperty('DataType', NULL),
+          'isNull' => false,
+          'isNotNull' => false
+        ];
         if ($value === 'NULL') {
           $this->setProperty('SQL', $this->getProperty('FieldName') . ' IS NULL');
+          $JSONFilter['isNull'] = true;
         } elseif ($value === 'NOTNULL') {
           $this->setProperty('SQL', $this->getProperty('FieldName') . ' IS NOT NULL');
+          $JSONFilter['isNotNull'] = true;
         } elseif ($value !== '') {
           try {
             $dt = $this->getProperty('DataType', 'string');
@@ -58,6 +72,7 @@
                     throw new RuntimeException('');
                   }
                 }
+                $JSONFilter['valueArray'] = explode(',', $value);
                 $value = nlist($value, false);
               } elseif (!Eisodos::$utils->isInteger($value, true)) {
                 throw new RuntimeException('');
@@ -69,6 +84,7 @@
                     throw new RuntimeException('');
                   }
                 }
+                $JSONFilter['valueArray'] = explode(',', $value);
                 $value = nlist($value, true);
               } elseif (mb_strlen($value) > 1000) {
                 throw new RuntimeException('');
@@ -110,14 +126,14 @@
                 $dateFormat = Eisodos::$parameterHandler->getParam('PHP' . $this->getProperty('DateFormatParameter', 'datetime') . 'Format');
                 $DBDateFormat = Eisodos::$parameterHandler->getParam($this->getProperty('DateFormatParameter', 'datetime') . 'Format');
               }
-              DateTime::createFromFormat('!' . $dateFormat,
-                $value
-              )->format('h:n');
+              /* testing datetime and converts to microservice (universal) format */
+              $universalDt = DateTime::createFromFormat('!' . $dateFormat, $value);
               $r = DateTime::getLastErrors();
               if ($r['warning_count'] > 0 || $r['error_count'] > 0) {
                 throw new RuntimeException('');
               }
-              $value = 'to_date(' . Eisodos::$dbConnectors->connector(Tholos::$app->findComponentByID($this->_parent_id)->getProperty('DBIndex'))->nullStr($value) . ",'" . $DBDateFormat . "')";
+              $JSONFilter['value'] = $universalDt->format(Tholos::$c->getParam($this->getProperty('NativeDataType', $dt) . '.SPFormat'));
+              $value = "to_date(" . Eisodos::$dbConnectors->connector(0)->nullStr($value) . ",'" . $DBDateFormat . "')";
             } elseif ($dt === 'float') {
               $value = Eisodos::$utils->replace_all($value, ',', '.');
               if (!Eisodos::$utils->isInteger($value, true)) {
@@ -129,20 +145,31 @@
               }
             }
             $this->setProperty('Value', $value);
-            if ($this->getProperty('Fieldname', '') === '') {
+            if (Eisodos::$utils->safe_array_value($JSONFilter, 'value', '') == '') {
+              $JSONFilter['value'] = $value;
+            }
+            if ($dt == 'bool') {
+              if ($JSONFilter['value'] == 'true') {
+                $JSONFilter['value'] = true;
+              } elseif ($JSONFilter['value'] == 'false') {
+                $JSONFilter['value'] = false;
+              }
+            }
+            if ($this->getProperty('Fieldname', '') == '') {
               $this->setProperty('SQL', sprintf($this->getProperty('Relation'), $value));
-            } elseif ($this->getProperty('ValueList', 'false') === 'true') {
+            } elseif ($this->getProperty('ValueList', 'false') == 'true') {
               $this->setProperty('SQL', $this->getProperty('FieldName') . ' ' . $this->getProperty('Relation') . ' ' . $value);
             } else {
               $this->setProperty('SQL', $this->getProperty('FieldName') . ' ' . $this->getProperty('Relation') . ' ' .
                 Eisodos::$dbConnectors->connector(Tholos::$app->findComponentByID($this->_parent_id)->getProperty('DBIndex'))->nullStr($value, !in_array($this->getProperty('DataType'), ['integer', 'float', 'date', 'datetime', 'time', 'datetimehm', 'timestamp'])));
             }
           } catch (Exception $e) {
+            Tholos::$app->error('QueryFilter filter error: ' . $e->getMessage(), $this);
             Tholos::$app->trace('END', $this);
-            // Tholos::$app->findComponentByID($this->_parent_id)->setProperty('FilterError','true');
             throw $e;
           }
         }
+        $this->setProperty('JSONFilter', $JSONFilter, 'ARRAY');
       }
       
       Tholos::$app->trace('END', $this);

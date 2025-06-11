@@ -1,4 +1,36 @@
-<div id="data_$prop_id" class="[%_include=tholos/tholos_callback.php;_function_name=_eqs;param=prop_scrollable;value=true;true=table-scrollable;false=%] $prop_DataContainerClass"><table class="table $prop_class table-condensed TGrid [%_include=tholos/tholos_callback.php;_function_name=_eqs;param=prop_selectable;value=true;true=TGrid-selectable;false=%] [%_include=tholos/tholos_callback.php;_function_name=_eqs;param=prop_transposed;value=true;true=TGrid-transposed;false=table-hover%]" [%_include=tholos/tholos_callback.php;_function_name=_eqs;param=prop_transposed;value=true;true=;false=data-resizable-columns-id="$prop_name"%]  id="$prop_id">
+<div class="card card-px-0 mb-3"><div class="card-body p-1">
+<div id="data_$prop_id"
+  class="
+<%FUNC%
+_include=tholos/tholos_callback.php
+_function_name=_eqs
+param=prop_transposed
+value=true
+true=TGrid-scrollable TGrid-transposed [%_include=tholos/tholos_callback.php;_function_name=_eqs;param=prop_scrollabley;value=true;true=TGrid-scrollable-y;false=%]
+false>>=
+<%FUNC%
+_include=tholos/tholos_callback.php
+_function_name=_eqs
+param=prop_scrollable
+value=true
+true=TGrid-not-transposed TGrid-scrollable [%_include=tholos/tholos_callback.php;_function_name=_eqs;param=prop_scrollabley;value=true;true=TGrid-scrollable-y;false=%]
+false=TGrid-not-transposed TGrid-not-scrollable [%_include=tholos/tholos_callback.php;_function_name=_eqs;param=prop_scrollabley;value=true;true=TGrid-scrollable-y;false=%]
+%FUNC%>
+<<
+%FUNC%>
+    $prop_DataContainerClass">
+<table class="
+    table
+    m-0
+    $prop_class
+    table-condensed
+    TGrid
+    [%_include=tholos/tholos_callback.php;_function_name=_eqs;param=prop_markable;value=true;true=TGrid-markable;false=%]
+    [%_include=tholos/tholos_callback.php;_function_name=_eqs;param=prop_selectable;value=true;true=TGrid-selectable;false=%]
+    [%_include=tholos/tholos_callback.php;_function_name=_eqs;param=prop_transposed;value=true;true=TGrid-transposed;false=</>%]"
+    [%_include=tholos/tholos_callback.php;_function_name=_eqs;param=prop_transposed;value=true;true=;false=data-resizable-columns-id="$prop_id-$prop_name-$prop_scrollable"%]
+    id="$prop_id"
+    [%_include=tholos/tholos_callback.php;_function_name=_eqs;param=prop_markerbatchid;value=true;true=;false=data-marker-batch-id="$prop_markerbatchid" data-marker-strategy="$prop_markerstrategy" data-scroll-to-marker="$prop_scrolltomarker"%]>
 <thead class="right-border bordered-gray">
   $columnHeadItems
 </thead>

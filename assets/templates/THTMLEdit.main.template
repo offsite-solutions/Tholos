@@ -1,26 +1,38 @@
 ## <!--  HTMLEdit $prop_name -->
-<div class="form-group [%_include=tholos/tholos_callback.php;_function_name=_eqs;param=prop_required;value=true;true=required;false=%]">
+<div class="row mb-1 $prop_rowclass [%_include=tholos/tholos_callback.php;_function_name=_eqs;param=prop_visible;value=true;false=hidden;true=</>%]" style="$prop_rowstyle">
   $templateabs_tholos__TComponent_properties
-  <label id="$prop_id-label" for="$prop_id" class="control-label $templateabs_tholos__TFormControl_labelsize">$templateabs_tholos__TComponent_labelicon</label>
+  <label id="$prop_id-label" for="$prop_id" class="col-form-label $templateabs_tholos__TFormControl_labelsize [%_include=tholos/tholos_callback.php;_function_name=_eqs;param=prop_required;value=true;true=required;false=%]">$templateabs_tholos__TComponent_labelicon</label>
+
   <div class="$templateabs_tholos__TFormControl_controlsize">
-  <textarea id="$prop_id" $templateabs_tholos__TComponent_basedata
-    name="$prop_name" class="form-control $prop_class" cols="$prop_cols" rows="$prop_rows~='6';" placeholder="$prop_placeholder"
-    [%_include=tholos/tholos_callback.php;_function_name=_eqs;param=prop_readonly;value=true;true=readonly="readonly";false=</>%]
-    [%_include=tholos/tholos_callback.php;_function_name=_eqs;param=prop_enabled;value=false;true=disabled="disabled";false=</>%]
-    [%_include=tholos/tholos_callback.php;_function_name=_eqs;param=prop_required;value=true;true=required;false=</>%]
-    [%_include=tholos/tholos_callback.php;_function_name=_eqs;param=prop_maxlength;value=;true=</>;false=maxlength="$prop_maxlength"%]
-    >$prop_value</textarea>
+    <textarea id="$prop_id" $templateabs_tholos__TComponent_basedata
+      name="$prop_name" class="form-control $prop_class" cols="$prop_cols" rows="$prop_rows~='6';" placeholder="$prop_placeholder"
+      [%_include=tholos/tholos_callback.php;_function_name=_eqs;param=prop_readonly;value=true;true=readonly="readonly";false=</>%]
+      [%_include=tholos/tholos_callback.php;_function_name=_eqs;param=prop_enabled;value=false;true=disabled="disabled";false=</>%]
+      [%_include=tholos/tholos_callback.php;_function_name=_eqs;param=prop_required;value=true;true=required;false=</>%]
+      [%_include=tholos/tholos_callback.php;_function_name=_eqs;param=prop_maxlength;value=;true=</>;false=maxlength="$prop_maxlength"%]
+      >$prop_value</textarea>
     $templateabs_tholos__TControl_helpblock
   </div>
 </div>
 $templateabs_tholos__TControl_baseevents
 $templateabs_tholos__TControl_customevents
-<script>
-    $("textarea#$prop_id").ckeditor({
+<script type="text/javascript" nonce="$Tholos_nonce">
+  window['tholos_rte_$prop_id'] = new RichTextEditor("#$prop_id",
+    $.extend(tholos_rte_config,{
+      toolbar: "$prop_htmleditortype~='advanced';",
+      inlineStyles: app_rte_inlineStyles,
+      paragraphStyles: app_rte_paragraphStyles,
+      imageStyles: app_rte_imageStyles,
+      linkStyles: app_rte_linkStyles,
+      htmlTemplates: app_rte_htmlTemplates
+    })
+  );
+
+/*    $("textarea#$prop_id").ckeditor({
       language: "$lang",
       customConfig: '/tholos/assets/js/ckeditor-assets/config.js',
       toolbar:'$prop_htmleditortype~='advanced';',
       readonly:[%_include=tholos/tholos_callback.php;_function_name=_eqs;param=prop_enabled;value=false;true=false;false=true%]
-    });
+    }); */
 </script>
 ## <!-- /HTMLEdit $prop_name -->

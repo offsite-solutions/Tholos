@@ -4,7 +4,7 @@ $templateabs_tholos__TComponent_properties
   class="TFormContainer $prop_class">$content
 </$prop_containertype>
 $templateabs_tholos__TContainer_baseevents
-<script>
+<script type="text/javascript" nonce="$Tholos_nonce">
 <%FUNC%
 _include=tholos/tholos_callback.php
 _function_name=_eqs

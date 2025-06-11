@@ -1,1 +1,4 @@
-<span id="$prop_id-helpblock" style="display:none" class="help-block"></span>
+## BS 5
+## <span id="$prop_id-helpblock" class="form-text" [%_include=tholos/tholos_callback.php;_function_name=_eqs;param=prop_helptext;value=;true=style="display:none";false=</>%]>
+##    $prop_helptext
+## </span>

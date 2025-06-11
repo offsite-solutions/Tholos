@@ -1,1 +1,1 @@
-<li class="$pageactive"><a href="javascript:TGrid_setPage('$prop_id', '$pagenum');">$pagenumtext</a></li>
+<li class="page-item $pageactive"><a class="page-link" href="javascript:TGrid_setPage('$prop_id', '$pagenum');">$pagenumtext</a></li>

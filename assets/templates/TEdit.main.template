@@ -1,7 +1,7 @@
 ## <!--  Edit $prop_name -->
-<div class="form-group [%_include=tholos/tholos_callback.php;_function_name=_eqs;param=prop_required;value=true;true=required;false=%]">
+<div class="row mb-1 $prop_rowclass [%_include=tholos/tholos_callback.php;_function_name=_eqs;param=prop_visible;value=true;false=hidden;true=</>%]" style="$prop_rowstyle">
   $templateabs_tholos__TComponent_properties
-  <label id="$prop_id-label" for="$prop_id" class="control-label $templateabs_tholos__TFormControl_labelsize">$templateabs_tholos__TComponent_labelicon</label>
+  <label id="$prop_id-label" for="$prop_id" class="col-form-label $templateabs_tholos__TFormControl_labelsize [%_include=tholos/tholos_callback.php;_function_name=_eqs;param=prop_required;value=true;true=required;false=%] $prop_labelclass">$templateabs_tholos__TComponent_labelicon</label>
   <div class="$templateabs_tholos__TFormControl_controlsize">
   <input id="$prop_id" $templateabs_tholos__TComponent_basedata
     name="$prop_name" type="$prop_htmlinputtype~='text';" placeholder="$prop_placeholder"
@@ -18,5 +18,5 @@
 </div>
 $templateabs_tholos__TControl_baseevents
 $templateabs_tholos__TControl_customevents
-[%_include=tholos/tholos_callback.php;_function_name=_eqs;param=event_onenterkeypressed;value=;false=<script>$("#$prop_id").on("keydown",function(e){13==e.which&&$event_onenterkeypressed})</script>;true=</>%]
+[%_include=tholos/tholos_callback.php;_function_name=_eqs;param=event_onenterkeypressed;value=;false=<script type="text/javascript" nonce="$Tholos_nonce">$("#$prop_id").on("keydown",function(e){13==e.which&&$event_onenterkeypressed})</script>;true=</>%]
 ## <!-- /Edit $prop_name -->

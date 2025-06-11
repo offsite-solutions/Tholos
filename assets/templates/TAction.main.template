@@ -1,4 +1,4 @@
-## <!--  TAction $prop_name -->
-[%_include=tholos/tholos_callback.php;_function_name=_eqs;param=prop_helpindex;value=;true=;false=<div style="margin-bottom: 10px"><a href="javascript:Tholos.showHelp('$prop_helpindex')" class="btn btn-xs btn-sky tholos-help"><i class="fa fa-question-circle"></i>   [:HELP.BUTTON,Súgó:]</a></div>%]
+## BS5 <!--  TAction $prop_name -->
+## [%_include=tholos/tholos_callback.php;_function_name=_eqs;param=prop_helpindex;value=;true=;false=<div style="margin-bottom: 10px"><a href="javascript:Tholos.showHelp('$prop_helpindex')" class="btn btn-xs btn-sky tholos-help"><i class="fa fa-question-circle"></i>   [:HELP.BUTTON,Súgó:]</a></div>%]
 $content
 ## <!-- /TAction $prop_name -->

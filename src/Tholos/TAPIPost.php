@@ -71,7 +71,7 @@
             }
             /* @var TDBParam $param */
             $param->initValue($this);
-            $boundParameters[$param->getProperty('ParameterName')] = $this->StringToJSON($param->getProperty('DBValue', ''), $param->getProperty('DataType'));
+            $boundParameters[$param->getProperty("BindParameterName",$param->getProperty('ParameterName'))] = $this->StringToJSON($param->getProperty('DBValue', ''), $param->getProperty('DataType'));
           }
           
           $boundParametersJSON = json_encode($boundParameters, JSON_THROW_ON_ERROR);

@@ -4,7 +4,7 @@ $templateabs_tholos__TComponent_properties
 </div>
 <button id="$prop_id-refresh" class="btn btn-circle btn-xs" type="button" onclick="Tholos.eventHandler('$prop_id','$prop_id','TDiagramEditor','refresh','')"><i class="fa fa-refresh"></i></button>
 
-<script>
+<script type="text/javascript" nonce="$Tholos_nonce">
 
 jsPlumb.ready(function () {
     ## We will create the diagram in the global window scope so avoid using var

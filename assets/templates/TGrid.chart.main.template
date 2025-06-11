@@ -1,7 +1,7 @@
 <div id="chart_$prop_id" class="subscribers-$prop_id" style="display:none;position:relative;margin: auto;height:100vh;width:80vw">
 <div><canvas id="canvas-$prop_id" style="border: 1px solid #aaaaaa;"></canvas></div>
 </div>
-<script>
+<script type="text/javascript" nonce="$Tholos_nonce">
 <%FUNC%
 funcjob=eqs
 param=chartDatasetsOptions

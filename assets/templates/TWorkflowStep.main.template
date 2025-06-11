@@ -1,6 +1,6 @@
 $templateabs_tholos__TComponent_properties
 <input id="$prop_id" type="hidden" $templateabs_tholos__TComponent_basedata>
-<script>
+<script type="text/javascript" nonce="$Tholos_nonce">
 <%FUNC%
 _include=tholos/tholos_callback.php
 _function_name=_eqs

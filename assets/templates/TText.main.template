@@ -1,10 +1,10 @@
-## <!--  Text $prop_name -->
-<div class="form-group [%_include=tholos/tholos_callback.php;_function_name=_eqs;param=prop_required;value=true;true=required;false=%]">
+## BS5 <!--  Text $prop_name -->
+<div class="row mb-1">
   $templateabs_tholos__TComponent_properties
 
-  <label id="$prop_id-label" for="$prop_id" class="control-label $templateabs_tholos__TFormControl_labelsize">$templateabs_tholos__TComponent_labelicon</label>
+  <label id="$prop_id-label" for="$prop_id" class="col-form-label $templateabs_tholos__TFormControl_labelsize [%_include=tholos/tholos_callback.php;_function_name=_eqs;param=prop_required;value=true;true=required;false=%]">$templateabs_tholos__TComponent_labelicon</label>
 
-  <div class="$templateabs_tholos__TFormControl_controlsize">
+  <div class="$templateabs_tholos__TFormControl_controlsize p-3">
   <textarea id="$prop_id" $templateabs_tholos__TComponent_basedata
     name="$prop_name" class="form-control $prop_class" cols="$prop_cols" rows="$prop_rows~='6';" placeholder="$prop_placeholder"
     [%_include=tholos/tholos_callback.php;_function_name=_eqs;param=prop_readonly;value=true;true=readonly="readonly";false=</>%]
@@ -22,7 +22,7 @@ _include=tholos/tholos_callback.php
 _function_name=_eqs
 param=prop_autosize
 value=true
-true=<script>autosize($("#$prop_id"));</script>
+true=<script type="text/javascript" nonce="$Tholos_nonce">autosize($("#$prop_id"));</script>
 false=
 %FUNC%>
 ## <!-- /Text $prop_name -->

@@ -1,0 +1,26 @@
+## <!--  Column $prop_name -->
+$templateabs_tholos__TComponent_properties
+<div   id="$prop_id"
+       [%_include=tholos/tholos_callback.php;_function_name=_eqs;param=prop_attributes;value=;true=</>;false= $prop_attributes%]
+     class="$prop_class"
+     style="
+[%_include=tholos/tholos_callback.php;_function_name=_eqs;param=prop_position;value=;true=</>;false=position: $prop_position%];
+[%_include=tholos/tholos_callback.php;_function_name=_eqs;param=prop_positionLeft;value=;true=</>;false=left: $prop_positionLeft%];
+[%_include=tholos/tholos_callback.php;_function_name=_eqs;param=prop_positionTop;value=;true=</>;false=top: $prop_positionTop%];
+[%_include=tholos/tholos_callback.php;_function_name=_eqs;param=prop_positionWidth;value=;true=</>;false=width: $prop_positionWidth%];
+[%_include=tholos/tholos_callback.php;_function_name=_eqs;param=prop_positionHeight;value=;true=</>;false=height: $prop_positionHeight%];
+[%_include=tholos/tholos_callback.php;_function_name=_eqs;param=prop_positionRight;value=;true=</>;false=right: $prop_positionRight%];
+[%_include=tholos/tholos_callback.php;_function_name=_eqs;param=prop_positionBottom;value=;true=</>;false=bottom: $prop_positionBottom%];
+<%FUNC%
+_include=tholos/tholos_callback.php
+_function_name=_eqs
+param=prop_visible
+value=false
+true=display:none;
+false=
+%FUNC%>
+$prop_style
+     ">$content
+</div>
+$templateabs_tholos__TContainer_baseevents
+## <!-- /Column $prop_name -->

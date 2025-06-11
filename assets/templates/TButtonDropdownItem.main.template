@@ -1,0 +1,45 @@
+$templateabs_tholos__TComponent_properties
+<li><a id="$prop_id" $templateabs_tholos__TComponent_basedata href="<%FUNC%
+_include=tholos/tholos_callback.php
+_function_name=_eqs
+param=event_onclick
+value=
+true>>=
+<%FUNC%
+_include=tholos/tholos_callback.php
+_function_name=_eqs
+param=prop_action_route
+value=
+false=$prop_action_route
+true=$prop_url
+%FUNC%>
+<<
+false=javascript:void(0);
+%FUNC%>" [%_include=tholos/tholos_callback.php;_function_name=_eqs;param=prop_linktarget;value=;true=;false=target="$prop_linktarget"%]
+         [%_include=tholos/tholos_callback.php;_function_name=_eqs;param=prop_style;value=;true=;false=style="$prop_style"%]
+         class="dropdown-item $prop_class"
+         [%_include=tholos/tholos_callback.php;_function_name=_eqs;param=prop_helptext;value=;true=;false=title="$prop_helptext"%]
+>$templateabs_tholos__TComponent_labelicon</a></li><%FUNC%
+_include=tholos/tholos_callback.php
+_function_name=_eqs
+param=event_onclick
+value=
+true=
+false=<script type="text/javascript" nonce="$Tholos_nonce">$("#$prop_id").on('mouseup', function (e) { if( e.which <= 2 || e.altKey) { Tholos.setClickType(e.altKey?2:e.which); e.preventDefault(); $event_onclick }});</script>
+%FUNC%>
+<%FUNC%
+_include=tholos/tholos_callback.php
+_function_name=_eqs
+param=event_onconfirmtrue
+value=
+true=
+false=<script type="text/javascript" nonce="$Tholos_nonce">$("#$prop_id").on('onConfirmTrue', function () { $event_onconfirmtrue });</script>
+%FUNC%>
+<%FUNC%
+_include=tholos/tholos_callback.php
+_function_name=_eqs
+param=event_onconfirmfalse
+value=
+true=
+false=<script type="text/javascript" nonce="$Tholos_nonce">$("#$prop_id").on('onConfirmFalse', function () { $event_onconfirmfalse });</script>
+%FUNC%>

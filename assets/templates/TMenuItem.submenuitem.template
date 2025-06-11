@@ -1,0 +1,35 @@
+$templateabs_tholos__TComponent_properties<div class="menu-item">
+  <a id="$prop_id" $templateabs_tholos__TComponent_basedata
+    class="menu-link $prop_class"
+    href="<%FUNC%
+_include=tholos/tholos_callback.php
+_function_name=_eqs
+param=event_onclick
+value=
+true>>=
+<%FUNC%
+_include=tholos/tholos_callback.php
+_function_name=_eqs
+param=prop_action_route
+value=
+false=$prop_action_route
+true=$prop_url
+%FUNC%>
+<<
+false=javascript:void(0);
+%FUNC%>" [%_include=tholos/tholos_callback.php;_function_name=_eqs;param=prop_linktarget;value=;true=;false=target="$prop_linktarget"%]
+         [%_include=tholos/tholos_callback.php;_function_name=_eqs;param=prop_style;value=;true=;false=style="$prop_style"%]
+         [%_include=tholos/tholos_callback.php;_function_name=_eqs;param=prop_helptext;value=;true=;false=title="$prop_helptext"%]
+         >
+    <span class="menu-bullet"><span class="bullet bullet-dot"></span></span>
+    <span class="menu-title">$prop_label</span>
+  </a>
+</div>
+<%FUNC%
+_include=tholos/tholos_callback.php
+_function_name=_eqs
+param=event_onclick
+value=
+true=
+false=<script type="text/javascript" nonce="$Tholos_nonce">$("#$prop_id").on('mouseup', function (e) { if( e.which <= 2 || e.altKey) { Tholos.setClickType(e.altKey?2:e.which); e.preventDefault(); $event_onclick }});</script>
+%FUNC%>

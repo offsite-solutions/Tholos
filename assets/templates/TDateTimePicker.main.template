@@ -1,34 +1,26 @@
-## <!--  Datetimepicker $prop_name -->
-<div class="form-group [%_include=tholos/tholos_callback.php;_function_name=_eqs;param=prop_required;value=true;true=required;false=%]">
+## BS5 <!--  Datetimepicker $prop_name https://getdatepicker.com/6/options/ -->
+<div class="row mb-1 $prop_rowclass [%_include=tholos/tholos_callback.php;_function_name=_eqs;param=prop_visible;value=true;false=hidden;true=</>%]" style="$prop_rowstyle">
   $templateabs_tholos__TComponent_properties
-  <label id="$prop_id-label" for="$prop_id" class="control-label $templateabs_tholos__TFormControl_labelsize">$prop_label</label>
+  <label id="$prop_id-label" for="$prop_id" class="col-form-label $templateabs_tholos__TFormControl_labelsize [%_include=tholos/tholos_callback.php;_function_name=_eqs;param=prop_required;value=true;true=required;false=%] $prop_labelclass">$prop_label</label>
 
-  <div class="$prop_class $templateabs_tholos__TFormControl_controlsize">
-    <div id="$prop_id-dtpicker" class="input-group date">
+  <div class="$templateabs_tholos__TFormControl_controlsize">
+    <div id="$prop_id-dtpicker" class="input-group" data-td-target-input="nearest" data-td-target-toggle="nearest">
       <input
-        [%_include=tholos/tholos_callback.php;_function_name=_eqs;param=prop_readonly;value=true;true=readonly="readonly";false=</>%]
-        [%_include=tholos/tholos_callback.php;_function_name=_eqs;param=prop_enabled;value=false;true=disabled="disabled";false=</>%]
         id="$prop_id"
         $templateabs_tholos__TComponent_basedata
-        name="$prop_name" type="text"
+        name="$prop_name"
+        type="text"
         value="$prop_value"
-        class="form-control"
-        data-date-format="$prop_jsdatetimeformat"
-        data-date-locale="$lang"
-        data-date-side-by-side="$prop_sidebyside~='true';"
-        data-date-stepping="$prop_stepping~='1';"
-        data-date-calendar-weeks="$prop_showcalendarweeks~='true';"
-        data-date-allow-input-toggle="$prop_showonfocus~='false';"
-        data-date-show-close="$prop_showclose~='false';"
-        data-date-show-clear="$prop_showclear~='false';"
-        data-date-show-today-button="$prop_showtoday~='false';"
-        [%_include=tholos/tholos_callback.php;_function_name=_eqs;param=prop_disableddaysofweek;value=;false=data-date-days-of-week-disabled="$prop_disableddaysofweek";true=</>%]
-        [%_include=tholos/tholos_callback.php;_function_name=_eqs;param=prop_disabledhours;value=;false=data-date-disabled-hours="$prop_disabledhours";true=</>%]
+        class="form-control $prop_class"
+        autocomplete="off"
+        data-td-target="#$prop_id-dtpicker"
         [%_include=tholos/tholos_callback.php;_function_name=_eqs;param=prop_required;value=true;true=required;false=%]
+        [%_include=tholos/tholos_callback.php;_function_name=_eqs;param=prop_readonly;value=true;true=readonly="readonly";false=</>%]
+        [%_include=tholos/tholos_callback.php;_function_name=_eqs;param=prop_enabled;value=false;true=disabled="disabled";false=</>%]
         />
 
-      <span class="input-group-addon">
-        <span class="[%_include=tholos/tholos_callback.php;_function_name=_eqs;param=prop_calendaricon;value=;false=$prop_calendaricon;true=glyphicon glyphicon-calendar%]"></span>
+      <span class="input-group-text" data-td-target="#$prop_id-dtpicker" data-td-toggle="datetimepicker">
+        <i class="[%_include=tholos/tholos_callback.php;_function_name=_eqs;param=prop_calendaricon;value=;false=$prop_calendaricon;true=fa fa-calendar-days%] fs-2"><span class="path1"></span><span class="path2"></span></i>
       </span>
     </div>
     $templateabs_tholos__TControl_helpblock
@@ -36,14 +28,28 @@
 </div>
 $templateabs_tholos__TControl_baseevents
 $templateabs_tholos__TControl_customevents
-<script type="text/javascript">
-  $(function () {
-    $('#$prop_id-dtpicker').datetimepicker( {
-      widgetPositioning: {
-        horizontal: '$prop_poshorizontal~='auto';',
-        vertical: '$prop_posvertical~='auto';'
-      }
-    });
+<script type="text/javascript" nonce="$Tholos_nonce">
+  TholosDPArray['$prop_id'] = new tempusDominus.TempusDominus(document.getElementById('$prop_id-dtpicker'), {
+    allowInputToggle: $prop_showonfocus~='false';, defaultDate: undefined, debug: false,
+    container: [%_include=tholos/tholos_callback.php;_function_name=_eqs;param=TholosGUIModalScope;value=;true=undefined;false=document.getElementById('$TholosGUIModalScope')%],
+    display: {
+      viewMode: 'calendar', toolbarPlacement: 'bottom', keepOpen: false, inline: false, theme: 'auto',
+      sideBySide: ('$prop_jsdatetimeformat'.indexOf(":")>=0 && $prop_sidebyside~='true';),
+      calendarWeeks: $prop_showcalendarweeks~='true';,
+      buttons: { today: $prop_showtoday~='false';, clear: $prop_showclear~='false';, close: $prop_showclose~='false'; },
+      components: { calendar: ('$prop_jsdatetimeformat'.indexOf("y")>=0), date: true, month: true, year: true, decades: true, clock: ('$prop_jsdatetimeformat'.indexOf("HH")>=0), hours: true, minutes: true, seconds: ('$prop_jsdatetimeformat'.indexOf("ss")>=0) }
+    },
+    restrictions: {
+      minDate: undefined, maxDate: undefined, disabledDates: [], enabledDates: [], daysOfWeekDisabled: [$prop_disableddaysofweek],
+      disabledTimeIntervals: [], disabledHours: [$prop_disabledhours], enabledHours: []
+    },
+    localization: $.extend(TDLocalization_$lang, { format: '$prop_jsdatetimeformat' }),
+    keepInvalid: false, multipleDates: false, multipleDatesSeparator: '; ', promptTimeOnDateChange: false, promptTimeOnDateChangeTransitionDelay: 200,
+    stepping: $prop_stepping~='1';,
+    useCurrent: false
   });
+  if ('$prop_readonly'=='true') {
+    TholosDPArray['$prop_id'].disable();
+  }
 </script>
 ## <!-- /Datetimepicker $prop_name -->

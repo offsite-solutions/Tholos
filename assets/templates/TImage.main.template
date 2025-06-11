@@ -3,7 +3,9 @@ $templateabs_tholos__TComponent_properties
 <img id="$prop_id" $templateabs_tholos__TComponent_basedata
 [%_include=tholos/tholos_callback.php;_function_name=_eqs;param=prop_value;value=;false=src="$prop_value";true=</>%]
 [%_include=tholos/tholos_callback.php;_function_name=_eqs;param=prop_alternatetext;value=;false=alt="$prop_alternatetext";true=</>%]
-class="$prop_class [%_include=tholos/tholos_callback.php;_function_name=_eqs;param=prop_responsive;value=true;true=img-responsive;false=%]"
+class="$prop_class [%_include=tholos/tholos_callback.php;_function_name=_eqs;param=prop_responsive;value=true;true=img-fluid;false=%]"
+width="$prop_imagewidth"
+height="$prop_imageheight"
 >
 <%FUNC%
 _include=tholos/tholos_callback.php
@@ -17,8 +19,8 @@ _include=tholos/tholos_callback.php
 _function_name=_eqs
 param=prop_middleclick
 value=true
-true=<script>$("#$prop_id").on('mouseup', function (e) { if( e.which <= 2 || e.altKey) { Tholos.setClickType(e.altKey?2:e.which); e.preventDefault(); $event_onclick }});</script>
-false=<script>$("#$prop_id").on('click', function () { $event_onclick });</script>
+true=<script type="text/javascript" nonce="$Tholos_nonce">$("#$prop_id").on('mouseup', function (e) { if( e.which <= 2 || e.altKey) { Tholos.setClickType(e.altKey?2:e.which); e.preventDefault(); $event_onclick }});</script>
+false=<script type="text/javascript" nonce="$Tholos_nonce">$("#$prop_id").on('click', function () { $event_onclick });</script>
 %FUNC%>
 <<
 %FUNC%>

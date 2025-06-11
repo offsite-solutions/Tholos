@@ -1,9 +1,9 @@
-<div class="modal fade" id="details_$prop_id" tabindex="-1" role="dialog" >
-  <div class="modal-dialog">
+<div class="modal modal-lg fade" id="details_$prop_id" tabindex="-1" role="dialog" >
+  <div class="modal-dialog modal-dialog-scrollable">
     <div class="modal-content">
-      <div class="modal-header label-primary">
-        <button type="button" class="close" data-dismiss="modal"><span >&times;</span><span class="sr-only">X</span></button>
-        <h4 class="modal-title">[:GRID.DETAILS.TITLE,Részletek:]</h4>
+      <div class="modal-header label-primary bg-info">
+        <h5 class="modal-title text-white">[:GRID.DETAILS.TITLE,Részletek:]</h5>
+        <button type="button" class="btn-close text-white" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
 <form action="$prop_route$prop_name/" method="get" id="details_helper_$prop_id" style="display: none;" onsubmit="return false;">
   <input type="hidden" name="TGrid_todo_" value="details">

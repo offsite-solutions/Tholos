@@ -387,6 +387,11 @@
           $this->renderID = Eisodos::$parameterHandler->getParam('Tholos_renderID');
         }
         
+        if (Eisodos::$parameterHandler->eq('Tholos.nonce', '')) {
+          Eisodos::$parameterHandler->setParam('Tholos.nonce', Eisodos::$parameterHandler->getParam('random') . Eisodos::$parameterHandler->getParam('random') . Eisodos::$parameterHandler->getParam('random'), true);
+        }
+        Eisodos::$parameterHandler->setParam('Tholos_nonce', Eisodos::$parameterHandler->getParam('Tholos.nonce'));
+        
         $this->BoolFalse = explode(',', strtolower(Eisodos::$parameterHandler->getParam('Tholos.BoolFalse')));
         $this->BoolTrue = explode(',', strtolower(Eisodos::$parameterHandler->getParam('Tholos.BoolTrue')));
         
@@ -474,6 +479,14 @@
      * Destructor
      */
     public function __destruct() {
+    }
+    
+    /**
+     * @param ?TComponent $sender
+     * @return void
+     */
+    public function regenerateJSInit(?TComponent $sender):void {
+      Tholos::$c->addParam("TholosApplicationInit", Tholos::$c->getTemplate("tholos/application.jsinit", array(), false), true);  // application initiaclization javascript
     }
     
     /**
@@ -916,7 +929,7 @@
      */
     public function checkRole(TComponent $sender_, bool $throwException_ = false, bool $generateRedirect_ = false): bool {
       
-      if ($this->roleManager === NULL) {
+      if (isset($this->roleManager)) {
         return true;
       }
       $functionCode = $sender_->getProperty('FunctionCode', '');
@@ -1002,13 +1015,19 @@
      * @param integer $component_id_ Database ID of the parent component under which all child components will be rendered
      * @param bool $childOnly_ Render only the child components
      * @return string Rendered content
-     * @throws Exception
+     * @throws Exception|Throwable
      */
     public function render(?object $sender_, int $component_id_, bool $childOnly_ = false): string {
       
       try {
         Tholos::$app->trace('BEGIN', $this);
         Tholos::$app->trace('Component ID = ' . $component_id_, $this);
+        
+        $renderThis=$this->findComponentByID($component_id_);
+        if ($renderThis->selfRenderer) {
+          Tholos::$app->trace('END', $this);
+          return $renderThis->render($sender_,'');
+        }
         
         $content = '';
         foreach ($this->components as $component_id => $component) {
@@ -1110,6 +1129,12 @@
         Tholos::$app->debug('Component initialization phase');
         
         $this->init();
+        
+        if (Tholos::$c->getParam('Tholos.CSPEnabled', 'false') == "true") {
+          header("Content-Security-Policy: script-src 'self' 'nonce-" . Tholos::$c->getParam('Tholos.Nonce') . "' ".Tholos::$c->getParam('Tholos.CSPJavascriptHosts', '').';' .
+            //               " style-src 'self' 'unsafe-inline' 'nonce-".Tholos::$c->getParam("Tholos.Nonce")."' https://fonts.gstatic.com https://*.googleapis.com; ".
+            " font-src 'self' ".Tholos::$c->getParam('Tholos.CSPFontHosts', '').';');
+        }
         
         if (Eisodos::$parameterHandler->neq('REDIRECT', '')) {
           

@@ -1,18 +1,29 @@
 ## <!--  LOV $prop_name -->
-<div class="form-group [%_include=tholos/tholos_callback.php;_function_name=_eqs;param=prop_required;value=true;true=required;false=%]">
+<div class="row mb-1 $prop_rowclass [%_include=tholos/tholos_callback.php;_function_name=_eqs;param=prop_visible;value=true;false=hidden;true=</>%]" style="$prop_rowstyle">
   $templateabs_tholos__TComponent_properties
 
-  <label id="$prop_id-label" for="$prop_id" class="control-label $templateabs_tholos__TFormControl_labelsize">$templateabs_tholos__TComponent_labelicon</label>
+  <label id="$prop_id-label" for="$prop_id" class="col-form-label $templateabs_tholos__TFormControl_labelsize [%_include=tholos/tholos_callback.php;_function_name=_eqs;param=prop_required;value=true;true=required;false=%]">$templateabs_tholos__TComponent_labelicon</label>
 
   <div class="$templateabs_tholos__TFormControl_controlsize">
-  <select style="width: 90%"
+  <select
     id="$prop_id"
     $templateabs_tholos__TComponent_basedata
-    name="$prop_name" class="form-control $prop_class [%_include=tholos/tholos_callback.php;_function_name=_eqs;param=prop_master;value=;false=subscribers-$tholos_renderid$_$prop_master;true=%]"
-    [%_include=tholos/tholos_callback.php;_function_name=_eqs;param=prop_readonly;value=true;true=readonly="readonly";false=</>%]
+    name="$prop_name"
+    data-control="select2"
+    class="form-select $prop_class [%_include=tholos/tholos_callback.php;_function_name=_eqs;param=prop_master;value=;false=subscribers-$tholos_renderid$_$prop_master;true=%]"
+    data-width="90%"
+    <%FUNC%
+    _include=tholos/tholos_callback.php
+    _function_name=_eqs
+    param=TholosGUIModalScope
+    value=
+    true=
+    false=data-dropdown-parent="#$TholosGUIModalScope"
+    %FUNC%>
+    [%_include=tholos/tholos_callback.php;_function_name=_eqs;param=prop_readonly;value=true;true=disabled="disabled";false=</>%]
     [%_include=tholos/tholos_callback.php;_function_name=_eqs;param=prop_multiselect;value=true;true=multiple="multiple";false=</>%]
     [%_include=tholos/tholos_callback.php;_function_name=_eqs;param=prop_maxsellength;value=;false=data-maximum-selection-length="$prop_maxsellength";true=</>%]
-    [%_include=tholos/tholos_callback.php;_function_name=_eqs;param=prop_placeholder;value=;false=data-placeholder="$prop_placeholder";true=data-placeholder=""%]
+    data-placeholder="$prop_placeholder~='&nbsp;';"
     [%_include=tholos/tholos_callback.php;_function_name=_eqs;param=prop_diacritics;value=false;false=data-diacritics="true";true=</>%]
     [%_include=tholos/tholos_callback.php;_function_name=_eqs;param=prop_enabled;value=false;true=disabled="disabled";false=</>%]
     [%_include=tholos/tholos_callback.php;_function_name=_eqs;param=prop_required;value=true;true=data-allow-clear="false" required;false=data-allow-clear="true"%]

@@ -1,7 +1,7 @@
 ## <!--  MapSource $prop_name -->
 $templateabs_tholos__TComponent_properties
 <input id="$prop_id" type="hidden" class="[%_include=tholos/tholos_callback.php;_function_name=_eqs;param=prop_master;value=;false=subscribers-$tholos_renderid$_$prop_master;true=%]" />
-<script>
+<script type="text/javascript" nonce="$Tholos_nonce">
 $("#$prop_id-props").data("parentmap","$content");
 $("#$prop_id").on("masterDataChange", function (e, edata) {
 Tholos.eventHandler("$prop_id", "$prop_id", "TMapSource", "refresh", "$prop_route");

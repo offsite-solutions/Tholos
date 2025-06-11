@@ -33,6 +33,8 @@ window.onblur = function () {
 };
 var TholosLastClickType = "left";
 
+var TholosDPArray = {};
+
 var Tholos = {
   methods: {
     TComponent_parseControlParameters: function (sender, target, route, eventData) {
@@ -141,6 +143,11 @@ var Tholos = {
       Tholos.setData(target, "enabled", eventData.enabled);
       return true;
     },
+    TTimer_setEnabled: function (sender, target, route, eventData) {
+      Tholos.trace("TTimer_setEnabled()", sender, target, route, eventData);
+      Tholos.setData(target, "enabled", eventData.enabled);
+      return true;
+    },
     TRadio_setEnabled: function (sender, target, route, eventData) {
       Tholos.trace("TRadio_setEnabled()", sender, target, route, eventData);
       var o = Tholos.getObject(target);
@@ -165,12 +172,13 @@ var Tholos = {
     TControl_setRequired: function (sender, target, route, eventData) {
       Tholos.trace("TControl_setRequired()", sender, target, route, eventData);
       var o = Tholos.getObject(target);
+      var d = Tholos.getData(target);
       if (eventData.required === "true") {
         o.attr("required", "");
-        o.closest(".form-group").addClass("required");
+        o.closest('div.row').find("#"+d.id+"-label").addClass("required");
       } else {
         o.prop("required", false);
-        o.closest(".form-group").removeClass("required");
+        o.closest('div.row').find("#"+d.id+"-label").removeClass("required");
       }
       Tholos.setData(target, "required", eventData.required);
       return true;
@@ -203,11 +211,12 @@ var Tholos = {
       Tholos.trace("TFormControl_setVisible()", sender, target, route, eventData);
       var o = Tholos.getObject(target);
       if (eventData.visible === "true") {
-        o.closest(".form-group").show();
+        o.closest("div.row").show();
+        o.closest("div.row").css('display','flex');
         Tholos.trace("TFormControl_setVisible: Triggering onShow");
         o.trigger("onShow");
       } else {
-        o.closest(".form-group").hide();
+        o.closest("div.row").hide();
         Tholos.trace("TFormControl_setVisible: Triggering onHide");
         o.trigger("onHide");
       }
@@ -218,11 +227,11 @@ var Tholos = {
       Tholos.trace("TGrid_setVisible()", sender, target, route, eventData);
       var o = Tholos.getObject(target);
       if (eventData.visible === "true") {
-        o.find("#container_" + o.name).show();
+        $("#container_" + target).show();
         Tholos.trace("TGrid_setVisible: Triggering onShow");
         o.trigger("onShow");
       } else {
-        o.find("#container_" + o.name).hide();
+        $("#container_" + target).hide();
         Tholos.trace("TGrid_setVisible: Triggering onHide");
         o.trigger("onHide");
       }
@@ -248,6 +257,21 @@ var Tholos = {
       Tholos.trace("TControl_getVisible()", sender, target, route, eventData);
       var o = Tholos.getObject(target);
       return (o.is(":visible") ? "true" : "false");
+    },
+    TLabel_setVisible: function (sender, target, route, eventData) {
+      Tholos.trace("TLabel_setVisible()", sender, target, route, eventData);
+      var o = Tholos.getObject(target);
+      if (eventData.visible === "true") {
+        o.show();
+        Tholos.trace("TLabel_setVisible(): Triggering onShow");
+        o.trigger("onShow");
+      } else {
+        o.hide();
+        Tholos.trace("TLabel_setVisible(): Triggering onHide");
+        o.trigger("onHide");
+      }
+      Tholos.setData(target, "visible", eventData.visible);
+      return true;
     },
     TImage_setVisible: function (sender, target, route, eventData) {
       Tholos.trace("TImage_setVisible()", sender, target, route, eventData);
@@ -287,6 +311,44 @@ var Tholos = {
         o.prop("readonly", false);
       }
       Tholos.setData(target, "readonly", eventData.readonly);
+      return true;
+    },
+    TCheckbox_setReadOnly: function (sender, target, route, eventData) {
+      Tholos.trace("TCheckbox_setReadOnly()", sender, target, route, eventData);
+      var o = Tholos.getObject(target);
+      if (eventData.readonly === "true") {
+        o.attr("disabled", "disabled");
+      } else {
+        o.prop("disabled", false);
+      }
+      Tholos.setData(target, "readonly", eventData.readonly);
+      return true;
+    },
+    TDateTimePicker_setReadOnly: function (sender, target, route, eventData) {
+      Tholos.trace("TDateTimePicker_setValue()", sender, target, route, eventData);
+      var o = Tholos.getObject(target);
+      var d = Tholos.getData(target);
+      if (eventData.readonly === "true") {
+        o.attr("readonly", "readonly");
+        TholosDPArray[d.id].disable();
+      } else {
+        o.prop("readonly", false);
+        TholosDPArray[d.id].enable();
+      }
+      Tholos.setData(target, "readonly", eventData.readonly);
+      return true;
+    },
+    THTMLEdit_setReadOnly: function (sender, target, route, eventData) {
+      Tholos.trace("THTMLEdit_setReadOnly()", sender, target, route, eventData);
+      var o = Tholos.getObject(target);
+      var d = Tholos.getData(target);
+      if (eventData.readonly === "true") {
+        o.attr("readonly", "readonly");
+      } else {
+        o.prop("readonly", false);
+      }
+      Tholos.setData(target, "readonly", eventData.readonly);
+      window['tholos_rte_'+d.id].setReadOnly(eventData.readonly==="true");
       return true;
     },
     TLOV_setReadOnly: function (sender, target, route, eventData) {
@@ -337,7 +399,7 @@ var Tholos = {
       Tholos.trace("TStatic_setValue()", sender, target, route, eventData);
       var o = Tholos.getObject(target);
       Tholos.setData(target, "value", eventData.value);
-      o.parent().find('p').html(eventData.value);
+      o.parent().find('.form-control-plaintext').html(eventData.value);
       Tholos.trace("TStatic_setValue(): Triggering change");
       o.val(eventData.value).trigger("change");
       return true;
@@ -361,6 +423,12 @@ var Tholos = {
       TGrid_updateSelection(target, eventData.value, true);
       Tholos.eventHandler(sender, target, 'TGrid', 'refresh', route, eventData);
     },
+    TGrid_setMarkerValue: function (sender, target, route, eventData) {
+      Tholos.trace("TGrid_setMarkerValue()", sender, target, route, eventData);
+      var o = Tholos.getObject(target);
+      Tholos.setData(target, "markerValue", eventData.value);
+      TGrid_updateMarkerValue(target, eventData.markerValue);
+    },
     TImage_setValue: function (sender, target, route, eventData) {
       Tholos.trace("TImage_setValue()", sender, target, route, eventData);
       var o = Tholos.getObject(target);
@@ -372,11 +440,11 @@ var Tholos = {
       Tholos.trace("TDateTimePicker_setValue()", sender, target, route, eventData);
       var o = Tholos.getObject(target);
       var d = Tholos.getData(target);
-      //console.log(d.jsdatetimeformat);
-      //console.log('datetimepicker:'+moment(eventData.value,'YYYY-MM-DD HH:mm:ss').format(d.jsdatetimeformat));
-      Tholos.setData(target, "value", moment(eventData.value, 'YYYY-MM-DD HH:mm:ss').format(d.jsdatetimeformat));
+      Tholos.setData(target, "value", moment(eventData.value, 'YYYY-MM-DD HH:mm:ss').format(d.jsdatetimeformat.replace('yyyy', 'YYYY').replace('dd', 'DD')));
+      // TODO test from callback
+      TholosDPArray[d.id].dates.setValue(tempusDominus.DateTime.convert(moment(eventData.value, 'YYYY-MM-DD HH:mm:ss').toDate()));
       Tholos.trace("TControl_setValue(): Triggering change");
-      o.val(moment(eventData.value, 'YYYY-MM-DD HH:mm:ss').format(d.jsdatetimeformat)).trigger("change");
+      o.val(moment(eventData.value, 'YYYY-MM-DD HH:mm:ss').format(d.jsdatetimeformat.replace('yyyy', 'YYYY').replace('dd', 'DD'))).trigger("change");
       return true;
     },
     TControl_setErrorMsg: function (sender, target, route, eventData) {
@@ -583,6 +651,14 @@ var Tholos = {
         item.value = eventData[k];
         urldata.push(item);
       }
+      // BS5 - select2 fix
+      var o = Tholos.getObject(target);
+      if (!eventData.TholosGUIModalScope && o.closest("div.modal").length > 0) {
+        var item = {};
+        item.name = 'TholosGUIModalScope';
+        item.value = o.closest("div.modal").attr("id");
+        urldata.push(item);
+      }
       if (!eventData.sourceurl) {
         var d = Tholos.getData(target);
         eventData.sourceurl = d.sourceurl;
@@ -595,7 +671,7 @@ var Tholos = {
         Tholos.getObject(target).html("");
         Tholos.getObject(target).trigger("onContentCleared", []);
       }
-      Tholos.pageLoader(true, (eventData.loader !== undefined && eventData.loader) ? true : false);
+      Tholos.pageLoader((eventData.loaderdisabled !== undefined && !eventData.loaderdisabled) ? true : false, (eventData.loader !== undefined && eventData.loader) ? true : false);
       $.ajaxq(ajaxqueueid,
         {
           url: eventData.sourceurl,
@@ -632,6 +708,7 @@ var Tholos = {
       if (eventData.setTitle) {
         o.find(".modal-header .modal-title").html(eventData.setTitle);
       }
+      eventData['TholosGUIModalScope'] = target; // BS5
       Tholos.eventHandler(sender, target, "TModal", "show", route, eventData);
       Tholos.eventHandler(sender, target + " .modal-body", "TContainer", "loadContent", route, eventData);
     },
@@ -923,7 +1000,7 @@ var Tholos = {
           minimumResultsForSearch: Infinity
         });
       } else {
-        o.select2();
+        o.select2({ });
       }
 
 
@@ -1023,6 +1100,13 @@ var Tholos = {
       Tholos.trace("TForm_submit()", sender, target, route, eventData);
       var d = Tholos.getData(target);
       var o = Tholos.getObject(target);
+      if (!d || !o) {
+        return false;
+      }
+      if (!document.getElementById(d.id).checkValidity()) {
+        document.getElementById(d.id).classList.add('was-validated');
+        return false;
+      };
       var urldata = [];
       for (var k in eventData) {
         var item = {};
@@ -1386,21 +1470,24 @@ var Tholos = {
       }
     }
     ,
-    TMapSource_handleMarkers: function (map, mapSource) {
+    TMapSource_handleMarkers: async function (map, mapSource) {
       Tholos.trace("TMapSource_handleMarkers()", map, mapSource);
+      const {AdvancedMarkerElement} = await google.maps.importLibrary("marker");
       var md = Tholos.getData(map);
       var msd = Tholos.getData(mapSource);
       var mo = Tholos.getObject(map);
+      await window["mapInitialized_" + md.name];
       var mapObj = window["map_" + md.name];
+      window.currentInfoWindow=null;
 
-      mapObj.hideInfoWindows();
+//      mapObj.hideInfoWindows();
       Tholos.trace("TMapSource_handleMarkers(): Removing all markers related to MapSource " + msd.name);
-      var markerList = jQuery.extend(true, {}, mapObj.markers);
-      $.each(markerList, function (markerIdx, markerObj) {
-        if (markerObj.tholos && markerObj.tholos.mapSourceName === msd.name) {
-          mapObj.removeMarker(markerObj);
-        }
+      $.each(mapObj.tholos[msd.name], function(idx, markers) {
+        $.each(markers, function(idx2, marker) {
+          marker.element.setMap(null);
       });
+      });
+      mapObj.tholos[msd.name]=[];
 
       if (!msd.visible) {
         return "";
@@ -1418,11 +1505,10 @@ var Tholos = {
           },
           success: function (data) {
 
-            // TODO: battika - JSON hiba kezeles
             var markers = [];
             $.each(JSON.parse(data.data), function (markerIdx, markerData) {
-              var marker = {
-                tholos: {
+              const marker = {};
+              marker.tholos= {
                   map: map,
                   mapSource: mapSource,
                   mapName: md.name,
@@ -1432,27 +1518,49 @@ var Tholos = {
                   listSource: msd.listsource,
                   listSourceRoute: msd.listsourceroute,
                   id: markerData[msd.fieldid]
-                },
-                lat: markerData[msd.fieldlatitude],
-                lng: markerData[msd.fieldlongitude],
-                click: function (e) {
-                  Tholos.trace("TMap_refresh(): Triggering onMarkerClick", e.tholos);
-                  mo.trigger("onMarkerClick", e.tholos);
-                }
               };
-
-              if (msd.zindex) {
-                marker.zIndex = msd.zindex;
-              }
-
+              marker.infowindow = new google.maps.InfoWindow({
+                content: markerData[msd.fieldinfowindowcontent]
+              });
+              if (msd.fieldinfowindowzindex) {
+                marker.infowindow.setZIndex(markerData[msd.fieldinfowindowzindex]);
+                }
               if (msd.fieldicon) {
-                marker.icon = markerData[msd.fieldicon];
+                marker.img = document.createElement("img");
+                marker.img.src = markerData[msd.fieldicon];
+              } else marker.img = null;
+              marker.element = new AdvancedMarkerElement({
+                map: window["map_" + md.name],
+                position: {lat: +markerData[msd.fieldlatitude], lng: +markerData[msd.fieldlongitude]},
+                content: marker.img
+              });
+              if (msd.fieldtitle) {
+                marker.element.title = markerData[msd.fieldtitle];
+                const h=document.createElement("h3");
+                h.innerHTML=markerData[msd.fieldtitle];
+                marker.infowindow.setHeaderContent(h);
+                marker.tholos.title = markerData[msd.fieldtitle];
               }
-
-              if (msd.fieldopacity) {
-                marker.opacity = markerData[msd.fieldopacity];
+              if (msd.zindex) {
+                marker.element.zIndex = msd.zindex;
               }
+              marker.element.addListener('click', ((infowindow, element, tholos) => {
+                return () => {
+                  if (window.currentInfoWindow != null) {
+                    window.currentInfoWindow.close();
+              }
+                  infowindow.open({
+                    anchor: element,
+                    map: window["map_" + md.name],
+                  });
+                  window.currentInfoWindow = infowindow;
+                  Tholos.trace("TMap_refresh(): Triggering onMarkerClick", tholos);
+                  mo.trigger("onMarkerClick", tholos);
+                };
+              })(marker.infowindow, marker.element, marker.tholos));
 
+              markers.push(marker);
+              /*
               if (msd.fieldtitle) {
                 marker.title = markerData[msd.fieldtitle];
                 marker.tholos.title = markerData[msd.fieldtitle];
@@ -1462,23 +1570,11 @@ var Tholos = {
                 marker.label = markerData[msd.fieldlabel];
               }
 
-              if (msd.fieldzindex) {
-                marker.zIndex = markerData[msd.fieldzindex];
-              }
-
-              if (msd.fieldinfowindowcontent) {
-                marker.infoWindow = {
-                  content: markerData[msd.fieldinfowindowcontent]
-                };
-
-                if (msd.fieldinfowindowzindex) {
-                  marker.infowindow.zindex = markerData[msd.fieldinfowindowzindex];
-                }
-              }
-
-              markers.push(marker);
+                */
             });
-            window["map_" + md.name].addMarkers(markers);
+
+            mapObj.tholos[msd.name].push(markers);
+
             Tholos.setData(mapSource, "refreshing", false);
             Tholos.eventHandler(mapSource, map, "TMap", "handleFitZoom", "", "");
           },
@@ -1488,19 +1584,18 @@ var Tholos = {
         });
     }
     ,
-    TMapSource_handlePolylines: function (map, mapSource) {
+    TMapSource_handlePolylines: async function (map, mapSource) {
       Tholos.trace("TMapSource_handlePolylines()", map, mapSource);
       var md = Tholos.getData(map);
       var msd = Tholos.getData(mapSource);
+      await window["mapInitialized_" + md.name];
       var mapObj = window["map_" + md.name];
 
       Tholos.trace("TMapSource_handlePolylines(): Removing all polylines related to MapSource " + msd.name);
-      var polylineList = jQuery.extend(true, {}, mapObj.polylines);
-      $.each(polylineList, function (polylineIdx, polylineObj) {
-        if (polylineObj.tholos && polylineObj.tholos.mapSourceName === msd.name) {
-          mapObj.removePolyline(polylineObj);
-        }
+      $.each(mapObj.tholos[msd.name], function(idx, oldPolyline) {
+        oldPolyline.setMap(null);
       });
+      mapObj.tholos[msd.name]=[];
 
       if (!msd.visible) {
         return "";
@@ -1518,28 +1613,26 @@ var Tholos = {
           },
           success: function (data) {
 
-            var path = [];
+            var pathCoords = [];
 
             $.each(JSON.parse(data.data), function (polyIdx, polyData) {
-              path.push([polyData[msd.fieldlatitude], polyData[msd.fieldlongitude]]);
+              pathCoords.push({lat: +polyData[msd.fieldlatitude], lng: +polyData[msd.fieldlongitude]});
             });
 
-            if (!path || path.length === 0) return true;
+            if (!pathCoords || pathCoords.length === 0) return true;
 
-            var polyline = mapObj.drawPolyline({
-              path: path,
+            var polyline = new google.maps.Polyline({
+              path: pathCoords,
               strokeColor: (msd.strokecolor ? msd.strokecolor : '#333580'),
               strokeOpacity: (msd.strokeopacity ? msd.strokeopacity : 0.5),
-              strokeWeight: (msd.strokeweight ? msd.strokeweight : 5),
-              mapSourceName: msd.name
+              strokeWeight: (msd.strokeweight ? msd.strokeweight : 5)
             });
 
-            for (var i = mapObj.polylines.length - 1; i >= 0; i--) {
-              if (mapObj.polylines[i] === polyline) {
-                mapObj.polylines[i]["tholos"] = {"mapSourceName": msd.name};
-                break;
-              }
-            }
+            polyline.setMap(mapObj);
+
+            // registering the new object on Map's tholos object
+            mapObj.tholos[msd.name].push(polyline);
+
             Tholos.setData(mapSource, "refreshing", false);
             Tholos.eventHandler(mapSource, map, "TMap", "handleFitZoom", "", "");
           },
@@ -1550,19 +1643,18 @@ var Tholos = {
 
     }
     ,
-    TMapSource_handlePolygons: function (map, mapSource) {
+    TMapSource_handlePolygons: async function (map, mapSource) {
       Tholos.trace("TMapSource_handlePolygons()", map, mapSource);
       var md = Tholos.getData(map);
       var msd = Tholos.getData(mapSource);
+      await window["mapInitialized_" + md.name];
       var mapObj = window["map_" + md.name];
 
       Tholos.trace("TMapSource_handlePolygons(): Removing all polygons related to MapSource " + msd.name);
-      var polygonList = jQuery.extend(true, {}, mapObj.polygons);
-      $.each(polygonList, function (polygonIdx, polygonObj) {
-        if (polygonObj.tholos && polygonObj.tholos.mapSourceName === msd.name) {
-          mapObj.removePolygon(polygonObj);
-        }
+      $.each(mapObj.tholos[msd.name], function(idx, oldPolygon) {
+        oldPolygon.setMap(null);
       });
+      mapObj.tholos[msd.name]=[];
 
       if (!msd.visible) {
         return "";
@@ -1585,24 +1677,28 @@ var Tholos = {
 
               if (!path || path.length === 0) return true;
 
+              const pathCoords = JSON.parse('[]');
+              $.each(path, function (i, e) {
               if (msd.swapareacoords) {
-                $.each(path, function (i, e) {
-                  var tmp = e[0];
-                  e[0] = e[1];
-                  e[1] = tmp;
-                  path[i] = e;
+                  pathCoords.push({lat: e[1], lng: e[0]});
+                } else {
+                  pathCoords.push({lat: e[0], lng: e[1]});
+                }
                 });
-              }
 
-              var polygon = mapObj.drawPolygon({
-                paths: path,
+              const polygon = new google.maps.Polygon({
+                paths: pathCoords,
                 strokeColor: (msd.strokecolor ? msd.strokecolor : '#97ADBA'),
                 strokeOpacity: (msd.strokeopacity ? msd.strokeopacity : 1),
                 strokeWeight: (msd.strokeweight ? msd.strokeweight : 3),
                 fillColor: (msd.fillcolor ? msd.fillcolor : '#BBD8E9'),
                 fillOpacity: (msd.fillopacity ? msd.fillopacity : 0.6),
-                tholos: {"mapSourceName": msd.name}
               });
+
+              polygon.setMap(mapObj);
+
+              // registering the new object on Map's tholos object
+              mapObj.tholos[msd.name].push(polygon);
 
               Tholos.setData(mapSource, "refreshing", false);
               Tholos.eventHandler(mapSource, map, "TMap", "handleFitZoom", "", "");
@@ -1614,14 +1710,15 @@ var Tholos = {
         });
     }
     ,
-    TMap_refresh: function (sender, target, route, eventData) {
+    TMap_refresh: async function (sender, target, route, eventData) {
       Tholos.trace("TMap_refresh()", sender, target, route, eventData);
       var d = Tholos.getData(target);
       var ob = Tholos.getObject(target);
+      await window["mapInitialized_" + d.name];
       var o = window["map_" + d.name];
 
       if (o.tholos) {
-        $.each(o.tholos, function (mapSourceName, mapSourceType) {
+        $.each(o.tholos, function (mapSourceName, obj) {
           var msrc = Tholos.findComponentId(mapSourceName);
           if (msrc) {
             var dmsrc = Tholos.getData(msrc);
@@ -1643,13 +1740,14 @@ var Tholos = {
       }
     }
     ,
-    TMap_fitZoom: function (sender, target, route, eventData) {
+    TMap_fitZoom: async function (sender, target, route, eventData) {
       Tholos.trace("TMap_fitZoom()", sender, target, route, eventData);
       var d = Tholos.getData(target);
+      await window["mapInitialized_" + d.name];
       var o = window["map_" + d.name];
       var refreshing = false;
       if (o.tholos) {
-        $.each(o.tholos, function (mapSourceName, mapSourceType) {
+        $.each(o.tholos, function (mapSourceName, obj) {
           var msrc = Tholos.findComponentId(mapSourceName);
           if (msrc) {
             var dmsrc = Tholos.getData(msrc);
@@ -1661,15 +1759,42 @@ var Tholos = {
           Tholos.trace("TMap_fitZoom() - Some of the map sources are still loading. Cancelling TMap_fitZoom()");
           return false;
         }
+      } else {
+        return false;
       }
       Tholos.trace("TMap_fitZoom() - all map sources have finished loading. Running fitZoom()");
-      o.fitZoom();
+
+      const {LatLngBounds} = await google.maps.importLibrary("core");
+      const mapbounds = new google.maps.LatLngBounds();
+      let boundExists = false;
+
+      if (o.tholos) {
+        $.each(o.tholos, function (mapSourceName, markers) {
+          var msrc = Tholos.findComponentId(mapSourceName);
+          if (msrc) {
+            var dmsrc = Tholos.getData(msrc);
+            if (dmsrc.mapsourcetype=='Markers') {
+              $.each(markers[0], function(idx2, marker) {
+                mapbounds.extend(marker.element.position);
+                boundExists = true;
+              });
+            }
+          }
+        });
+      }
+
+      if (boundExists) {
+        o.setCenter(mapbounds.getCenter());
+        o.fitBounds(mapbounds);
+      }
+
       return true;
     }
     ,
-    TMap_setCenter: function (sender, target, route, eventData) {
+    TMap_setCenter: async function (sender, target, route, eventData) {
       Tholos.trace("TMap_setCenter()", sender, target, route, eventData);
       var d = Tholos.getData(target);
+      await window["mapInitialized_" + d.name];
       var o = window["map_" + d.name];
       var ed = {};
       $.each(eventData, function (n, v) {
@@ -1942,15 +2067,20 @@ var Tholos = {
   pageLoader: function (state, immediate, force) {
     if (force === undefined) force = false;
     if (state === true) {
-      if (force) $(".loading-container").removeClass("loading-inactive");
+      if (force) {
+        // $(".loading-container").removeClass("loading-inactive");
+        KTApp.showPageLoading();
+      }
       else
         tholosPageLoaderTimer = setTimeout(function () {
-            if ($.active > 0) $(".loading-container").removeClass("loading-inactive");
+            if ($.active > 0) {
+              KTApp.showPageLoading();
+            }
           }, (immediate ? 0 : 3000)
         );
     } else {
       if (typeof tholosPageLoaderTimer !== "undefined") clearTimeout(tholosPageLoaderTimer);
-      $(".loading-container").addClass("loading-inactive");
+      KTApp.hidePageLoading();
     }
   },
 
@@ -2177,6 +2307,18 @@ var Tholos = {
   }
 };
 
+function gui_ajax_spinner() {
+  if ($('#gui_ajax_spinner').length) {
+      if ($.active>0) {
+        $('#gui_ajax_spinner').show();
+      } else {
+        $('#gui_ajax_spinner').hide();
+        KTApp.hidePageLoading();
+      }
+      setTimeout(function () { gui_ajax_spinner(); },500);
+  }
+}
+
 // Ajax redirect header handling
 $(document).ready(function () {
 
@@ -2193,5 +2335,7 @@ $(document).ready(function () {
       window.location = request.getResponseHeader('X-Tholos-Redirect');
     }
   });
+
+  setTimeout(function () { gui_ajax_spinner(); },500);
 
 });

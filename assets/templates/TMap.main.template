@@ -1,90 +1,122 @@
-## <!--  Map $prop_name -->
+## BS5 <!--  Map $prop_name -->
 $templateabs_tholos__TComponent_properties
-<div
+<div class="card"><div class="card-body p-1"><div
 id="$prop_id"
 class="$prop_class"
+style="width: $prop_mapwidth; height: $prop_mapheight; $prop_style"
 >
-</div>
-<script>
-  $(document).ready(function(){
-    ## We will create the map in the global window scope so avoid using var
-    map_$prop_name = new GMaps({
-      width: "$prop_mapwidth",
-      height: "$prop_mapheight",
-      el: '#$prop_id',
-      lat: $prop_centerlatitude,
-      lng: $prop_centerlongitude,
-      zoom: $prop_zoomlevel,
-      zoomControl : $prop_zoomcontrol,
-      zoomControlOpt: {
-        style : 'SMALL',
-        position: '$prop_zoomcontrolposition'
-      },
-      panControl : $prop_pancontrol,
-      streetViewControl : $prop_streetviewcontrol,
-      mapTypeControl: $prop_maptypecontrol,
-      overviewMapControl: false,
-      [%_include=tholos/tholos_callback.php;_function_name=_eqs;param=prop_markerclusterer;value=true;true=markerClusterer: function(map_$prop_name) {return new MarkerClusterer(map_$prop_name)};false=%]
-    });
+</div></div></div>
+## https://developers.google.com/maps/documentation/javascript/adding-a-google-map#maps_add_map-javascript
+## https://developers.google.com/maps/documentation/javascript/reference#MapOptions
 
-    map_$prop_name["tholos"] = {
-      $content
-    };
+<script type="text/javascript" nonce="$Tholos_nonce">
+  // Define a global promise to indicate when the map is initialized
+  window.mapInitialized_$prop_name = new Promise(async (resolve, reject) => {
+    try {
+      // Ensure the DOM is fully loaded
+      $(document).ready(async function() {
 
-    if ($prop_refreshonload === true) {
-      Tholos.eventHandler("$prop_id", "$prop_id", "TMap", "refresh", "$prop_route");
-    }
+        // Import necessary Google Maps libraries
+        const { Map } = await google.maps.importLibrary("maps");
 
-    if ($prop_showrefresh === true) {
-        map_$prop_name.addControl({
-          position: "right_top",
-          content: '<i class="fa fa-refresh"></i>&nbsp;[:TMAP.REFRESH,Frissítés:]',
-          style: {
-            margin: "5px",
-            padding: "2px 6px",
-            border: "solid 1px #717B87",
-            background: "#fff"
+        // Initialize the map and assign it to a global variable
+        window.map_$prop_name = new Map(document.getElementById("$prop_id"), {
+          mapId: "map_$prop_name",
+          center: { lat: $prop_centerlatitude, lng: $prop_centerlongitude },
+          zoom: $prop_zoomlevel,
+          zoomControl: $prop_zoomcontrol,
+          zoomControlOptions: {  // Corrected from 'zoomControlOpt' to 'zoomControlOptions'
+            style: google.maps.ZoomControlStyle.SMALL,  // Use the Google Maps enum for style
+            position: google.maps.ControlPosition.$prop_zoomcontrolposition  // Ensure this corresponds to a valid ControlPosition
           },
-          events: {
-            click: function(){
-              Tholos.eventHandler("$prop_id", "$prop_id", "TMap", "refresh", "$prop_route");
-            }
-          }
+          // panControl is deprecated; consider removing or using panControlOptions if necessary
+          streetViewControl: $prop_streetviewcontrol,
+          mapTypeControl: $prop_maptypecontrol,
+          overviewMapControl: false,
+          gestureHandling: "greedy"
         });
-    }
 
-    if ($prop_showfitzoom === true) {
-        map_$prop_name.addControl({
-          position: "right_top",
-          content: '<i class="fa fa-arrows-alt"></i>&nbsp;[:TMAP.FITZOOM,Nagyítás:]',
-          style: {
-            margin: "5px",
-            padding: "2px 6px",
-            border: "solid 1px #717B87",
-            background: "#fff"
-          },
-          events: {
-            click: function(){
-              Tholos.eventHandler("$prop_id", "$prop_id", "TMap", "fitZoom", "$prop_route");
-            }
-          }
-        });
-    }
+        // Attach additional properties or data to the map
+        window.map_$prop_name["tholos"] = {
+          $content
+        };
 
-    if ($prop_showlegend === true)
-    {
-      map_$prop_name.addControl({
-        position: "right_bottom",
-        content: '$partialMenu',
-        style: {
-          margin: '5px',
-          padding: '2px 6px',
-          border: 'solid 1px #717B87',
-          background: '#fff'
+        // Resolve the promise indicating the map has been initialized
+        resolve(window.map_$prop_name);
+
+        // Handle map refresh on load if required
+        if ($prop_refreshonload === true) {
+          Tholos.eventHandler("$prop_id", "$prop_id", "TMap", "refresh", "$prop_route");
         }
+
+        // Add a refresh control to the map if required
+        if ($prop_showrefresh === true) {
+          // Create a div element for the refresh control
+          const refreshControlDiv = document.createElement('div');
+          refreshControlDiv.innerHTML = '<div><i class="fa fa-refresh"></i>&nbsp;[:TMAP.REFRESH,Frissítés:]</div>';
+
+          // Apply styles to the refresh control
+          refreshControlDiv.style.margin = "5px";
+          refreshControlDiv.style.padding = "2px 6px";
+          refreshControlDiv.style.border = "solid 1px #717B87";
+          refreshControlDiv.style.background = "#fff";
+          refreshControlDiv.style.cursor = "pointer";
+
+          // Add a click event listener to handle refresh actions
+          refreshControlDiv.addEventListener('click', function() {
+            Tholos.eventHandler("$prop_id", "$prop_id", "TMap", "refresh", "$prop_route");
+          });
+
+          // Add the refresh control to the specified position on the map
+          window.map_$prop_name.controls[google.maps.ControlPosition.RIGHT].push(refreshControlDiv);
+        }
+
+        if ($prop_showfitzoom === true) {
+          // Create a div element for the refresh control
+          const fitZoomDiv = document.createElement('div');
+          fitZoomDiv.innerHTML = '<i class="fa fa-arrows-alt"></i>&nbsp;[:TMAP.FITZOOM,Nagyítás:]';
+
+          // Apply styles to the refresh control
+          fitZoomDiv.style.margin = "5px";
+          fitZoomDiv.style.padding = "2px 6px";
+          fitZoomDiv.style.border = "solid 1px #717B87";
+          fitZoomDiv.style.background = "#fff";
+          fitZoomDiv.style.cursor = "pointer";
+
+          // TODO fitZoom helyett fitBounds van, jelenleg nem csinal semmit
+          fitZoomDiv.addEventListener('click', function() {
+            Tholos.eventHandler("$prop_id", "$prop_id", "TMap", "fitZoom", "$prop_route");
+          });
+
+          // Add the refresh control to the specified position on the map
+          window.map_$prop_name.controls[google.maps.ControlPosition.RIGHT].push(fitZoomDiv);
+        }
+
+        if ($prop_showlegend === true)
+        {
+          const legendDiv = document.createElement('div');
+          legendDiv.innerHTML='$partialMenu';
+
+          legendDiv.style.margin = "5px";
+          legendDiv.style.padding = "2px 6px";
+          legendDiv.style.border = "solid 1px #717B87";
+          legendDiv.style.background = "#fff";
+
+          // Add the refresh control to the specified position on the map
+          window.map_$prop_name.controls[google.maps.ControlPosition.RIGHT].push(legendDiv);
+        }
+
+
       });
+    } catch (error) {
+      // If any error occurs during initialization, reject the promise
+      console.error("Error initializing the map:", error);
+      reject(error);
     }
   });
 </script>
+<!--
+  $content
+-->
 $partialHead
 ## <!-- /Map $prop_name -->

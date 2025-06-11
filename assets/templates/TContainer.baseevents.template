@@ -1,4 +1,4 @@
-<script>
+<script type="text/javascript" nonce="$Tholos_nonce">
 <%FUNC%
 _include=tholos/tholos_callback.php
 _function_name=_eqs
@@ -11,8 +11,8 @@ _include=tholos/tholos_callback.php
 _function_name=_eqs
 param=prop_middleclick
 value=true
-true=<script>$("#$prop_id").on('mouseup', function (e) { if( e.which <= 2 || e.altKey) { Tholos.setClickType(e.altKey?2:e.which); e.preventDefault(); $event_onclick }});</script>
-false=<script>$("#$prop_id").on('click', function () { $event_onclick });</script>
+true=$("#$prop_id").on('mouseup', function (e) { if( e.which <= 2 || e.altKey) { Tholos.setClickType(e.altKey?2:e.which); e.preventDefault(); $event_onclick }});
+false=$("#$prop_id").on('click', function () { $event_onclick });
 %FUNC%>
 <<
 %FUNC%>
@@ -56,6 +56,6 @@ _function_name=_eqs
 param=event_onReady
 value=
 true=
-false=$(document).ready( $event_onReady );
+false=$(document).ready( function () { $event_onReady } );
 %FUNC%>
 </script>
