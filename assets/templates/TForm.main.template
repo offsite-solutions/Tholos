@@ -20,7 +20,16 @@ _function_name=_eqs
 param=prop_validator
 value=
 true=
-false=$(document).ready( function() { Tholos.eventHandler('$prop_id','$prop_id','TForm','validate','',{"FORM_STATE":"INIT"}); } );
+false>>=
+<%FUNC%
+_include=tholos/tholos_callback.php
+_function_name=_eqs
+param=prop_validateOnInit
+value=true
+false=
+true=$(document).ready( function() { Tholos.eventHandler('$prop_id','$prop_id','TForm','validate','',{"FORM_STATE":"INIT"}); } );
+%FUNC%>
+<<
 %FUNC%>
 <%FUNC%
 _include=tholos/tholos_callback.php

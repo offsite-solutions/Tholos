@@ -1,16 +1,3 @@
-/*
- =============================================================================
- Copyright (c) 2015 Offsite Solutions Kft.
- =============================================================================
- $Id:: tholos_application.js 1844 2022-04-28 19:41:23Z laszlo.banfalvi      $:
-
- $Description: Tholos Application Javascript
-
- $History:
- 2015.08.14 Bánfalvi László Létrehozás
- =============================================================================
- */
-
 jQuery.expr[':'].regex = function (elem, index, match) {
   var matchParams = match[3].split(','),
     validLabels = /^(data|css):/,
@@ -2002,7 +1989,25 @@ var Tholos = {
 
   handleJSONError: function (response, textStatus, errorThrown) {
     Tholos.error("handleJSONError()", arguments);
-    alert("JSONError!");
+    toastr.options = {
+      positionClass: 'toastr-bottom-right',
+      extendedTimeOut: 0, //1000;
+      timeOut: 5000,
+      closeButton: true
+    };
+    let errorText='';
+    if (response.status === 401) {
+      errorText='Nincs bejelentkezve!';
+      let redirect=this.getResponseHeader("x-redirect-location");
+      if (redirect!=='') {
+        document.location=redirect;
+      }
+    } else if (response.status === 403) {
+      errorText='Nincs joga a funkció eléréséhez!'
+    } else if (response.status === 500) {
+      errorText='Szerver hiba (500)!'
+    }
+    toastr.error(errorText);
   },
 
   getComponentName: function (componentId) {
@@ -2290,7 +2295,7 @@ var Tholos = {
   },
 
   error: function () {
-    console.log(arguments);
+    console.error(arguments);
   },
 
   showHelp: function (id) {

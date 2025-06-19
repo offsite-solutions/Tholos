@@ -52,7 +52,7 @@
           Tholos::$app->trace('Genereting CSRF Token', $this);
           Tholos::$c->addParam('csrf_token_value', md5(Tholos::$c->getParam('Tholos_sessionID')), true);
         } else {
-          Tholos::$c->addParam('csrf_token_value', Eisodos::$utils->safe_array_value($_COOKIE, $this->getProperty('CSRFCookieName', ''), ''), true);
+          Tholos::$c->addParam('csrf_token_value', Eisodos::$utils->safe_array_value($_COOKIE, $this->getProperty('CSRFCookieName', ''), '', true), true);
         }
         Tholos::$c->addParam('csrf_header_name', $this->getProperty('CSRFHeaderName', 'anti-csrf-token'), true);
       }
@@ -70,20 +70,16 @@
           $ApacheRequestHeaders = apache_request_headers();
         }
         // new login
-        if (Eisodos::$utils->safe_array_value($ApacheRequestHeaders, $this->getProperty('NewLoginHeader', ''), '') != ''
-          && Eisodos::$utils->safe_array_value($ApacheRequestHeaders, $this->getProperty('NewLoginHeader', ''), '') != $this->getProperty('LoginID', '')
+        if (Eisodos::$utils->safe_array_value($ApacheRequestHeaders, $this->getProperty('NewLoginHeader', ''), '', true) != ''
+          && Eisodos::$utils->safe_array_value($ApacheRequestHeaders, $this->getProperty('NewLoginHeader', ''), '', true) != $this->getProperty('LoginID', '')
         ) {
-          Tholos::$app->trace('New login detected: ' . Eisodos::$utils->safe_array_value($ApacheRequestHeaders, $this->getProperty('NewLoginHeader', ''), ''), $this);
-          $this->login(Eisodos::$utils->safe_array_value($ApacheRequestHeaders, $this->getProperty('NewLoginHeader', ''), ''));
-          Tholos::$c->addParam('Logged_In_User_name', Eisodos::$utils->safe_array_value($ApacheRequestHeaders, $this->getProperty('UsernameHeader', ''), ''), true);
+          Tholos::$app->trace('New login detected: ' . Eisodos::$utils->safe_array_value($ApacheRequestHeaders, $this->getProperty('NewLoginHeader', ''), '', true), $this);
+          $this->login(Eisodos::$utils->safe_array_value($ApacheRequestHeaders, $this->getProperty('NewLoginHeader', ''), '', true));
+          Tholos::$c->addParam('Logged_In_User_name', Eisodos::$utils->safe_array_value($ApacheRequestHeaders, $this->getProperty('UsernameHeader', ''), '', true), true);
         }
       }
       
       $this->setProperty('LoginID', Eisodos::$parameterHandler->getParam('LoginID'));
-      
-      if (Eisodos::$parameterHandler->eq("LoginID", "") && Eisodos::$parameterHandler->eq("Tholos.TRoleManager.DebugSessionLost","T")) {
-        Eisodos::$parameterHandler->writeErrorLog(null, 'NO_LOGIN_ALERT');
-      }
       
       $functionCodes_ = Eisodos::$parameterHandler->getParam('TRoleManager.FunctionCodes');
       if (!$functionCodes_ == '') {
@@ -148,10 +144,10 @@
     /**
      * @param $functionCode_
      * @param bool $throwException_
-     * @param bool $generateRedirect_
+     * @param bool $rootLevel_
      * @return bool
      */
-    public function checkRole($functionCode_, bool $throwException_ = false, bool $generateRedirect_ = false): bool {
+    public function checkRole($functionCode_, bool $throwException_ = false, bool $rootLevel_ = false): bool {
       if ($this->getProperty('Enabled', 'true') === 'false') {
         return (true);
       }
@@ -170,7 +166,7 @@
         $hasRole = @eval('return (' . $roleString . ')');
       }
       
-      if ($generateRedirect_
+      if ($rootLevel_
         && !$hasRole
         && Eisodos::$parameterHandler->neq('IsAJAXRequest', 'T')
         && Eisodos::$parameterHandler->neq('LoginID', '')
@@ -179,7 +175,8 @@
         Tholos::$app->trace('Redirect to ' . $this->getProperty('AccessDeniedURL', ''));
       }
       
-      if ($generateRedirect_
+      // User nincs bejelentkezve es nem AJAX hivast kuldd es van login URL megadva (sajat kezelesu a login)
+      if ($rootLevel_
         && !$hasRole
         && Eisodos::$parameterHandler->neq('IsAJAXRequest', 'T')
         && Eisodos::$parameterHandler->eq('LoginID', '')
@@ -188,7 +185,37 @@
           Eisodos::$render->storeCurrentURL('URLBeforeLogin');
         }
         Eisodos::$parameterHandler->setParam('REDIRECT', $this->getProperty('LoginURL', ''));
-        Tholos::$app->trace('Redirect to ' . $this->getProperty('LoginURL', ''));
+        Tholos::$app->debug('(No login) Redirect to ' . $this->getProperty('LoginURL', ''));
+      }
+      
+      // User nincs bejelentkezve es nem AJAX hivast kuldd es nincs login URL megadva
+      // - OUATH mogott vagyunk, az be van jelentkezve (mert beengedett ide), de itt valoszinuleg lejart a session
+      if ($rootLevel_
+        && !$hasRole
+        && Tholos::$c->neq('IsAJAXRequest', 'T')
+        && Tholos::$c->eq('LoginID', '')
+        && $this->getProperty('SessionExpiredURL', '') != '') { // ha nincs bejelentkezve
+        Tholos::$c->addParam('REDIRECT', $this->getProperty('SessionExpiredURL', ''));
+        Tholos::$app->debug('(Session expired) Redirect to ' . $this->getProperty('SessionExpiredURL', ''));
+      }
+      
+      // AJAX hivas - nincs bejelentkezve
+      if ($rootLevel_
+          && !$hasRole
+          && Tholos::$c->eq('IsAJAXRequest', 'T')
+          && Tholos::$c->eq('LoginID', '')) {
+          header('HTTP/1.1 401 Unathorized');
+          header('X-Tholos-Security-Info: '.$functionCode_);
+          header('X-Redirect-Location: '.$this->getProperty('LoginURL', $this->getProperty('SessionExpiredURL', Eisodos::$parameterHandler->getParam('MainAddress'))));
+      }
+      
+      // AJAX hivas - be van jelentkezve, nincs joga
+      if ($rootLevel_
+          && !$hasRole
+          && Tholos::$c->eq('IsAJAXRequest', 'T')
+          && Tholos::$c->neq('LoginID', '')) {
+          Tholos::$app->debug('User no access for function ['.$functionCode_.']');
+          header('HTTP/1.1 403 Forbidden');
       }
       
       if (!$hasRole && $throwException_) {
@@ -221,11 +248,11 @@
           $ApacheRequestHeaders = apache_request_headers();
         }
         
-        if (Eisodos::$utils->safe_array_value($ApacheRequestHeaders, $this->getProperty("FunctionCodesHeader", ''), '') != '') {
+        if (Eisodos::$utils->safe_array_value($ApacheRequestHeaders, $this->getProperty("FunctionCodesHeader", ''), '',true) != '') {
           if ($this->getProperty('FunctionCodesHeaderType', '') == 'JSON') {
-            $this->setProperty('FunctionCodes', json_decode(Eisodos::$utils->safe_array_value($ApacheRequestHeaders, $this->getProperty('FunctionCodesHeader', '')), NULL, 512, JSON_THROW_ON_ERROR), "ARRAY");
+            $this->setProperty('FunctionCodes', json_decode(Eisodos::$utils->safe_array_value($ApacheRequestHeaders, $this->getProperty('FunctionCodesHeader', '',true)), NULL, 512, JSON_THROW_ON_ERROR), "ARRAY");
           } elseif ($this->getProperty('FunctionCodesHeaderType', '') == 'CSV') {
-            $this->setProperty('FunctionCodes', explode(',', Eisodos::$utils->safe_array_value($ApacheRequestHeaders, $this->getProperty('FunctionCodesHeader', ''))), "ARRAY");
+            $this->setProperty('FunctionCodes', explode(',', Eisodos::$utils->safe_array_value($ApacheRequestHeaders, $this->getProperty('FunctionCodesHeader', '',true))), "ARRAY");
           }
           Tholos::$app->trace('Function Codes loaded: ' . implode(',', $this->getProperty('FunctionCodes', [])), $this);
         } else {
@@ -286,8 +313,16 @@
       
       $return = [];
       
-      if (Eisodos::$utils->safe_array_value($ApacheRequestHeaders, $this->getProperty('AuthorizationHeader', 'authorization'), '') != '') {
-        $return[] = $this->getProperty("AuthorizationHeader", 'authorization') . ': ' . Eisodos::$utils->safe_array_value($ApacheRequestHeaders, $this->getProperty('AuthorizationHeader', 'authorization'), '');
+      if (Eisodos::$utils->safe_array_value($ApacheRequestHeaders, $this->getProperty('AuthorizationHeader', 'authorization'), '', true) != '') {
+        $return[] = $this->getProperty("AuthorizationHeader", 'authorization') . ': ' . Eisodos::$utils->safe_array_value($ApacheRequestHeaders, $this->getProperty('AuthorizationHeader', 'authorization'), '', true);
+      }
+      
+      if ($this->getProperty('ExtraHeaders', '') != '') {
+        foreach (explode(',',$this->getProperty('ExtraHeaders', '')) as $headerKey) {
+          if ($value = Eisodos::$utils->safe_array_value($ApacheRequestHeaders, $headerKey, '', true)) {
+            $return[] = $headerKey . ': '.$value;
+          }
+        }
       }
       
       if ($this->getProperty('LoginIDHeader')) {

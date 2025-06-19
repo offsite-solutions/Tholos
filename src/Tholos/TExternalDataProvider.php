@@ -49,7 +49,7 @@
      * @throws \JsonException
      * @throws Throwable
      */
-    protected function open(?TComponent $sender, string $nativeSQL = ''):string {
+    protected function open(?TComponent $sender, string $nativeSQL = ''): string {
       
       Tholos::$app->checkRole($this, true);
       
@@ -259,7 +259,7 @@
           
           // soft error
           if (1 * $httpCode == 401) {
-            Tholos::$app->roleManager->logout();
+            throw new \RuntimeException('401 Not Authorized');
           } else if (1 * $httpCode >= 200 && 1 * $httpCode < 300) {
             if (strpos($httpResponse, 'HTTP/') == 0) {
               $httpNormalResponse = explode("\r\n\r\n", $httpResponse, 2);
@@ -274,7 +274,11 @@
             throw new RuntimeException($httpCode . ' - ' . $httpError);
           }
           
-          Tholos::$app->trace(print_r($resultParameters, true), $this);
+          if ($this->getProperty("curlDebug") == 'true') {
+            Tholos::$app->debug(print_r($resultParameters, true), $this);
+          } else {
+            Tholos::$app->trace(print_r($resultParameters, true), $this);
+          }
           
           $this->setProperty('Opened', 'true');
           $this->setProperty('Result', $resultParameters[$this->getProperty('ResultParameter', 'result')]);

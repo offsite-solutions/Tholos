@@ -294,7 +294,7 @@
      * @param string $text_ Message to be displayed in the log message
      * @param Object|null $sender_ Sender object. When specified debug will display the name of the sender object. Defaults to `null`.
      */
-    public function critical(string $text_, ?Object $sender_ = NULL): void {
+    public function critical(string $text_, ?object $sender_ = NULL): void {
       $this->log($text_, 'critical', $sender_);
     }
     
@@ -304,7 +304,7 @@
      * @param string $text_ Message to be displayed in the log message
      * @param Object|null $sender_ Sender object. When specified debug will display the name of the sender object. Defaults to `null`.
      */
-    public function error(string $text_, ?Object $sender_ = NULL): void {
+    public function error(string $text_, ?object $sender_ = NULL): void {
       $this->log($text_, 'error', $sender_);
     }
     
@@ -314,7 +314,7 @@
      * @param string $text_ Message to be displayed in the log message
      * @param Object|null $sender_ Sender object. When specified debug will display the name of the sender object. Defaults to `null`.
      */
-    public function info(string $text_, ?Object $sender_ = NULL): void {
+    public function info(string $text_, ?object $sender_ = NULL): void {
       $this->log($text_, 'info', $sender_);
     }
     
@@ -324,7 +324,7 @@
      * @param string $text_ Message to be displayed in the log message
      * @param Object|null $sender_ Sender object. When specified debug will display the name of the sender object. Defaults to `null`.
      */
-    public function warning(string $text_, ?Object $sender_ = NULL): void {
+    public function warning(string $text_, ?object $sender_ = NULL): void {
       $this->log($text_, 'warning', $sender_);
     }
     
@@ -334,7 +334,7 @@
      * @param string $text_ Message to be displayed in the log message
      * @param Object|null $sender_ Sender object. When specified debug will display the name of the sender object. Defaults to `null`.
      */
-    public function debug(string $text_, ?Object $sender_ = NULL): void {
+    public function debug(string $text_, ?object $sender_ = NULL): void {
       $this->log($text_, 'debug', $sender_);
     }
     
@@ -344,7 +344,7 @@
      * @param string $text_ Message to be displayed in the log message
      * @param Object|null $sender_ Sender object. When specified debug will display the name of the sender object. Defaults to `null`.
      */
-    public function trace(string $text_, ?Object $sender_ = NULL): void {
+    public function trace(string $text_, ?object $sender_ = NULL): void {
       $this->log($text_, 'trace', $sender_);
     }
     
@@ -429,7 +429,7 @@
         if ($this->findComponentIDByTypeFromIndex('TRoleManager', $this->application_id)) {                                                // Instantiating TRoleManager if exists
           $component = $this->instantiateComponent($this->findComponentIDByTypeFromIndex('TRoleManager', $this->application_id));
           if ($component) {
-            $this->roleManager=$component;
+            $this->roleManager = $component;
           }
           Tholos::$app->debug('TRoleManager instantiated', $this);
         }
@@ -485,7 +485,7 @@
      * @param ?TComponent $sender
      * @return void
      */
-    public function regenerateJSInit(?TComponent $sender):void {
+    public function regenerateJSInit(?TComponent $sender): void {
       Tholos::$c->addParam("TholosApplicationInit", Tholos::$c->getTemplate("tholos/application.jsinit", array(), false), true);  // application initiaclization javascript
     }
     
@@ -923,11 +923,11 @@
      *
      * @param TComponent $sender_ Sender object
      * @param bool $throwException_ In case of no access right exception is thrown
-     * @param bool $generateRedirect_
+     * @param bool $rootLevel_
      * @return bool
      * @throws Exception
      */
-    public function checkRole(TComponent $sender_, bool $throwException_ = false, bool $generateRedirect_ = false): bool {
+    public function checkRole(TComponent $sender_, bool $throwException_ = false, bool $rootLevel_ = false): bool {
       
       if (isset($this->roleManager)) {
         return true;
@@ -936,7 +936,7 @@
       if ($functionCode === '') {
         return true;
       }
-      $ret = $this->roleManager->checkRole($functionCode, $throwException_, $generateRedirect_);
+      $ret = $this->roleManager->checkRole($functionCode, $throwException_, $rootLevel_);
       if (!$ret) {
         Tholos::$app->trace('checkRole() returned with false. FunctionCode: ' . $functionCode);
       }
@@ -1023,10 +1023,11 @@
         Tholos::$app->trace('BEGIN', $this);
         Tholos::$app->trace('Component ID = ' . $component_id_, $this);
         
-        $renderThis=$this->findComponentByID($component_id_);
+        $renderThis = $this->findComponentByID($component_id_);
         if ($renderThis->selfRenderer) {
           Tholos::$app->trace('END', $this);
-          return $renderThis->render($sender_,'');
+          
+          return $renderThis->render($sender_, '');
         }
         
         $content = '';
@@ -1131,9 +1132,9 @@
         $this->init();
         
         if (Tholos::$c->getParam('Tholos.CSPEnabled', 'false') == "true") {
-          header("Content-Security-Policy: script-src 'self' 'nonce-" . Tholos::$c->getParam('Tholos.Nonce') . "' ".Tholos::$c->getParam('Tholos.CSPJavascriptHosts', '').';' .
+          header("Content-Security-Policy: script-src 'self' 'nonce-" . Tholos::$c->getParam('Tholos.Nonce') . "' " . Tholos::$c->getParam('Tholos.CSPJavascriptHosts', '') . ';' .
             //               " style-src 'self' 'unsafe-inline' 'nonce-".Tholos::$c->getParam("Tholos.Nonce")."' https://fonts.gstatic.com https://*.googleapis.com; ".
-            " font-src 'self' ".Tholos::$c->getParam('Tholos.CSPFontHosts', '').';');
+            " font-src 'self' " . Tholos::$c->getParam('Tholos.CSPFontHosts', '') . ';');
         }
         
         if (Eisodos::$parameterHandler->neq('REDIRECT', '')) {
@@ -1510,7 +1511,7 @@
       } else if (Eisodos::$parameterHandler->eq('Tholos.CacheMethod', 'redis')) {
         $this->openCacheServer();
         if ($validity_) {
-          $this->cacheServer->setex($filename_, 1 * $validity_*60, $content_);
+          $this->cacheServer->setex($filename_, 1 * $validity_ * 60, $content_);
         } else {
           $this->cacheServer->setex($filename_, 24 * 60 * 60 * 7, $content_);
         }

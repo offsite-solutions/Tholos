@@ -82,6 +82,12 @@
           
           $curl = curl_init();
           
+          if ($this->getProperty("curlVerbose") == 'true') {
+            $streamVerboseHandle = fopen('php://temp', 'wb+');
+          } else {
+            $streamVerboseHandle = NULL;
+          }
+          
           $options = array(
             CURLOPT_URL => $this->getProperty('URL') . $this->getProperty('URLPath'),
             CURLOPT_RETURNTRANSFER => true,
@@ -99,22 +105,33 @@
               Tholos::$app->roleManager->getHTTPRequestAuthHeaders()
             ),
             CURLOPT_HEADER => true,
-            CURLOPT_FAILONERROR => false
+            CURLOPT_FAILONERROR => false,
+            CURLOPT_STDERR => $streamVerboseHandle
             //CURLOPT_HTTP200ALIASES => (array)400
           );
           
           curl_setopt_array($curl, $options);
           
-          Tholos::$app->trace(print_r($options, true));
+          if ($this->getProperty("curlDebug") == 'true') {
+            Tholos::$app->debug(print_r($options, true));
+          }
           
           $httpResponse = curl_exec($curl);
           $httpCode = curl_getinfo($curl, CURLINFO_HTTP_CODE);
           $httpError = curl_error($curl);
           curl_close($curl);
           
-          Tholos::$app->trace('HTTP Code: ' . $httpCode);
-          Tholos::$app->trace('HTTP Response: ' . $httpResponse);
-          Tholos::$app->trace('HTTP Error: ' . $httpError);
+          if ($this->getProperty("curlVerbose") == 'true') {
+            rewind($streamVerboseHandle);
+            $verboseLog = stream_get_contents($streamVerboseHandle);
+            Tholos::$app->debug("Verbose: \n" . $verboseLog);
+          }
+          
+          if ($this->getProperty("curlDebug") == 'true') {
+            Tholos::$app->debug("HTTP Code: " . $httpCode);
+            Tholos::$app->debug("HTTP Response: " . $httpResponse);
+            Tholos::$app->debug("HTTP Error: " . $httpError);
+          }
           
           // hard error
           if ($httpError || !$httpCode || $httpResponse === false) {
@@ -123,7 +140,7 @@
           
           // soft error
           if (1 * $httpCode === 401) {
-            Tholos::$app->roleManager->logout();
+            throw new \RuntimeException('401 Not Authorized');
           } else if (1 * $httpCode >= 200 && 1 * $httpCode < 300) {
             if (str_starts_with($httpResponse, 'HTTP/')) {
               $httpNormalResponse = explode("\r\n\r\n", $httpResponse, 2);
