@@ -1997,15 +1997,15 @@ var Tholos = {
     };
     let errorText='';
     if (response.status === 401) {
-      errorText='Nincs bejelentkezve!';
+      errorText=Tholos.i18n.TApplication_HTTP_401;
       let redirect=this.getResponseHeader("x-redirect-location");
       if (redirect!=='') {
         document.location=redirect;
       }
     } else if (response.status === 403) {
-      errorText='Nincs joga a funkció eléréséhez!'
+      errorText=Tholos.i18n.TApplication_HTTP_403;
     } else if (response.status === 500) {
-      errorText='Szerver hiba (500)!'
+      errorText=Tholos.i18n.TApplication_HTTP_500;
     }
     toastr.error(errorText);
   },

@@ -2,6 +2,9 @@
 <script type="text/javascript" nonce="$Tholos_nonce">
   Tholos.i18n = {
     TFileUpload_UploadError: "[:TFILEUPLOAD.UPLOADERROR,Feltöltési hiba:]",
-    TLOV_Loading : "[:TLOV.LOADING,Kérem várjon...:]"
+    TLOV_Loading: "[:TLOV.LOADING,Kérem várjon...:]",
+    TApplication_HTTP_401: "[:TAPPLICATION.HTTP_401,Nincs bejelentkezve!:].",
+    TApplication_HTTP_403: "[:TAPPLICATION.HTTP_403,Nincs jog a funkció eléréséhez!:].",
+    TApplication_HTTP_500: "[:TAPPLICATION.HTTP_500,Alkalmazás hiba (500)!:]."
   }
 </script>
