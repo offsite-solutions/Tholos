@@ -71,11 +71,11 @@
         }
         // new login
         if (Eisodos::$utils->safe_array_value($ApacheRequestHeaders, $this->getProperty('NewLoginHeader', ''), '', true) != ''
-          && Eisodos::$utils->safe_array_value($ApacheRequestHeaders, $this->getProperty('NewLoginHeader', ''), '', true) != $this->getProperty('LoginID', '')
+          && Eisodos::$utils->safe_array_value($ApacheRequestHeaders, $this->getProperty('NewLoginHeader', ''), '', true) != Eisodos::$parameterHandler->getParam('LoginID', '')
         ) {
           Tholos::$app->trace('New login detected: ' . Eisodos::$utils->safe_array_value($ApacheRequestHeaders, $this->getProperty('NewLoginHeader', ''), '', true), $this);
           $this->login(Eisodos::$utils->safe_array_value($ApacheRequestHeaders, $this->getProperty('NewLoginHeader', ''), '', true));
-          Tholos::$c->addParam('Logged_In_User_name', Eisodos::$utils->safe_array_value($ApacheRequestHeaders, $this->getProperty('UsernameHeader', ''), '', true), true);
+          Eisodos::$parameterHandler->setParam('Logged_In_User_name', Eisodos::$utils->safe_array_value($ApacheRequestHeaders, $this->getProperty('UsernameHeader', ''), '', true), true);
         }
       }
       
@@ -172,7 +172,7 @@
         && Eisodos::$parameterHandler->neq('LoginID', '')
         && $this->getProperty('AccessDeniedURL', '') !== '') { // ha nincs role-ja de be van jelentkezve
         Eisodos::$parameterHandler->setParam('REDIRECT', $this->getProperty('AccessDeniedURL', ''));
-        Tholos::$app->trace('Redirect to ' . $this->getProperty('AccessDeniedURL', ''));
+        Tholos::$app->debug('Redirect to ' . $this->getProperty('AccessDeniedURL', ''));
       }
       
       // User nincs bejelentkezve es nem AJAX hivast kuldd es van login URL megadva (sajat kezelesu a login)

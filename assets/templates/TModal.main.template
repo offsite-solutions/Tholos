@@ -12,7 +12,14 @@ false=
     <div class="modal-content">
       <div class="modal-header labely-primary">
         <h5 class="modal-title">$prop_title~='&nbsp;';</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+<%FUNC%
+_include=tholos/tholos_callback.php
+_function_name=_eqs
+param=prop_showClose
+value=false
+true=
+false=<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+%FUNC%>
       </div>
       <div class="modal-body">
 $content

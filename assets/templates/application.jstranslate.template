@@ -3,8 +3,12 @@
   Tholos.i18n = {
     TFileUpload_UploadError: "[:TFILEUPLOAD.UPLOADERROR,Feltöltési hiba:]",
     TLOV_Loading: "[:TLOV.LOADING,Kérem várjon...:]",
-    TApplication_HTTP_401: "[:TAPPLICATION.HTTP_401,Nincs bejelentkezve!:].",
-    TApplication_HTTP_403: "[:TAPPLICATION.HTTP_403,Nincs jog a funkció eléréséhez!:].",
-    TApplication_HTTP_500: "[:TAPPLICATION.HTTP_500,Alkalmazás hiba (500)!:]."
+    TApplication_HTTP_0: "[:TAPPLICATION.HTTP_0,Hívás blokkolva (0)!:]",
+    TApplication_HTTP_200_1: "[:TAPPLICATION.HTTP_200,Értelmezhetetlen válasz (200/1)!:]",
+    TApplication_HTTP_200_2: "[:TAPPLICATION.HTTP_200_2,Értelmezhetetlen válasz (200/2)!:]",
+    TApplication_HTTP_302: "[:TAPPLICATION.HTTP_302,Átirányítás!:]",
+    TApplication_HTTP_401: "[:TAPPLICATION.HTTP_401,Nincs bejelentkezve!:]",
+    TApplication_HTTP_403: "[:TAPPLICATION.HTTP_403,Nincs jog a funkció eléréséhez!:]",
+    TApplication_HTTP_500: "[:TAPPLICATION.HTTP_500,Alkalmazás hiba (500)!:]",
   }
 </script>

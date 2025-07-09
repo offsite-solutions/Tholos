@@ -21,6 +21,10 @@
         return '';
       }
       
+      if ($this->getProperty('enabled')=='false') {
+        return '';
+      }
+      
       $this->renderedContent = '';
       Tholos::$app->eventHandler($this, 'onBeforeRender');
       

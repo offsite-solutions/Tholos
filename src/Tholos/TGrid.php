@@ -452,45 +452,51 @@
                 ) . " \n";
               // date formatting JSON format
               
-              $JSONFilter = [
-                'fieldName' => $dbField->getProperty('FieldName'),
-                'value' => Tholos::$c->ODecode(array($dbField->getProperty('datatype'),
-                    'string', (in_array($filterParam[1], ["in", "notin"]) ? NULL : @$filterParam[2]),
-                    'text', (in_array($filterParam[1], ["in", "notin"]) ? NULL : @$filterParam[2]),
-                    'bool', @$filterParam[2] == "*" ? '*' : $this->boolConvert(@$filterParam[2], false),
-                    'boolYN', @$filterParam[2] == "*" ? '*' : @$filterParam[2],
-                    'boolIN', @$filterParam[2] == "*" ? '*' : @$filterParam[2],
-                    'bool10', @$filterParam[2] == "-1" ? '*' : @$filterParam[2],
-                    'list', NULL,
-                    'date', $JSONDateValue,
-                    'datetime', $JSONDateValue,
-                    'datetimehm', $JSONDateValue,
-                    'time', $JSONDateValue,
-                    'timestamp', $JSONDateValue,
-                    'datebetween', @$filterParam[2],
-                    'integer', (in_array($filterParam[1], ['in', 'notin']) ? NULL : @$filterParam[2]),
-                    'float', (in_array($filterParam[1], ['in', 'notin']) ? NULL : str_replace(',', '.', @$filterParam[2])),
-                    NULL
-                  )
-                ),
-                'valueArray' => Tholos::$c->ODecode(array($dbField->getProperty('datatype'),
-                    'string', (in_array($filterParam[1], ['in', 'notin']) ? explode(',', @$filterParam[2]) : NULL),
-                    'text', (in_array($filterParam[1], ['in', 'notin']) ? explode(',', @$filterParam[2]) : NULL),
-                    'list', explode(',', @$filterParam[2]),
-                    'integer', (in_array($filterParam[1], ['in', 'notin']) ? explode(',', @$filterParam[2]) : NULL),
-                    'float', (in_array($filterParam[1], ['in', 'notin']) ? explode(',', @$filterParam[2]) : NULL),
-                    NULL
-                  )
-                ),
-                'operator' => $filterParam[1],
-                'relation' => NULL,
-                'nativeDataType' => $dbField->getProperty('NativeDataType'),
-                'dataType' => $dbField->getProperty('datatype'),
-                'isNull' => ($filterParam[1] == 'NULL'),
-                'isNotNull' => ($filterParam[1] == 'NOT NULL')
-              ];
-              
-              $filter_array[] = $JSONFilter;
+              if (!((@$filterParam[2] == "-1"
+                  && $dbField->getProperty('datatype') == 'bool10')
+                || (@$filterParam[2] == "*"
+                  && in_array($dbField->getProperty('datatype'), ['bool', 'boolYN', 'boolIN'])))
+              ) {
+                $JSONFilter = [
+                  'fieldName' => $dbField->getProperty('FieldName'),
+                  'value' => Tholos::$c->ODecode(array($dbField->getProperty('datatype'),
+                      'string', (in_array($filterParam[1], ["in", "notin"]) ? NULL : @$filterParam[2]),
+                      'text', (in_array($filterParam[1], ["in", "notin"]) ? NULL : @$filterParam[2]),
+                      'bool', $this->boolConvert(@$filterParam[2], false),
+                      'boolYN', @$filterParam[2],
+                      'boolIN', @$filterParam[2],
+                      'bool10', @$filterParam[2],
+                      'list', NULL,
+                      'date', $JSONDateValue,
+                      'datetime', $JSONDateValue,
+                      'datetimehm', $JSONDateValue,
+                      'time', $JSONDateValue,
+                      'timestamp', $JSONDateValue,
+                      'datebetween', @$filterParam[2],
+                      'integer', (in_array($filterParam[1], ['in', 'notin']) ? NULL : @$filterParam[2]),
+                      'float', (in_array($filterParam[1], ['in', 'notin']) ? NULL : str_replace(',', '.', @$filterParam[2])),
+                      NULL
+                    )
+                  ),
+                  'valueArray' => Tholos::$c->ODecode(array($dbField->getProperty('datatype'),
+                      'string', (in_array($filterParam[1], ['in', 'notin']) ? explode(',', @$filterParam[2]) : NULL),
+                      'text', (in_array($filterParam[1], ['in', 'notin']) ? explode(',', @$filterParam[2]) : NULL),
+                      'list', explode(',', @$filterParam[2]),
+                      'integer', (in_array($filterParam[1], ['in', 'notin']) ? explode(',', @$filterParam[2]) : NULL),
+                      'float', (in_array($filterParam[1], ['in', 'notin']) ? explode(',', @$filterParam[2]) : NULL),
+                      NULL
+                    )
+                  ),
+                  'operator' => $filterParam[1],
+                  'relation' => NULL,
+                  'nativeDataType' => $dbField->getProperty('NativeDataType'),
+                  'dataType' => $dbField->getProperty('datatype'),
+                  'isNull' => ($filterParam[1] == 'NULL'),
+                  'isNotNull' => ($filterParam[1] == 'NOT NULL')
+                ];
+                
+                $filter_array[] = $JSONFilter;
+              }
             }
           }
         }

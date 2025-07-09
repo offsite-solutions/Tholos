@@ -29,7 +29,7 @@ value=
 true=
 false>>=
 $('#$prop_id').on('onExecute', function (event,eventData) {
-  if (($prop_waitoninactivetab==false || isActiveTab==true) && ($prop_async==true || $.active==0)) {
+  if (($prop_waitoninactivetab==false || document.visibilityState === "visible") && ($prop_async==true || $.active==0)) {
     Tholos.pageLoader(false);
     $event_onExecute
 ## ha interval, akkor megint meghivni automatikusan

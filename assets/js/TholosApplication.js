@@ -11,13 +11,6 @@ jQuery.expr[':'].regex = function (elem, index, match) {
   return regex.test(jQuery(elem)[attr.method](attr.property));
 };
 
-var isActiveTab = true;
-window.onfocus = function () {
-  isActiveTab = true;
-};
-window.onblur = function () {
-  isActiveTab = false;
-};
 var TholosLastClickType = "left";
 
 var TholosDPArray = {};
@@ -162,10 +155,10 @@ var Tholos = {
       var d = Tholos.getData(target);
       if (eventData.required === "true") {
         o.attr("required", "");
-        o.closest('div.row').find("#"+d.id+"-label").addClass("required");
+        o.closest('div.row').find("#" + d.id + "-label").addClass("required");
       } else {
         o.prop("required", false);
-        o.closest('div.row').find("#"+d.id+"-label").removeClass("required");
+        o.closest('div.row').find("#" + d.id + "-label").removeClass("required");
       }
       Tholos.setData(target, "required", eventData.required);
       return true;
@@ -199,7 +192,7 @@ var Tholos = {
       var o = Tholos.getObject(target);
       if (eventData.visible === "true") {
         o.closest("div.row").show();
-        o.closest("div.row").css('display','flex');
+        o.closest("div.row").css('display', 'flex');
         Tholos.trace("TFormControl_setVisible: Triggering onShow");
         o.trigger("onShow");
       } else {
@@ -335,7 +328,7 @@ var Tholos = {
         o.prop("readonly", false);
       }
       Tholos.setData(target, "readonly", eventData.readonly);
-      window['tholos_rte_'+d.id].setReadOnly(eventData.readonly==="true");
+      window['tholos_rte_' + d.id].setReadOnly(eventData.readonly === "true");
       return true;
     },
     TLOV_setReadOnly: function (sender, target, route, eventData) {
@@ -828,7 +821,7 @@ var Tholos = {
           var replacedFiles = respData.fileSet.split(",");
           $.each(f, function (idx) {
             objVal.splice($.inArray(this.name, objVal), 1);
-            objVal.push(this.name.replace(/[:;,"']/g,'\_') + ":" + replacedFiles[idx]);
+            objVal.push(this.name.replace(/[:;,"']/g, '\_') + ":" + replacedFiles[idx]);
           });
           Tholos.setData(o, "value", JSON.stringify(objVal));
           $("#" + o).val(JSON.stringify(objVal));
@@ -894,7 +887,9 @@ var Tholos = {
 
       var curSel = o.val();
 
-      params.push("LOVCurrentValue=" + d.value);
+      if (d.value !== undefined) {
+        params.push("LOVCurrentValue=" + d.value);
+      }
 
       if (d.master) {
         params.push(d.masterfilterfield + "=" + Tholos.eventHandler(sender, d.master, "", "getValue"));
@@ -987,7 +982,7 @@ var Tholos = {
           minimumResultsForSearch: Infinity
         });
       } else {
-        o.select2({ });
+        o.select2({});
       }
 
 
@@ -1093,7 +1088,8 @@ var Tholos = {
       if (!document.getElementById(d.id).checkValidity()) {
         document.getElementById(d.id).classList.add('was-validated');
         return false;
-      };
+      }
+      ;
       var urldata = [];
       for (var k in eventData) {
         var item = {};
@@ -1465,16 +1461,16 @@ var Tholos = {
       var mo = Tholos.getObject(map);
       await window["mapInitialized_" + md.name];
       var mapObj = window["map_" + md.name];
-      window.currentInfoWindow=null;
+      window.currentInfoWindow = null;
 
 //      mapObj.hideInfoWindows();
       Tholos.trace("TMapSource_handleMarkers(): Removing all markers related to MapSource " + msd.name);
-      $.each(mapObj.tholos[msd.name], function(idx, markers) {
-        $.each(markers, function(idx2, marker) {
+      $.each(mapObj.tholos[msd.name], function (idx, markers) {
+        $.each(markers, function (idx2, marker) {
           marker.element.setMap(null);
+        });
       });
-      });
-      mapObj.tholos[msd.name]=[];
+      mapObj.tholos[msd.name] = [];
 
       if (!msd.visible) {
         return "";
@@ -1495,23 +1491,23 @@ var Tholos = {
             var markers = [];
             $.each(JSON.parse(data.data), function (markerIdx, markerData) {
               const marker = {};
-              marker.tholos= {
-                  map: map,
-                  mapSource: mapSource,
-                  mapName: md.name,
-                  mapSourceName: msd.name,
-                  lat: markerData[msd.fieldlatitude],
-                  lng: markerData[msd.fieldlongitude],
-                  listSource: msd.listsource,
-                  listSourceRoute: msd.listsourceroute,
-                  id: markerData[msd.fieldid]
+              marker.tholos = {
+                map: map,
+                mapSource: mapSource,
+                mapName: md.name,
+                mapSourceName: msd.name,
+                lat: markerData[msd.fieldlatitude],
+                lng: markerData[msd.fieldlongitude],
+                listSource: msd.listsource,
+                listSourceRoute: msd.listsourceroute,
+                id: markerData[msd.fieldid]
               };
               marker.infowindow = new google.maps.InfoWindow({
                 content: markerData[msd.fieldinfowindowcontent]
               });
               if (msd.fieldinfowindowzindex) {
                 marker.infowindow.setZIndex(markerData[msd.fieldinfowindowzindex]);
-                }
+              }
               if (msd.fieldicon) {
                 marker.img = document.createElement("img");
                 marker.img.src = markerData[msd.fieldicon];
@@ -1523,8 +1519,8 @@ var Tholos = {
               });
               if (msd.fieldtitle) {
                 marker.element.title = markerData[msd.fieldtitle];
-                const h=document.createElement("h3");
-                h.innerHTML=markerData[msd.fieldtitle];
+                const h = document.createElement("h3");
+                h.innerHTML = markerData[msd.fieldtitle];
                 marker.infowindow.setHeaderContent(h);
                 marker.tholos.title = markerData[msd.fieldtitle];
               }
@@ -1535,7 +1531,7 @@ var Tholos = {
                 return () => {
                   if (window.currentInfoWindow != null) {
                     window.currentInfoWindow.close();
-              }
+                  }
                   infowindow.open({
                     anchor: element,
                     map: window["map_" + md.name],
@@ -1548,14 +1544,14 @@ var Tholos = {
 
               markers.push(marker);
               /*
-              if (msd.fieldtitle) {
-                marker.title = markerData[msd.fieldtitle];
-                marker.tholos.title = markerData[msd.fieldtitle];
-              }
+                if (msd.fieldtitle) {
+                  marker.title = markerData[msd.fieldtitle];
+                  marker.tholos.title = markerData[msd.fieldtitle];
+                }
 
-              if (msd.fieldlabel) {
-                marker.label = markerData[msd.fieldlabel];
-              }
+                if (msd.fieldlabel) {
+                  marker.label = markerData[msd.fieldlabel];
+                }
 
                 */
             });
@@ -1579,10 +1575,10 @@ var Tholos = {
       var mapObj = window["map_" + md.name];
 
       Tholos.trace("TMapSource_handlePolylines(): Removing all polylines related to MapSource " + msd.name);
-      $.each(mapObj.tholos[msd.name], function(idx, oldPolyline) {
+      $.each(mapObj.tholos[msd.name], function (idx, oldPolyline) {
         oldPolyline.setMap(null);
       });
-      mapObj.tholos[msd.name]=[];
+      mapObj.tholos[msd.name] = [];
 
       if (!msd.visible) {
         return "";
@@ -1638,10 +1634,10 @@ var Tholos = {
       var mapObj = window["map_" + md.name];
 
       Tholos.trace("TMapSource_handlePolygons(): Removing all polygons related to MapSource " + msd.name);
-      $.each(mapObj.tholos[msd.name], function(idx, oldPolygon) {
+      $.each(mapObj.tholos[msd.name], function (idx, oldPolygon) {
         oldPolygon.setMap(null);
       });
-      mapObj.tholos[msd.name]=[];
+      mapObj.tholos[msd.name] = [];
 
       if (!msd.visible) {
         return "";
@@ -1666,12 +1662,12 @@ var Tholos = {
 
               const pathCoords = JSON.parse('[]');
               $.each(path, function (i, e) {
-              if (msd.swapareacoords) {
+                if (msd.swapareacoords) {
                   pathCoords.push({lat: e[1], lng: e[0]});
                 } else {
                   pathCoords.push({lat: e[0], lng: e[1]});
                 }
-                });
+              });
 
               const polygon = new google.maps.Polygon({
                 paths: pathCoords,
@@ -1760,8 +1756,8 @@ var Tholos = {
           var msrc = Tholos.findComponentId(mapSourceName);
           if (msrc) {
             var dmsrc = Tholos.getData(msrc);
-            if (dmsrc.mapsourcetype=='Markers') {
-              $.each(markers[0], function(idx2, marker) {
+            if (dmsrc.mapsourcetype == 'Markers') {
+              $.each(markers[0], function (idx2, marker) {
                 mapbounds.extend(marker.element.position);
                 boundExists = true;
               });
@@ -1987,6 +1983,14 @@ var Tholos = {
     alert(sender + " said: " + text);
   },
 
+  isHTMLDocument: function (str) {
+    if (str.toUpperCase().indexOf("<HTML") === -1) {
+      return false;
+    }
+    let doc = new DOMParser().parseFromString(str, "text/html");
+    return Array.from(doc.body.childNodes).some(node => node.nodeType === 1);
+  },
+
   handleJSONError: function (response, textStatus, errorThrown) {
     Tholos.error("handleJSONError()", arguments);
     toastr.options = {
@@ -1995,19 +1999,49 @@ var Tholos = {
       timeOut: 5000,
       closeButton: true
     };
-    let errorText='';
+    let errorText = '';
     if (response.status === 401) {
-      errorText=Tholos.i18n.TApplication_HTTP_401;
-      let redirect=this.getResponseHeader("x-redirect-location");
-      if (redirect!=='') {
-        document.location=redirect;
+      errorText = Tholos.i18n.TApplication_HTTP_401;
+      let redirect = this.getResponseHeader("x-redirect-location");
+      if (redirect !== '') {
+        console.log('AJAX X-Redirect');
+        document.location = redirect;
       }
     } else if (response.status === 403) {
-      errorText=Tholos.i18n.TApplication_HTTP_403;
+      errorText = Tholos.i18n.TApplication_HTTP_403;
+      let info = this.getResponseHeader("x-tholos-security-info");
+      if (info !== '') {
+        errorText = errorText+'( '+info+')';
+      }
     } else if (response.status === 500) {
-      errorText=Tholos.i18n.TApplication_HTTP_500;
+      errorText = Tholos.i18n.TApplication_HTTP_500;
+    } else if (response.status === 302) {
+      errorText = Tholos.i18n.TApplication_HTTP_302;
+      let redirect = this.getResponseHeader("location");
+      if (redirect !== '') {
+        console.log('AJAX Redirect');
+        document.location = redirect;
+      }
+    } else if (response.status === 0) {
+      errorText = Tholos.i18n.TApplication_HTTP_0;
+    } else if (response.status === 200) {
+      if (response.responseText) {
+        let doc=response.responseText;
+        if (Tholos.isHTMLDocument(doc)) {
+          console.log('AJAX Page overwrite with response HTML');
+          document.open();
+          document.write(doc);
+          document.close();
+        } else {
+          errorText = Tholos.i18n.TApplication_HTTP_200_1;
+        }
+      } else {
+        errorText = Tholos.i18n.TApplication_HTTP_200_2;
+      }
     }
-    toastr.error(errorText);
+    if (errorText) {
+      toastr.error(errorText);
+    }
   },
 
   getComponentName: function (componentId) {
@@ -2075,8 +2109,7 @@ var Tholos = {
       if (force) {
         // $(".loading-container").removeClass("loading-inactive");
         KTApp.showPageLoading();
-      }
-      else
+      } else
         tholosPageLoaderTimer = setTimeout(function () {
             if ($.active > 0) {
               KTApp.showPageLoading();
@@ -2314,13 +2347,15 @@ var Tholos = {
 
 function gui_ajax_spinner() {
   if ($('#gui_ajax_spinner').length) {
-      if ($.active>0) {
-        $('#gui_ajax_spinner').show();
-      } else {
-        $('#gui_ajax_spinner').hide();
-        KTApp.hidePageLoading();
-      }
-      setTimeout(function () { gui_ajax_spinner(); },500);
+    if ($.active > 0) {
+      $('#gui_ajax_spinner').show();
+    } else {
+      $('#gui_ajax_spinner').hide();
+      KTApp.hidePageLoading();
+    }
+    setTimeout(function () {
+      gui_ajax_spinner();
+    }, 500);
   }
 }
 
@@ -2341,6 +2376,8 @@ $(document).ready(function () {
     }
   });
 
-  setTimeout(function () { gui_ajax_spinner(); },500);
+  setTimeout(function () {
+    gui_ajax_spinner();
+  }, 500);
 
 });

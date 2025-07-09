@@ -59,6 +59,8 @@
               $result .= Tholos::$app->render($this, $id);
             }
           }
+        } else {
+          Tholos::$app->eventHandler($this, "onZeroResult");
         }
       }
       

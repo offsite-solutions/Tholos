@@ -21,6 +21,10 @@
         return '';
       }
       
+      if ($this->getProperty('enabled')=='false') {
+        return '';
+      }
+      
       Tholos::$app->eventHandler($this, "onBeforeRender");
  
       // loading cache from session parameter
