@@ -282,6 +282,11 @@ var Tholos = {
       var targetType = Tholos.getComponentType(target);
       Tholos.eventHandler(sender, target, targetType, "setVisible", route, eventData, {"visible": "false"});
     },
+    TContainer_setLoadable: function (sender, target, route, eventData) {
+      Tholos.trace("TContainer_setLoadable()", sender, target, route, eventData);
+      Tholos.setData(target, "loadable", eventData.loadable);
+      return true;
+    },
     TControl_setReadOnly: function (sender, target, route, eventData) {
       Tholos.trace("TControl_setReadOnly()", sender, target, route, eventData);
       var o = Tholos.getObject(target);
@@ -634,13 +639,17 @@ var Tholos = {
       // BS5 - select2 fix
       var o = Tholos.getObject(target);
       if (!eventData.TholosGUIModalScope && o.closest("div.modal").length > 0) {
-        var item = {};
+        let item = {};
         item.name = 'TholosGUIModalScope';
         item.value = o.closest("div.modal").attr("id");
         urldata.push(item);
       }
+      let d = Tholos.getData(target);
+      if (d && d.hasOwnProperty('loadable') && (d.loadable === 'false' || d.loadable === false)) {
+        Tholos.action(false, sender, target);
+        return;
+      }
       if (!eventData.sourceurl) {
-        var d = Tholos.getData(target);
         eventData.sourceurl = d.sourceurl;
         ajaxqueueid = d.hasOwnProperty('ajaxqueueid') ? d.ajaxqueueid : d.name;
       }
@@ -663,6 +672,11 @@ var Tholos = {
             Tholos.pageLoader(false, false);
           },
           success: function (data) {
+            let d = Tholos.getData(target); // check if loadable flag turned off while loading the page
+            if (d && d.hasOwnProperty('loadable') && (d.loadable === 'false' || d.loadable === false)) {
+              Tholos.action(false, sender, target);
+              return;
+            }
             if (eventData.sourceformat == "json" && data.html) {
               Tholos.getObject(target).html(data.html);
             } else if (eventData.sourceformat == "html") {
@@ -2002,22 +2016,22 @@ var Tholos = {
     let errorText = '';
     if (response.status === 401) {
       errorText = Tholos.i18n.TApplication_HTTP_401;
-      let redirect = this.getResponseHeader("x-redirect-location");
+      let redirect = response.getResponseHeader("x-redirect-location");
       if (redirect !== '') {
         console.log('AJAX X-Redirect');
         document.location = redirect;
       }
     } else if (response.status === 403) {
       errorText = Tholos.i18n.TApplication_HTTP_403;
-      let info = this.getResponseHeader("x-tholos-security-info");
+      let info = response.getResponseHeader("x-tholos-security-info");
       if (info !== '') {
-        errorText = errorText+'( '+info+')';
+        errorText = errorText + '( ' + info + ')';
       }
     } else if (response.status === 500) {
       errorText = Tholos.i18n.TApplication_HTTP_500;
     } else if (response.status === 302) {
       errorText = Tholos.i18n.TApplication_HTTP_302;
-      let redirect = this.getResponseHeader("location");
+      let redirect = response.getResponseHeader("location");
       if (redirect !== '') {
         console.log('AJAX Redirect');
         document.location = redirect;
@@ -2026,7 +2040,7 @@ var Tholos = {
       errorText = Tholos.i18n.TApplication_HTTP_0;
     } else if (response.status === 200) {
       if (response.responseText) {
-        let doc=response.responseText;
+        let doc = response.responseText;
         if (Tholos.isHTMLDocument(doc)) {
           console.log('AJAX Page overwrite with response HTML');
           document.open();
@@ -2089,7 +2103,7 @@ var Tholos = {
           Tholos.trace("findComponentID(): component found: " + id);
           return id;
         } else {
-          Tholos.debug("findComponentId(): Multiple components found with name " + cID);
+          Tholos.error("findComponentId(): Multiple components found with name " + cID);
           return "";
         }
       }

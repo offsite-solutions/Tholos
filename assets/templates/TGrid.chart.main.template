@@ -1,4 +1,4 @@
-<div id="chart_$prop_id" class="subscribers-$prop_id" style="display:none;position:relative;margin: auto;height:100vh;width:80vw">
+<div id="chart_$prop_id" class="subscribers-$prop_id" style="display:none;position:relative;margin: auto;height:auto;width:100%">
 <div><canvas id="canvas-$prop_id" style="border: 1px solid #aaaaaa;"></canvas></div>
 </div>
 <script type="text/javascript" nonce="$Tholos_nonce">

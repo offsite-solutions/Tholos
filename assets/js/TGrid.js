@@ -8,11 +8,11 @@ function TGrid_getRandomColor() { // f
 }
 
 window.chartColors = {
-  red: 'rgb(255, 99, 132)',
+  red: 'rgb(223,81,56)',
   orange: 'rgb(255, 159, 64)',
   yellow: 'rgb(255, 205, 86)',
-  green: 'rgb(75, 192, 192)',
-  blue: 'rgb(54, 162, 235)',
+  green: 'rgb(140,196,116)',
+  blue: 'rgb(93,178,255)',
   purple: 'rgb(153, 102, 255)',
   grey: 'rgb(201, 203, 207)'
 };
@@ -76,13 +76,13 @@ function TGrid_inArray(searchFor_, array_) {                               // PH
 
 function TGrid_parseChartData(formId_, data_) {
   var TholosChartColors = [
-    window.chartColors.yellow,
+    window.chartColors.green,
     window.chartColors.red,
     window.chartColors.blue,
-    window.chartColors.green,
     window.chartColors.grey,
     window.chartColors.purple,
-    window.chartColors.orange];
+    window.chartColors.orange,
+    window.chartColors.yellow];
 
   var TholosChartColor = Chart.helpers.color;
 
@@ -99,8 +99,8 @@ function TGrid_parseChartData(formId_, data_) {
           type: 'line',
           fill: 'false',
           data: data_[i],
-          borderColor: TholosChartColors[i % 7],
-          backgroundColor: TholosChartColor(TholosChartColors[i % 7]).alpha(0.5).rgbString()
+          borderColor: TholosChartColors[(i-1) % 7],
+          backgroundColor: TholosChartColor(TholosChartColors[(i-1) % 7]).alpha(0.8).rgbString()
         };
         parsedData['datasets'].push(newChartData);
       }
@@ -117,8 +117,18 @@ function TGrid_changeViewMode(formId_, viewMode_) {
 function TGrid_submit(sender, target, urldata) {                                           // grid submit
 //    if ($("#helper_" + formId_ + " #gridmode").val() == "ajax") {                        // ha ajax, akkor
 
-  if ($("#helper_" + target + " #TGrid_ViewMode_").val() == "GRID") $("#data_" + target).show(); else $("#data_" + target).hide();
-  if ($("#helper_" + target + " #TGrid_ViewMode_").val() == "CHART") $("#chart_" + target).show(); else $("#chart_" + target).hide();
+  if ($("#helper_" + target + " #TGrid_ViewMode_").val() == "GRID") {
+    $("#data_" + target).show();
+    $("#pagination_" + target).show();
+  } else {
+    $("#data_" + target).hide();
+    $("#pagination_" + target).hide();
+  }
+  if ($("#helper_" + target + " #TGrid_ViewMode_").val() == "CHART") {
+    $("#chart_" + target).show();
+  } else {
+    $("#chart_" + target).hide();
+  }
 
   if ($("#helper_" + target + " #TGrid_ViewMode_").val() == "GRID") {
 
@@ -191,6 +201,7 @@ function TGrid_submit(sender, target, urldata) {                                
         data: $("#helper_" + target).serialize() + '&' + $.param(urldata),
         contentType: "application/x-www-form-urlencoded;charset=UTF-8",
         success: function (data) {
+          $("#needrefresh_" + target).hide();
           TGrid_parseChartData(target, data);
           Tholos.action(true, sender, target);
         },
@@ -557,6 +568,7 @@ function TGrid_ready(formId_) {
     TGrid_regenerateTextFilters(formId_, -1);                // kirakni a text filtereket
     $("#helper_" + formId_ + " #filters_text #filter_refresh").hide();
     if (sd.ajaxmode && sd.autoload && !sd.datagenerated && (sd.master === undefined || sd.master == "")) {
+      $("#helper_" + formId_ + " #TGrid_ViewMode_").val($("#helper_" + formId_ + " #TGrid_ViewModeInit_").val());
       Tholos.eventHandler(formId_, formId_, 'TGrid', 'refresh');
     }
   }

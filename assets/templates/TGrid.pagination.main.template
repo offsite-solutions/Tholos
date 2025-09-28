@@ -1,6 +1,6 @@
 ## BS5
 <!-- pagination -->
-<div class="row">
+<div class="row" id="pagination_$prop_id">
 <div class="col-md-12 TGrid-pagination">
 <div class="row">
   <div class="col-md-2 d-flex"><select class="form-select form-select-sm w-auto" onchange="TGrid_setRowsPerPage('$prop_id',this.value);">

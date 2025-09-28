@@ -350,6 +350,20 @@
     
     // BEGIN Construct
     
+    private function writeAccessLog() {
+      try {
+        if (Tholos::$c->neq('Tholos.AccessLog', '')) {
+          $line = Tholos::$c->getParam('Tholos.AccessLog.Format');
+          $line = Tholos::$c->replaceParamInString(str_replace('%', '$', $line));
+          $file = fopen(Tholos::$c->getParam('Tholos.AccessLog'), 'ab+');
+          fwrite($file, $line . "\n");
+          fclose($file);
+        }
+      } catch (Exception $e) {
+      
+      }
+    }
+    
     /**
      *
      */
@@ -373,6 +387,16 @@
       try {
         
         Tholos::$app = $this;
+        
+        try {
+          $time = DateTime::createFromFormat('U.u', number_format(microtime(true), 6, '.', ''));
+          if ($time) {
+            Tholos::$c->addParam('Tholos_App_StartDate', $time->format('Y-m-d H:i:s.u'));
+            Tholos::$c->addParam('Tholos_App_StartTime', $time->format('H:i:s.u'));
+          }
+        } catch (Exception $e) {
+        
+        }
         
         // generating Tholos Application Unique Session ID
         if (Eisodos::$parameterHandler->eq('Tholos_sessionID', '')) {
@@ -463,6 +487,16 @@
           if ($partial !== NULL) {
             $this->partial_id = $this->findComponentId($partial);
           }
+        }
+        
+        try {
+          $time2 = DateTime::createFromFormat('U.u', number_format(microtime(true), 6, '.', ''));
+          if ($time2) {
+            Tholos::$c->addParam('Tholos_App_InitDate', $time2->format('Y-m-d H:i:s.u'));
+            Tholos::$c->addParam('Tholos_App_InitTime', $time2->format('H:i:s.u'));
+          }
+        } catch (Exception $e) {
+        
         }
         
         Tholos::$app->trace('END', $this);
@@ -1091,6 +1125,7 @@
      * @return bool Returns the return of the handled event or false
      */
     public function eventHandler(TComponent $sender_, string $eventName_, mixed $notFound_ = false): bool {
+      try {
       $event = $sender_->getEvent($eventName_);
       if (!$event) {
         return $notFound_;
@@ -1108,6 +1143,9 @@
       }
       
       return $notFound_;
+      } catch (Exception $e) {
+        Eisodos::$logger->writeErrorLog($e);
+      }
     }
     
     //
@@ -1251,10 +1289,19 @@
           } elseif ($this->responseType !== 'BINARY') {
             Tholos::$app->trace('END');
             Eisodos::$render->finishRaw(true, Eisodos::$parameterHandler->eq('Tholos.WriteLanguageFile', 'T'));
-          } else {
-            return;
           }
         }
+        
+        try {
+          $time3 = DateTime::createFromFormat('U.u', number_format(microtime(true), 6, '.', ''));
+          if ($time3) {
+            Tholos::$c->addParam('Tholos_App_FinishDate', $time3->format('Y-m-d H:i:s.u'));
+            Tholos::$c->addParam('Tholos_App_FinishTime', $time3->format('H:i:s.u'));
+          }
+        } catch (Exception $e) {
+        
+        }
+        $this->writeAccessLog();
       } catch (Exception $e) {
         Eisodos::$logger->writeErrorLog($e);
         throw $e;

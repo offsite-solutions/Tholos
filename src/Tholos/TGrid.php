@@ -100,6 +100,7 @@
         $this->setProperty('ShowScrollCheckbox', 'false');
         $this->setProperty('Selectable', 'false');
         $this->setProperty('Scrollable', 'false');
+        $this->setProperty('ScrollableY', 'false');
         $this->setProperty('Transposed', 'false');
       }
       
@@ -188,6 +189,10 @@
       
       if (Eisodos::$parameterHandler->neq('TGrid_ViewMode_', '')) {
         $this->setProperty('ViewMode', Eisodos::$parameterHandler->getParam('TGrid_ViewMode_'));
+      }
+      
+      if ($this->getProperty("ViewMode") == '') {
+        $this->setProperty("ViewMode","GRID");
       }
       
       $this->saveUserSettings();
@@ -1129,7 +1134,7 @@
           $result .= Eisodos::$templateEngine->getTemplate('tholos/' . $this->_componentType . '.details.row',
             array('label' => $column->getProperty('Label'),
               'value' => Eisodos::$utils->ODecode(array(Tholos::$app->findComponentByID($column->getPropertyComponentId('DBField'))->getProperty('DataType', 'string'),
-                'bool', Eisodos::$utils->ODecode($column->getProperty('Value') === 'Y' ? '[:GRID.FILTER.BOOL_YES,Igen:]' : '[:GRID.FILTER.BOOL_NO,Nem:]'),
+                'bool', Eisodos::$translator->translateText((!in_array($column->getProperty('Value'), explode(',', strtoupper(Eisodos::$parameterHandler->getParam('Tholos.BoolFalse', ''))), false)) ? '[:GRID.FILTER.BOOL_YES,Igen:]' : '[:GRID.FILTER.BOOL_NO,Nem:]'),
                 'text', $column->getProperty('Value') ? ("<textarea class=\"form-control\" style=\"height: 150px;\" readonly>" . $column->getProperty("Value") . "</textarea>") : '&nbsp;',
                 ($column->getProperty('Value', '') !== '' ? $column->getProperty('Value') : '&nbsp;')
               ))
@@ -1150,7 +1155,7 @@
             $result .= Eisodos::$templateEngine->getTemplate('tholos/' . $this->_componentType . '.details.row',
               array('label' => $column->getProperty('Label'),
                 'value' => Eisodos::$utils->ODecode(array(Tholos::$app->findComponentByID($column->getPropertyComponentId('DBField'))->getProperty('DataType'),
-                  'bool', Eisodos::$utils->ODecode($column->getProperty('Value') === 'Y' ? '[:GRID.FILTER.BOOL_YES,Igen:]' : '[:GRID.FILTER.BOOL_NO,Nem:]'),
+                  'bool', Eisodos::$translator->translateText((!in_array($column->getProperty('Value'), explode(',', strtoupper(Eisodos::$parameterHandler->getParam('Tholos.BoolFalse', ''))), false)) ? '[:GRID.FILTER.BOOL_YES,Igen:]' : '[:GRID.FILTER.BOOL_NO,Nem:]'),
                   'text', $column->getProperty('Value') ? ("<textarea class=\"form-control\" style=\"height: 150px;\">" . $column->getProperty('Value') . "</textarea>") : '&nbsp;',
                   ($column->getProperty('Value', '') !== '' ? $column->getProperty('Value') : '&nbsp;')
                 ))
@@ -1259,7 +1264,7 @@
         }
       }
       
-      if ($this->getProperty('ViewMode') === 'GRID') {
+      if ($this->getProperty('ViewMode','GRID') === 'GRID') {
         $result = $this->renderPartial($this, 'head', '',
             array('filterslots' => $this->filterSlots,
               'filters' => Eisodos::$templateEngine->getTemplate('tholos/' . $this->_componentType . '.filter.head',
@@ -1317,7 +1322,7 @@
       } else {
         $listSource->setProperty('OrderBy', $this->getProperty('SortedByAlways', '1 ASC'));
       }
-      if ($this->getProperty('ViewMode') === 'GRID') {
+      if ($this->getProperty('ViewMode','GRID') === 'GRID') {
         $listSource->setProperty('QueryLimit', $this->getProperty('RowsPerPage', '0'));
         $listSource->setProperty('QueryOffset', (((integer)$this->getProperty('RowsPerPage', '0')) * (((integer)$this->getProperty('ActivePage', '1')) - 1)));
       }

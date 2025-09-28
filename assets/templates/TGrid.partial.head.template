@@ -34,6 +34,7 @@ $chartInit
 <input type="hidden" id="tholos_renderID" name="tholos_renderID" value="$tholos_renderID">
 <input type="hidden" id="TGrid_Value_" name="TGrid_Value_" value="$prop_value">
 <input type="hidden" id="TGrid_ViewMode_" name="TGrid_ViewMode_" value="$prop_ViewMode">
+<input type="hidden" id="TGrid_ViewModeInit_" name="TGrid_ViewModeInit_" value="$prop_ViewModeInit">
 <%FUNC%
 _include=tholos/tholos_callback.php
 _function_name=_eqs

@@ -1,7 +1,7 @@
 [%_include=tholos/tholos_callback.php;_function_name=_case;param=prop_gridhtmltype;div=tholos/TGrid.partial.div.foot;div-responsive=tholos/TGrid.partial.divresponsive.foot;else=tholos/TGrid.partial.table.foot%]
 $showdataerror
 </div>
-$templateabs_tholos__TGrid_chart_main
+
 </div>
 <%FUNC%
 _include=tholos/tholos_callback.php
@@ -17,12 +17,13 @@ _function_name=_eqs
 param=prop_datagenerated
 value=true
 true=
-false=<div class="col-md-12"><div class="alert alert-warning mb-3" style="margin-bottom: 0px"><i class="fa fa-exclamation-triangle text-warning"></i> $prop_labelnodatagenerated</div></div>
+false=<div class="col-md-12" id="needrefresh_$prop_id"><div class="alert alert-warning mb-3" style="margin-bottom: 0px"><i class="fa fa-exclamation-triangle text-warning"></i> $prop_labelnodatagenerated</div></div>
 %FUNC%>
 </div>
 $pagination
 $cacheinfo
 </div>
+$templateabs_tholos__TGrid_chart_main
 </div><!-- body_$prop_name -->
 </div><!-- container_$prop_name -->
 </div>
