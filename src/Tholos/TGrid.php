@@ -175,8 +175,8 @@
         $this->setProperty('Scrollable', Eisodos::$parameterHandler->getParam('TGrid_Scrollable_'));
       }
       
-      if (Tholos::$c->neq('TGrid_ScrollableY_', '')) {
-        $this->setProperty('ScrollableY', Tholos::$c->getParam('TGrid_ScrollableY_'));
+      if (Eisodos::$parameterHandler->neq('TGrid_ScrollableY_', '')) {
+        $this->setProperty('ScrollableY', Eisodos::$parameterHandler->getParam('TGrid_ScrollableY_'));
       }
       
       if (Eisodos::$parameterHandler->neq('TGrid_Transposed_', '')) {
@@ -206,7 +206,7 @@
      * @return string
      */
     private function nullStr($value_, bool $isString_ = true): string {
-      if (($component = $this->getPropertyComponentId('ListSource')) && $dbIndex = Tholos::$app->findComponentByID($component)->getProperty('DatabaseIndex', '1')) {
+      if (($component = $this->getPropertyComponentId('ListSource')) && $dbIndex = Tholos::$app->findComponentByID($component)->getProperty('DatabaseIndex')) {
         return Eisodos::$dbConnectors->connector($dbIndex)->nullStr($value_, $isString_);
       }
       
@@ -222,8 +222,8 @@
       $n = $this->getProperty('name', '') . '_f_';
       if (Eisodos::$parameterHandler->eq('TGrid_todo_', 'reloadState') && $this->getProperty('UUID', '') !== '') { // grid visszatoltese az utolso allapotra
         if ($this->getProperty('Persistent', '') === 'DATABASE') {  // utolso filterek
-          $this->last_filters = @unserialize(getSQLback(Tholos::$c->db, 'select value from cor_session_parameters where session_id=' . $this->nullStr(session_id()) . ' and parameter_name=' . $this->nullStr($this->getProperty('Name', '') . '.filters.' . $this->getProperty('UUID', ''))), false);
-          $this->userSettings = @unserialize(getSQLback(Tholos::$c->db, 'select value from cor_session_parameters where session_id=' . $this->nullStr(session_id()) . ' and parameter_name=' . $this->nullStr($this->getProperty('Name', '') . '.grid.' . $this->getProperty('UUID', ''))), false);
+          $this->last_filters = @unserialize(Eisodos::$dbConnectors->connector($this->getProperty('DatabaseIndex'))->query(RT_FIRST_ROW_FIRST_COLUMN,'select value from cor_session_parameters where session_id=' . $this->nullStr(session_id()) . ' and parameter_name=' . $this->nullStr($this->getProperty('Name', '') . '.filters.' . $this->getProperty('UUID', ''))), false);
+          $this->userSettings = @unserialize(Eisodos::$dbConnectors->connector($this->getProperty('DatabaseIndex'))->query(RT_FIRST_ROW_FIRST_COLUMN,'select value from cor_session_parameters where session_id=' . $this->nullStr(session_id()) . ' and parameter_name=' . $this->nullStr($this->getProperty('Name', '') . '.grid.' . $this->getProperty('UUID', ''))), false);
         } elseif ($this->getProperty('Persistent', '') === 'SESSION') {
           if ($prefix = $this->getProperty('PersistencyPrefix')) {
             $prefix = '';
@@ -259,7 +259,7 @@
     private function saveFilterState(): void {
       
       if ($this->getProperty('Persistent', '') === 'DATABASE') {
-        if (getSQLback(Tholos::$c->db, "select session_id \n" .
+        if (Eisodos::$dbConnectors->connector($this->getProperty('DatabaseIndex'))->query(RT_FIRST_ROW_FIRST_COLUMN,"select session_id \n" .
             "  from cor_session_parameters \n" .
             " where session_id=" . $this->nullStr(session_id()) . "\n" .
             "       and parameter_name=" . $this->nullStr($this->getProperty("Name", "") . ".filters." . $this->getProperty("UUID", ""))) !== "") {
@@ -270,16 +270,18 @@
         } else {
           $sql = "INSERT INTO cor_session_parameters \n" .
             "  (session_id,parameter_name,value) VALUES \n" .
-            "  (" . $this->nullStr(session_id()) . "," . $this->nullStr($this->getProperty("Name", "") . ".filters." . $this->getProperty("UUID", "")) . ",?)";
+            "  (" . $this->nullStr(session_id()) . "," . $this->nullStr($this->getProperty("Name", "") . ".filters." . $this->getProperty("UUID", "")) . ",:VALUE)";
         }
         
-        Tholos::$c->getDBByIndex(1)->beginTransaction();
-        runSQLPrep(Tholos::$c->db,
+        Eisodos::$dbConnectors->connector($this->getProperty('DatabaseIndex'))->startTransaction();
+        $boundVariables = [];
+        Eisodos::$dbConnectors->connector($this->getProperty('DatabaseIndex'))->bind($boundVariables, 'VALUE', 'string', serialize($this->last_filters));
+        Eisodos::$dbConnectors->connector($this->getProperty('DatabaseIndex'))->executePreparedDML2(
           $sql,
-          array('text'),
-          array(serialize($this->last_filters))
+          $boundVariables
         );
-        Tholos::$c->getDBByIndex(1)->commit();
+        
+        Eisodos::$dbConnectors->connector($this->getProperty('DatabaseIndex'))->commit();
       } elseif ($this->getProperty('Persistent', '') === 'SESSION') {
         if ($prefix = $this->getProperty('PersistencyPrefix')) {
           $prefix = '';
@@ -298,22 +300,23 @@
       $this->userSettings['TGrid_ActivePage_'] = Eisodos::$parameterHandler->getParam('TGrid_ActivePage_');
       $this->userSettings['TGrid_RowsPerPage_'] = Eisodos::$parameterHandler->getParam('TGrid_RowsPerPage_');
       $this->userSettings['TGrid_Scrollable_'] = Eisodos::$parameterHandler->getParam('TGrid_Scrollable_');
-      $this->usersettings['TGrid_ScrollableY_'] = Tholos::$c->getParam('TGrid_ScrollableY_');
+      $this->usersettings['TGrid_ScrollableY_'] = Eisodos::$parameterHandler->getParam('TGrid_ScrollableY_');
       
       if ($this->getProperty('Persistent', '') === 'DATABASE') {
-        if (getSQLback(Tholos::$c->db, 'select session_id from cor_session_parameters where session_id=' . $this->nullStr(session_id()) . ' and parameter_name=' . $this->nullStr($this->getProperty('Name', '') . '.grid.' . $this->getProperty('UUID', ''))) !== '') {
+        if (Eisodos::$dbConnectors->connector($this->getProperty('DatabaseIndex'))->query(RT_FIRST_ROW_FIRST_COLUMN,'select session_id from cor_session_parameters where session_id=' . $this->nullStr(session_id()) . ' and parameter_name=' . $this->nullStr($this->getProperty('Name', '') . '.grid.' . $this->getProperty('UUID', ''))) !== '') {
           $sql = 'update cor_session_parameters set value=? where session_id=' . $this->nullStr(session_id()) . ' and parameter_name=' . $this->nullStr($this->getProperty('Name', '') . '.grid.' . $this->getProperty('UUID', ''));
         } else {
-          $sql = 'insert into cor_session_parameters (session_id,parameter_name,value) values (' . $this->nullStr(session_id()) . ',' . $this->nullStr($this->getProperty('Name', '') . '.grid.' . $this->getProperty('UUID', '')) . ',?)';
+          $sql = 'insert into cor_session_parameters (session_id,parameter_name,value) values (' . $this->nullStr(session_id()) . ',' . $this->nullStr($this->getProperty('Name', '') . '.grid.' . $this->getProperty('UUID', '')) . ',:VALUE)';
         }
         
-        Tholos::$c->getDBByIndex(1)->beginTransaction();
-        runSQLPrep(Tholos::$c->db,
+        Eisodos::$dbConnectors->connector($this->getProperty('DatabaseIndex'))->startTransaction();
+        $boundVariables = [];
+        Eisodos::$dbConnectors->connector($this->getProperty('DatabaseIndex'))->bind($boundVariables, 'VALUE', 'string', serialize($this->userSettings));
+        Eisodos::$dbConnectors->connector($this->getProperty('DatabaseIndex'))->executePreparedDML2(
           $sql,
-          array('text'),
-          array(serialize($this->userSettings))
+          $boundVariables
         );
-        Tholos::$c->getDBByIndex(1)->commit();
+        Eisodos::$dbConnectors->connector($this->getProperty('DatabaseIndex'))->commit();
       } elseif ($this->getProperty('Persistent', '') === 'SESSION') {
         if ($prefix = $this->getProperty('PersistencyPrefix')) {
           $prefix = '';
@@ -404,7 +407,7 @@
             if (@$filterParam[2] != ''
               && in_array($dbField->getProperty('datatype'), ['date', 'datetime', 'datetimehm', 'time', 'timestamp'])
             ) {
-              $dateformat = Tholos::$c->getParam('PHP' . $dbField->getProperty('DateFormatParameter') . 'Format');
+              $dateformat = Eisodos::$parameterHandler->getParam('PHP' . $dbField->getProperty('DateFormatParameter') . 'Format');
               $universalDt = DateTime::createFromFormat('!' . $dateformat, @$filterParam[2]);
               $r = DateTime::getLastErrors();
               if ($r["warning_count"] > 0 || $r["error_count"] > 0) {
@@ -412,7 +415,7 @@
                 Tholos::$app->error(print_r(array_merge($filterParam, $r), true), $this);
               } else {
                 try {
-                  $JSONDateValue = $universalDt->format(Tholos::$c->getParam($dbField->getProperty('NativeDataType') . '.SPFormat'));
+                  $JSONDateValue = $universalDt->format(Eisodos::$parameterHandler->getParam($dbField->getProperty('NativeDataType') . '.SPFormat'));
                 } catch (Exception $e) {
                   Tholos::$app->error($e->getMessage(), $this);
                 }
@@ -464,7 +467,7 @@
               ) {
                 $JSONFilter = [
                   'fieldName' => $dbField->getProperty('FieldName'),
-                  'value' => Tholos::$c->ODecode(array($dbField->getProperty('datatype'),
+                  'value' => Eisodos::$utils->ODecode(array($dbField->getProperty('datatype'),
                       'string', (in_array($filterParam[1], ["in", "notin"]) ? NULL : @$filterParam[2]),
                       'text', (in_array($filterParam[1], ["in", "notin"]) ? NULL : @$filterParam[2]),
                       'bool', $this->boolConvert(@$filterParam[2], false),
@@ -483,7 +486,7 @@
                       NULL
                     )
                   ),
-                  'valueArray' => Tholos::$c->ODecode(array($dbField->getProperty('datatype'),
+                  'valueArray' => Eisodos::$utils->ODecode(array($dbField->getProperty('datatype'),
                       'string', (in_array($filterParam[1], ['in', 'notin']) ? explode(',', @$filterParam[2]) : NULL),
                       'text', (in_array($filterParam[1], ['in', 'notin']) ? explode(',', @$filterParam[2]) : NULL),
                       'list', explode(',', @$filterParam[2]),
@@ -544,7 +547,7 @@
             ) . " \n";
           $JSONFilter = [
             'fieldName' => $dbField->getProperty('FieldName'),
-            'value' => Tholos::$c->ODecode(array($dbField->getProperty('datatype'),
+            'value' => Eisodos::$utils->ODecode(array($dbField->getProperty('datatype'),
                 'string', $masterValue,
                 'date', $masterValue,
                 'datetime', $masterValue,

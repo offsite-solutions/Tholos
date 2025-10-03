@@ -95,8 +95,8 @@
               if (!in_array($value, ['1', '0', 'Y', 'N', 'I', 'true', 'false'], false)) {
                 throw new RuntimeException('');
               }
-              if (Eisodos::$parameterHandler->eq("Tholos.UseLogicalBool", "true")) {
-                if (in_array($value, explode(',', strtoupper(Eisodos::$parameterHandler->getParam("Tholos.BoolFalse", ""))), false)) {
+              if (Eisodos::$parameterHandler->eq('Tholos.UseLogicalBool', 'true')) {
+                if (in_array($value, explode(',', strtoupper(Eisodos::$parameterHandler->getParam('Tholos.BoolFalse', ''))), false)) {
                   $value = 'false';
                 } else {
                   $value = 'true';
@@ -132,8 +132,8 @@
               if ($r['warning_count'] > 0 || $r['error_count'] > 0) {
                 throw new RuntimeException('');
               }
-              $JSONFilter['value'] = $universalDt->format(Tholos::$c->getParam($this->getProperty('NativeDataType', $dt) . '.SPFormat'));
-              $value = "to_date(" . Eisodos::$dbConnectors->connector(0)->nullStr($value) . ",'" . $DBDateFormat . "')";
+              $JSONFilter['value'] = $universalDt->format(Eisodos::$parameterHandler->getParam($this->getProperty('NativeDataType', $dt) . '.SPFormat'));
+              $value = 'to_date(' . Eisodos::$dbConnectors->connector(Tholos::$app->findComponentByID($this->_parent_id)->getProperty('DBIndex'))->nullStr($value) . ",'" . $DBDateFormat . "')";
             } elseif ($dt === 'float') {
               $value = Eisodos::$utils->replace_all($value, ',', '.');
               if (!Eisodos::$utils->isInteger($value, true)) {

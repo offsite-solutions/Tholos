@@ -6,8 +6,7 @@
    * Tholos Bootstrap class
    *
    * This class provides bootstrapping functionality for Tholos. It registers and implements autoload function for
-   * loading all Tholos components automatically. Also stores a copy of the `udSCGI` $c variable as well as a reference
-   * to TholosApplication called $app for quick access from any Tholos component.
+   * loading all Tholos components automatically.
    *
    * @package Tholos
    * @see TholosApplication

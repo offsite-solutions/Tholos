@@ -71,7 +71,7 @@
             }
             /* @var TDBParam $param */
             $param->initValue($this);
-            $boundParameters[$param->getProperty("BindParameterName",$param->getProperty('ParameterName'))] = $this->StringToJSON($param->getProperty('DBValue', ''), $param->getProperty('DataType'));
+            $boundParameters[$param->getProperty('BindParameterName',$param->getProperty('ParameterName'))] = $this->StringToJSON($param->getProperty('DBValue', ''), $param->getProperty('DataType'));
           }
           
           $boundParametersJSON = json_encode($boundParameters, JSON_THROW_ON_ERROR);
@@ -82,7 +82,7 @@
           
           $curl = curl_init();
           
-          if ($this->getProperty("curlVerbose") == 'true') {
+          if ($this->getProperty('curlVerbose') == 'true') {
             $streamVerboseHandle = fopen('php://temp', 'wb+');
           } else {
             $streamVerboseHandle = NULL;
@@ -112,7 +112,7 @@
           
           curl_setopt_array($curl, $options);
           
-          if ($this->getProperty("curlDebug") == 'true') {
+          if ($this->getProperty('curlDebug') == 'true') {
             Tholos::$app->debug(print_r($options, true));
           }
           
@@ -121,16 +121,16 @@
           $httpError = curl_error($curl);
           curl_close($curl);
           
-          if ($this->getProperty("curlVerbose") == 'true') {
+          if ($this->getProperty('curlVerbose') == 'true') {
             rewind($streamVerboseHandle);
             $verboseLog = stream_get_contents($streamVerboseHandle);
             Tholos::$app->debug("Verbose: \n" . $verboseLog);
           }
           
-          if ($this->getProperty("curlDebug") == 'true') {
-            Tholos::$app->debug("HTTP Code: " . $httpCode);
-            Tholos::$app->debug("HTTP Response: " . $httpResponse);
-            Tholos::$app->debug("HTTP Error: " . $httpError);
+          if ($this->getProperty('curlDebug') == 'true') {
+            Tholos::$app->debug('HTTP Code: ' . $httpCode);
+            Tholos::$app->debug('HTTP Response: ' . $httpResponse);
+            Tholos::$app->debug('HTTP Error: ' . $httpError);
           }
           
           // hard error

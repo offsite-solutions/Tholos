@@ -352,10 +352,10 @@
     
     private function writeAccessLog() {
       try {
-        if (Tholos::$c->neq('Tholos.AccessLog', '')) {
-          $line = Tholos::$c->getParam('Tholos.AccessLog.Format');
-          $line = Tholos::$c->replaceParamInString(str_replace('%', '$', $line));
-          $file = fopen(Tholos::$c->getParam('Tholos.AccessLog'), 'ab+');
+        if (Eisodos::$parameterHandler->neq('Tholos.AccessLog', '')) {
+          $line = Eisodos::$parameterHandler->getParam('Tholos.AccessLog.Format');
+          $line = Eisodos::$parameterHandler->replaceParamInString(str_replace('%', '$', $line));
+          $file = fopen(Eisodos::$parameterHandler->getParam('Tholos.AccessLog'), 'ab+');
           fwrite($file, $line . "\n");
           fclose($file);
         }
@@ -391,8 +391,8 @@
         try {
           $time = DateTime::createFromFormat('U.u', number_format(microtime(true), 6, '.', ''));
           if ($time) {
-            Tholos::$c->addParam('Tholos_App_StartDate', $time->format('Y-m-d H:i:s.u'));
-            Tholos::$c->addParam('Tholos_App_StartTime', $time->format('H:i:s.u'));
+            Eisodos::$parameterHandler->setParam('Tholos_App_StartDate', $time->format('Y-m-d H:i:s.u'));
+            Eisodos::$parameterHandler->setParam('Tholos_App_StartTime', $time->format('H:i:s.u'));
           }
         } catch (Exception $e) {
         
@@ -492,8 +492,8 @@
         try {
           $time2 = DateTime::createFromFormat('U.u', number_format(microtime(true), 6, '.', ''));
           if ($time2) {
-            Tholos::$c->addParam('Tholos_App_InitDate', $time2->format('Y-m-d H:i:s.u'));
-            Tholos::$c->addParam('Tholos_App_InitTime', $time2->format('H:i:s.u'));
+            Eisodos::$parameterHandler->setParam('Tholos_App_InitDate', $time2->format('Y-m-d H:i:s.u'));
+            Eisodos::$parameterHandler->setParam('Tholos_App_InitTime', $time2->format('H:i:s.u'));
           }
         } catch (Exception $e) {
         
@@ -520,7 +520,7 @@
      * @return void
      */
     public function regenerateJSInit(?TComponent $sender): void {
-      Tholos::$c->addParam("TholosApplicationInit", Tholos::$c->getTemplate("tholos/application.jsinit", array(), false), true);  // application initiaclization javascript
+      Eisodos::$parameterHandler->setParam("TholosApplicationInit", Eisodos::$templateEngine->getTemplate("tholos/application.jsinit", array(), false), true);  // application initiaclization javascript
     }
     
     /**
@@ -1169,10 +1169,9 @@
         
         $this->init();
         
-        if (Tholos::$c->getParam('Tholos.CSPEnabled', 'false') == "true") {
-          header("Content-Security-Policy: script-src 'self' 'nonce-" . Tholos::$c->getParam('Tholos.Nonce') . "' " . Tholos::$c->getParam('Tholos.CSPJavascriptHosts', '') . ';' .
-            //               " style-src 'self' 'unsafe-inline' 'nonce-".Tholos::$c->getParam("Tholos.Nonce")."' https://fonts.gstatic.com https://*.googleapis.com; ".
-            " font-src 'self' " . Tholos::$c->getParam('Tholos.CSPFontHosts', '') . ';');
+        if (Eisodos::$parameterHandler->getParam('Tholos.CSPEnabled', 'false') == "true") {
+          header("Content-Security-Policy: script-src 'self' 'nonce-" . Eisodos::$parameterHandler->getParam('Tholos.Nonce') . "' " . Eisodos::$parameterHandler->getParam('Tholos.CSPJavascriptHosts', '') . ';' .
+            " font-src 'self' " . Eisodos::$parameterHandler->getParam('Tholos.CSPFontHosts', '') . ';');
         }
         
         if (Eisodos::$parameterHandler->neq('REDIRECT', '')) {
@@ -1295,8 +1294,8 @@
         try {
           $time3 = DateTime::createFromFormat('U.u', number_format(microtime(true), 6, '.', ''));
           if ($time3) {
-            Tholos::$c->addParam('Tholos_App_FinishDate', $time3->format('Y-m-d H:i:s.u'));
-            Tholos::$c->addParam('Tholos_App_FinishTime', $time3->format('H:i:s.u'));
+            Eisodos::$parameterHandler->setParam('Tholos_App_FinishDate', $time3->format('Y-m-d H:i:s.u'));
+            Eisodos::$parameterHandler->setParam('Tholos_App_FinishTime', $time3->format('H:i:s.u'));
           }
         } catch (Exception $e) {
         

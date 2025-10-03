@@ -39,6 +39,8 @@
         
         if (is_null($dataProxy)) {
           
+          $connector = Eisodos::$dbConnectors->connector($this->getProperty('DatabaseIndex'));
+          
           $boundParameters = array();
           foreach (Tholos::$app->findChildIDsByType($this, 'TDBParam') as $paramId) {
             $param = Tholos::$app->findComponentByID($paramId);
@@ -47,12 +49,14 @@
             }
             /* @var TDBParam $param */
             $param->initValue($this);
-            StoredProc_Param(Tholos::$c,
+            $connector->bind(
               $boundParameters,
               $param->getProperty('ParameterName'),
-              $param->getProperty('MDB2DataType', 'text'),
+              $param->getProperty('MDB2DataType', 'string'),
               $param->getProperty('DBValue', ''),
-              $param->getProperty('ParameterMode', 'IN'));
+              $param->getProperty('ParameterMode', 'IN')
+            );
+            
           }
           
           Tholos::$app->trace('Bound parameters: ' . print_r($boundParameters, true), $this);
@@ -62,17 +66,18 @@
           $this->setProperty('Success', 'false');
           
           if ($this->getProperty('TransactionMode', 'true') === 'true') {
-            Tholos::$c->getDBByIndex((integer)$this->getProperty('db', '1'))->beginTransaction();
+            Eisodos::$dbConnectors->connector($this->getProperty('DatabaseIndex'))->startTransaction();
             Tholos::$app->trace('Transaction started', $this);
           }
           
-          StoredProc_Run(Tholos::$c->getDBByIndex((integer)$this->getProperty('db', '1')),
-            StoredProc_SQL(Tholos::$c->getDBByIndex((integer)$this->getProperty('db', '1')),
-              $boundParameters,
-              $this->getProperty('Procedure')),
-            $boundParameters,
+          $boundVariables = [];
+          Eisodos::$dbConnectors->connector($this->getProperty('DatabaseIndex'))->bind($boundVariables, 'VALUE', 'string', serialize($this->userSettings));
+          Eisodos::$dbConnectors->connector($this->getProperty('DatabaseIndex'))->executeStoredProcedure(
+            $this->getProperty('Procedure'),
+            $boundVariables,
             $resultParameters
           );
+          Eisodos::$dbConnectors->connector($this->getProperty('DatabaseIndex'))->commit();
           
         } else {
           try {
@@ -151,8 +156,8 @@
           
           if (is_null($dataProxy)
             && $this->getProperty('TransactionMode', 'true') === 'true'
-            && Tholos::$c->getDBByIndex((integer)$this->getProperty('db', '1'))->inTransaction()) {
-            Tholos::$c->getDBByIndex((integer)$this->getProperty('db', '1'))->commit();
+            && Eisodos::$dbConnectors->connector($this->getProperty('DatabaseIndex'))->inTransaction()) {
+            Eisodos::$dbConnectors->connector($this->getProperty('DatabaseIndex'))->commit();
             Tholos::$app->trace('Transaction commit', $this);
           }
           
@@ -165,12 +170,12 @@
           
           if (is_null($dataProxy)
             && $this->getProperty('TransactionMode', 'true') === 'true'
-            && Tholos::$c->getDBByIndex((integer)$this->getProperty('db', '1'))->inTransaction()) {
+            && Eisodos::$dbConnectors->connector($this->getProperty('DatabaseIndex'))->inTransaction()) {
             if ($this->getProperty('RollbackOnError', 'true') === 'true') {
-              Tholos::$c->getDBByIndex((integer)$this->getProperty('db', '1'))->rollback();
+              Eisodos::$dbConnectors->connector($this->getProperty('DatabaseIndex'))->rollback();
               Tholos::$app->trace('Transaction rollback', $this);
             } else {
-              Tholos::$c->getDBByIndex((integer)$this->getProperty('db', '1'))->commit();
+              Eisodos::$dbConnectors->connector($this->getProperty('DatabaseIndex'))->commit();
               Tholos::$app->trace('Transaction commit', $this);
             }
           }
@@ -202,8 +207,8 @@
         
         if (is_null($dataProxy)
           && $this->getProperty('TransactionMode', 'true') === 'true'
-          && Tholos::$c->getDBByIndex((integer)$this->getProperty('db', '1'))->inTransaction()) {
-          Tholos::$c->getDBByIndex((integer)$this->getProperty('db', '1'))->rollback();
+          && Eisodos::$dbConnectors->connector($this->getProperty('DatabaseIndex'))->inTransaction()) {
+          Eisodos::$dbConnectors->connector($this->getProperty('DatabaseIndex'))->rollback();
         }
         
         $this->setProperty('ResultErrorMessage', $e->getMessage());

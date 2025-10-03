@@ -2,6 +2,7 @@
   
   namespace Tholos;
   
+  use Eisodos\Eisodos;
   use Exception;
   use RuntimeException;
   use Throwable;
@@ -216,10 +217,10 @@
             CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
             CURLOPT_CUSTOMREQUEST => $this->getProperty('HTTPRequestMethod'),
             CURLOPT_POSTFIELDS => $boundParametersJSON,
-            CURLOPT_USERAGENT => 'Tholos (' . Tholos::$c->getParam('last_tholos_release', 'dev') . ')',
-            CURLOPT_HTTPHEADER => array_merge(['X-Tholos-SessionID: ' . Tholos::$c->getParam('Tholos_sessionID'),
+            CURLOPT_USERAGENT => 'Tholos (' . Eisodos::$parameterHandler->getParam('last_tholos_release', 'dev') . ')',
+            CURLOPT_HTTPHEADER => array_merge(['X-Tholos-SessionID: ' . Eisodos::$parameterHandler->getParam('Tholos_sessionID'),
               'Expect:'], // JAVA Rest API nem jól kezeli a "Expect: 100-continue" headert
-              explode("\n", Tholos::$c->replaceParamInString(implode("\n", explode("\n", $this->getProperty('HTTPRequestHeader'))))),
+              explode("\n", Eisodos::$templateEngine->replaceParamInString(implode("\n", explode("\n", $this->getProperty('HTTPRequestHeader'))))),
               Tholos::$app->roleManager->getHTTPRequestAuthHeaders()
             ),
             CURLOPT_HEADER => true,
@@ -260,7 +261,9 @@
           // soft error
           if (1 * $httpCode == 401) {
             throw new \RuntimeException('401 Not Authorized');
-          } else if (1 * $httpCode >= 200 && 1 * $httpCode < 300) {
+          }
+          
+          if (1 * $httpCode >= 200 && 1 * $httpCode < 300) {
             if (strpos($httpResponse, 'HTTP/') == 0) {
               $httpNormalResponse = explode("\r\n\r\n", $httpResponse, 2);
               if (count($httpNormalResponse) > 1) {
@@ -289,7 +292,7 @@
           Tholos::$app->eventHandler($this, 'onSuccess');
           
         } catch (Exception $e) {
-          Tholos::$c->writeErrorLog($e);
+          Eisodos::$logger->writeErrorLog($e);
           Tholos::$app->eventHandler($this, 'onError');
           throw $e;
         }

@@ -104,14 +104,14 @@
         } else {
           if ($this->getProperty('Download') == 'true') {
             Tholos::$app->responsePDF->Output();
-            header("Content-Type: application/force-download");
-            header("Content-Type: application/octet-stream");
-            header("Content-Type: application/download");
+            header('Content-Type: application/force-download');
+            header('Content-Type: application/octet-stream');
+            header('Content-Type: application/download');
             if (!$this->getProperty('FileName')) {
               $this->setProperty('FileName', date('YmdHis'));
             }
             header('Content-Disposition: attachment;filename="' . $this->getProperty("FileName") . '.pdf"');
-            Tholos::$app->responseType = "BINARY";
+            Tholos::$app->responseType = 'BINARY';
           } else {
             Tholos::$app->responseType = 'PDF';
           }

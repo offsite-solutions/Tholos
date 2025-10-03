@@ -134,8 +134,11 @@
               Tholos::$app->trace('Counting rows started', $this);
               $this->openDatabase(true);
               $this->setProperty('TotalRowCount',
-                getSQLback(Tholos::$c->getDBByIndex((integer)$this->getProperty('DatabaseIndex', '1')),
-                  'select count(1) from (' . $sql . ') q'));
+                Eisodos::$dbConnectors->connector($this->getProperty('DatabaseIndex'))->query(
+                  RT_FIRST_ROW_FIRST_COLUMN,
+                  'select count(1) from (' . $sql . ') q'
+                )
+              );
               Tholos::$app->trace('Counting rows finished', $this);
             }
           }
@@ -143,7 +146,7 @@
           // offseting and paging is disabled on cached queries
           
           if ($this->getProperty('Caching', 'Disabled') === 'Disabled') {
-            $DBSyntax = Tholos::$c->getDBByIndex((integer)$this->getProperty('DatabaseIndex', '1'))->getDSN('array', false)['dbsyntax'];
+            $DBSyntax = Eisodos::$dbConnectors->connector($this->getProperty('DatabaseIndex'))->DBSyntax();
             if ((integer)$this->getProperty('QueryOffset', '0') !== 0) {
               if ($DBSyntax === 'oci8') {
                 $sql .= "\n" .
@@ -157,7 +160,6 @@
             }
             
             if ((integer)$this->getProperty('QueryLimit', '0') !== 0) {
-              $DBSyntax = Tholos::$c->getDBByIndex((integer)$this->getProperty('DatabaseIndex', '1'))->getDSN('array', false)['dbsyntax'];
               if ($DBSyntax === 'oci8') {
                 $sql .= "\n" .
                   ' FETCH FIRST ' . $this->getProperty('QueryLimit', '0') . ' ROWS ONLY ';
@@ -178,7 +180,7 @@
         
         if ($this->getProperty('DynamicMode', 'false') === 'true') {
           Tholos::$app->debug('Entering Dynamic mode', $this);
-          $this->setProperty('SQL', getSQLback(Tholos::$c->getDBByIndex((integer)$this->getProperty('DatabaseIndex', '1')), $sql));
+          $this->setProperty('SQL', Eisodos::$dbConnectors->connector($this->getProperty('DatabaseIndex'))->query(RT_FIRST_ROW_FIRST_COLUMN, $sql));
           $this->setProperty('DynamicMode', 'false');
           Tholos::$app->debug('Leaving Dynamic mode', $this);
           Tholos::$app->trace('END', $this);
@@ -269,7 +271,7 @@
             
             // InitProcedure
             
-            if (($initProc_ID = $this->getPropertyComponentId("InitProcedure"))
+            if (($initProc_ID = $this->getPropertyComponentId('InitProcedure'))
               &&
               (
                 (!Tholos::$app->findComponentByID($initProc_ID)->getPropertyComponentId("DataProxy") // nincs proxyzva
@@ -308,7 +310,8 @@
               Tholos::$app->debug("SQL query opening", $this);
               $this->openDatabase(true);
               try {
-                getSQLtoArrayFull(Tholos::$c->getDBByIndex((integer)$this->getProperty("DatabaseIndex", "1")),
+                Eisodos::$dbConnectors->connector($this->getProperty('DatabaseIndex'))->query(
+                  RT_ALL_ROWS,
                   $sql,
                   $back);
                 

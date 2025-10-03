@@ -15,8 +15,8 @@
     
     public function init(): void {
       parent::init();
-      $this->setProperty("cellHeadType", Tholos::$app->findParentByType($this, "TGrid")->getProperty("GridHTMLType") === "table" ? "th" : "div");
-      $this->setProperty("cellType", Tholos::$app->findParentByType($this, "TGrid")->getProperty("GridHTMLType") === "table" ? "td" : "div");
+      $this->setProperty('cellHeadType', Tholos::$app->findParentByType($this, 'TGrid')->getProperty('GridHTMLType') === 'table' ? 'th' : 'div');
+      $this->setProperty('cellType', Tholos::$app->findParentByType($this, 'TGrid')->getProperty('GridHTMLType') === 'table' ? 'td' : 'div');
     }
     
   }

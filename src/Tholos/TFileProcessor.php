@@ -44,7 +44,7 @@
           $i = 0;
           foreach ($_FILES['file']['name'] as $tempFile) { // Bug!!!
             //$tempFile = $_FILES['file']['tmp_name'][$i];
-            $extension = mb_strtolower(pathinfo($_FILES['file']['name'][$i])["extension"]);
+            $extension = mb_strtolower(pathinfo($_FILES['file']['name'][$i])['extension']);
             Tholos::$app->trace('Extension is ' . $extension . ', ExtractArchive is ' . $this->getProperty('ExtractArchive', 'false') . ', TempFile is ' . $tempFile);
             if ($extension == 'zip' && $this->getProperty('ExtractArchive', 'false') == 'true' && file_exists($tempFile)) {
               Tholos::$app->trace('ZIP Archive initialization');
@@ -79,7 +79,7 @@
                 }
                 foreach ($extractFiles as $extracted) {
                   $targetFile = $storeFolder . DIRECTORY_SEPARATOR .
-                    Eisodos::$utils->generateUUID() . "." . mb_strtolower(pathinfo($extracted)['extension']);
+                    Eisodos::$utils->generateUUID() . '.' . mb_strtolower(pathinfo($extracted)['extension']);
                   Tholos::$app->trace('Renaming file '.$extracted.' to '.$targetFile);
                   rename($storeFolder . DIRECTORY_SEPARATOR . $extracted, $targetFile);
                   $fileSet[] = pathinfo($targetFile)['basename'];
@@ -90,16 +90,16 @@
               }
             } else {
               $targetFile = $storeFolder . DIRECTORY_SEPARATOR .
-                Eisodos::$utils->generateUUID() . "." . mb_strtolower(pathinfo($_FILES['file']['name'][$i])["extension"]);
-              Tholos::$app->debug("Moving received file (" . $i . ") - " . $tempFile . " to " . $targetFile);
-              $fileSet[] = pathinfo($targetFile)["basename"];
+                Eisodos::$utils->generateUUID() . '.' . mb_strtolower(pathinfo($_FILES['file']['name'][$i])['extension']);
+              Tholos::$app->debug('Moving received file (' . $i . ') - ' . $tempFile . ' to ' . $targetFile);
+              $fileSet[] = pathinfo($targetFile)['basename'];
               if (!file_exists($tempFile)) {
-                Tholos::$app->debug("No temp file found!");
+                Tholos::$app->debug('No temp file found!');
                 continue;
               }
               move_uploaded_file($tempFile, $targetFile);
               if (!file_exists($targetFile)) {
-                Tholos::$app->debug("Moving temp file failed!");
+                Tholos::$app->debug('Moving temp file failed!');
               }
             }
           }

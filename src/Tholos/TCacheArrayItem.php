@@ -32,10 +32,10 @@
       
       // loading cache from session parameter
       $cacheName = 'Tholos.CacheArray.' . $this->getProperty('CacheId');
-      if (Eisodos::$parameterHandler->eq('cache_' . $this->getProperty("CacheId"), 'invalidate')) {
+      if (Eisodos::$parameterHandler->eq('cache_' . $this->getProperty('CacheId'), 'invalidate')) {
         Tholos::$app->debug('Cache forced to invalidate');
         $currentCache = [];
-        Eisodos::$parameterHandler->setParam('cache_' . $this->getProperty("CacheId"), '');
+        Eisodos::$parameterHandler->setParam('cache_' . $this->getProperty('CacheId'), '');
       } else {
         $currentCache_ = Eisodos::$parameterHandler->getParam($cacheName, '');
         if ($currentCache_ != '') {
@@ -47,11 +47,11 @@
       }
       
       // if it's a new render phase, set sync mode to purge
-      if (Tholos::$c->eq($cacheName . '.renderID', '')) {
+      if (Eisodos::$parameterHandler->eq($cacheName . '.renderID', '')) {
         foreach ($currentCache as $key => $value) {
           $currentCache[$key]['syncMode'] = 'PURGE';
         }
-        Tholos::$c->addParam($cacheName . '.renderID', Tholos::$c->getParam('Tholos_renderID'));
+        Eisodos::$parameterHandler->setParam($cacheName . '.renderID', Eisodos::$parameterHandler->getParam('Tholos_renderID'));
       }
       
       // checking sync field is exists and getting its value

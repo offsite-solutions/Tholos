@@ -25,7 +25,7 @@
         Tholos::$app->checkRole($this, false, true);
       }
       
-      if ($this->getPropertyComponentId("InitSessionProvider") !== false) {
+      if ($this->getPropertyComponentId('InitSessionProvider') !== false) {
         /* @var TDataProvider $component */
         $component = Tholos::$app->findComponentByID($this->getPropertyComponentId('InitSessionProvider'));
         $component->init();

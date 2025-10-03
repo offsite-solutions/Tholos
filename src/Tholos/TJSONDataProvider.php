@@ -2,6 +2,7 @@
   
   namespace Tholos;
   
+  use Eisodos\Eisodos;
   use Exception;
   
   /**
@@ -19,7 +20,7 @@
       
       Tholos::$app->checkRole($this, true);
       
-      if ($nativeSQL == '' && $this->getProperty("Opened") == "true") {
+      if ($nativeSQL == '' && $this->getProperty('Opened') == 'true') {
         return;
       } // ha mar meg volt nyitva, akkor ne fusson le meg egyszer
       
@@ -50,7 +51,7 @@
           Tholos::$app->eventHandler($this, 'onSuccess');
           
         } catch (Exception $e) {
-          Tholos::$c->writeErrorLog($e);
+          Eisodos::$logger->writeErrorLog($e);
           Tholos::$app->eventHandler($this, 'onError');
           throw $e;
         }

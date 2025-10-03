@@ -38,7 +38,7 @@
           if (count($this->getProperty('Result', array())) > 0) {
             $queryResult = $this->getProperty('Result', array())[0];
           } else {
-            $queryResult=[];
+            $queryResult = [];
           }
         } else {
           $queryResult = json_decode($this->getProperty('Result', ''), true, 512, JSON_THROW_ON_ERROR)[0];
@@ -64,7 +64,7 @@
         
         /* @var $dbField TDBField */
         // handling native bools
-        if (array_key_exists($fieldName_clean,$queryResult) && is_bool($queryResult[$fieldName_clean])) {
+        if (array_key_exists($fieldName_clean, $queryResult) && is_bool($queryResult[$fieldName_clean])) {
           $dbField->setProperty('DBValue', $queryResult[$fieldName_clean], 'STRING', '', $dbField->getProperty('ParseValue', 'true') == 'false');
         } else {
           $dbField->setProperty('DBValue', Eisodos::$utils->safe_array_value($queryResult, $fieldName_clean, $dbField->getProperty('NullResultParameter', '')), 'STRING', '', $dbField->getProperty('ParseValue', 'true') == 'false');
@@ -155,7 +155,7 @@
       if ($this->getProperty('RowCount') !== false) {
         $this->setProperty('Rowcount', 0);
       }
-      $this->setProperty('JSONFilters',NULL);
+      $this->setProperty('JSONFilters', NULL);
       
       Tholos::$app->trace('END', $this);
     }
@@ -187,11 +187,9 @@
           //  Tholos::$app->debug('Database connection is not needed');
           //  return;
           //}
-          if (Tholos::$c->openDBA($this->getProperty('DatabaseIndex', '1'))) {
-            Tholos::$app->trace('Opening database connection by ' . $this->getProperty('Name'));
-          } else {
-            Tholos::$app->trace('Database connection already on for ' . $this->getProperty('Name'));
-          }
+          Eisodos::$dbConnectors->connector($this->getProperty('DatabaseIndex'))->connect(
+            'Database' . $this->getProperty('DatabaseIndex')
+          );
           Tholos::$app->roleManager?->initDBSession();
           Tholos::$app->trace('Database connection is ready to use');
         }

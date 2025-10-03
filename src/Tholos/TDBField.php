@@ -41,7 +41,7 @@
         if (!$comp) {
           continue;
         }
-        if (($this->_id !== $comp->getPropertyComponentId('DBField')) !== false && $comp->getPropertyComponentId("DBField")) {
+        if (($this->_id !== $comp->getPropertyComponentId('DBField')) !== false && $comp->getPropertyComponentId('DBField')) {
           continue;
         }
         $comp->setProperty('ParseValue', $parseValue);

@@ -43,7 +43,7 @@
         foreach (Tholos::$app->findChildIDsByType($this, 'TDataProxyParameter') as $id) {
           $component = Tholos::$app->findComponentByID($id);
           if (!$component) {
-            throw new RuntimeException("Invalid reference");
+            throw new RuntimeException('Invalid reference');
           }
           $proxy_client_parameters[$component->getProperty('ParameterName', '')] = $component->getProperty('Value', '');
         }

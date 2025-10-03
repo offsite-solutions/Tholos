@@ -25,7 +25,7 @@
         return '';
       }
       
-      Tholos::$app->eventHandler($this, "onBeforeRender");
+      Tholos::$app->eventHandler($this, 'onBeforeRender');
  
       // loading cache from session parameter
       $cacheName = 'Tholos.CacheArray.' . $this->getProperty('CacheId');

@@ -60,7 +60,7 @@
             }
           }
         } else {
-          Tholos::$app->eventHandler($this, "onZeroResult");
+          Tholos::$app->eventHandler($this, 'onZeroResult');
         }
       }
       
