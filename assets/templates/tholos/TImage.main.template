@@ -1,0 +1,25 @@
+## <!--  Image $prop_name -->
+$templateabs_tholos__TComponent_properties
+<img id="$prop_id" $templateabs_tholos__TComponent_basedata
+[%_function_name=Tholos\TholosCallback::_eqs;param=prop_value;value=;false=src="$prop_value";true=</>%]
+[%_function_name=Tholos\TholosCallback::_eqs;param=prop_alternatetext;value=;false=alt="$prop_alternatetext";true=</>%]
+class="$prop_class [%_function_name=Tholos\TholosCallback::_eqs;param=prop_responsive;value=true;true=img-fluid;false=%]"
+width="$prop_imagewidth"
+height="$prop_imageheight"
+>
+<%FUNC%
+_function_name=Tholos\TholosCallback::_eqs
+param=event_onclick
+value=
+true=
+false>>=
+<%FUNC%
+_function_name=Tholos\TholosCallback::_eqs
+param=prop_middleclick
+value=true
+true=<script type="text/javascript" nonce="$Tholos_nonce">$("#$prop_id").on('mouseup', function (e) { if( e.which <= 2 || e.altKey) { Tholos.setClickType(e.altKey?2:e.which); e.preventDefault(); $event_onclick }});</script>
+false=<script type="text/javascript" nonce="$Tholos_nonce">$("#$prop_id").on('click', function () { $event_onclick });</script>
+%FUNC%>
+<<
+%FUNC%>
+## <!-- /Image $prop_name -->

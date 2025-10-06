@@ -1,0 +1,4 @@
+[%_function_name=Tholos\TholosCallback::_eqs;param=prop_controlsizeextrasmall;value=;true=</>;false=col-xs-$prop_controlsizeextrasmall%]
+[%_function_name=Tholos\TholosCallback::_eqs;param=prop_controlsizesmall;value=;true=</>;false=col-sm-$prop_controlsizesmall%]
+[%_function_name=Tholos\TholosCallback::_eqs;param=prop_controlsizemedium;value=;true=</>;false=col-md-$prop_controlsizemedium%]
+[%_function_name=Tholos\TholosCallback::_eqs;param=prop_controlsizelarge;value=;true=</>;false=col-lg-$prop_controlsizelarge%]

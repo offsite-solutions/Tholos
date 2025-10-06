@@ -18,11 +18,11 @@ class TMapSource extends TComponent {
    * @inheritdoc
    */
   public function init() {
-      Tholos::$app->trace('BEGIN', $this);
-      Tholos::$app->trace('(' . $this->_componentType . ') (ID ' . $this->_id . ')', $this);
+      Tholos::$logger->trace('BEGIN', $this);
+      Tholos::$logger->trace('(' . $this->_componentType . ') (ID ' . $this->_id . ')', $this);
       parent::init();
-      Tholos::$app->debug('Turn off AutoOpen on list source of TMapSorce', $this);
+      Tholos::$logger->debug('Turn off AutoOpen on list source of TMapSorce', $this);
       Tholos::$app->findComponentByID($this->getPropertyComponentId('ListSource'))->setProperty('AutoOpenAllowed', 'false');
-      Tholos::$app->trace('END', $this);
+      Tholos::$logger->trace('END', $this);
   }
 }

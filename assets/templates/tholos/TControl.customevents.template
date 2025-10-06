@@ -1,0 +1,4 @@
+<script type="text/javascript" nonce="$Tholos_nonce">
+  [%_function_name=Tholos\TholosCallback::_eqs;param=event_onshow;value=;true=</>;false=$("#$prop_id").on( "onShow",function(){$event_onshow});%]
+  [%_function_name=Tholos\TholosCallback::_eqs;param=event_onhide;value=;true=</>;false=$("#$prop_id").on( "onHide",function(){$event_onhide});%]
+</script>

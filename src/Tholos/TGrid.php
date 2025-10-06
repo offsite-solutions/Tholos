@@ -85,8 +85,8 @@
      */
     public function init(): void {
       
-      Tholos::$app->trace('BEGIN', $this);
-      Tholos::$app->trace('(' . $this->_componentType . ') (ID ' . $this->_id . ')', $this);
+      Tholos::$logger->trace('BEGIN', $this);
+      Tholos::$logger->trace('(' . $this->_componentType . ') (ID ' . $this->_id . ')', $this);
       parent::init();
       $this->selfRenderer = true;
       Tholos::$app->findComponentByID($this->getPropertyComponentId('ListSource'))->setProperty('AutoOpenAllowed', 'false');
@@ -105,7 +105,7 @@
       }
       
       //if (!Tholos::$app->findComponentByID($this->getPropertyComponentId('SortedBy'))) {
-      //  Tholos::$app->error('TGrid configuration error: mandatory SortedBy property was not specified', $this);
+      //  Tholos::$logger->error('TGrid configuration error: mandatory SortedBy property was not specified', $this);
       //  throw new Exception('TGrid configuration error: mandatory SortedBy property was not specified');
       // }
       // setting runtime parameters
@@ -192,12 +192,12 @@
       }
       
       if ($this->getProperty("ViewMode") == '') {
-        $this->setProperty("ViewMode","GRID");
+        $this->setProperty("ViewMode", "GRID");
       }
       
       $this->saveUserSettings();
       
-      Tholos::$app->trace('END', $this);
+      Tholos::$logger->trace('END', $this);
     }
     
     /**
@@ -206,8 +206,8 @@
      * @return string
      */
     private function nullStr($value_, bool $isString_ = true): string {
-      if (($component = $this->getPropertyComponentId('ListSource')) && $dbIndex = Tholos::$app->findComponentByID($component)->getProperty('DatabaseIndex')) {
-        return Eisodos::$dbConnectors->connector($dbIndex)->nullStr($value_, $isString_);
+      if (($component = $this->getPropertyComponentId('ListSource'))) {
+        return Eisodos::$dbConnectors->connector(Tholos::$app->findComponentByID($component)->getProperty('DatabaseIndex'))->nullStr($value_, $isString_);
       }
       
       return '';
@@ -222,14 +222,16 @@
       $n = $this->getProperty('name', '') . '_f_';
       if (Eisodos::$parameterHandler->eq('TGrid_todo_', 'reloadState') && $this->getProperty('UUID', '') !== '') { // grid visszatoltese az utolso allapotra
         if ($this->getProperty('Persistent', '') === 'DATABASE') {  // utolso filterek
-          $this->last_filters = @unserialize(Eisodos::$dbConnectors->connector($this->getProperty('DatabaseIndex'))->query(RT_FIRST_ROW_FIRST_COLUMN,'select value from cor_session_parameters where session_id=' . $this->nullStr(session_id()) . ' and parameter_name=' . $this->nullStr($this->getProperty('Name', '') . '.filters.' . $this->getProperty('UUID', ''))), false);
-          $this->userSettings = @unserialize(Eisodos::$dbConnectors->connector($this->getProperty('DatabaseIndex'))->query(RT_FIRST_ROW_FIRST_COLUMN,'select value from cor_session_parameters where session_id=' . $this->nullStr(session_id()) . ' and parameter_name=' . $this->nullStr($this->getProperty('Name', '') . '.grid.' . $this->getProperty('UUID', ''))), false);
+          $this->last_filters = @unserialize(Eisodos::$dbConnectors->connector($this->getProperty('DatabaseIndex'))->query(RT_FIRST_ROW_FIRST_COLUMN, 'select value from cor_session_parameters where session_id=' . $this->nullStr(session_id()) . ' and parameter_name=' . $this->nullStr($this->getProperty('Name', '') . '.filters.' . $this->getProperty('UUID', ''))), ['allowed_classes' => false]);
+          $this->userSettings = @unserialize(Eisodos::$dbConnectors->connector($this->getProperty('DatabaseIndex'))->query(RT_FIRST_ROW_FIRST_COLUMN, 'select value from cor_session_parameters where session_id=' . $this->nullStr(session_id()) . ' and parameter_name=' . $this->nullStr($this->getProperty('Name', '') . '.grid.' . $this->getProperty('UUID', ''))), ['allowed_classes' => false]);
         } elseif ($this->getProperty('Persistent', '') === 'SESSION') {
           if ($prefix = $this->getProperty('PersistencyPrefix')) {
             $prefix = '';
           }
-          $this->last_filters = @unserialize($prefix . Eisodos::$parameterHandler->getParam($this->getProperty('Name', '') . '.filters.' . $this->getProperty('UUID', '')), false);
-          $this->userSettings = @unserialize($prefix . Eisodos::$parameterHandler->getParam($this->getProperty('Name', '') . '.grid.' . $this->getProperty('UUID', '')), false);
+          $unserialized = @unserialize($prefix . Eisodos::$parameterHandler->getParam($this->getProperty('Name', '') . '.filters.' . $this->getProperty('UUID', '')), ['allowed_classes' => false]);
+          $this->last_filters = ($unserialized !== false) ? $unserialized : [];
+          $unserialized = @unserialize($prefix . Eisodos::$parameterHandler->getParam($this->getProperty('Name', '') . '.grid.' . $this->getProperty('UUID', '')), ['allowed_classes' => false]);
+          $this->userSettings = ($unserialized !== false) ? $unserialized : [];
         }
         
         for ($i = 1; $i < 100; $i++) {
@@ -259,7 +261,7 @@
     private function saveFilterState(): void {
       
       if ($this->getProperty('Persistent', '') === 'DATABASE') {
-        if (Eisodos::$dbConnectors->connector($this->getProperty('DatabaseIndex'))->query(RT_FIRST_ROW_FIRST_COLUMN,"select session_id \n" .
+        if (Eisodos::$dbConnectors->connector($this->getProperty('DatabaseIndex'))->query(RT_FIRST_ROW_FIRST_COLUMN, "select session_id \n" .
             "  from cor_session_parameters \n" .
             " where session_id=" . $this->nullStr(session_id()) . "\n" .
             "       and parameter_name=" . $this->nullStr($this->getProperty("Name", "") . ".filters." . $this->getProperty("UUID", ""))) !== "") {
@@ -303,7 +305,7 @@
       $this->usersettings['TGrid_ScrollableY_'] = Eisodos::$parameterHandler->getParam('TGrid_ScrollableY_');
       
       if ($this->getProperty('Persistent', '') === 'DATABASE') {
-        if (Eisodos::$dbConnectors->connector($this->getProperty('DatabaseIndex'))->query(RT_FIRST_ROW_FIRST_COLUMN,'select session_id from cor_session_parameters where session_id=' . $this->nullStr(session_id()) . ' and parameter_name=' . $this->nullStr($this->getProperty('Name', '') . '.grid.' . $this->getProperty('UUID', ''))) !== '') {
+        if (Eisodos::$dbConnectors->connector($this->getProperty('DatabaseIndex'))->query(RT_FIRST_ROW_FIRST_COLUMN, 'select session_id from cor_session_parameters where session_id=' . $this->nullStr(session_id()) . ' and parameter_name=' . $this->nullStr($this->getProperty('Name', '') . '.grid.' . $this->getProperty('UUID', ''))) !== '') {
           $sql = 'update cor_session_parameters set value=? where session_id=' . $this->nullStr(session_id()) . ' and parameter_name=' . $this->nullStr($this->getProperty('Name', '') . '.grid.' . $this->getProperty('UUID', ''));
         } else {
           $sql = 'insert into cor_session_parameters (session_id,parameter_name,value) values (' . $this->nullStr(session_id()) . ',' . $this->nullStr($this->getProperty('Name', '') . '.grid.' . $this->getProperty('UUID', '')) . ',:VALUE)';
@@ -400,7 +402,7 @@
             }
           }
           if (!$filter || $dbField === NULL) {
-            Tholos::$app->error('No filter defined: ' . $filterParam[0], $this);
+            Tholos::$logger->error('No filter defined: ' . $filterParam[0], $this);
           } else {
             $dateError = false;
             $JSONDateValue = '';
@@ -412,12 +414,12 @@
               $r = DateTime::getLastErrors();
               if ($r["warning_count"] > 0 || $r["error_count"] > 0) {
                 $dateError = true;
-                Tholos::$app->error(print_r(array_merge($filterParam, $r), true), $this);
+                Tholos::$logger->error(print_r(array_merge($filterParam, $r), true), $this);
               } else {
                 try {
                   $JSONDateValue = $universalDt->format(Eisodos::$parameterHandler->getParam($dbField->getProperty('NativeDataType') . '.SPFormat'));
                 } catch (Exception $e) {
-                  Tholos::$app->error($e->getMessage(), $this);
+                  Tholos::$logger->error($e->getMessage(), $this);
                 }
               }
             }
@@ -440,7 +442,7 @@
                   'notin', ' not in %s '
                 )),
                   Eisodos::$utils->ODecode(array($dbField->getProperty('datatype'),
-                      'string', (in_array($filterParam[1], ['in', 'notin']) ? nlist(@$filterParam[2], true) : $this->nullStr(@$filterParam[2], true)),
+                      'string', (in_array($filterParam[1], ['in', 'notin']) ? Eisodos::$dbConnectors->db()->toList(@$filterParam[2], true) : $this->nullStr(@$filterParam[2], true)),
                       'text', $this->nullStr(@$filterParam[2], true),
                       'bool', @$filterParam[2] === '*' ? $dbField->getProperty('FieldName') : $this->boolConvert(@$filterParam[2]),
                       'boolYN', @$filterParam[2] === '*' ? $dbField->getProperty('FieldName') : $this->nullStr(@$filterParam[2], true),
@@ -453,8 +455,8 @@
                       'time', "to_date('" . @$filterParam[2] . "','" . Eisodos::$parameterHandler->getParam("timeformat") . "')",
                       'timestamp', "to_date('" . @$filterParam[2] . "','" . Eisodos::$parameterHandler->getParam("timestampformat") . "')",
                       'datebetween', "to_date('" . @$filterParam[2] . "','" . Eisodos::$parameterHandler->getParam("dateformat") . "')",
-                      'integer', (in_array($filterParam[1], ['in', 'notin']) ? nlist(@$filterParam[2], false) : $this->nullStr(@$filterParam[2], false)),
-                      'float', (in_array($filterParam[1], ["in", "notin"]) ? nlist(@$filterParam[2], false) : $this->nullStr(@$filterParam[2], false))
+                      'integer', (in_array($filterParam[1], ['in', 'notin']) ? Eisodos::$dbConnectors->db()->toList(@$filterParam[2], false) : $this->nullStr(@$filterParam[2], false)),
+                      'float', (in_array($filterParam[1], ["in", "notin"]) ? Eisodos::$dbConnectors->db()->toList(@$filterParam[2], false) : $this->nullStr(@$filterParam[2], false))
                     )
                   )
                 ) . " \n";
@@ -598,7 +600,7 @@
       
       foreach (Tholos::$app->findChildIDsByType($this, 'TComponent') as $id) {
         $column = Tholos::$app->findComponentByID($id);
-        if ($column) {
+        if (!$column) {
           throw new RuntimeException('Invalid reference');
         }
         if ($column->getComponentType() === 'TGridColumn'
@@ -788,7 +790,7 @@
             }
           }
           if (!$filter || $DBField === NULL) {
-            Tholos::$app->error('No filter definied: ' . $filterParam[0], $this);
+            Tholos::$logger->error('No filter definied: ' . $filterParam[0], $this);
           } else {
             $objPHPExcel->getActiveSheet()->getCell([1, $j])->
             setValueExplicit(Eisodos::$translator->translateText($filter->getProperty('Label')), CellDataType::TYPE_STRING);
@@ -919,7 +921,7 @@
       
       // build component cache
       
-      Tholos::$app->debug('Export started', $this);
+      Tholos::$logger->debug('Export started', $this);
       
       if (1 * $listSource->getProperty('RowCount') > 0) {
         foreach ($listSource->getProperty('Result') as $row) {
@@ -945,7 +947,7 @@
         }
       }
       
-      Tholos::$app->debug('Export finished', $this);
+      Tholos::$logger->debug('Export finished', $this);
       
       // exporting filters
       
@@ -1101,7 +1103,7 @@
         $exp_rows .= $this->array2tsv($listSource->getProperty('Result', []));
       }
       
-      Tholos::$app->debug('Export finished', $this);
+      Tholos::$logger->debug('Export finished', $this);
       
       // exporting filters
       
@@ -1115,14 +1117,14 @@
      * @throws Throwable
      */
     private function renderDetails(): string {
-      Tholos::$app->trace('BEGIN', $this);
+      Tholos::$logger->trace('BEGIN', $this);
       
       /* @var TQuery $listSource */
       $listSource = Tholos::$app->findComponentByID($this->getPropertyComponentId('ListSource'));
-      Tholos::$app->trace('AutoOpening Grid Query', $this);
+      Tholos::$logger->trace('AutoOpening Grid Query', $this);
       $listSource->setProperty('AutoOpenAllowed', 'true');
       $listSource->autoOpen();
-      Tholos::$app->trace('AutoOpening Grid Query done', $this);
+      Tholos::$logger->trace('AutoOpening Grid Query done', $this);
       $result = '';
       
       foreach (Tholos::$app->findChildIDsByType($this, 'TComponent') as $id) {
@@ -1133,7 +1135,7 @@
         if ($column->getProperty('Exportable') === 'true'
           && $column->getProperty('DBField', '') !== ''
           && (Tholos::$app->findComponentByID($id)->getComponentType() === 'TGridColumn')) {
-          Tholos::$app->trace('Rendering', $column);
+          Tholos::$logger->trace('Rendering', $column);
           $result .= Eisodos::$templateEngine->getTemplate('tholos/' . $this->_componentType . '.details.row',
             array('label' => $column->getProperty('Label'),
               'value' => Eisodos::$utils->ODecode(array(Tholos::$app->findComponentByID($column->getPropertyComponentId('DBField'))->getProperty('DataType', 'string'),
@@ -1168,7 +1170,7 @@
         }
       }
       
-      Tholos::$app->trace('END', $this);
+      Tholos::$logger->trace('END', $this);
       
       return Eisodos::$templateEngine->getTemplate('tholos/' . $this->_componentType . '.details.container', array('data' => $result), false);
     }
@@ -1183,7 +1185,7 @@
       
       $result = '';
       
-      Tholos::$app->debug('render start', $this);
+      Tholos::$logger->debug('render start', $this);
       if (!Tholos::$app->checkRole($this)) {
         return '';
       }
@@ -1246,7 +1248,7 @@
       
       $this->setProperty('DataGenerated',
         ($this->getProperty('AJAXMode', 'false') == 'false' or (Eisodos::$parameterHandler->eq('IsAJAXRequest', 'T') and (Tholos::$app->partial_id == $this->_id))) ? "true" : "false");
-      Tholos::$app->debug('DataGenerated: ' . $this->getProperty('DataGenerated', ''), $this);
+      Tholos::$logger->debug('DataGenerated: ' . $this->getProperty('DataGenerated', ''), $this);
       
       
       if ($this->getPropertyComponentId('ChartXAxis')) {
@@ -1267,7 +1269,7 @@
         }
       }
       
-      if ($this->getProperty('ViewMode','GRID') === 'GRID') {
+      if ($this->getProperty('ViewMode', 'GRID') === 'GRID') {
         $result = $this->renderPartial($this, 'head', '',
             array('filterslots' => $this->filterSlots,
               'filters' => Eisodos::$templateEngine->getTemplate('tholos/' . $this->_componentType . '.filter.head',
@@ -1325,7 +1327,7 @@
       } else {
         $listSource->setProperty('OrderBy', $this->getProperty('SortedByAlways', '1 ASC'));
       }
-      if ($this->getProperty('ViewMode','GRID') === 'GRID') {
+      if ($this->getProperty('ViewMode', 'GRID') === 'GRID') {
         $listSource->setProperty('QueryLimit', $this->getProperty('RowsPerPage', '0'));
         $listSource->setProperty('QueryOffset', (((integer)$this->getProperty('RowsPerPage', '0')) * (((integer)$this->getProperty('ActivePage', '1')) - 1)));
       }
@@ -1343,7 +1345,7 @@
         $listSource->setProperty('CacheSQLConflict', 'RewriteCache');
         $listSource->setProperty('CacheID', Tholos::$app->findComponentByID(Tholos::$app->getComponentRoute($this->_id))->getProperty('Name') . '_' . $this->getProperty('Name'));
         $listSource->setProperty('Caching', 'Private');
-        Tholos::$app->debug('Query caching turned on by grid', $this);
+        Tholos::$logger->debug('Query caching turned on by grid', $this);
       }
       
       if (!$this->reloadStateNeeded
@@ -1655,7 +1657,7 @@
         
       }
       
-      Tholos::$app->debug('Render ended', $this);
+      Tholos::$logger->debug('Render ended', $this);
       
       $this->renderedContent = $result;
       Tholos::$app->eventHandler($this, 'onAfterRender');

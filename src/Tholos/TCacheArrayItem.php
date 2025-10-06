@@ -33,7 +33,7 @@
       // loading cache from session parameter
       $cacheName = 'Tholos.CacheArray.' . $this->getProperty('CacheId');
       if (Eisodos::$parameterHandler->eq('cache_' . $this->getProperty('CacheId'), 'invalidate')) {
-        Tholos::$app->debug('Cache forced to invalidate');
+        Tholos::$logger->debug('Cache forced to invalidate');
         $currentCache = [];
         Eisodos::$parameterHandler->setParam('cache_' . $this->getProperty('CacheId'), '');
       } else {
@@ -48,9 +48,10 @@
       
       // if it's a new render phase, set sync mode to purge
       if (Eisodos::$parameterHandler->eq($cacheName . '.renderID', '')) {
-        foreach ($currentCache as $key => $value) {
-          $currentCache[$key]['syncMode'] = 'PURGE';
+        foreach ($currentCache as &$value) {
+          $value['syncMode'] = 'PURGE';
         }
+        unset($value);
         Eisodos::$parameterHandler->setParam($cacheName . '.renderID', Eisodos::$parameterHandler->getParam('Tholos_renderID'));
       }
       
@@ -90,7 +91,7 @@
           'syncMode' => $syncMode,
           'syncValue' => $syncValue,
           'orderValue' => $orderValue];
-        Tholos::$app->debug('Rendering item - ' . $cacheIndex, $this);
+        Tholos::$logger->debug('Rendering item - ' . $cacheIndex, $this);
       } else {
         $currentCache[$cacheIndex] = [
           'result' => $currentCache[$cacheIndex]['result'],
@@ -100,7 +101,7 @@
       }
       
       // write out cache
-      Tholos::$app->trace('Writing out to memory cache (' . $cacheIndex . ' - ' . $syncValue . ' - ' . $syncMode . ') ' . count($currentCache) . ' items', $this);
+      Tholos::$logger->trace('Writing out to memory cache (' . $cacheIndex . ' - ' . $syncValue . ' - ' . $syncMode . ') ' . count($currentCache) . ' items', $this);
       Eisodos::$parameterHandler->setParam($cacheName, serialize($currentCache));
       
       Tholos::$app->eventHandler($this, 'onAfterRender');

@@ -35,7 +35,7 @@
           return;
         }
         
-        Tholos::$app->trace('BEGIN', $this);
+        Tholos::$logger->trace('BEGIN', $this);
         
         if (is_null($dataProxy)) {
           
@@ -59,7 +59,7 @@
             
           }
           
-          Tholos::$app->trace('Bound parameters: ' . print_r($boundParameters, true), $this);
+          Tholos::$logger->trace('Bound parameters: ' . print_r($boundParameters, true), $this);
           
           $resultParameters = array();
           
@@ -67,29 +67,27 @@
           
           if ($this->getProperty('TransactionMode', 'true') === 'true') {
             Eisodos::$dbConnectors->connector($this->getProperty('DatabaseIndex'))->startTransaction();
-            Tholos::$app->trace('Transaction started', $this);
+            Tholos::$logger->trace('Transaction started', $this);
           }
           
-          $boundVariables = [];
-          Eisodos::$dbConnectors->connector($this->getProperty('DatabaseIndex'))->bind($boundVariables, 'VALUE', 'string', serialize($this->userSettings));
           Eisodos::$dbConnectors->connector($this->getProperty('DatabaseIndex'))->executeStoredProcedure(
             $this->getProperty('Procedure'),
-            $boundVariables,
+            $boundParameters,
             $resultParameters
           );
-          Eisodos::$dbConnectors->connector($this->getProperty('DatabaseIndex'))->commit();
+          Eisodos::$dbConnectors->connector($this->getProperty('DatabaseIndex'))->commit(); // TODO ha nincs TransactionMode akkor is?
           
         } else {
           try {
             $jsonArray = json_decode($dataProxy->open($this, array(), array()), true, 512, JSON_THROW_ON_ERROR);
             $resultParameters = json_decode($jsonArray['data'], true, 512, JSON_THROW_ON_ERROR);
           } catch (Exception $e) {
-            Tholos::$app->error($e->getMessage(), $this);
+            Tholos::$logger->error($e->getMessage(), $this);
             $resultParameters = [];
           }
         }
         
-        Tholos::$app->trace('Result parameters: ' . print_r($resultParameters, true), $this);
+        Tholos::$logger->debug('Result parameters: ' . print_r($resultParameters, true), $this);
         
         $this->setProperty('ResultType', 'ARRAY');
         if ($this->getProperty('CallbackParameter', '') !== '') { // ha van controlparameter, akkor azt beletolteni a ControlResult JSON property-be
@@ -103,7 +101,7 @@
             }
           } catch (Exception) {
             $this->setProperty('CallbackResult', '');
-            Tholos::$app->error('CallbackParameter contains invalid JSON value', $this);
+            Tholos::$logger->error('CallbackParameter contains invalid JSON value', $this);
           }
         }
         
@@ -151,19 +149,19 @@
         
         if ($this->getProperty('Success', 'false') === 'true') {
           
-          Tholos::$app->debug('Execution success', $this);
+          Tholos::$logger->debug('Execution success', $this);
           Tholos::$app->eventHandler($this, 'onSuccess');
           
           if (is_null($dataProxy)
             && $this->getProperty('TransactionMode', 'true') === 'true'
             && Eisodos::$dbConnectors->connector($this->getProperty('DatabaseIndex'))->inTransaction()) {
             Eisodos::$dbConnectors->connector($this->getProperty('DatabaseIndex'))->commit();
-            Tholos::$app->trace('Transaction commit', $this);
+            Tholos::$logger->trace('Transaction commit', $this);
           }
           
         } else {
           
-          Tholos::$app->debug('Execution failed', $this);
+          Tholos::$logger->debug('Execution failed', $this);
           // if (Eisodos::$parameterHandler->eq('TholosProxy:ProxyComponentID', '')) { // proxy oldalon ne fusson
           Tholos::$app->eventHandler($this, 'onError');
           // }
@@ -173,15 +171,15 @@
             && Eisodos::$dbConnectors->connector($this->getProperty('DatabaseIndex'))->inTransaction()) {
             if ($this->getProperty('RollbackOnError', 'true') === 'true') {
               Eisodos::$dbConnectors->connector($this->getProperty('DatabaseIndex'))->rollback();
-              Tholos::$app->trace('Transaction rollback', $this);
+              Tholos::$logger->trace('Transaction rollback', $this);
             } else {
               Eisodos::$dbConnectors->connector($this->getProperty('DatabaseIndex'))->commit();
-              Tholos::$app->trace('Transaction commit', $this);
+              Tholos::$logger->trace('Transaction commit', $this);
             }
           }
           
           if ($this->getProperty('WriteErrorLogOnError', 'false') === 'true') {
-            Eisodos::$logger->writeErrorLog(NULL, 'Tholos TStoredProcedure handled error debug information');
+            Tholos::$app->writeErrorLog(NULL, 'Tholos TStoredProcedure handled error debug information');
           }
           
         }
@@ -196,14 +194,14 @@
               $loggerSP->run($this);
             }
           } catch (Exception $e) {
-            Tholos::$app->error($e->getMessage());
+            Tholos::$logger->error($e->getMessage());
           }
         }
         
-        Tholos::$app->trace('END', $this);
+        Tholos::$logger->trace('END', $this);
         
       } catch (Exception $e) {
-        Tholos::$app->error('ERROR', $this);
+        Tholos::$logger->error('ERROR', $this);
         
         if (is_null($dataProxy)
           && $this->getProperty('TransactionMode', 'true') === 'true'
@@ -216,8 +214,6 @@
         $this->setProperty('Opened', 'false');
         $this->setProperty('Success', 'false');
         
-        Eisodos::$logger->writeErrorLog($e, $this->getProperty('Name'));
-        
         if ($this->getProperty('ThrowException') === 'true') {
           throw $e;
         }
@@ -225,7 +221,7 @@
           Tholos::$app->eventHandler($this, 'onError');
         }
         
-        Tholos::$app->trace('END', $this);
+        Tholos::$logger->trace('END', $this);
       }
     }
     

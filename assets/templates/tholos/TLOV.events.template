@@ -1,0 +1,3 @@
+<script type="text/javascript" nonce="$Tholos_nonce">
+  [%_function_name=Tholos\TholosCallback::_eqs;param=event_onafterrefresh;value=;true=</>;false=$("#$prop_id").on( "onAfterRefresh",function(){$event_onafterrefresh});%]
+</script>

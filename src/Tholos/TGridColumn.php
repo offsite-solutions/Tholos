@@ -15,7 +15,7 @@
    */
   class TGridColumn extends TComponent {
     
-    private ?object $parentGrid;
+    private object|null $parentGrid = NULL;
     
     /**
      * @inheritdoc

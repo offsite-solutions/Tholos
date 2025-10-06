@@ -1,6 +1,0 @@
-## BS5
-<li class="$prop_class nav-item [%_include=tholos/tholos_callback.php;_function_name=_eqs;param=prop_visible;value=true;true=visible;false=invisible%]" $templateabs_tholos__TComponent_basedata>
-  <a href="#$prop_id" class="nav-link" data-bs-toggle="tab" aria-expanded="true">
-    $templateabs_tholos__TComponent_labelicon
-  </a>
-</li>

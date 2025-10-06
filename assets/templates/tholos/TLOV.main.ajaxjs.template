@@ -1,0 +1,7 @@
+<script type="text/javascript" nonce="$Tholos_nonce">
+  $(document).ready(function() {
+    Tholos.methods.TLOV_refresh("$prop_id", "$prop_id", "$prop_route");
+##    $templateabs_tholos__TLOV_masterlov
+    [%_function_name=Tholos\TholosCallback::_eq;param=prop_master;value=;false=tholos/TLOV.childlov;true=%]
+  });
+</script>

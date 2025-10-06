@@ -1,0 +1,5 @@
+<!-- responsive head -->
+<div id="data_$prop_id" class="TGrid-resp-wrapper $prop_DataContainerClass"><div class="TGrid-resp-table $prop_class [%_function_name=Tholos\TholosCallback::_eqs;param=prop_selectable;value=true;true=TGrid-selectable;false=%]" id="$prop_id">
+<$prop_cellrowtype class="TGrid-resp-row TGrid-resp-header 4">
+  $columnHeadItems
+</$prop_cellrowtype>

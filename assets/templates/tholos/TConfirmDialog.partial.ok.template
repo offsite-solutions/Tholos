@@ -1,0 +1,13 @@
+ok: {
+                label: "[:CONFIRMDIALOG.OK,OK:]",
+                className: "btn-primary",
+                callback: function() {
+<%FUNC%
+_function_name=Tholos\TholosCallback::_eqs
+param=event_onclickok
+value=
+true=Tholos.eventHandler('$prop_id','$prop_id','TConfirmDialog','triggerConfirmTrue',null);
+false=$event_onclickok
+%FUNC%>
+                }
+            },

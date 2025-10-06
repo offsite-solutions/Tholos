@@ -32,7 +32,7 @@
      */
     public function render(?TComponent $sender, string $content): string {
       
-      Tholos::$app->trace('BEGIN', $this);
+      Tholos::$logger->trace('BEGIN', $this);
       
       $this->renderedContent = '';
       Tholos::$app->eventHandler($this, 'onBeforeRender');
@@ -61,7 +61,7 @@
       $this->renderedContent = $return;
       Tholos::$app->eventHandler($this, 'onAfterRender');
       
-      Tholos::$app->trace('END', $this);
+      Tholos::$logger->trace('END', $this);
       
       return $this->renderedContent;
     }

@@ -1,0 +1,36 @@
+<div class="card-header [%_function_name=Tholos\TholosCallback::_eqs;param=prop_collapsible;value=false;true=</>;false=collapsible cursor-pointer rotate%]
+    [%_function_name=Tholos\TholosCallback::_eqs;param=prop_collapsible;value=initialclosed;true=collapsed;false=</>%]
+    $prop_headerclass" [%_function_name=Tholos\TholosCallback::_eqs;param=prop_collapsible;value=false;true=</>;false=data-bs-toggle="collapse" data-bs-target="#$prop_id-collapsible"%]>
+<%FUNC%
+_function_name=Tholos\TholosCallback::_eqs
+param=prop_icon
+value=
+true=<h3 class="card-title">$prop_label</h3>
+false>>=
+<%FUNC%
+_function_name=Tholos\TholosCallback::_eqs
+param=prop_iconalign
+value=right
+false=<h3 class="card-title $prop_titleclass"><i class="$prop_icon"></i> $prop_label</h3>
+true=<h3 class="card-title $prop_titleclass">$prop_label <i class="$prop_icon"></i></h3>
+%FUNC%>
+<<
+%FUNC%>
+<div class="card-toolbar">[%_function_name=Tholos\TholosCallback::_param2;param=prop_HeaderControlsParameter%]</div>
+<%FUNC%
+_function_name=Tholos\TholosCallback::_eqs
+param=prop_collapsible
+value=false
+true=
+false=<div class="card-toolbar rotate-180"><i class="ki-duotone ki-down fs-1"></i></div>
+%FUNC%>
+    </div>
+<%FUNC%
+_function_name=Tholos\TholosCallback::_eqs
+param=prop_collapsible
+value=false
+true=
+false>>=
+<div id="$prop_id-collapsible" class="collapse [%_function_name=Tholos\TholosCallback::_eqs;param=prop_collapsible;value=initialopen;true=show;false=hide%]">
+<<
+%FUNC%>

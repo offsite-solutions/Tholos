@@ -1,0 +1,54 @@
+<script type="text/javascript" nonce="$Tholos_nonce">
+<%FUNC%
+_function_name=Tholos\TholosCallback::_eqs
+param=event_onclick
+value=
+true=
+false>>=
+<%FUNC%
+_function_name=Tholos\TholosCallback::_eqs
+param=prop_middleclick
+value=true
+true=$("#$prop_id").on('mouseup', function (e) { if( e.which <= 2 || e.altKey) { Tholos.setClickType(e.altKey?2:e.which); e.preventDefault(); $event_onclick }});
+false=$("#$prop_id").on('click', function () { $event_onclick });
+%FUNC%>
+<<
+%FUNC%>
+<%FUNC%
+_function_name=Tholos\TholosCallback::_eqs
+param=event_onContentLoaded
+value=
+true=
+false=$('#$prop_id').on('onContentLoaded', function (event,eventData) { $event_onContentLoaded });
+%FUNC%>
+<%FUNC%
+_function_name=Tholos\TholosCallback::_eqs
+param=event_onContentCleared
+value=
+true=
+false=$('#$prop_id').on('onContentCleared', function (event,eventData) { $event_onContentCleared });
+%FUNC%>
+<%FUNC%
+_function_name=Tholos\TholosCallback::_eqs
+param=event_onShow
+value=
+true=
+false=$('#$prop_id').on('onShow', function (event,eventData) { $event_onShow });
+%FUNC%>
+<%FUNC%
+_function_name=Tholos\TholosCallback::_eqs
+param=event_onHide
+value=
+true=
+false=$('#$prop_id').on('onHide', function (event,eventData) { $event_onHide });
+%FUNC%>
+  [%_function_name=Tholos\TholosCallback::_eqs;param=event_onconfirmtrue;value=;true=</>;false=$("#$prop_id").on( "onConfirmTrue",function(){$event_onconfirmtrue});%]
+  [%_function_name=Tholos\TholosCallback::_eqs;param=event_onconfirmfalse;value=;true=</>;false=$("#$prop_id").on( "onConfirmFalse",function(){$event_onconfirmfalse});%]
+<%FUNC%
+_function_name=Tholos\TholosCallback::_eqs
+param=event_onReady
+value=
+true=
+false=$(document).ready( function () { $event_onReady } );
+%FUNC%>
+</script>

@@ -36,7 +36,7 @@
       } else {
         $currentCache = Tholos::$app->readCache($this, 'Private', $this->getProperty('CacheId'));
       }
-      Tholos::$app->debug('Rendering from array cache - ' . count($currentCache) . ' items', $this);
+      Tholos::$logger->debug('Rendering from array cache - ' . count($currentCache) . ' items', $this);
       
       if (!$currentCache || (is_array($currentCache) && count($currentCache) == 0)) {
         return '';
@@ -61,7 +61,7 @@
         }
       }
       if ($cCount!=count($currentCache)) {
-        Tholos::$app->debug('Purged array cache, left ' . count($currentCache) . ' items', $this);
+        Tholos::$logger->debug('Purged array cache, left ' . count($currentCache) . ' items', $this);
       }
       
       // sorting array if needed
@@ -92,7 +92,7 @@
       }
       
       // write out cache
-      // Tholos::$app->trace('Writing out cache');
+      // Tholos::$logger->trace('Writing out cache');
       Eisodos::$parameterHandler->setParam($cacheName, serialize($currentCache));
       
       Tholos::$app->eventHandler($this, 'onAfterRender');

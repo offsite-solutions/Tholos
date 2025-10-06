@@ -16,12 +16,12 @@
   class TQueryFilterGroup extends TComponent {
     
     /**
-     * @param TComponent $sender
+     * @param TComponent|null $sender
      * @throws Throwable
      */
-    public function initValue(TComponent $sender): void {
-      Tholos::$app->trace('BEGIN', $this);
-      Tholos::$app->trace('(' . $this->_componentType . ') (ID ' . $this->_id . ')', $this);
+    public function initValue(TComponent|null $sender): void {
+      Tholos::$logger->trace('BEGIN', $this);
+      Tholos::$logger->trace('(' . $this->_componentType . ') (ID ' . $this->_id . ')', $this);
       
       $this->setProperty('SQL', '');
       
@@ -35,7 +35,7 @@
           /* @var TQueryFilterGroup|TQueryFilter $component */
           $component->init();
           $component->initValue($sender);
-          $filter_SQL = $component->getProperty('SQL');
+          $filter_SQL = $component->getProperty('SQL','');
           if ($filter_SQL !== '' && $this->getProperty('SQL')) {
             $this->setProperty('SQL', $this->getProperty('SQL') . "\n" . $this->getProperty('InternalOperator') . ' ' . $filter_SQL . ' ');
           } else if ($filter_SQL !== '') {
@@ -49,11 +49,12 @@
           $this->setProperty('SQL', "\n(" . $this->getProperty('EmptySQL', '') . ') ');
         }
       } catch (Throwable $e) {
-        Tholos::$app->trace('END', $this);
+        Tholos::$logger->error('QueryFilterGroup error: ' . $e->getMessage(), $this);
+        Tholos::$logger->trace('END', $this);
         throw $e;
       }
       
-      Tholos::$app->trace('END', $this);
+      Tholos::$logger->trace('END', $this);
     }
     
     /**

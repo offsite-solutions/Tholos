@@ -22,7 +22,7 @@
       
       $defaultTabPane = Eisodos::$parameterHandler->getParam($this->getProperty('Name') . ':tabPane');
       
-      Tholos::$app->debug('tabpane: ' . $defaultTabPane);
+      Tholos::$logger->debug('tabpane: ' . $defaultTabPane);
       
       $partialHead = '';
       foreach (Tholos::$app->findChildIDsByType($this, 'TTabPane') as $TabPaneId) {

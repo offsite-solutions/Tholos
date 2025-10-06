@@ -11,7 +11,7 @@
      * @throws Throwable
      */
     public function init(): void {
-      Tholos::$app->trace('BEGIN', $this);
+      Tholos::$logger->trace('BEGIN', $this);
       $this->initialized = true;
       // set runtime properties
       
@@ -24,14 +24,14 @@
           $linkedComponent = Tholos::$app->findComponentByID($queryGroupSource->getPropertyComponentId('Component'));
           if ($linkedComponent && is_a($linkedComponent, Tholos::THOLOS_CLASS_PREFIX . 'TQuery')) {
             $linkedComponent->setProperty('AutoOpenAllowed', 'false');
-            Tholos::$app->trace('Autoopening disabled', $linkedComponent);
+            Tholos::$logger->trace('Autoopening disabled', $linkedComponent);
           } else {
-            Tholos::$app->error('Linked component is not a TQuery component!', $this);
+            Tholos::$logger->error('Linked component is not a TQuery component!', $this);
           }
         }
       }
       
-      Tholos::$app->trace('END', $this);
+      Tholos::$logger->trace('END', $this);
     }
     
     /**
@@ -40,7 +40,7 @@
      */
     protected function open(?TComponent $sender, string $nativeSQL = ''): void {
       
-      Tholos::$app->trace('BEGIN', $this);
+      Tholos::$logger->trace('BEGIN', $this);
       
       $result = array();
       
@@ -59,7 +59,7 @@
       $this->setProperty('Result', $result);
       $this->setProperty('ResultType', 'ARRAY');
       
-      Tholos::$app->trace('END', $this);
+      Tholos::$logger->trace('END', $this);
       
     }
     

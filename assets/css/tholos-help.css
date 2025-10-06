@@ -1,0 +1,65 @@
+/*!
+ * Tholos help styling
+ * Copyright 2018 Offsite Solutions
+ */
+html,body,td,th {
+  font-size: 9pt;
+}
+
+#userguide, #userguide td {
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 10pt;
+}
+
+#userguide td {
+  vertical-align: top;
+}
+
+#userguide tr {
+  border-bottom: 1px solid #eee;
+}
+
+#userguide table tr td:first-child {
+  font-weight: bold;
+}
+
+#userguide h2 {
+  font-size: 16pt;
+  font-weight: bold;
+}
+
+#userguide h3 {
+  font-size: 14pt;
+  font-weight: bold;
+}
+
+#userguide h4 {
+  font-size: 12pt;
+  font-weight: bold;
+}
+
+#userguide table {
+  width: 100%;
+}
+
+#userguide table th {
+  background-color: lightgrey;
+}
+
+#userguide div.user-guide-section {
+  border-top: 1px solid lightblue;
+}
+
+#userguide div.user-guide-section-footer {
+  font-size: 8pt;
+  text-align: right;
+  color: lightgrey;
+}
+
+#userguide tr:nth-child(even) {
+  background-color: #f7f7f7;
+}
+
+#userguide .user-guide-section-footer a {
+  display: none;
+}

@@ -1,6 +1,0 @@
-## BS5
-<input name="$prop_name" type="radio" class="form-check-input $prop_class" value="$prop_itemid" [%_include=tholos/tholos_callback.php;_function_name=_eqs;param=prop_itemactive;value=true;true=checked="checked";false=%]
-[%_include=tholos/tholos_callback.php;_function_name=_eqs;param=prop_enabled;value=false;true=disabled="disabled";false=</>%]
-/>
-<label class="form-check-label">$prop_itemtext</label>
-$templateabs_tholos__TControl_baseevents

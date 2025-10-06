@@ -1,0 +1,13 @@
+yes: {
+                label: "[:CONFIRMDIALOG.YES,Igen:]",
+                className: "btn-success",
+                callback: function() {
+<%FUNC%
+_function_name=Tholos\TholosCallback::_eqs
+param=event_onclickyes
+value=
+true=Tholos.eventHandler('$prop_id','$prop_id','TConfirmDialog','triggerConfirmTrue',null);
+false=$event_onclickyes
+%FUNC%>
+                }
+            },

@@ -1,0 +1,329 @@
+/*
+ * Tholos TGrid component
+ * Copyright 2020 Offsite Solutions
+ */
+
+div.TGrid-scrollable {
+  overflow-x: scroll;
+  white-space: nowrap;
+}
+
+div.TGrid-scrollable.TGrid-scrollable-y {
+  overflow-y: scroll;
+  max-height: 70vh;
+}
+
+div.TGrid-scrollable.TGrid-scrollable-y table.TGrid thead {
+    position: sticky;
+    top: 0;
+    z-index: 99;
+}
+
+div.TGrid-not-scrollable {
+  overflow-x: clip;
+  white-space: wrap;
+}
+
+div.TGrid-not-scrollable.TGrid-scrollable-y {
+  overflow-y: scroll;
+  max-height: 70vh;
+}
+
+div.TGrid-not-scrollable.TGrid-scrollable-y table.TGrid thead {
+    position: sticky;
+    top: 0;
+    z-index: 99;
+}
+
+div.TGrid-not-scrollable table.TGrid {
+  width: 100% !important;
+}
+
+div.TGrid-not-scrollable table.TGrid thead {
+    position: sticky;
+    top: 72px;
+    z-index: 99;
+}
+
+table.TGrid th {
+  text-overflow: ellipsis;
+}
+
+table.TGrid th.sortable,
+.TGrid-resp-header .TGrid-resp-cell.sortable {
+  background: url('/tholos/assets/img/sole-sort-unsorted.png') no-repeat top right;
+}
+
+table.TGrid th.sorted_asc,
+.TGrid-resp-header .TGrid-resp-cell.sorted_asc {
+  background: url('/tholos/assets/img/sole-sort-ascending.png') no-repeat top right, #f0f0f0;
+}
+
+table.TGrid th.sorted_desc,
+.TGrid-resp-header .TGrid-resp-cell.sorted_desc {
+  background: url('/tholos/assets/img/sole-sort-descending.png') no-repeat top right, #f0f0f0;
+}
+
+table.TGrid thead.right-border > tr > th,
+.TGrid-resp-header .TGrid-resp-cell {
+  border-right: 1px solid #ddd;
+}
+
+table.TGrid thead.right-border > tr > th:last-child,
+.TGrid-resp-header .TGrid-resp-cell:last-child {
+  border-right: 0 solid #ddd;
+}
+
+table.TGrid th.sortable.text-right,
+table.TGrid th.sorted_asc.text-right,
+table.TGrid th.sorted_desc.text-right,
+.TGrid-resp-header .TGrid-resp-cell.sortable.text-right,
+.TGrid-resp-header .TGrid-resp-cell.sorted_asc.text-right,
+.TGrid-resp-header .TGrid-resp-cell.sorted_desc.text-right {
+  padding-right: 25px;
+}
+
+table.TGrid td, table.TGrid th {
+  font-size: 9pt;
+}
+
+.table:not(.TGrid-transposed).TGrid tr.active td:first-child {
+  box-shadow: none;
+  border-right: 3px solid #ed4e2a;
+}
+
+.table:not(.TGrid-transposed).TGrid tr td.TGrid-selectable {
+  min-width: 25px;
+  max-width: 25px;
+  text-align: center;
+}
+
+.table:not(.TGrid-transposed).TGrid tr:not(.active) td.TGrid-selectable .activeicon i {
+  color: #ddd;
+}
+
+.table:not(.TGrid-transposed).TGrid tr.active td.TGrid-selectable .activeicon i {
+  color: #ed4e2a;
+}
+
+.table:not(.TGrid-transposed).TGrid tr:hover td.TGrid-resp-cell {
+  background-color: #F9F9F9;
+}
+
+.table:not(.TGrid-transposed).TGrid tr.active td.TGrid-resp-cell {
+  background-color: #f8f4e1;
+}
+
+.table:not(.TGrid-transposed).TGrid tr.active:hover td.TGrid-resp-cell {
+  background-color: #ede7ce;
+}
+
+.table:not(.TGrid-transposed).TGrid tr.marked td.TGrid-resp-cell {
+  background-color: #ddefb9;
+}
+
+.table:not(.TGrid-transposed).TGrid tr.marked:hover td.TGrid-resp-cell {
+  background-color: #d3e6a4;
+}
+
+.table:not(.TGrid-transposed).TGrid tr.active.marked td.TGrid-resp-cell {
+  background-color: #edf3b1;
+}
+
+.table:not(.TGrid-transposed).TGrid tr.active.marked:hover td.TGrid-resp-cell {
+  background-color: #d3e6a4;
+}
+
+table.TGrid thead,
+.TGrid-resp-header {
+  /* Permalink - use to edit and share this gradient: http://colorzilla.com/gradient-editor/#ffffff+0,f6f6f6+47,ededed+100;White+3D+%231 */
+  /*background: #ffffff; !* Old browsers *!
+  background: -moz-linear-gradient(top,  #ffffff 0%, #f6f6f6 47%, #ededed 100%); !* FF3.6+ *!
+  background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#ffffff), color-stop(47%,#f6f6f6), color-stop(100%,#ededed)); !* Chrome,Safari4+ *!
+  background: -webkit-linear-gradient(top,  #ffffff 0%,#f6f6f6 47%,#ededed 100%); !* Chrome10+,Safari5.1+ *!
+  background: -o-linear-gradient(top,  #ffffff 0%,#f6f6f6 47%,#ededed 100%); !* Opera 11.10+ *!
+  background: -ms-linear-gradient(top,  #ffffff 0%,#f6f6f6 47%,#ededed 100%); !* IE10+ *!
+  background: linear-gradient(to bottom,  #ffffff 0%,#f6f6f6 47%,#ededed 100%); !* W3C *!
+  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', endColorstr='#ededed',GradientType=0 ); !* IE6-9 *!*/
+  background-color: #f7f7f7;
+}
+
+table.TGrid {
+  /* table-layout:fixed; */
+}
+
+table:not(.TGrid-transposed).TGrid-selectable tbody tr[data-value] {
+  cursor: pointer !important;
+}
+
+table:not(.TGrid-transposed).TGrid-markable tbody tr[data-markervalue] {
+  cursor: pointer !important;
+}
+
+.TGrid-resp-cell {
+  padding: 5px;
+}
+
+table.TGrid thead tr th,
+.TGrid-resp-header .TGrid-resp-cell {
+  vertical-align: top;
+  font-size: 13px;
+  font-weight: 600;
+  padding: 5px;
+}
+
+table.TGrid thead tr th div,
+table.TGrid tr td div.overflow,
+.TGrid-resp-header .TGrid-resp-cell div,
+.TGrid-resp-cell div.overflow {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  height: 18px;
+  position: relative;
+  width: 100%;
+}
+
+table.TGrid thead.bordered-gray,
+.TGrid-resp-header.TGrid-resp-row .TGrid-resp-cell {
+  border-bottom: 3px solid #ddd !important;
+}
+
+table.TGrid th a.filterbutton,
+.TGrid-resp-header .TGrid-resp-cell a.filterbutton {
+  display: none;
+  float: left;
+  margin-right: 5px;
+  text-shadow: 0 0 2px #fff;
+}
+
+table.TGrid th:hover a.filterbutton,
+.TGrid-resp-header .TGrid-resp-cell:hover a.filterbutton {
+  display: inline;
+}
+
+table.TGrid tbody > tr > td,
+.TGrid-resp-row .TGrid-resp-cell {
+  border-bottom: 1px solid #ddd !important;
+  padding: 0.3rem
+}
+
+table.TGrid > tbody > tr > td.hasextrarow {
+  border-bottom: 1px solid #f6f6f6 !important;
+}
+
+table.TGrid > tbody > tr > td.hasextrarow:first-child {
+  border-bottom: 1px solid #ddd !important;
+  border-left: 1px solid #ddd !important;
+}
+
+table.TGrid > tbody > tr.extrarow > td {
+  border-top: none !important;
+}
+
+table.extrarow > tbody > tr:nth-child(even) > td:first-child {
+  border-top: 1px solid #ddd !important;
+  border-right: 1px solid #ddd !important;
+}
+
+table.extrarow > tbody > tr > td:last-child {
+  border-right: 1px solid #ddd !important;
+}
+
+.TGrid-pagination ul.pagination {
+  background-color: #f5f5f5;
+  padding: 5px;
+  border-radius: 5px;
+}
+
+.TGrid-gridcontrols {
+  background-color: #f7f7f7;
+  margin: 0 15px 5px 15px;
+  padding: 5px 0 5px 0;
+  border-radius: 5px;
+  border: 1px solid #ececec;
+}
+
+.TGrid-export, .TGrid-export div {
+  padding: 0;
+}
+
+.TGrid-grid {
+  /* margin: 10px 15px; */
+}
+
+.TGrid-gridmenu {
+  margin-bottom: 10px;
+  padding: 0 0 10px 0;
+  border-bottom: 1px solid #eee;
+}
+
+.TGrid_headlink {
+  color: #444;
+  display: block;
+  height: 18px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.TGrid_headlink:hover {
+  color: #8b0000;
+}
+
+/* transposed */
+
+table.TGrid.TGrid-transposed {
+  max-width: 100%;
+  width: auto;
+}
+
+table.TGrid.TGrid-transposed th {
+  background-color: #f7f7f7;
+}
+
+table.TGrid.TGrid-transposed th.text-right,
+table.TGrid.TGrid-transposed th.text-center {
+  text-align: left !important;
+}
+
+table.TGrid.TGrid-transposed th,
+table.TGrid.TGrid-transposed td {
+  border-right: 1px solid #ddd;
+}
+
+table.TGrid td.TGrid-selectable {
+  background-color: #f7f7f7;
+}
+
+table.TGrid.TGrid-transposed td.TGrid-transpose-selectable {
+  cursor: pointer !important;
+  background-color: #f7f7f7;
+}
+
+table.TGrid.TGrid-transposed td.TGrid-transpose-selectable.active {
+  box-shadow: 0 3px 0 #ed4e2a;
+}
+
+table.TGrid.TGrid-transposed td:not(.active).TGrid-transpose-selectable .activeicon i {
+  color: #ddd;
+}
+
+table.TGrid.TGrid-transposed td.TGrid-transpose-selectable.active .activeicon i {
+  color: #ed4e2a;
+}
+
+table.TGrid td.TGrid-changed {
+  border-top: 3px solid dodgerblue !important;
+}
+
+table.TGrid-transposed td.TGrid-changed {
+  border-top: 1px solid #ddd;
+  border-left: 3px solid dodgerblue !important;
+}
+
+/* Metronic fix */
+.table:not(.table-bordered) tr:first-child, .table:not(.table-bordered) th:first-child, .table:not(.table-bordered) td:first-child {
+  padding-left: 3px;
+}
+.table:not(.table-bordered) tr:last-child, .table:not(.table-bordered) th:last-child, .table:not(.table-bordered) td:last-child {
+  padding-right: 3px;
+}

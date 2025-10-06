@@ -20,18 +20,17 @@
   class TQueryFilter extends TComponent {
     
     /**
-     *
-     * @param ?TComponent $sender
+     * @param TComponent|null $sender
      * @throws Throwable
      */
-    public function initValue(?TComponent $sender): void {
-      Tholos::$app->trace('BEGIN', $this);
-      Tholos::$app->trace('(' . $this->_componentType . ') (ID ' . $this->_id . ')', $this);
+    public function initValue(TComponent|null $sender): void {
+      Tholos::$logger->trace('BEGIN', $this);
+      Tholos::$logger->trace('(' . $this->_componentType . ') (ID ' . $this->_id . ')', $this);
       if (($sender === NULL && $this->getProperty('RecordSelector', '') === 'false')
         || ($sender !== NULL && $this->getProperty('RecordSelector', '') === 'true')) {
-        Tholos::$app->debug('QueryFilter skipped', $this);
+        Tholos::$logger->debug('QueryFilter skipped', $this);
       } else {
-        Tholos::$app->debug('QueryFilter applied', $this);
+        Tholos::$logger->debug('QueryFilter applied', $this);
         //parent::init();
         $this->setProperty('SQL', '');
         if ($this->getProperty('ParameterName', '') !== '') {
@@ -41,7 +40,7 @@
         }
         
         if ($value === '' && $this->getProperty('Required', 'false') === 'true') {
-          Tholos::$app->debug('Mandatory QueryFilter missing', $this);
+          Tholos::$logger->debug('Mandatory QueryFilter missing', $this);
           Tholos::$app->findComponentByID($this->_parent_id)->setProperty('FilterError', 'true');
         } // ha required es nincs kitoltve, akkor megallitani a query futtatast
         
@@ -73,7 +72,7 @@
                   }
                 }
                 $JSONFilter['valueArray'] = explode(',', $value);
-                $value = nlist($value, false);
+                $value = Eisodos::$dbConnectors->db()->toList($value, false);
               } elseif (!Eisodos::$utils->isInteger($value, true)) {
                 throw new RuntimeException('');
               }
@@ -85,7 +84,7 @@
                   }
                 }
                 $JSONFilter['valueArray'] = explode(',', $value);
-                $value = nlist($value, true);
+                $value = Eisodos::$dbConnectors->db()->toList($value, true);
               } elseif (mb_strlen($value) > 1000) {
                 throw new RuntimeException('');
               }
@@ -164,15 +163,15 @@
                 Eisodos::$dbConnectors->connector(Tholos::$app->findComponentByID($this->_parent_id)->getProperty('DBIndex'))->nullStr($value, !in_array($this->getProperty('DataType'), ['integer', 'float', 'date', 'datetime', 'time', 'datetimehm', 'timestamp'])));
             }
           } catch (Exception $e) {
-            Tholos::$app->error('QueryFilter filter error: ' . $e->getMessage(), $this);
-            Tholos::$app->trace('END', $this);
+            Tholos::$logger->error('QueryFilter filter error: ' . $e->getMessage(), $this);
+            Tholos::$logger->trace('END', $this);
             throw $e;
           }
         }
         $this->setProperty('JSONFilter', $JSONFilter, 'ARRAY');
       }
       
-      Tholos::$app->trace('END', $this);
+      Tholos::$logger->trace('END', $this);
     }
     
     /**

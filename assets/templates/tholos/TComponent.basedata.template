@@ -1,0 +1,21 @@
+<%FUNC%
+_function_name=Tholos\TholosCallback::_eqs
+param=prop_style
+value=
+true>>=<%FUNC%
+_function_name=Tholos\TholosCallback::_eqs
+param=prop_visible
+value=false
+true=style="display:none;"
+false=</>
+%FUNC%>
+<<
+false>>=<%FUNC%
+_function_name=Tholos\TholosCallback::_eqs
+param=prop_visible
+value=false
+true=style="display:none;$prop_style"
+false=style="$prop_style"
+%FUNC%>
+<<
+%FUNC%> [%_function_name=Tholos\TholosCallback::_eqs;param=prop_attributes;value=;true=</>;false= $prop_attributes%]

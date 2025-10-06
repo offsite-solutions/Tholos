@@ -1,0 +1,9 @@
+<script type="text/javascript" nonce="$Tholos_nonce">
+  $(document).ready(function() {
+    $("#$prop_id").select2({
+      [%_function_name=Tholos\TholosCallback::_eqs;param=prop_searchable;value=false;true=minimumResultsForSearch: Infinity,;false=</>%]
+  });
+
+##    $templateabs_tholos__TLOV_masterlov
+  });
+</script>

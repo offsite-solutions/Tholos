@@ -1,1 +1,0 @@
-[%_include=tholos/tholos_callback.php;_function_name=_eqs;param=prop_gridhtmltype;value=table;true=<tr>;false=%]$content[%_include=tholos/tholos_callback.php;_function_name=_eqs;param=prop_gridhtmltype;value=table;true=</tr>;false=%]

@@ -1,0 +1,28 @@
+<%FUNC%
+_function_name=Tholos\TholosCallback::_eqs
+param=prop_submenuhoverable
+value=true
+true>>=<div data-kt-menu-trigger="{default: 'click', lg: 'hover'}" data-kt-menu-placement="right-start" class="menu-item menu-lg-down-accordion menu-sub-lg-down-indention">
+  <span class="menu-link">
+    <span class="menu-icon"><i class="$prop_icon"></i></span>
+    <span class="menu-title">$prop_label</span>
+    <span class="menu-arrow"></span>
+  </span>
+  <div class="menu-sub menu-sub-lg-down-accordion menu-sub-lg-dropdown px-2 py-4 w-300px mh-75 overflow-auto">
+    $content
+  </div>
+</div>
+<<
+false>>=
+<div data-kt-menu-trigger="click" class="menu-item menu-accordion">
+  <span class="menu-link">
+    <span class="menu-icon"><i class="$prop_icon"></i></span>
+    <span class="menu-title">$prop_label</span>
+    <span class="menu-arrow"></span>
+  </span>
+  <div class="menu-sub menu-sub-accordion">
+    $content
+  </div>
+</div>
+<<
+%FUNC%>

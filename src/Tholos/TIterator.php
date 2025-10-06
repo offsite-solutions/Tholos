@@ -24,7 +24,7 @@
      */
     public function render(?TComponent $sender, string $content): string {
       
-      Tholos::$app->trace('Render start', $this);
+      Tholos::$logger->trace('Render start', $this);
       
       if (!Tholos::$app->checkRole($this)) {
         return '';
@@ -67,7 +67,7 @@
       $this->renderedContent = $result;
       Tholos::$app->eventHandler($this, 'onAfterRender');
       
-      Tholos::$app->trace('Render ended', $this);
+      Tholos::$logger->trace('Render ended', $this);
       
       Tholos::$app->EnableComponentPropertyCache = $lastCache;
       

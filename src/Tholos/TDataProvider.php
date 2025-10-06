@@ -29,7 +29,7 @@
      * @throws Throwable
      */
     public function propagateResult(mixed $resultRow_): void {
-      Tholos::$app->trace('BEGIN', $this);
+      Tholos::$logger->trace('BEGIN', $this);
       
       if (is_array($resultRow_)) {
         $queryResult = $resultRow_;
@@ -84,7 +84,7 @@
         $TJSONDataProvider->propagateResult(NULL);
       }
       
-      Tholos::$app->trace('END', $this);
+      Tholos::$logger->trace('END', $this);
     }
     
     /**
@@ -94,18 +94,18 @@
      * @inheritDoc
      */
     public function init(): void {
-      Tholos::$app->trace('BEGIN', $this);
-      Tholos::$app->trace('(' . $this->_componentType . ') (ID ' . $this->_id . ')', $this);
+      Tholos::$logger->trace('BEGIN', $this);
+      Tholos::$logger->trace('(' . $this->_componentType . ') (ID ' . $this->_id . ')', $this);
       $this->initialized = true;
       // set runtime properties
       
       // in case of this component called itself via TDataProxy
       if (Eisodos::$parameterHandler->getParam('TholosProxy:TargetComponentID') === (string)$this->_id) {
-        Tholos::$app->trace('Finding proxy properties', $this);
+        Tholos::$logger->trace('Finding proxy properties', $this);
         foreach ($this->getPropertyNames() as $key) {
           $proxyValue = Eisodos::$parameterHandler->getParam($this->getProperty('Name') . '>' . $key);
           if ($proxyValue !== '') {
-            Tholos::$app->debug('Setting property <' . $key . '> to ' . $proxyValue . ' by proxy request', $this);
+            Tholos::$logger->debug('Setting property <' . $key . '> to ' . $proxyValue . ' by proxy request', $this);
             if ($this->getPropertyType($key) === 'ARRAY') {
               $this->setProperty($key, json_decode($proxyValue, true, 512, JSON_THROW_ON_ERROR));
             } else {
@@ -122,10 +122,10 @@
           Tholos::$app->findComponentByID($componentId)->init();
         }
         
-        Tholos::$app->debug('Auto opening query', $this);
+        Tholos::$logger->debug('Auto opening query', $this);
         $this->run(NULL);
       }
-      Tholos::$app->trace('END', $this);
+      Tholos::$logger->trace('END', $this);
     }
     
     /**
@@ -143,7 +143,7 @@
       if ($this->getProperty('Opened', 'false') === 'false') {
         return;
       }
-      Tholos::$app->trace('BEGIN', $this);
+      Tholos::$logger->trace('BEGIN', $this);
       
       $this->setProperty('Opened', 'false');
       if ($this->getProperty('Result') !== false) {
@@ -157,7 +157,7 @@
       }
       $this->setProperty('JSONFilters', NULL);
       
-      Tholos::$app->trace('END', $this);
+      Tholos::$logger->trace('END', $this);
     }
     
     /**
@@ -184,17 +184,17 @@
           || $this->getProperty('Caching', 'Disabled') === 'Disabled'
           || Eisodos::$parameterHandler->eq('TholosCacheAction', 'refresh')) {
           //if ($this->getPropertyType('DatabaseIndex',null)!==null) {
-          //  Tholos::$app->debug('Database connection is not needed');
+          //  Tholos::$logger->debug('Database connection is not needed');
           //  return;
           //}
           Eisodos::$dbConnectors->connector($this->getProperty('DatabaseIndex'))->connect(
             'Database' . $this->getProperty('DatabaseIndex')
           );
           Tholos::$app->roleManager?->initDBSession();
-          Tholos::$app->trace('Database connection is ready to use');
+          Tholos::$logger->trace('Database connection is ready to use');
         }
       } else {
-        Tholos::$app->debug('Opening database connection is disabled by active DataProxy');
+        Tholos::$logger->debug('Opening database connection is disabled by active DataProxy');
       }
     }
     
@@ -206,17 +206,17 @@
      */
     public function run(?TComponent $sender): void {
       try {
-        Tholos::$app->trace('BEGIN', $this);
+        Tholos::$logger->trace('BEGIN', $this);
         $this->openDatabase(false);
         Tholos::$app->checkRole($this, true);
         Tholos::$app->eventHandler($this, 'onBeforeOpen');
         $this->open($sender);
         $this->propagateResult(NULL);
       } catch (Exception $e) {
-        Tholos::$app->error($e->getMessage());
+        Tholos::$logger->error($e->getMessage());
         Tholos::$app->responseErrorMessage = $e->getMessage();
       }
-      Tholos::$app->trace('END', $this);
+      Tholos::$logger->trace('END', $this);
     }
     
     /**
@@ -227,9 +227,9 @@
     public function autoOpen(): void {
       
       if ($this->getProperty('AutoOpenAllowed', 'true') === 'true') {
-        Tholos::$app->trace('BEGIN', $this);
+        Tholos::$logger->trace('BEGIN', $this);
         $this->run(NULL);
-        Tholos::$app->trace('END', $this);
+        Tholos::$logger->trace('END', $this);
       }
       
     }
@@ -253,7 +253,7 @@
       $this->renderedContent = '';
       
       if ($sender === NULL) { // alkalmazas hivta
-        Tholos::$app->trace('BEGIN', $this);
+        Tholos::$logger->trace('BEGIN', $this);
         
         Tholos::$app->eventHandler($this, 'onBeforeRender');
         
@@ -270,11 +270,11 @@
           Tholos::$app->responseErrorCode = $this->getProperty('ResultErrorCode', '');
           Tholos::$app->responseErrorMessage = $this->getProperty('ResultErrorMessage', '');
           if ((Tholos::$app->responseType === 'PROXY') && Eisodos::$parameterHandler->getParam('TholosProxy:TargetComponentID') === (string)$this->_id) {
-            Tholos::$app->trace('Finding requested proxy properties', $this);
+            Tholos::$logger->trace('Finding requested proxy properties', $this);
             foreach ($this->getPropertyNames() as $key) {
               $proxyValue = Eisodos::$parameterHandler->getParam($this->getProperty('Name') . '<' . $key);
               if ($proxyValue === 'response') {
-                Tholos::$app->trace('Pushing back ' . $key . ' property with value ' . $this->getProperty($key, ''));
+                Tholos::$logger->trace('Pushing back ' . $key . ' property with value ' . $this->getProperty($key, ''));
                 Tholos::$app->responseARRAY[$this->getProperty('Name') . '>' . $key] = $this->getProperty($key, '');
               }
             }
@@ -342,7 +342,7 @@
         $this->renderedContent = '';
         Tholos::$app->eventHandler($this, 'onAfterRender');
         
-        Tholos::$app->trace('END', $this);
+        Tholos::$logger->trace('END', $this);
       }
       
       return $this->renderedContent;

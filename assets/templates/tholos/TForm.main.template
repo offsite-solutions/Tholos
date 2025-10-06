@@ -1,0 +1,89 @@
+## <!--  Form $prop_name -->
+$templateabs_tholos__TComponent_properties
+<form id="$prop_id" $templateabs_tholos__TComponent_basedata
+  class="$prop_class needs-validation" novalidate
+  name="$prop_name"
+[%_function_name=Tholos\TholosCallback::_eqs;param=prop_url;value=;true=</>;false=action="$prop_url"%]
+[%_function_name=Tholos\TholosCallback::_eqs;param=prop_method;value=;true=</>;false=method="$prop_method"%]
+[%_function_name=Tholos\TholosCallback::_eqs;param=prop_target;value=;true=</>;false=target="$prop_target"%]
+  role="form">
+[%_function_name=Tholos\TholosCallback::_eqs;param=prop_helpindex;value=;true=;false=<a href="javascript:Tholos.showHelp('$prop_helpindex')" class="btn btn-xs btn-sky tholos-help"><i class="fa fa-question-circle"></i>   [:HELP.BUTTON,Súgó:]</a>%]
+  <fieldset>
+    $content
+  </fieldset>
+</form>
+$templateabs_tholos__TContainer_baseevents
+<script type="text/javascript" nonce="$Tholos_nonce">
+<%FUNC%
+_function_name=Tholos\TholosCallback::_eqs
+param=prop_validator
+value=
+true=
+false>>=
+<%FUNC%
+_function_name=Tholos\TholosCallback::_eqs
+param=prop_validateOnInit
+value=true
+false=
+true=$(document).ready( function() { Tholos.eventHandler('$prop_id','$prop_id','TForm','validate','',{"FORM_STATE":"INIT"}); } );
+%FUNC%>
+<<
+%FUNC%>
+<%FUNC%
+_function_name=Tholos\TholosCallback::_eqs
+param=event_onBeforeSubmit
+value=
+true=
+false=$('#$prop_id').on('onBeforeSubmit', function (event,eventData) { $event_onBeforeSubmit });
+%FUNC%>
+<%FUNC%
+_function_name=Tholos\TholosCallback::_eqs
+param=event_onSuccessAlert
+value=
+true=
+false=$('#$prop_id').on('onSuccessAlert', function (event,eventData) { $event_onSuccessAlert });
+%FUNC%>
+<%FUNC%
+_function_name=Tholos\TholosCallback::_eqs
+param=event_onSubmitSuccess
+value=
+true=
+false=$('#$prop_id').on('onSubmitSuccess', function (event,eventData) { $event_onSubmitSuccess });
+%FUNC%>
+<%FUNC%
+_function_name=Tholos\TholosCallback::_eqs
+param=event_onErrorAlert
+value=
+true=
+false=$('#$prop_id').on('onErrorAlert', function (event,eventData) { $event_onErrorAlert });
+%FUNC%>
+<%FUNC%
+_function_name=Tholos\TholosCallback::_eqs
+param=event_onSubmitError
+value=
+true=
+false=$('#$prop_id').on('onSubmitError', function (event,eventData) { $event_onSubmitError });
+%FUNC%>
+<%FUNC%
+_function_name=Tholos\TholosCallback::_eqs
+param=event_onValidateSuccess
+value=
+true=
+false=$('#$prop_id').on('onValidateSuccess', function (event,eventData) { $event_onValidateSuccess });
+%FUNC%>
+<%FUNC%
+_function_name=Tholos\TholosCallback::_eqs
+param=event_onValidateError
+value=
+true=
+false=$('#$prop_id').on('onValidateError', function (event,eventData) { $event_onValidateError });
+%FUNC%>
+<%FUNC%
+_function_name=Tholos\TholosCallback::_eqs
+param=event_onCancel
+value=
+true=
+false=$('#$prop_id').on('onCancel', function (event,eventData) { $event_onCancel });
+%FUNC%>
+</script>
+## <!-- /Form $prop_name -->

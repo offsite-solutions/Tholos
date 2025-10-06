@@ -19,7 +19,7 @@
      * @throws Throwable
      */
     public function buildFilters($sender): array {
-      Tholos::$app->trace('BEGIN', $this);
+      Tholos::$logger->trace('BEGIN', $this);
       
       $filter_array = [];
       foreach (Tholos::$app->findChildIDsByType($this, 'TQueryFilter') as $filterid) {
@@ -33,14 +33,14 @@
             $filter_array[] = $filter->getProperty('JSONFilter');
           }
         } catch (Exception $e) {
-          Tholos::$app->error('Build filter error: ' . $e->getMessage(), $this);
+          Tholos::$logger->error('Build filter error: ' . $e->getMessage(), $this);
           $this->setProperty('FilterError', 'true');
         }
       }
       
       $this->setProperty('JSONFilters', array_merge($this->getProperty('JSONFilters', []), $filter_array), 'ARRAY)');
       
-      Tholos::$app->trace('END', $this);
+      Tholos::$logger->trace('END', $this);
       
       return $filter_array;
     }
@@ -60,7 +60,7 @@
       
       if ($this->getProperty('URL')) {
         
-        Tholos::$app->trace('BEGIN', $this);
+        Tholos::$logger->trace('BEGIN', $this);
         
         $JSONParameters = $this->getProperty('JSONParameters', []);
         
@@ -73,8 +73,8 @@
         $JSONParameters['filters'] = $this->getProperty('JSONFilters', NULL);
         
         if ($this->getProperty('FilterError', 'false') == 'true') {
-          Tholos::$app->error('Missing required or malformed filter', $this);
-          Tholos::$app->trace('END', $this);
+          Tholos::$logger->error('Missing required or malformed filter', $this);
+          Tholos::$logger->trace('END', $this);
           
           return '';
         }
@@ -129,7 +129,7 @@
           $JSONParameters['limit'] = NULL;
         }
         
-        Tholos::$app->trace(print_r($JSONParameters, true), $this);
+        Tholos::$logger->trace(print_r($JSONParameters, true), $this);
         
         $client_parameters = array();
         foreach (Tholos::$app->findChildIDsByType($this, 'TAPIParameter') as $id) {
@@ -168,7 +168,7 @@
           }
         }
         
-        Tholos::$app->debug('External data provider opening', $this);
+        Tholos::$logger->debug('External data provider opening', $this);
         try {
           
           $x = [];
@@ -194,7 +194,7 @@
           $boundParametersJSON = json_encode($JSONParameters, JSON_THROW_ON_ERROR);
           
           if ($this->getProperty('curlDebug') == 'true') {
-            Tholos::$app->debug('Bound parameters: ' . $boundParametersJSON, $this);
+            Tholos::$logger->debug('Bound parameters: ' . $boundParametersJSON, $this);
           }
           
           $resultParameters = array();
@@ -233,7 +233,7 @@
           curl_setopt_array($curl, $options);
           
           if ($this->getProperty('curlDebug') == 'true') {
-            Tholos::$app->debug(print_r($options, true));
+            Tholos::$logger->debug(print_r($options, true));
           }
           
           $httpResponse = curl_exec($curl);
@@ -244,13 +244,13 @@
           if ($this->getProperty('curlVerbose') == 'true') {
             rewind($streamVerboseHandle);
             $verboseLog = stream_get_contents($streamVerboseHandle);
-            Tholos::$app->debug("Verbose: \n" . $verboseLog);
+            Tholos::$logger->debug("Verbose: \n" . $verboseLog);
           }
           
           if ($this->getProperty('curlDebug') == 'true') {
-            Tholos::$app->debug('HTTP Code: ' . $httpCode);
-            Tholos::$app->debug('HTTP Response: ' . $httpResponse);
-            Tholos::$app->debug('HTTP Error: ' . $httpError);
+            Tholos::$logger->debug('HTTP Code: ' . $httpCode);
+            Tholos::$logger->debug('HTTP Response: ' . $httpResponse);
+            Tholos::$logger->debug('HTTP Error: ' . $httpError);
           }
           
           // hard error
@@ -278,9 +278,9 @@
           }
           
           if ($this->getProperty("curlDebug") == 'true') {
-            Tholos::$app->debug(print_r($resultParameters, true), $this);
+            Tholos::$logger->debug(print_r($resultParameters, true), $this);
           } else {
-            Tholos::$app->trace(print_r($resultParameters, true), $this);
+            Tholos::$logger->trace(print_r($resultParameters, true), $this);
           }
           
           $this->setProperty('Opened', 'true');
@@ -292,12 +292,12 @@
           Tholos::$app->eventHandler($this, 'onSuccess');
           
         } catch (Exception $e) {
-          Eisodos::$logger->writeErrorLog($e);
+          ETholos::$app->writeErrorLog($e);
           Tholos::$app->eventHandler($this, 'onError');
           throw $e;
         }
         
-        Tholos::$app->trace('END', $this);
+        Tholos::$logger->trace('END', $this);
         
       }
       
@@ -311,9 +311,9 @@
       
       if ($this->getProperty('AutoOpenAllowed', 'true') == 'true' &&
         count(Tholos::$app->findChildIDsByType($this, 'TDBfield')) > 0) {  // csak akkor nyiljon meg a query, ha vannak benne dbfield-ek (kulonben valoszinuleg lov)
-        Tholos::$app->trace('BEGIN', $this);
+        Tholos::$logger->trace('BEGIN', $this);
         $this->run(NULL);
-        Tholos::$app->trace('END', $this);
+        Tholos::$logger->trace('END', $this);
       }
       
     }

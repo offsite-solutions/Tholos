@@ -1,0 +1,22 @@
+## BS5
+<%FUNC%
+_function_name=Tholos\TholosCallback::_eqs
+param=prop_icon
+value=
+true=[%_function_name=Tholos\TholosCallback::_eqs;param=prop_labelclass;value=;true=$prop_label;false=<span class="$prop_labelclass">$prop_label</span>%]
+false>>=<%FUNC%
+_function_name=Tholos\TholosCallback::_eqs
+param=prop_iconalign
+value=right
+true=[%_function_name=Tholos\TholosCallback::_eqs;param=prop_labelclass;value=;true=$prop_label;false=<span class="$prop_labelclass">$prop_label</span>%]&nbsp;<i class="$prop_icon"></i>
+false>>>=<i class="$prop_icon"></i><%FUNC%
+_function_name=Tholos\TholosCallback::_eqs
+param=prop_label
+value=
+true=
+false=&nbsp;
+%FUNC%>[%_function_name=Tholos\TholosCallback::_eqs;param=prop_labelclass;value=;true=$prop_label;false=<span class="$prop_labelclass">$prop_label</span>%]
+<<<
+%FUNC%>
+<<
+%FUNC%>

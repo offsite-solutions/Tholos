@@ -1,0 +1,139 @@
+## <!--  DiagramEditor $prop_name -->
+$templateabs_tholos__TComponent_properties
+<div id="$prop_id" class="[%_function_name=Tholos\TholosCallback::_eqs;param=prop_master;value=;false=subscribers-$tholos_renderid$_$prop_master;true=%]" style="overflow:hidden;position:relative;margin:auto;height:$prop_controlheight~='80vh';;width:$prop_controlwidth~='80vw';">
+</div>
+<button id="$prop_id-refresh" class="btn btn-circle btn-xs" type="button" onclick="Tholos.eventHandler('$prop_id','$prop_id','TDiagramEditor','refresh','')"><i class="fa fa-refresh"></i></button>
+
+<script type="text/javascript" nonce="$Tholos_nonce">
+
+jsPlumb.ready(function () {
+    ## We will create the diagram in the global window scope so avoid using var
+    jsPlumb_$prop_name = jsPlumb.getInstance({
+        Endpoint: ["Rectangle", {width:10, height:10}],
+        Connector:"StateMachine",
+        HoverPaintStyle: {stroke: "#1e8151", strokeWidth: 2 },
+        ConnectionOverlays: [
+           [ "Arrow", {
+                location: 1,
+                length: 14,
+                foldback: 0.8
+            }]
+        ],
+        Container: "$prop_id"
+    });
+
+    jsPlumb_$prop_name.registerConnectionType("CHILD", { anchor:"Continuous", connector:"StateMachine" });
+    jsPlumb_$prop_name.registerConnectionType("PREREQ", { anchor:"Continuous",
+    connector: [ "Flowchart", { stub: [40, 60], gap: 10, cornerRadius: 5, alwaysRespectStubs: true } ]
+    // connector:"StateMachine"
+    });
+
+    jsPlumb_$prop_name.tholos = {};
+    jsPlumb_$prop_name.tholos.endpointMarkupPrereq = "<div class=\"tholos-diagrameditor-endpoint-prereq\"></div>";
+    jsPlumb_$prop_name.tholos.endpointMarkupChild = "<div class=\"tholos-diagrameditor-endpoint-child\"></div>";
+    jsPlumb_$prop_name.tholos.endpointMarkup=jsPlumb_$prop_name.tholos.endpointMarkupPrereq+jsPlumb_$prop_name.tholos.endpointMarkupChild;
+
+    jsPlumb_$prop_name.tholos.initNode = function(el) {
+
+        jsPlumb_$prop_name.draggable(el, {
+          stop: function() {
+          var eventData = {id: el.id.replace("$prop_name" + "-", ""),
+                           position_x: Math.round($(el).position().left),
+                           position_y: Math.round($(el).position().top)
+                          };
+          $event_onmove
+          }
+        });
+
+        jsPlumb_$prop_name.makeSource(el, {
+            filter: ".tholos-diagrameditor-endpoint-prereq",
+            anchor: "Continuous",
+            connectorStyle: { stroke: "red", strokeWidth: 2, outlineStroke: "transparent", outlineWidth: 4 },
+            connectionType:"PREREQ"
+        });
+
+        jsPlumb_$prop_name.makeSource(el, {
+            filter: ".tholos-diagrameditor-endpoint-child",
+            anchor: "Continuous",
+            connectorStyle: { stroke: "darkgrey", strokeWidth: 2, outlineStroke: "transparent", outlineWidth: 4 },
+            connectionType:"CHILD"
+        });
+
+        jsPlumb_$prop_name.makeTarget(el, {
+            dropOptions: { hoverClass: "dragHover" },
+            anchor: "Continuous",
+            allowLoopback: $prop_allowloopback~='false';
+        });
+    };
+
+    jsPlumb_$prop_name.tholos.newNode = function(id, text, posX, posY, cssClass) {
+        var d = document.createElement("div");
+        d.className = "tholos-diagrameditor-node " + cssClass;
+        d.id = "$prop_name" + "-" + id;
+        d.innerHTML = text + jsPlumb_$prop_name.tholos.endpointMarkup;
+        d.style.left = posX + "px";
+        d.style.top = posY + "px";
+        d.onclick = function() {
+        var eventData = {id:id};
+        $event_onselect
+        };
+        jsPlumb_$prop_name.getContainer().appendChild(d);
+        jsPlumb_$prop_name.tholos.initNode(d);
+        return d;
+    };
+
+    jsPlumb_$prop_name.tholos.connect = function(sourceId, targetId, kind) {
+       if (!kind) {
+          kind = "CHILD";
+       }
+       jsPlumb_$prop_name.connect({source: sourceId,
+       target: targetId,
+       type: kind
+       });
+    }
+
+    jsPlumb_$prop_name.bind("beforeDrop", function(info) {
+        var type=((info.connection.getType().indexOf("CHILD")!=-1) ? "CHILD" : ((info.connection.getType().indexOf("PREREQ")!=-1) ? "PREREQ" : info.connection.getType()));
+        var eventData = {source_id: info.sourceId.replace("$prop_name" + "-", ""), target_id: info.targetId.replace("$prop_name" + "-", ""), type: type};
+        $event_onconnect
+        return false;
+    });
+
+    jsPlumb_$prop_name.bind("beforeDetach", function(info) {
+        var eventData = {source_id: info.sourceId.replace("$prop_name" + "-", ""), target_id: info.targetId.replace("$prop_name" + "-", "")};
+        $event_ondisconnect
+    });
+
+    $("#$prop_id").on("masterDataChange", function (e, edata) {
+    Tholos.eventHandler("$prop_id", "$prop_id", "TDiagramEditor", "refresh", "$prop_route");
+    });
+
+/*
+    jsPlumb_$prop_name.bind("connectionDragStop", function(info) {
+        console.log('drag stopped');
+    });
+    jsPlumb_$prop_name.bind("contextMenu", function(info) {
+        console.log('contextMenu', info);
+    });
+    jsPlumb_$prop_name.bind("click", function(info1, info2) {
+        console.log('connection click', info1, info2);
+    });
+    jsPlumb_$prop_name.bind("dblclick", function(info1, info2) {
+        console.log('connection double click', info1, info2);
+    });
+    jsPlumb_$prop_name.bind("connectionMoved", function(info1, info2) {
+        console.log('connection moved', info1, info2);
+    });
+    jsPlumb_$prop_name.bind("endpointClick", function(info1, info2) {
+        console.log('endpoint click', info1, info2);
+    });
+    jsPlumb_$prop_name.bind("endpointDblClick", function(info1, info2) {
+        console.log('endpoint double click', info1, info2);
+    });
+*/
+
+
+});
+
+</script>
+## <!-- /DiagramEditor $prop_name -->

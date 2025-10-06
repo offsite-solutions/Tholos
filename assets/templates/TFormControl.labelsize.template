@@ -1,4 +1,0 @@
-[%_include=tholos/tholos_callback.php;_function_name=_eqs;param=prop_labelsizeextrasmall;value=;true=</>;false=col-xs-$prop_labelsizeextrasmall%]
-[%_include=tholos/tholos_callback.php;_function_name=_eqs;param=prop_labelsizesmall;value=;true=</>;false=col-sm-$prop_labelsizesmall%]
-[%_include=tholos/tholos_callback.php;_function_name=_eqs;param=prop_labelsizemedium;value=;true=</>;false=col-md-$prop_labelsizemedium%]
-[%_include=tholos/tholos_callback.php;_function_name=_eqs;param=prop_labelsizelarge;value=;true=</>;false=col-lg-$prop_labelsizelarge%]

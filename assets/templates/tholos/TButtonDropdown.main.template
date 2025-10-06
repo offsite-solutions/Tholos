@@ -1,0 +1,29 @@
+## <!--  ButtonDropdown $prop_name -->
+$templateabs_tholos__TComponent_properties
+<div role="group" class="btn-group" $prop_dropdirection">
+  <button
+    id="$prop_id"
+    $templateabs_tholos__TComponent_basedata
+    type="button"
+    data-bs-toggle="dropdown"
+    aria-expanded="false"
+    class="btn dropdown-toggle
+         [%_function_name=Tholos\TholosCallback::_eqs;param=prop_bootstrapsize;value=;true=</>;false=btn-$prop_bootstrapsize%]
+         $prop_class"
+         [%_function_name=Tholos\TholosCallback::_eqs;param=prop_enabled;value=false;true=disabled="disabled";false=</>%]
+    >
+    $templateabs_tholos__TComponent_labelicon
+  </button>
+  <ul class="dropdown-menu [%_function_name=Tholos\TholosCallback::_eqs;param=prop_dropalign;value=begin;true=;false=dropdown-menu-end%] $prop_dropdownclass">
+    $content
+  </ul>
+</div>
+  $templateabs_tholos__TControl_helpblock
+<%FUNC%
+_function_name=Tholos\TholosCallback::_eqs
+param=event_onclick
+value=
+true=
+false=<script type="text/javascript" nonce="$Tholos_nonce">$("#$prop_id").on('mouseup', function (e) { if( e.which <= 2 || e.altKey) { Tholos.setClickType(e.altKey?2:e.which); e.preventDefault(); $event_onclick }});</script>
+%FUNC%>
+## <!-- /ButtonDropdown $prop_name -->

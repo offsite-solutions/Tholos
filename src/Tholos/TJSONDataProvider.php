@@ -26,11 +26,11 @@
       
       if ($nativeSQL) {
         
-        Tholos::$app->trace('BEGIN', $this);
+        Tholos::$logger->trace('BEGIN', $this);
         
         try {
           
-          Tholos::$app->trace('Parse JSON ' . $nativeSQL);
+          Tholos::$logger->trace('Parse JSON ' . $nativeSQL);
           
           $result_ = json_decode($nativeSQL, true, 512, JSON_THROW_ON_ERROR);
           if (!$result_) {
@@ -51,12 +51,12 @@
           Tholos::$app->eventHandler($this, 'onSuccess');
           
         } catch (Exception $e) {
-          Eisodos::$logger->writeErrorLog($e);
+          Tholos::$app->writeErrorLog($e);
           Tholos::$app->eventHandler($this, 'onError');
           throw $e;
         }
         
-        Tholos::$app->trace('END', $this);
+        Tholos::$logger->trace('END', $this);
         
       }
     }

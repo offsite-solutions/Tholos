@@ -1,0 +1,11 @@
+## BS5 <!--  Tabpane $prop_name -->
+$templateabs_tholos__TComponent_properties
+<div id="$prop_id" role="tabpanel" class="tab-pane bg-white p-3 [%_function_name=Tholos\TholosCallback::_eqs;param=prop_visible;value=true;true=visible;false=invisible%]">
+    $content
+</div>
+<script type="text/javascript" nonce="$Tholos_nonce">
+[%_function_name=Tholos\TholosCallback::_eqs;param=event_onactivate;value=;true=</>;false=$("#$prop_id").on( "onActivate",function(){$event_onactivate});%]
+[%_function_name=Tholos\TholosCallback::_eqs;param=event_ondeactivate;value=;true=</>;false=$("#$prop_id").on( "onDeactivate",function(){$event_ondeactivate});%]
+</script>
+$templateabs_tholos__TContainer_baseevents
+## <!-- /Tabpane $prop_name -->

@@ -11,13 +11,20 @@
   "minimum-stability": "dev",
   "repositories": [
     {
+      "type": "path",
+      "url": "../../_eisodos/Base",
+      "options": {
+        "symlink": true
+      }
+    },
+    {
       "type": "composer",
       "url": "https://asset-packagist.org"
     }
   ],
   "require": {
     "php": ">=8.4",
-    "offsite-solutions/eisodos": "1.*",
+    "offsite-solutions/eisodos": "@dev",
     "ext-json": "*",
     "ext-mbstring": "*",
     "ext-bcmath": "*",

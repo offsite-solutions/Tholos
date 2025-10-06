@@ -1,0 +1,44 @@
+## <!--  LOV $prop_name -->
+<div class="row mb-1 $prop_rowclass [%_function_name=Tholos\TholosCallback::_eqs;param=prop_visible;value=true;false=hidden;true=</>%]" style="$prop_rowstyle">
+  $templateabs_tholos__TComponent_properties
+
+  <label id="$prop_id-label" for="$prop_id" class="col-form-label $templateabs_tholos__TFormControl_labelsize [%_function_name=Tholos\TholosCallback::_eqs;param=prop_required;value=true;true=required;false=%]">$templateabs_tholos__TComponent_labelicon</label>
+
+  <div class="$templateabs_tholos__TFormControl_controlsize">
+  <select
+    id="$prop_id"
+    $templateabs_tholos__TComponent_basedata
+    name="$prop_name"
+    data-control="select2"
+    class="form-select $prop_class [%_function_name=Tholos\TholosCallback::_eqs;param=prop_master;value=;false=subscribers-$tholos_renderid$_$prop_master;true=%]"
+    data-width="90%"
+    <%FUNC%
+        _function_name=Tholos\TholosCallback::_eqs
+    param=TholosGUIModalScope
+    value=
+    true=
+    false=data-dropdown-parent="#$TholosGUIModalScope"
+    %FUNC%>
+    [%_function_name=Tholos\TholosCallback::_eqs;param=prop_readonly;value=true;true=disabled="disabled";false=</>%]
+    [%_function_name=Tholos\TholosCallback::_eqs;param=prop_multiselect;value=true;true=multiple="multiple";false=</>%]
+    [%_function_name=Tholos\TholosCallback::_eqs;param=prop_maxsellength;value=;false=data-maximum-selection-length="$prop_maxsellength";true=</>%]
+    data-placeholder="$prop_placeholder~='&nbsp;';"
+    [%_function_name=Tholos\TholosCallback::_eqs;param=prop_diacritics;value=false;false=data-diacritics="true";true=</>%]
+    [%_function_name=Tholos\TholosCallback::_eqs;param=prop_enabled;value=false;true=disabled="disabled";false=</>%]
+    [%_function_name=Tholos\TholosCallback::_eqs;param=prop_required;value=true;true=data-allow-clear="false" required;false=data-allow-clear="true"%]
+    >
+    <option></option>
+## AjaxMode fix - hogy mar toltes elott is legyen .val()
+    [%_function_name=Tholos\TholosCallback::_eqs;param=prop_ajaxmode;value=true;false=;true=<option value="$prop_value" selected>*</option>%]
+##
+    [%_function_name=Tholos\TholosCallback::_generateListValues;component_id=$component_id%]
+  </select>
+[%_function_name=Tholos\TholosCallback::_eqs;param=prop_showrefresh;value=true;true=<button class="btn btn-circle btn-xs" type="button" onclick="Tholos.eventHandler('btn$prop_id','$prop_id','TLOV','refresh','')"><i class="fa fa-refresh"></i></button>;false=</>%]
+  $templateabs_tholos__TControl_helpblock
+  </div>
+</div>
+$templateabs_tholos__TControl_baseevents
+$templateabs_tholos__TLOV_events
+$templateabs_tholos__TControl_customevents
+[%_function_name=Tholos\TholosCallback::_eq;param=prop_ajaxmode;value=true;false=tholos/TLOV.main.prefetchjs;true=tholos/TLOV.main.ajaxjs%]
+## <!-- /LOV $prop_name -->

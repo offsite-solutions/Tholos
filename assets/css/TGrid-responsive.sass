@@ -1,0 +1,77 @@
+/*!
+ * Tholos TGrid component Responsive CSS
+ * Copyright 2020 Offsite Solutions
+ */
+
+.TGrid-resp-wrapper
+  margin: 0 auto
+  //max-width: 800px
+
+.TGrid-resp-table
+  margin: 0
+  width: 100%
+  display: table
+  background-color: #fff
+  @media screen and (max-width: 580px)
+    display: block
+
+    .TGrid-resp-header .TGrid-resp-cell a.filterbutton
+      display: inline !important
+
+    .TGrid-resp-row:nth-of-type(even)
+      background: #f0f0f0
+
+      .TGrid-resp-cell
+        background: #f0f0f0
+        padding: 0.3rem
+
+    .TGrid-resp-row
+      border-bottom: solid 3px #a0a0a0
+
+      .TGrid-resp-cell:last-of-type
+        border-bottom: none !important
+
+  .TGrid-resp-row
+    display: table-row
+    border-bottom: solid 3px #a0a0a0
+
+    @media screen and (max-width: 580px)
+      //padding: 14px 0 7px
+      display: block
+
+      &.header
+        padding: 0
+        height: 6px
+
+        .TGrid-resp-cell
+          display: none
+
+      .TGrid-resp-cell
+        margin-bottom: 10px
+        min-height: 34px
+        vertical-align: top
+
+        &:before
+          margin-bottom: 6px
+          content: attr(data-resptitle)
+          min-width: 98px
+          font-size: 10px
+          line-height: 10px
+          font-weight: bold
+          //text-transform: uppercase
+          color: #969696
+          display: block
+
+        &.text-center
+          text-align: left
+
+        &.text-right
+          text-align: left
+
+  .TGrid-resp-cell
+    font-size: 9pt
+    display: table-cell
+
+    @media screen and (max-width: 580px)
+      padding: 2px 16px
+      display: block

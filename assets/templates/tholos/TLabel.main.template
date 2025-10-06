@@ -1,0 +1,7 @@
+## BS5 <!--  Label $prop_name -->
+$templateabs_tholos__TComponent_properties
+<$prop_typography id="$prop_id" $templateabs_tholos__TComponent_basedata [%_function_name=Tholos\TholosCallback::_eqs;param=prop_class;value=;true=</>;false=class="$prop_class"%]><%FUNC%
+_function_name=Tholos\TholosCallback::_trim
+value=$templateabs_tholos__TComponent_labelicon$prop_value
+%FUNC%></$prop_typography>
+## <!-- /Label $prop_name -->

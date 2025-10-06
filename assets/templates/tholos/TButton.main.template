@@ -1,0 +1,17 @@
+## BS5 <!--  Button $prop_name -->
+$templateabs_tholos__TComponent_properties
+<button
+  id="$prop_id"
+  $templateabs_tholos__TComponent_basedata
+  type="button"
+  name="$prop_name"
+  class="btn
+         [%_function_name=Tholos\TholosCallback::_eqs;param=prop_bootstrapsize;value=;true=</>;false=btn-$prop_bootstrapsize%]
+         [%_function_name=Tholos\TholosCallback::_eqs;param=prop_class;value=;true=btn-primary;false=$prop_class%]
+        "
+  [%_function_name=Tholos\TholosCallback::_eqs;param=prop_enabled;value=false;true=disabled="disabled" ;false=</>%]
+>
+$templateabs_tholos__TComponent_labelicon
+</button>
+$templateabs_tholos__TControl_baseevents
+## <!-- /Button $prop_name -->

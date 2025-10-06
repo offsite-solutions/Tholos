@@ -20,13 +20,13 @@
      */
     public function initDBSession(): void {
       // initialize DB session
-      Tholos::$app->trace('initDBSession', $this);
+      Tholos::$logger->trace('initDBSession', $this);
       
       if (!$this->sessionInitialized
         && !$this->sessionInitializationInProgress
         && $this->getPropertyComponentId('InitSessionProvider') !== false
         && $this->getProperty('DisableInitSessionProvider', 'false') === 'false') {
-        Tholos::$app->trace('initDBSession.run', $this);
+        Tholos::$logger->trace('initDBSession.run', $this);
         $this->sessionInitializationInProgress = true;
         /* @var TStoredProcedure $component */
         $component = Tholos::$app->findComponentByID($this->getPropertyComponentId('InitSessionProvider'));
@@ -41,15 +41,17 @@
      * @throws Throwable
      */
     public function init(): void {
-      Tholos::$app->trace('BEGIN', $this);
-      Tholos::$app->trace('(' . $this->_componentType . ') (ID ' . $this->_id . ')', $this);
+      Tholos::$logger->trace('BEGIN', $this);
+      Tholos::$logger->trace('(' . $this->_componentType . ') (ID ' . $this->_id . ')', $this);
       
       parent::init();
+      
+      Tholos::$logger->debug('Role manager active: '.$this->getProperty('Enabled', 'true'),$this);
       
       Eisodos::$parameterHandler->setParam('CSRFEnabled', $this->getProperty('CSRFEnabled', 'false'));
       if ($this->getProperty('CSRFEnabled', 'false') == 'true') {
         if ($this->getProperty('CSRFCookieName', '') == '' && Eisodos::$parameterHandler->setParam('x_xsrf_token', '') == '') {
-          Tholos::$app->trace('Genereting CSRF Token', $this);
+          Tholos::$logger->trace('Genereting CSRF Token', $this);
           Eisodos::$parameterHandler->setParam('csrf_token_value', md5(Eisodos::$parameterHandler->getParam('Tholos_sessionID')), true);
         } else {
           Eisodos::$parameterHandler->setParam('csrf_token_value', Eisodos::$utils->safe_array_value($_COOKIE, $this->getProperty('CSRFCookieName', ''), '', true), true);
@@ -73,7 +75,7 @@
         if (Eisodos::$utils->safe_array_value($ApacheRequestHeaders, $this->getProperty('NewLoginHeader', ''), '', true) != ''
           && Eisodos::$utils->safe_array_value($ApacheRequestHeaders, $this->getProperty('NewLoginHeader', ''), '', true) != Eisodos::$parameterHandler->getParam('LoginID', '')
         ) {
-          Tholos::$app->trace('New login detected: ' . Eisodos::$utils->safe_array_value($ApacheRequestHeaders, $this->getProperty('NewLoginHeader', ''), '', true), $this);
+          Tholos::$logger->trace('New login detected: ' . Eisodos::$utils->safe_array_value($ApacheRequestHeaders, $this->getProperty('NewLoginHeader', ''), '', true), $this);
           $this->login(Eisodos::$utils->safe_array_value($ApacheRequestHeaders, $this->getProperty('NewLoginHeader', ''), '', true));
           Eisodos::$parameterHandler->setParam('Logged_In_User_name', Eisodos::$utils->safe_array_value($ApacheRequestHeaders, $this->getProperty('UsernameHeader', ''), '', true), true);
         }
@@ -83,15 +85,15 @@
       
       $functionCodes_ = Eisodos::$parameterHandler->getParam('TRoleManager.FunctionCodes');
       if (!$functionCodes_ == '') {
-        $this->setProperty('FunctionCodes', unserialize($functionCodes_, false), 'ARRAY');
+        $this->setProperty('FunctionCodes', unserialize($functionCodes_, ['allowed_classes' => false]), 'ARRAY');
       }
       
       if ($this->getPropertyComponentId('ListSource') !== false) {
         Tholos::$app->findComponentByID($this->getPropertyComponentId('ListSource'))->setProperty('AutoOpenAllowed', 'false');
       } // AutoOpen-es lenne, de folosleges nyitogatni
       
-      Tholos::$app->trace('Function Codes: ' . implode(',', $this->getProperty('FunctionCodes', [])), $this);
-      Tholos::$app->trace('END', $this);
+      Tholos::$logger->trace('Function Codes: ' . implode(',', $this->getProperty('FunctionCodes', [])), $this);
+      Tholos::$logger->trace('END', $this);
     }
     
     /**
@@ -162,8 +164,8 @@
       } // be van loginolva
       else {
         $roleString = preg_replace_callback('|[!a-zA-Z0-9_.]+|', self::class . '::checkRole_', $functionCode_); // todo ez nem biztos, h jó így ehelyett: 'self::checkRole_'
-        Tholos::$app->trace($functionCode_ . ' will be evaulated as ' . $roleString, $this);
-        $hasRole = @eval('return (' . $roleString . ')');
+        Tholos::$logger->trace($functionCode_ . ' will be evaulated as ' . $roleString, $this);
+        $hasRole = eval('return (' . $roleString . ');');
       }
       
       if ($rootLevel_
@@ -172,7 +174,7 @@
         && Eisodos::$parameterHandler->neq('LoginID', '')
         && $this->getProperty('AccessDeniedURL', '') !== '') { // ha nincs role-ja de be van jelentkezve
         Eisodos::$parameterHandler->setParam('REDIRECT', $this->getProperty('AccessDeniedURL', ''));
-        Tholos::$app->debug('Redirect to ' . $this->getProperty('AccessDeniedURL', ''));
+        Tholos::$logger->debug('Redirect to ' . $this->getProperty('AccessDeniedURL', ''));
       }
       
       // User nincs bejelentkezve es nem AJAX hivast kuldd es van login URL megadva (sajat kezelesu a login)
@@ -185,7 +187,7 @@
           Eisodos::$render->storeCurrentURL('URLBeforeLogin');
         }
         Eisodos::$parameterHandler->setParam('REDIRECT', $this->getProperty('LoginURL', ''));
-        Tholos::$app->debug('(No login) Redirect to ' . $this->getProperty('LoginURL', ''));
+        Tholos::$logger->debug('(No login) Redirect to ' . $this->getProperty('LoginURL', ''));
       }
       
       // User nincs bejelentkezve es nem AJAX hivast kuldd es nincs login URL megadva
@@ -196,7 +198,7 @@
         && Eisodos::$parameterHandler->eq('LoginID', '')
         && $this->getProperty('SessionExpiredURL', '') != '') { // ha nincs bejelentkezve
         Eisodos::$parameterHandler->setParam('REDIRECT', $this->getProperty('SessionExpiredURL', ''));
-        Tholos::$app->debug('(Session expired) Redirect to ' . $this->getProperty('SessionExpiredURL', ''));
+        Tholos::$logger->debug('(Session expired) Redirect to ' . $this->getProperty('SessionExpiredURL', ''));
       }
       
       // AJAX hivas - nincs bejelentkezve
@@ -214,7 +216,7 @@
           && !$hasRole
           && Eisodos::$parameterHandler->eq('IsAJAXRequest', 'T')
           && Eisodos::$parameterHandler->neq('LoginID', '')) {
-          Tholos::$app->debug('User no access for function ['.$functionCode_.']');
+          Tholos::$logger->debug('User no access for function ['.$functionCode_.']');
           header('HTTP/1.1 403 Forbidden');
       }
       
@@ -254,7 +256,7 @@
           } elseif ($this->getProperty('FunctionCodesHeaderType', '') == 'CSV') {
             $this->setProperty('FunctionCodes', explode(',', Eisodos::$utils->safe_array_value($ApacheRequestHeaders, $this->getProperty('FunctionCodesHeader', '',true))), 'ARRAY');
           }
-          Tholos::$app->trace('Function Codes loaded: ' . implode(',', $this->getProperty('FunctionCodes', [])), $this);
+          Tholos::$logger->trace('Function Codes loaded: ' . implode(',', $this->getProperty('FunctionCodes', [])), $this);
         } else {
           $this->setProperty('FunctionCodes', [], 'ARRAY');
         }
@@ -268,14 +270,14 @@
      * @throws Throwable
      */
     public function login($loginID): void {
-      Tholos::$app->trace('BEGIN', $this);
-      Tholos::$app->trace('Login ID: ' . $loginID, $this);
+      Tholos::$logger->trace('BEGIN', $this);
+      Tholos::$logger->trace('Login ID: ' . $loginID, $this);
       
       Eisodos::$parameterHandler->setParam('LoginID', $loginID, true);
       $this->refreshFunctionCodes();
       
-      Tholos::$app->trace('Function Codes: ' . implode(',', $this->getProperty('FunctionCodes', [])), $this);
-      Tholos::$app->trace('END', $this);
+      Tholos::$logger->trace('Function Codes: ' . implode(',', $this->getProperty('FunctionCodes', [])), $this);
+      Tholos::$logger->trace('END', $this);
     }
     
     /**
@@ -335,7 +337,7 @@
     public function logout(): void {
       Eisodos::$render->logout(false);
       Eisodos::$parameterHandler->setParam('REDIRECT', $this->getProperty('LoginURL', ''));
-      Tholos::$app->debug('Redirect to ' . $this->getProperty('LogoutURL', ''));
+      Tholos::$logger->debug('Redirect to ' . $this->getProperty('LogoutURL', ''));
     }
     
   }

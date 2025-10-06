@@ -25,7 +25,7 @@
       parent::init();
       /* forces application to start render at this component */
       Tholos::$app->renderer = $this;
-      Tholos::$app->debug('Renderer component has been set', $this);
+      Tholos::$logger->debug('Renderer component has been set', $this);
     }
     
     /**
@@ -48,11 +48,11 @@
         
         if ($this->getProperty('HeaderContainerName') !== false) {
           $this->headerContent = Tholos::$app->cleanupRenderedHTML(Tholos::$app->render($this, Tholos::$app->findComponentIDByNameClassFromIndex($this->getProperty('HeaderContainerName'), 'TContainer', Tholos::$app->action_id), true));
-          Tholos::$app->trace($this->headerContent, $this);
+          Tholos::$logger->trace($this->headerContent, $this);
         }
         if ($this->getProperty('FooterContainerName') !== false) {
           $this->footerContent = Tholos::$app->cleanupRenderedHTML(Tholos::$app->render($this, Tholos::$app->findComponentIDByNameClassFromIndex($this->getProperty('FooterContainerName'), 'TContainer', Tholos::$app->action_id), true));
-          Tholos::$app->trace($this->footerContent, $this);
+          Tholos::$logger->trace($this->footerContent, $this);
         }
         
         $bodyContent = Tholos::$app->cleanupRenderedHTML(Tholos::$app->render($this, Tholos::$app->findComponentIDByNameClassFromIndex($this->getProperty('BodyContainerName'), 'TContainer', Tholos::$app->action_id), true));
@@ -68,13 +68,13 @@
           Tholos::$app->responsePDF->showWatermarkText = true;
         }
         
-        Tholos::$app->trace($bodyContent, $this);
+        Tholos::$logger->trace($bodyContent, $this);
         
         $this->generateProps();
         $this->generateEvents();
         
         if ($this->getProperty('CSSFile') !== false) {
-          Tholos::$app->trace('PDF with CSS: ' . $this->getProperty('CSSFile'), $this);
+          Tholos::$logger->trace('PDF with CSS: ' . $this->getProperty('CSSFile'), $this);
           $css = file_get_contents($this->getProperty('CSSFile'));
           Tholos::$app->responsePDF->WriteHTML($css, HTMLParserMode::HEADER_CSS);
         }
@@ -120,7 +120,7 @@
         }
         
       } catch (Exception $e) {
-        Eisodos::$logger->writeErrorLog($e);
+        Tholos::$app->writeErrorLog($e);
         header('X-Tholos-Error-Code: -1');
         header('X-Tholos-Error-Message: ' . $e->getMessage());
         header('X-Tholos-Error-Message-B64: ' . base64_encode($e->getMessage()));

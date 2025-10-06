@@ -18,12 +18,12 @@
      * @throws Throwable
      */
     public function init(): void {
-      Tholos::$app->trace('BEGIN', $this);
-      Tholos::$app->trace('(' . $this->_componentType . ') (ID ' . $this->_id . ')', $this);
+      Tholos::$logger->trace('BEGIN', $this);
+      Tholos::$logger->trace('(' . $this->_componentType . ') (ID ' . $this->_id . ')', $this);
       
       parent::init();
       
-      Tholos::$app->trace('END', $this);
+      Tholos::$logger->trace('END', $this);
     }
     
     /**
@@ -31,7 +31,7 @@
      * @return array
      */
     public function buildFilters($sender): array {
-      Tholos::$app->trace('BEGIN', $this);
+      Tholos::$logger->trace('BEGIN', $this);
       
       $filter_array = [];
       foreach (array_merge(Tholos::$app->findChildIDsByType($this, 'TQueryFilterGroup'), Tholos::$app->findChildIDsByType($this, 'TQueryFilter')) as $filterID) {
@@ -45,13 +45,14 @@
           if ($filter_SQL !== '') {
             $filter_array[$filter->getProperty('FilterGroupParameter', ':filter')] = Eisodos::$utils->safe_array_value($filter_array, $filter->getProperty('FilterGroupParameter', ':filter')) . 'AND ' . $filter_SQL . " \n";
           }
-        } catch (Throwable) {
+        } catch (Throwable $e) {
+        Tholos::$logger->error('TQuery filter error: ' . $e->getMessage(), $this);
           $this->setProperty('FilterError', 'true');
           $filter_array = [];
         }
       }
       
-      Tholos::$app->trace('END', $this);
+      Tholos::$logger->trace('END', $this);
       
       return $filter_array;
     }
@@ -84,7 +85,7 @@
       
       if ($nativeSQL !== '' || $this->getProperty('sql', '') !== '') {
         
-        Tholos::$app->trace('BEGIN', $this);
+        Tholos::$logger->trace('BEGIN', $this);
         
         // preparing sql
         $back = array();
@@ -96,8 +97,8 @@
         if ($this->getProperty('DisableQueryFilters', 'false') === 'false') {
           $this->setProperty('FilterArray', $this->buildFilters($sender));
         }
-        Tholos::$app->trace(print_r($this->getProperty('FilterArray', array()), true), $this);
-        Tholos::$app->trace("Additional filters: \n" . $this->getProperty('Filter', ''), $this);
+        Tholos::$logger->trace(print_r($this->getProperty('FilterArray', array()), true), $this);
+        Tholos::$logger->trace("Additional filters: \n" . $this->getProperty('Filter', ''), $this);
         
         $filter_array = $this->getProperty('FilterArray', array());
         if ($filter_array && count($filter_array) > 0) {
@@ -111,8 +112,8 @@
         $sql = str_replace(':filter', $this->getProperty('filter', ''), $sql);
         
         if ($this->getProperty('FilterError', 'false') === 'true') {
-          Tholos::$app->error('Missing required filter', $this);
-          Tholos::$app->trace('END', $this);
+          Tholos::$logger->error('Missing required filter', $this);
+          Tholos::$logger->trace('END', $this);
           
           return;
         }
@@ -131,7 +132,7 @@
             || $this->getProperty('CacheRefresh', 'false') === 'true') {
             if ($this->getProperty('CountTotalRows', 'false') === 'true' &&
               $this->getProperty('TotalRowCountField', '') === '') {
-              Tholos::$app->trace('Counting rows started', $this);
+              Tholos::$logger->trace('Counting rows started', $this);
               $this->openDatabase(true);
               $this->setProperty('TotalRowCount',
                 Eisodos::$dbConnectors->connector($this->getProperty('DatabaseIndex'))->query(
@@ -139,7 +140,7 @@
                   'select count(1) from (' . $sql . ') q'
                 )
               );
-              Tholos::$app->trace('Counting rows finished', $this);
+              Tholos::$logger->trace('Counting rows finished', $this);
             }
           }
           
@@ -173,17 +174,17 @@
           }
           
           $this->setProperty('PreparedSQL', $sql);
-          Tholos::$app->debug('Prepared SQL:' . PHP_EOL . $sql, $this);
+          Tholos::$logger->debug('Prepared SQL:' . PHP_EOL . $sql, $this);
         } else {
-          Tholos::$app->debug('DataProxy is active' . PHP_EOL . $sql, $this);
+          Tholos::$logger->debug('DataProxy is active' . PHP_EOL . $sql, $this);
         }
         
         if ($this->getProperty('DynamicMode', 'false') === 'true') {
-          Tholos::$app->debug('Entering Dynamic mode', $this);
+          Tholos::$logger->debug('Entering Dynamic mode', $this);
           $this->setProperty('SQL', Eisodos::$dbConnectors->connector($this->getProperty('DatabaseIndex'))->query(RT_FIRST_ROW_FIRST_COLUMN, $sql));
           $this->setProperty('DynamicMode', 'false');
-          Tholos::$app->debug('Leaving Dynamic mode', $this);
-          Tholos::$app->trace('END', $this);
+          Tholos::$logger->debug('Leaving Dynamic mode', $this);
+          Tholos::$logger->trace('END', $this);
           $this->open($sender);
         } else {
           
@@ -249,7 +250,7 @@
               $n_ = strtolower($this->getProperty('Name'));
               foreach ($this->getPropertyNames() as $key) {
                 if (array_key_exists($n_ . '>' . $key, $a_)) {
-                  Tholos::$app->trace('Setting property <' . $key . '> to ' . Eisodos::$utils->safe_array_value($a_, $n_ . '>' . $key) . ' by proxy response', $this);
+                  Tholos::$logger->trace('Setting property <' . $key . '> to ' . Eisodos::$utils->safe_array_value($a_, $n_ . '>' . $key) . ' by proxy response', $this);
                   if ($this->getPropertyType($key) === 'ARRAY') {
                     $this->setProperty($key, json_decode(Eisodos::$utils->safe_array_value($a_, $n_ . '>' . $key), true, 512, JSON_THROW_ON_ERROR));
                   } else {
@@ -258,7 +259,7 @@
                 }
               }
             } catch (Exception $e) {
-              Tholos::$app->error($e->getMessage(), $this);
+              Tholos::$logger->error($e->getMessage(), $this);
               $cacheResult = [];
               $this->setProperty('DisableQueryFilters', 'false');
             }
@@ -307,7 +308,7 @@
             }
             
             if (!is_array($cacheResult)) {
-              Tholos::$app->debug("SQL query opening", $this);
+              Tholos::$logger->debug("SQL query opening", $this);
               $this->openDatabase(true);
               try {
                 Eisodos::$dbConnectors->connector($this->getProperty('DatabaseIndex'))->query(
@@ -316,7 +317,7 @@
                   $back);
                 
                 if ($this->getProperty('StructureInfoOnly', 'false') == 'true') {
-                  Tholos::$app->debug('Structure written to cache for grid', $this);
+                  Tholos::$logger->debug('Structure written to cache for grid', $this);
                   Tholos::$app->writeCache('Private',
                     $this->getProperty("CacheID") . '.StructureOnly.' . $this->getProperty('StructureRequester', ''),
                     $back,
@@ -328,12 +329,12 @@
                 }
                 
               } catch (Exception $e) {
-                Eisodos::$logger->writeErrorLog($e);
+                Tholos::$app->writeErrorLog($e);
                 Tholos::$app->eventHandler($this, "onError");
                 throw $e;
               }
             } else {
-              Tholos::$app->debug('Structure read from cache for grid', $this);
+              Tholos::$logger->debug('Structure read from cache for grid', $this);
             }
             
           } else if (is_array($cacheResult)) {
@@ -344,20 +345,20 @@
           }
           
           // reseting structure info cache property to its default for parallel usage
-          Tholos::$app->debug('Resetting structure info cache', $this);
+          Tholos::$logger->debug('Resetting structure info cache', $this);
           $this->setProperty('StructureInfoOnly', 'false');
           $this->setProperty('StructureRequester', '');
           
           Tholos::$app->eventHandler($this, "onSuccess");
           
-          Tholos::$app->debug('SQL query has finished', $this);
+          Tholos::$logger->debug('SQL query has finished', $this);
           
           if ($this->getProperty('CacheMode') !== 'ReadOnly'
             && $this->getProperty('Caching', 'Disabled') !== 'Disabled'
             && ($this->getProperty('CacheRefresh', 'false') === 'true'
               || Eisodos::$parameterHandler->eq('TholosCacheAction', 'refresh'))
           ) {
-            Tholos::$app->debug('Caching Query', $this);
+            Tholos::$logger->debug('Caching Query', $this);
             if ($cacheFilterID = $this->getPropertyComponentId('CachePartitionFilter')) {
               $cachePartitionValue = Tholos::$app->findComponentByID($cacheFilterID)->getProperty('Value');
             } else {
@@ -401,7 +402,7 @@
           $this->setProperty('ResultType', 'ARRAY');
           $this->setProperty('RowCount', count($back));
           
-          Tholos::$app->trace('END', $this);
+          Tholos::$logger->trace('END', $this);
         }
         
       }
@@ -415,9 +416,9 @@
       
       if ($this->getProperty('AutoOpenAllowed', 'true') === 'true' &&
         count(Tholos::$app->findChildIDsByType($this, 'TDBfield')) > 0) {  // csak akkor nyiljon meg a query, ha vannak benne dbfield-ek (kulonben valoszinuleg lov)
-        Tholos::$app->trace('BEGIN', $this);
+        Tholos::$logger->trace('BEGIN', $this);
         $this->run(NULL);
-        Tholos::$app->trace('END', $this);
+        Tholos::$logger->trace('END', $this);
       }
       
     }

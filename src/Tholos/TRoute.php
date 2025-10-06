@@ -37,7 +37,7 @@
       
       if ($this->getProperty('PersistentSession', 'true') == 'false') {
         Eisodos::$parameterHandler->setParam('DestroySessionOnFinish', 'T');
-        Tholos::$app->debug('This is not a persistent session');
+        Tholos::$logger->debug('This is not a persistent session');
       }
       
     }

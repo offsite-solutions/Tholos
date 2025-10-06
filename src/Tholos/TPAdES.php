@@ -37,10 +37,10 @@
      */
     public function signPDF(?TComponent $sender, bool $returnIfDisabled = true): bool {
       
-      Tholos::$app->trace('BEGIN', $this);
+      Tholos::$logger->trace('BEGIN', $this);
       
       if ($this->getProperty('Enabled', 'true') !== 'true') {
-        Tholos::$app->debug('signPDF is disabled, output is unsigned!', $this);
+        Tholos::$logger->debug('signPDF is disabled, output is unsigned!', $this);
         $this->OutputPDF = $this->InputPDF;
         
         return $returnIfDisabled;
@@ -50,15 +50,15 @@
       try {
         Tholos::$app->eventHandler($this, 'onSignPDF');
         Tholos::$app->eventHandler($this, 'onSuccess');
-        Tholos::$app->trace('END', $this);
+        Tholos::$logger->trace('END', $this);
         
         return true;
       } catch (Exception $e) {
-        Tholos::$app->error($e->getMessage(), $this);
+        Tholos::$logger->error($e->getMessage(), $this);
         if (!Tholos::$app->eventHandler($this, 'onError')) {
           throw $e;
         }
-        Tholos::$app->trace('END', $this);
+        Tholos::$logger->trace('END', $this);
         
         return false;
       }

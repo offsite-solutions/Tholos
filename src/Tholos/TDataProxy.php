@@ -90,7 +90,7 @@
           }
         }
         
-        Tholos::$app->trace(print_r($data, true));
+        Tholos::$logger->trace(print_r($data, true));
         
         // creating http header info
         $options = array(
@@ -107,17 +107,17 @@
         $context = stream_context_create($options);
         $url = $this->getProperty('URL') . Tholos::$app->getComponentRouteActionFromIndex($sender->_id);
         
-        Tholos::$app->trace('Proxy URL: ' . $url, $this);
-        Tholos::$app->trace('Proxy parameters: ' . print_r($data, true), $this);
+        Tholos::$logger->trace('Proxy URL: ' . $url, $this);
+        Tholos::$logger->trace('Proxy parameters: ' . print_r($data, true), $this);
         
         $result = file_get_contents($url, false, $context);
         if ($result === false) {
           throw new RuntimeException('False result');
         }
         
-        Tholos::$app->trace($result);
+        Tholos::$logger->trace($result);
         $header = $this->parseHeaders($http_response_header);
-        Tholos::$app->trace(print_r($header, true), $this);
+        Tholos::$logger->trace(print_r($header, true), $this);
         
         if (array_key_exists('Location', $header)) {
           Eisodos::$parameterHandler->setParam('REDIRECT', $header['Location']);
@@ -135,8 +135,8 @@
         };
         
       } catch (Exception $e) {
-        Tholos::$app->error($e->getMessage(), $this);
-        Eisodos::$logger->writeErrorLog($e);
+        Tholos::$logger->error($e->getMessage(), $this);
+        Tholos::$app->writeErrorLog($e);
         throw new RuntimeException('DataProxy call is invalid!');
       }
       

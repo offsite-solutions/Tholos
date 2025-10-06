@@ -1,0 +1,8 @@
+## <FUNC%
+## ## _function_name=Tholos\TholosCallback::_cases
+## param=prop_mapsourcetype
+## Markers=$prop_name:"markers",
+## Polylines=$prop_name:"polylines",
+## Polygons=$prop_name:"polygons",
+## %FUNC>
+$prop_name:[],

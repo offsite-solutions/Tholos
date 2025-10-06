@@ -17,6 +17,7 @@
   namespace Tholos;
   
   use DateTime;
+  use Eisodos\Abstracts\Singleton;
   use Eisodos\Eisodos;
   use Exception;
   use JsonException;
@@ -38,7 +39,7 @@
    * @see TComponent
    * @package Tholos
    */
-  class TholosApplication {
+  final class TholosApplication extends Singleton {
     
     /**
      * Component definitions loaded from .tcd files created by Tholos Builder Compiler.
@@ -83,14 +84,14 @@
     public TRoleManager $roleManager;
     
     /**
-     * @var int ID of the current TRoute component being processed. Component's name is received in tholos_route parameter. (mandatory)
+     * @var int|null ID of the current TRoute component being processed. Component's name is received in tholos_route parameter. (mandatory)
      */
-    public int $route_id;
+    public int|null $route_id = NULL;
     
     /**
      * @var int ID of the current TAction or TDataprovider component being processed. Component's name is received in tholos_action parameter. (mandatory, default is 'index')
      */
-    public int $action_id;
+    public int|null $action_id = NULL;
     
     /**
      * @var int ID of the partially addressed component
@@ -220,24 +221,9 @@
     protected array $footItems = [];
     
     /**
-     * @var string Current debug level of the application configured by the `Tholos.debugLevel` parameter of the application.
-     */
-    private string $debugLevel = '';
-    
-    /**
-     * @var string If set, debug information will be written to a file
-     */
-    private string $debugToFile = '';
-    
-    /**
      * @var array Foot items in the generated page
      */
     private array $FootItems;
-    
-    /**
-     * @var int
-     */
-    private int $traceStep = 0;
     
     /** @var bool EnableComponentPropertyCache */
     public bool $EnableComponentPropertyCache = true;
@@ -245,119 +231,20 @@
     /** @var ?object CacheServer connection */
     private ?object $cacheServer;
     
-    /**
-     * General logger function
-     *
-     * @param string $text_ Message to be displayed in the log message
-     * @param string $debugLevel_ Message debug level, defaults to `debug`
-     * @param ?Object|null $sender_ Sender object
-     * @internal param null|TComponent $sender Sender object. When specified debug will display the name of the sender object. Defaults to `null`.
-     */
-    private function log(string $text_, string $debugLevel_ = 'debug', ?object $sender_ = NULL): void {
-      
-      $d = explode(',', $this->debugLevel);
-      
-      if (in_array('trace', $d, false)
-        || in_array($debugLevel_, $d, false)) {
-        
-        $dbt = debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 3);
-        
-        if (array_key_exists(2, $dbt)) {
-          $functionName = Eisodos::$utils->safe_array_value($dbt[2], 'function');
-          $className = Eisodos::$utils->safe_array_value($dbt[2], 'class');
-        } else {
-          $functionName = '';
-          $className = '';
-        }
-        
-        $now = DateTime::createFromFormat('U.u', number_format(microtime(true), 6, '.', ''));
-        
-        $debugText = str_pad('[' . $now->format('Y-m-d H:i:s.u') . '] [' . mb_strtoupper($debugLevel_) . '] [' .
-            (method_exists($sender_, 'getProperty') ? $sender_->getProperty('Name') . ' - ' : '') . $className . ']' .
-            ($functionName === '' ? '' : ' [' . $functionName . ']')
-            , 100) . '|' . str_repeat(' ', ($text_ === 'BEGIN' ? (2 * $this->traceStep++) : ($text_ === 'END' ? (2 * --$this->traceStep) : 2 * $this->traceStep))) . $text_;
-        
-        Eisodos::$logger->debug($debugText);
-        
-        if ($this->debugToFile !== '') {
-          $file = fopen($this->debugToFile, 'ab');
-          fwrite($file, $debugText . "\n");
-          fclose($file);
-        }
-        
-      }
-    }
-    
-    /**
-     * Log a critical message
-     *
-     * @param string $text_ Message to be displayed in the log message
-     * @param Object|null $sender_ Sender object. When specified debug will display the name of the sender object. Defaults to `null`.
-     */
-    public function critical(string $text_, ?object $sender_ = NULL): void {
-      $this->log($text_, 'critical', $sender_);
-    }
-    
-    /**
-     * Log an error message
-     *
-     * @param string $text_ Message to be displayed in the log message
-     * @param Object|null $sender_ Sender object. When specified debug will display the name of the sender object. Defaults to `null`.
-     */
-    public function error(string $text_, ?object $sender_ = NULL): void {
-      $this->log($text_, 'error', $sender_);
-    }
-    
-    /**
-     * Log an info message
-     *
-     * @param string $text_ Message to be displayed in the log message
-     * @param Object|null $sender_ Sender object. When specified debug will display the name of the sender object. Defaults to `null`.
-     */
-    public function info(string $text_, ?object $sender_ = NULL): void {
-      $this->log($text_, 'info', $sender_);
-    }
-    
-    /**
-     * Log a warning message
-     *
-     * @param string $text_ Message to be displayed in the log message
-     * @param Object|null $sender_ Sender object. When specified debug will display the name of the sender object. Defaults to `null`.
-     */
-    public function warning(string $text_, ?object $sender_ = NULL): void {
-      $this->log($text_, 'warning', $sender_);
-    }
-    
-    /**
-     * Log a debug message
-     *
-     * @param string $text_ Message to be displayed in the log message
-     * @param Object|null $sender_ Sender object. When specified debug will display the name of the sender object. Defaults to `null`.
-     */
-    public function debug(string $text_, ?object $sender_ = NULL): void {
-      $this->log($text_, 'debug', $sender_);
-    }
-    
-    /**
-     * Log a trace message
-     *
-     * @param string $text_ Message to be displayed in the log message
-     * @param Object|null $sender_ Sender object. When specified debug will display the name of the sender object. Defaults to `null`.
-     */
-    public function trace(string $text_, ?object $sender_ = NULL): void {
-      $this->log($text_, 'trace', $sender_);
-    }
+    public TholosCallback $callback;
     
     // BEGIN Construct
     
-    private function writeAccessLog() {
+    private function writeAccessLog(): void {
       try {
         if (Eisodos::$parameterHandler->neq('Tholos.AccessLog', '')) {
           $line = Eisodos::$parameterHandler->getParam('Tholos.AccessLog.Format');
-          $line = Eisodos::$parameterHandler->replaceParamInString(str_replace('%', '$', $line));
+          $line = Eisodos::$templateEngine->replaceParamInString(str_replace('%', '$', $line));
           $file = fopen(Eisodos::$parameterHandler->getParam('Tholos.AccessLog'), 'ab+');
-          fwrite($file, $line . "\n");
-          fclose($file);
+          if ($file) {
+            fwrite($file, $line . "\n");
+            fclose($file);
+          }
         }
       } catch (Exception $e) {
       
@@ -369,11 +256,11 @@
      */
     public function generateSessionID(): void {
       Eisodos::$parameterHandler->setParam('Tholos_sessionID', uniqid(Eisodos::$parameterHandler->getParam('random'), true), true);
-      Tholos::$app->debug('Tholos_sessionID is ' . Eisodos::$parameterHandler->getParam('Tholos_sessionID'));
+      Tholos::$logger->debug('Tholos_sessionID is ' . Eisodos::$parameterHandler->getParam('Tholos_sessionID'));
     }
     
     /**
-     * Tholos application constructor
+     * Tholos application init
      *
      * Constructor is responsible for determining which route/action we are dealing with and instantiating
      * all components that are directly or indirectly involved in constructing the application. Directly
@@ -382,11 +269,11 @@
      *
      * @throws Throwable Throws exception when getting application configuration fails
      */
-    public function __construct() {
+    public function init(array $options_): void {
       
       try {
         
-        Tholos::$app = $this;
+        $this->callback = new TholosCallback();
         
         try {
           $time = DateTime::createFromFormat('U.u', number_format(microtime(true), 6, '.', ''));
@@ -419,14 +306,17 @@
         $this->BoolFalse = explode(',', strtolower(Eisodos::$parameterHandler->getParam('Tholos.BoolFalse')));
         $this->BoolTrue = explode(',', strtolower(Eisodos::$parameterHandler->getParam('Tholos.BoolTrue')));
         
-        $this->debugLevel = Eisodos::$parameterHandler->getParam('session_TholosDebugLevel', Eisodos::$parameterHandler->getParam('Tholos.debugLevel'));
-        $this->debugToFile = Eisodos::$parameterHandler->getParam('session_TholosDebugToFile', Eisodos::$parameterHandler->getParam('Tholos.debugToFile'));
-        $this->debugToFile = str_replace('SESSIONID', Eisodos::$parameterHandler->getParam('_sessionid'), $this->debugToFile);
-        $this->debugToFile = str_replace('TIME', date('YmdHis'), $this->debugToFile);
-        $this->debug('----- Start -----', $this);
+        Tholos::$logger->setDebugLevels(Eisodos::$parameterHandler->getParam('session_TholosDebugLevel', Eisodos::$parameterHandler->getParam('Tholos.debugLevel')));
+        $debugFileName = Eisodos::$parameterHandler->getParam('session_TholosDebugToFile', Eisodos::$parameterHandler->getParam('Tholos.debugToFile'));
+        $debugFileName = str_replace(array('SESSIONID', 'TIME'), array(Eisodos::$parameterHandler->getParam('_sessionid'), date('YmdHis')), $debugFileName);
+        Tholos::$logger->setDebugOutputs(
+          ['debugToFile' => $debugFileName,
+           'debugToUrl' => Eisodos::$parameterHandler->getParam('Tholos.debugToUrl'),
+          ]);
+        Tholos::$logger->debug('----- Start -----', $this);
         Eisodos::$parameterHandler->setParam('TholosJSDebugLevel', Eisodos::$parameterHandler->getParam('Tholos.JSDebugLevel'));
         
-        Tholos::$app->trace('BEGIN', $this);
+        Tholos::$logger->trace('BEGIN', $this);
         
         $this->componentDefinitions = array();
         include(Eisodos::$parameterHandler->getParam('Tholos.ApplicationCacheDir') . '_tholos.init');           // loading componentTypes, componentTypeIndex
@@ -434,28 +324,28 @@
         if (count($this->componentDefinitions) === 0) {
           throw new RuntimeException('Application is missing!');
         }
-        Tholos::$app->trace('Component definition loaded', $this);
+        Tholos::$logger->trace('Component definition loaded', $this);
         $i = 0;                                                                                 // create component order
         foreach ($this->componentDefinitions as $id => $comp) {
           $this->componentCreationOrder[$id] = $i++;
         }
-        Tholos::$app->trace('Component creation order generated', $this);
+        Tholos::$logger->trace('Component creation order generated', $this);
         
-        // Tholos::$app->trace(print_r($this->componentDefinitions,true),$this);
+        // Tholos::$logger->trace(print_r($this->componentDefinitions,true),$this);
         
         Eisodos::$parameterHandler->setParam('TholosComponentTypes', json_encode($this->componentTypes, JSON_THROW_ON_ERROR), true);                                     // $TholosComponentTypes is used in GUI (tholos_application.js)
         Eisodos::$parameterHandler->setParam('TholosApplicationInit', Eisodos::$templateEngine->getTemplate('tholos/application.jsinit', array(), false), true);  // application initiaclization javascript
         
         $this->application_id = $this->findComponentIDByTypeFromIndex('TApplication');                                                    // instantiating TApplication
         $this->instantiateComponent($this->application_id, false);
-        Tholos::$app->debug('TApplication (' . $this->application_id . ') instantiated', $this);
+        Tholos::$logger->debug('TApplication (' . $this->application_id . ') instantiated', $this);
         
         if ($this->findComponentIDByTypeFromIndex('TRoleManager', $this->application_id)) {                                                // Instantiating TRoleManager if exists
           $component = $this->instantiateComponent($this->findComponentIDByTypeFromIndex('TRoleManager', $this->application_id));
           if ($component) {
             $this->roleManager = $component;
           }
-          Tholos::$app->debug('TRoleManager instantiated', $this);
+          Tholos::$logger->debug('TRoleManager instantiated', $this);
         }
         
         $this->route_id = $this->findComponentIDByNameClassFromIndex(Eisodos::$parameterHandler->getParam('tholos_route', 'index'), 'TRoute');            // Finding corresponding TRoute component
@@ -467,17 +357,17 @@
           exit;
         }
         $this->instantiateComponent($this->route_id, false);
-        Tholos::$app->debug('TRoute (' . $this->route_id . ') instantiated', $this);
+        Tholos::$logger->debug('TRoute (' . $this->route_id . ') instantiated', $this);
         
         $this->action_id = $this->findComponentIDByNameClassFromIndex(Eisodos::$parameterHandler->getParam('tholos_action'), '*.TDataProvider', $this->route_id); // Finding corresponding TAction or TDataprovider component within TRoute
         if (!$this->action_id) {
           $this->action_id = $this->getActionId('TAction');
         }
         $this->instantiateComponent($this->action_id);                                                                              // Instantiating TAction component
-        Tholos::$app->debug('TAction (' . $this->action_id . ') instantiated', $this);
+        Tholos::$logger->debug('TAction (' . $this->action_id . ') instantiated', $this);
         
         // reorder by creation order
-        Tholos::$app->trace('Reordering components', $this);
+        Tholos::$logger->trace('Reordering components', $this);
         uksort($this->components, function ($cid1, $cid2) {
           return ($this->componentCreationOrder[$cid1] - $this->componentCreationOrder[$cid2]);
         });
@@ -499,20 +389,14 @@
         
         }
         
-        Tholos::$app->trace('END', $this);
+        Tholos::$logger->trace('END', $this);
         
       } catch (Exception $e) {
-        Tholos::$app->trace('ERROR', $this);
-        Eisodos::$logger->writeErrorLog($e);
-        Tholos::$app->trace('END', $this);
+        Tholos::$logger->trace('ERROR', $this);
+        Tholos::$logger->writeErrorLog($e);
+        Tholos::$logger->trace('END', $this);
         throw $e;
       }
-    }
-    
-    /**
-     * Destructor
-     */
-    public function __destruct() {
     }
     
     /**
@@ -530,14 +414,14 @@
       
       if (!array_key_exists($componentID_, $this->componentDefinitions)) {
         
-        Tholos::$app->trace('BEGIN');
-        Tholos::$app->trace('ID: ' . $componentID_ . ' - ' . $this->componentIndex[$componentID_]['c'], $this);
+        Tholos::$logger->trace('BEGIN');
+        Tholos::$logger->trace('ID: ' . $componentID_ . ' - ' . $this->componentIndex[$componentID_]['c'], $this);
         require Eisodos::$parameterHandler->getParam('Tholos.ApplicationCacheDir') . $this->componentIndex[$componentID_]['c'] . '.tcd';
         $i = 0;
         foreach ($this->componentDefinitions as $id => $comp) {
           $this->componentCreationOrder[$id] = $i++;
         }
-        Tholos::$app->trace('END', $this);
+        Tholos::$logger->trace('END', $this);
         
       }
     }
@@ -577,7 +461,7 @@
         return $this->components[$componentID_]['object'];
       }
       
-      Tholos::$app->trace($this->componentDefinitions[$componentID_]['o'], $this);
+      Tholos::$logger->trace($this->componentDefinitions[$componentID_]['o'], $this);
       
       $component = $this->componentDefinitions[$componentID_];
       
@@ -628,7 +512,7 @@
     private function getActionId(string $rootType): bool|string {
       
       try {
-        Tholos::$app->trace('BEGIN', $this);
+        Tholos::$logger->trace('BEGIN', $this);
         
         $action_id = $this->findComponentIDByNameClassFromIndex(Eisodos::$parameterHandler->getParam('tholos_action'), 'TAction', $this->route_id);
         if (!$action_id && $rootType === 'TAction') {
@@ -638,14 +522,14 @@
         if (!$action_id) {
           throw new RuntimeException('No Tholos Action object found!');
         }
-        Tholos::$app->trace('Action ID: ' . $action_id, $this);
-        Tholos::$app->trace('END', $this);
+        Tholos::$logger->trace('Action ID: ' . $action_id, $this);
+        Tholos::$logger->trace('END', $this);
         
         return $action_id;
       } catch (Exception $e) {
-        Tholos::$app->trace('ERROR', $this);
-        Eisodos::$logger->writeErrorLog($e);
-        Tholos::$app->trace('END', $this);
+        Tholos::$logger->trace('ERROR', $this);
+        Tholos::$logger->writeErrorLog($e);
+        Tholos::$logger->trace('END', $this);
         throw $e;
       }
     }
@@ -716,10 +600,10 @@
     /**
      * Get a component object by ID
      *
-     * @param integer $id_ Component ID of the object to find
+     * @param int|string $id_ Component ID of the object to find
      * @return TComponent|null Component object
      */
-    public function findComponentByID(int $id_): ?TComponent {
+    public function findComponentByID(int|string $id_): ?TComponent {
       if ((string)$id_ !== '') {
         return @$this->components[$id_]['object'];
       }
@@ -925,7 +809,7 @@
      * their `init()` method.
      *
      */
-    public function init(): void {
+    public function initComponents(): void {
       
       foreach ($this->components as $component_id => $component) {
         $this->components[$component_id]['object']->init();
@@ -962,8 +846,7 @@
      * @throws Exception
      */
     public function checkRole(TComponent $sender_, bool $throwException_ = false, bool $rootLevel_ = false): bool {
-      
-      if (isset($this->roleManager)) {
+      if (!isset($this->roleManager)) {
         return true;
       }
       $functionCode = $sender_->getProperty('FunctionCode', '');
@@ -972,7 +855,7 @@
       }
       $ret = $this->roleManager->checkRole($functionCode, $throwException_, $rootLevel_);
       if (!$ret) {
-        Tholos::$app->trace('checkRole() returned with false. FunctionCode: ' . $functionCode);
+        Tholos::$logger->trace('checkRole() returned with false. FunctionCode: ' . $functionCode);
       }
       
       return $ret;
@@ -1054,12 +937,12 @@
     public function render(?object $sender_, int $component_id_, bool $childOnly_ = false): string {
       
       try {
-        Tholos::$app->trace('BEGIN', $this);
-        Tholos::$app->trace('Component ID = ' . $component_id_, $this);
+        Tholos::$logger->trace('BEGIN', $this);
+        Tholos::$logger->trace('Component ID = ' . $component_id_, $this);
         
         $renderThis = $this->findComponentByID($component_id_);
         if ($renderThis->selfRenderer) {
-          Tholos::$app->trace('END', $this);
+          Tholos::$logger->trace('END', $this);
           
           return $renderThis->render($sender_, '');
         }
@@ -1077,21 +960,21 @@
           Eisodos::$templateEngine->getTemplate('tholos/' . $this->components[$component_id_]['object']->getComponentType() . '.foot.head', array(), false))));
         
         if ($childOnly_) {
-          Tholos::$app->trace('END', $this);
+          Tholos::$logger->trace('END', $this);
           
           return $content;
         }
         
         $return = $this->components[$component_id_]['object']->render($sender_, $content);
-        Tholos::$app->trace('Component ID = ' . $component_id_, $this);
-        Tholos::$app->trace('END', $this);
+        Tholos::$logger->trace('Component ID = ' . $component_id_, $this);
+        Tholos::$logger->trace('END', $this);
         
         return $return;
         
       } catch (Exception $e) {
-        Tholos::$app->trace('ERROR', $this);
-        Eisodos::$logger->writeErrorLog($e);
-        Tholos::$app->trace('END', $this);
+        Tholos::$logger->trace('ERROR', $this);
+        Tholos::$logger->writeErrorLog($e);
+        Tholos::$logger->trace('END', $this);
         throw $e;
       }
     }
@@ -1101,7 +984,7 @@
      * @return string
      */
     public function cleanupRenderedHTML(string $response_): string {
-      Tholos::$app->debug('HTML Code cleanup');
+      Tholos::$logger->debug('HTML Code cleanup');
       $result = '';
       foreach (explode("\n", $response_) as $line) {
         if (trim($line) !== '</>') {
@@ -1122,30 +1005,26 @@
      * @param TComponent $sender_ Sender Object
      * @param string $eventName_ Name of the event
      * @param mixed $notFound_
-     * @return bool Returns the return of the handled event or false
+     * @return mixed Returns the return of the handled event or false
      */
-    public function eventHandler(TComponent $sender_, string $eventName_, mixed $notFound_ = false): bool {
+    public function eventHandler(TComponent $sender_, string $eventName_, mixed $notFound_ = false): mixed {
       try {
-      $event = $sender_->getEvent($eventName_);
-      if (!$event) {
-        return $notFound_;
-      }
-      $eventParams = explode('.', $event);
-      $class = Tholos::$app->findComponentByID($this->application_id)->getProperty('Name', '') . "\\" . $eventParams[0];
-      if (class_exists($class)) {
-        $evt = call_user_func(array($class, 'getInstance'));
-        if (method_exists($evt, $eventParams[1])) {
-          return $evt->{$eventParams[1]}($sender_);
-          // return call_user_func(array($evt, $eventParams[1]), $sender_);
+        $event = $sender_->getEvent($eventName_);
+        if (!$event) {
+          return $notFound_;
         }
-        
-        return $notFound_;
-      }
-      
-      return $notFound_;
+        $eventParams = explode('.', $event);
+        $class = Tholos::$app->findComponentByID($this->application_id)->getProperty('Name', '') . "\\" . $eventParams[0];
+        if (class_exists($class)) {
+          $evt = call_user_func(array($class, 'getInstance'));
+          if (method_exists($evt, $eventParams[1])) {
+            return $evt->{$eventParams[1]}($sender_);
+          }
+        }
       } catch (Exception $e) {
-        Eisodos::$logger->writeErrorLog($e);
+        Tholos::$logger->writeErrorLog($e);
       }
+      return $notFound_;
     }
     
     //
@@ -1163,11 +1042,11 @@
     public function run(): void {
       
       try {
-        Tholos::$app->debug('BEGIN');
+        Tholos::$logger->debug('BEGIN');
         
-        Tholos::$app->debug('Component initialization phase');
+        Tholos::$logger->debug('Component initialization phase');
         
-        $this->init();
+        $this->initComponents();
         
         if (Eisodos::$parameterHandler->getParam('Tholos.CSPEnabled', 'false') == "true") {
           header("Content-Security-Policy: script-src 'self' 'nonce-" . Eisodos::$parameterHandler->getParam('Tholos.Nonce') . "' " . Eisodos::$parameterHandler->getParam('Tholos.CSPJavascriptHosts', '') . ';' .
@@ -1184,20 +1063,20 @@
           
         } else {
           
-          Tholos::$app->debug('Auto opening dataproviders');
+          Tholos::$logger->debug('Auto opening dataproviders');
           
           $this->autoOpen();
           
           if (isset($this->renderer)) {
-            Tholos::$app->debug('Render phase started', $this->renderer);
+            Tholos::$logger->debug('Render phase started', $this->renderer);
             $response_ = $this->render(NULL, $this->renderer->getId());
-            Tholos::$app->debug('Render phase finished');
+            Tholos::$logger->debug('Render phase finished');
           } else if (Eisodos::$parameterHandler->eq('tholos_partial', '')) {
-            Tholos::$app->debug('Render phase started');
+            Tholos::$logger->debug('Render phase started');
             $response_ = $this->render(NULL, $this->action_id);
-            Tholos::$app->debug('Render phase finished');
+            Tholos::$logger->debug('Render phase finished');
           } else {
-            Tholos::$app->debug('Partial render phase started');
+            Tholos::$logger->debug('Partial render phase started');
             if (Eisodos::$parameterHandler->eq('responseType', '')) {
               Eisodos::$parameterHandler->setParam('responseType', 'JSON');
             }
@@ -1212,7 +1091,7 @@
               }
             }
             $response_ = implode("\n", Tholos::$app->getHeadItems()) . $response_ . implode("\n", Tholos::$app->getFootItems());
-            Tholos::$app->debug('Partial render phase finished');
+            Tholos::$logger->debug('Partial render phase finished');
           }
           
           if (Eisodos::$parameterHandler->neq('REDIRECT', '')) {
@@ -1237,7 +1116,7 @@
                 Tholos::$app->responseARRAY['callback'] = '{}';
               }
               Eisodos::$templateEngine->addToResponse(json_encode($this->responseARRAY, JSON_THROW_ON_ERROR));
-              Tholos::$app->trace('END', $this);
+              Tholos::$logger->trace('END', $this);
               Eisodos::$render->finishRaw(true); // save session variables
             } elseif (Eisodos::$parameterHandler->eq('responseType', 'PROXY')) {
               header('Content-type: application/json');
@@ -1250,43 +1129,43 @@
                 Tholos::$app->responseARRAY['callback'] = '{}';
               }
               Eisodos::$templateEngine->addToResponse(json_encode($this->responseARRAY, JSON_THROW_ON_ERROR));
-              Tholos::$app->trace('END', $this);
+              Tholos::$logger->trace('END', $this);
               Eisodos::$render->finishRaw(true); // save session variables
             } elseif (($this->responseType === 'JSONDATA' && Eisodos::$parameterHandler->eq('responseType', ''))
               || Eisodos::$parameterHandler->eq('responseType', 'JSONDATA')) {
               header('Content-type: application/json');
               Eisodos::$render->Response = '';
               Eisodos::$templateEngine->addToResponse($this->responseARRAY['data']);
-              Tholos::$app->trace('END', $this);
+              Tholos::$logger->trace('END', $this);
               Eisodos::$render->finishRaw(true); // save session variables
             } elseif (($this->responseType === 'XML' && Eisodos::$parameterHandler->eq('responseType', ''))
               || Eisodos::$parameterHandler->eq('responseType', 'XML')) {
               header('Content-type: application/xml');
               Eisodos::$render->Response = '';
               Eisodos::$templateEngine->addToResponse($this->responseARRAY['data']);
-              Tholos::$app->trace('END', $this);
+              Tholos::$logger->trace('END', $this);
               Eisodos::$render->finishRaw(true); // save session variables
             } elseif (($this->responseType === 'PLAINTEXT' && Eisodos::$parameterHandler->eq('responseType', ''))
               || Eisodos::$parameterHandler->eq('responseType', 'PLAINTEXT')) {
               header('Content-type: text/plain');
               Eisodos::$render->Response = '';
               Eisodos::$templateEngine->addToResponse($this->responseARRAY['data']);
-              Tholos::$app->trace('END', $this);
+              Tholos::$logger->trace('END', $this);
               Eisodos::$render->finishRaw(true, true); // save session variables and create language tags
             } elseif (($this->responseType === 'PDF' && Eisodos::$parameterHandler->eq('responseType', ''))
               || Eisodos::$parameterHandler->eq('responseType', 'PDF')) {
               header('Content-type: application/pdf');
               Eisodos::$render->Response = '';
               $this->responsePDF->Output();
-              Tholos::$app->trace('END', $this);
+              Tholos::$logger->trace('END', $this);
               Eisodos::$render->finishRaw(true, true); // save session variables and create language tags
             } else {
               Eisodos::$templateEngine->addToResponse($this->response);
-              Tholos::$app->trace('END');
+              Tholos::$logger->trace('END');
               Eisodos::$render->finish();
             }
           } elseif ($this->responseType !== 'BINARY') {
-            Tholos::$app->trace('END');
+            Tholos::$logger->trace('END');
             Eisodos::$render->finishRaw(true, Eisodos::$parameterHandler->eq('Tholos.WriteLanguageFile', 'T'));
           }
         }
@@ -1302,7 +1181,7 @@
         }
         $this->writeAccessLog();
       } catch (Exception $e) {
-        Eisodos::$logger->writeErrorLog($e);
+        Tholos::$logger->writeErrorLog($e);
         throw $e;
       }
     }
@@ -1324,7 +1203,7 @@
         $this->cacheServer->connect(Eisodos::$parameterHandler->getParam('Tholos.CacheServer', 'localhost'),
           1 * Eisodos::$parameterHandler->getParam('Tholos.CachePort', '6379'),
           1.0 * Eisodos::$parameterHandler->getParam('Tholos.CacheTimeout', '0.0'));
-        Tholos::$app->trace('Redis cache connected');
+        Tholos::$logger->trace('Redis cache connected');
       }
     }
     
@@ -1333,7 +1212,7 @@
       if (isset($this->cacheServer) && Eisodos::$parameterHandler->eq('Tholos.CacheMethod', 'redis')) {
         $this->cacheServer->close();
         unset($this->cacheServer);
-        Tholos::$app->trace('Redis cache disconnected');
+        Tholos::$logger->trace('Redis cache disconnected');
       }
     }
     
@@ -1373,7 +1252,7 @@
             if ($partition_ === $indexRow['partition']) {
               if ($indexRow['validity'] !== ''
                 && $indexRow['validity'] < $currentTime) {
-                Tholos::$app->debug($cacheID_ . ($partition_ !== '' ? '@' . $partition_ : '') . ' cache is expired');
+                Tholos::$logger->debug($cacheID_ . ($partition_ !== '' ? '@' . $partition_ : '') . ' cache is expired');
                 $sender->setProperty('CacheUsed', 'false');
                 $sender->setProperty('CacheRefresh', 'true');
                 
@@ -1384,7 +1263,7 @@
                 && $sql_ !== ''
                 && $indexRow['sql'] !== $sql_
                 && $sqlConflictMode_ !== 'ReadCache') {
-                Tholos::$app->debug($cacheID_ . ($partition_ !== '' ? '@' . $partition_ : '') . ' SQL changed, cache not used');
+                Tholos::$logger->debug($cacheID_ . ($partition_ !== '' ? '@' . $partition_ : '') . ' SQL changed, cache not used');
                 $sender->setProperty('CacheUsed', 'false');
                 $sender->setProperty('CacheRefresh', ($sender->getProperty('CacheSQLConflict', 'DisableCaching') === 'RewriteCache') ? 'true' : 'false');
                 
@@ -1409,7 +1288,7 @@
           $content_ = fread($file, $filesize);
           fclose($file);
         } else {
-          Tholos::$app->debug($cacheID_ . ($partition_ !== '' ? '@' . $partition_ : '') . ' cache not exists');
+          Tholos::$logger->debug($cacheID_ . ($partition_ !== '' ? '@' . $partition_ : '') . ' cache not exists');
           $content_ = 'NULL';
           $sender->setProperty('CacheUsed', 'false');
           $sender->setProperty('CacheRefresh', 'true');
@@ -1437,7 +1316,7 @@
             if ($partition_ === $indexRow['partition']) {
               if ($indexRow['validity'] !== ''
                 && $indexRow['validity'] < $currentTime) {
-                Tholos::$app->debug($cacheID_ . ($partition_ !== '' ? '@' . $partition_ : '') . ' cache is expired');
+                Tholos::$logger->debug($cacheID_ . ($partition_ !== '' ? '@' . $partition_ : '') . ' cache is expired');
                 $sender->setProperty('CacheUsed', 'false');
                 $sender->setProperty('CacheRefresh', 'true');
                 
@@ -1448,7 +1327,7 @@
                 && $sql_ !== ''
                 && $indexRow['sql'] !== $sql_
                 && $sqlConflictMode_ !== 'ReadCache') {
-                Tholos::$app->debug($cacheID_ . ($partition_ !== '' ? '@' . $partition_ : '') . ' SQL changed, cache not used');
+                Tholos::$logger->debug($cacheID_ . ($partition_ !== '' ? '@' . $partition_ : '') . ' SQL changed, cache not used');
                 $sender->setProperty('CacheUsed', 'false');
                 $sender->setProperty('CacheRefresh', ($sender->getProperty('CacheSQLConflict', 'DisableCaching') === 'RewriteCache') ? 'true' : 'false');
                 
@@ -1472,7 +1351,7 @@
         $content_ = $this->cacheServer->get($filename);
         
         if (!$content_) {
-          Tholos::$app->debug($cacheID_ . ($partition_ !== '' ? '@' . $partition_ : '') . ' cache not exists');
+          Tholos::$logger->debug($cacheID_ . ($partition_ !== '' ? '@' . $partition_ : '') . ' cache not exists');
           $content_ = 'NULL';
           $sender->setProperty('CacheUsed', 'false');
           $sender->setProperty('CacheRefresh', 'true');
@@ -1483,7 +1362,7 @@
       } else if (Eisodos::$parameterHandler->getParam('Tholos.CacheMethod', 'file') === 'memory') {
         $content_ = Eisodos::$parameterHandler->getParam('Tholos.Cache.' . $cacheID_, 'NULL');
       } else {
-        Tholos::$app->error('No caching configured. Caching is disabled.');
+        Tholos::$logger->error('No caching configured. Caching is disabled.');
         $sender->setProperty('CacheUsed', 'false');
         
         return false;
@@ -1495,13 +1374,13 @@
           || $content_ === false) {
           throw new RuntimeException('');
         }
-        Tholos::$app->debug($cacheID_ . ' read from ' . Eisodos::$parameterHandler->getParam('Tholos.CacheMethod', 'file') . ' cache');
-        Tholos::$app->debug(print_r($sender->getProperty('CacheInfo', []), true));
+        Tholos::$logger->debug($cacheID_ . ' read from ' . Eisodos::$parameterHandler->getParam('Tholos.CacheMethod', 'file') . ' cache');
+        Tholos::$logger->debug(print_r($sender->getProperty('CacheInfo', []), true));
         $sender->setProperty('CacheUsed', 'true');
         
         return $content_;
       } catch (Exception) {
-        Tholos::$app->debug($cacheID_ . ' cache is invalid');
+        Tholos::$logger->debug($cacheID_ . ' cache is invalid');
         $sender->setProperty('CacheUsed', 'false');
         
         return false;
@@ -1520,8 +1399,8 @@
       $file = fopen($filename_, $mode_);
       if (flock($file, LOCK_EX)) {
         fwrite($file, $content_);
+        flock($file, LOCK_UN);
         fclose($file);
-        @flock($file, LOCK_UN);
         
         return true;
       }
@@ -1546,7 +1425,7 @@
         $lockLoop = 0;
         $maxLockLoop = 1 * Eisodos::$parameterHandler->getParam('Tholos.CacheLockLoop', '20');
         while (!($this->writeCacheFileLock($filename_, $content_, 'wb') or $lockLoop > $maxLockLoop)) {
-          Tholos::$app->trace('Cache waits for lock');
+          Tholos::$logger->trace('Cache waits for lock');
           usleep($lockWait);
           $lockLoop++;
         }
@@ -1582,7 +1461,7 @@
       $contents_ = array();
       
       if (!is_array($content_) && ($partitionedBy_ !== '')) {
-        Tholos::$app->error($cacheID_ . ' can not be partitioned by ' . $partitionedBy_);
+        Tholos::$logger->error($cacheID_ . ' can not be partitioned by ' . $partitionedBy_);
         
         return true;
       }
@@ -1597,7 +1476,7 @@
         if (!empty($content_)) {
           foreach ($content_ as $row) {
             if (!array_key_exists($partitionedBy_, $row)) {
-              Tholos::$app->error($partitionedBy_ . ' partition key not exists in the row');
+              Tholos::$logger->error($partitionedBy_ . ' partition key not exists in the row');
               
               return false;
             }
@@ -1692,16 +1571,16 @@
         
       } else if (Eisodos::$parameterHandler->getParam('Tholos.CacheMethod', 'file') === 'memory') {
         if ($cacheScope_ !== 'Private') {
-          Tholos::$app->error('In memory caching can not be set to global. Use memcached or file instead!');
+          Tholos::$logger->error('In memory caching can not be set to global. Use memcached or file instead!');
         }
         Eisodos::$parameterHandler->setParam('Tholos.Cache.' . $cacheID_, json_encode($content_, JSON_THROW_ON_ERROR), true);
       } else {
-        Tholos::$app->error('No caching configured. Caching is disabled.');
+        Tholos::$logger->error('No caching configured. Caching is disabled.');
         
         return false;
       }
       
-      Tholos::$app->debug($cacheID_ . ' cache written to ' . Eisodos::$parameterHandler->getParam('Tholos.CacheMethod', 'file'));
+      Tholos::$logger->debug($cacheID_ . ' cache written to ' . Eisodos::$parameterHandler->getParam('Tholos.CacheMethod', 'file'));
       
       return true;
     }

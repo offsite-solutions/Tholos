@@ -58,9 +58,9 @@
     protected int $_id;
     
     /**
-     * @var int parent component's ID
+     * @var int|null parent component's ID
      */
-    protected int $_parent_id;
+    protected int|null $_parent_id;
     
     /**
      * @var bool whether the component has been initialized in the past, as we only want to initialize components once
@@ -71,10 +71,10 @@
      * @var string contains rendered content
      */
     public string $renderedContent = '';
-  
-     /**
-      * @var bool this component handles calls its children render method
-      */
+    
+    /**
+     * @var bool this component handles calls its children render method
+     */
     public bool $selfRenderer = false;
     
     /**
@@ -82,12 +82,12 @@
      *
      * @param string $componentType_ component type name
      * @param int $id_ Component ID
-     * @param int $parent_id_ Parent ID
+     * @param int|null $parent_id_ Parent ID - in case off TApplication component it can be null
      * @param array $properties_ list of properties defined by the component
      * @param array $events_ list of events associated with the component
      * @throws Throwable
      */
-    public function __construct(string $componentType_, int $id_, int $parent_id_, array $properties_ = array(), array $events_ = array()) {
+    public function __construct(string $componentType_, int $id_, int|null $parent_id_, array $properties_ = array(), array $events_ = array()) {
       
       $this->_componentType = $componentType_;
       $this->_id = $id_;
@@ -363,12 +363,18 @@
         }
         $prop_type = $this->_properties[$propName]['type'];
         
-        if (Tholos::$app->EnableComponentPropertyCache && isset($this->_properties[$propName]['cached_value']) && $notFound_ === false) {
+        if (Tholos::$app->EnableComponentPropertyCache
+            && isset($this->_properties[$propName]['cached_value'])
+            && $notFound_ === false) {
           return $this->_properties[$propName]['cached_value'];
         }
         
         if ($prop_type === 'PARAMETER') {
-          $this->_properties[$propName]['cached_value'] = Eisodos::$parameterHandler->getParam($prop_value);
+          if ($prop_value === NULL) {
+            $this->_properties[$propName]['cached_value'] = '';
+          } else {
+            $this->_properties[$propName]['cached_value'] = Eisodos::$parameterHandler->getParam($prop_value);
+          }
           
           return $this->_properties[$propName]['cached_value'];
         }
@@ -390,11 +396,10 @@
           if ($prop_value === '@') {
             $prop_value = '';
           }
-          if ((isset($this->_properties[$propName]['raw']) && $this->_properties[$propName]['raw']) && $parse_===false) {
-            $returnValue=((@strlen($prop_value)==0)?$notFound_:$prop_value);
-          }
-          else {
-            $returnValue=$this->parsePropertyValue($prop_value,$notFound_);
+          if ((isset($this->_properties[$propName]['raw']) && $this->_properties[$propName]['raw']) && $parse_ === false) {
+            $returnValue = ((@strlen($prop_value) == 0) ? $notFound_ : $prop_value);
+          } else {
+            $returnValue = $this->parsePropertyValue($prop_value, $notFound_);
           }
           if ($returnValue === $prop_value && !str_contains($prop_value, '@')) {
             $this->_properties[$propName]['cached_value'] = $returnValue;
@@ -535,7 +540,7 @@
      */
     protected function generateDataValues(): string {
       
-      //Tholos::$app->debug('GD-Start',$this);
+      //Tholos::$logger->debug('GD-Start',$this);
       
       $self_route = Tholos::$app->getComponentRouteActionFromIndex($this->_id);
       
@@ -586,6 +591,9 @@
       
       foreach ($this->_properties as $key => $prop) {
         $v = $this->getProperty($key, '');
+        if (is_array($v)) {
+          continue;
+        }
         $prop_value = (str_starts_with($v, 'HTML::') ? str_replace('HTML::', '', $v) : str_replace('"', '&quot;', $v));
         Eisodos::$parameterHandler->setParam('prop_' . $key, $prop_value);
         if ($prop['type'] === 'COMPONENT' && $prop['component_id']) {
@@ -629,7 +637,7 @@
               "(typeof eventData !== 'undefined'?eventData:null)," .
               (trim($event['parameters']) === '' ? 'null' : trim($event['parameters']));
             
-            if (strpos($value, '(') >= 0) {
+            if (str_contains($value, '(')) {
               if (strpos($value, ')') > strpos($value, '(') + 1) { // a user ilyet adott meg jsfunc(valami)
                 $jsEvent = Eisodos::$utils->replace_all($value, '(', '(' . $generatedParameters . ',', false, false);
               } else { // a user ilyet adott meg jsfunc()
@@ -661,7 +669,7 @@
               $event['method_name'] . "','" .
               $target_route_action . "'," .
               "(typeof eventData !== 'undefined'?eventData:null)," . // feluletrol erkezo data - nem biztos, hogy letezik
-              (trim($event['parameters']) === '' ?'null':trim($event['parameters'])) . ");";
+              (trim($event['parameters']) === '' ? 'null' : trim($event['parameters'])) . ");";
           }
           Eisodos::$parameterHandler->setParam('event_' . $key, $jsEvent);
         }
@@ -675,11 +683,11 @@
      */
     public function init(): void {
       
-      Tholos::$app->trace('BEGIN', $this);
-      Tholos::$app->trace('(TComponent) (ID ' . $this->_id . ') ' . $this->_componentType, $this);
+      Tholos::$logger->trace('BEGIN', $this);
+      Tholos::$logger->trace('(TComponent) (ID ' . $this->_id . ') ' . $this->_componentType, $this);
       $this->initialized = true;
       Tholos::$app->eventHandler($this, 'onAfterInit');
-      Tholos::$app->trace('END', $this);
+      Tholos::$logger->trace('END', $this);
     }
     
     
@@ -701,7 +709,7 @@
       }
       
       if ($partialID !== '') {
-        Tholos::$app->trace('RENDERING PARTIAL (TComponent) - ' . $partialID . ' (ID ' . $this->_id . ') ' . $this->_componentType . ', SENDER: ' . ($sender === NULL ? 'null' : $sender->getProperty('Name')), $this);
+        Tholos::$logger->trace('RENDERING PARTIAL (TComponent) - ' . $partialID . ' (ID ' . $this->_id . ') ' . $this->_componentType . ', SENDER: ' . ($sender === NULL ? 'null' : $sender->getProperty('Name')), $this);
         
         $this->generateProps();
         $this->generateEvents();
@@ -743,8 +751,8 @@
         return '';
       }
       
-      Tholos::$app->trace('BEGIN', $this);
-      Tholos::$app->trace('(TComponent) (ID ' . $this->_id . ') ' . $this->_componentType . ', SENDER: ' . ($sender === NULL ? 'null' : $sender->getProperty('Name', '')), $this);
+      Tholos::$logger->trace('BEGIN', $this);
+      Tholos::$logger->trace('(TComponent) (ID ' . $this->_id . ') ' . $this->_componentType . ', SENDER: ' . ($sender === NULL ? 'null' : $sender->getProperty('Name', '')), $this);
       
       $this->generateProps();
       $this->generateEvents();
@@ -757,8 +765,8 @@
           'page_footitems' => implode("\n", Tholos::$app->getFootItems())),
         false);
       
-      Tholos::$app->trace('(TComponent) (ID ' . $this->_id . ') ' . $this->_componentType . ', SENDER: ' . ($sender === NULL ? 'null' : $sender->getProperty('Name', '')) . ', LENGTH: ' . strlen($return), $this);
-      Tholos::$app->trace('END', $this);
+      Tholos::$logger->trace('(TComponent) (ID ' . $this->_id . ') ' . $this->_componentType . ', SENDER: ' . ($sender === NULL ? 'null' : $sender->getProperty('Name', '')) . ', LENGTH: ' . strlen($return), $this);
+      Tholos::$logger->trace('END', $this);
       
       $this->renderedContent = $return;
       Tholos::$app->eventHandler($this, 'onAfterRender');

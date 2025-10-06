@@ -1,0 +1,57 @@
+## <!--  Modal $prop_name -->
+$templateabs_tholos__TComponent_properties
+<div class="modal" id="$prop_id" role="dialog" data-show="false" <%FUNC%
+_function_name=Tholos\TholosCallback::_eqs
+param=prop_static
+value=true
+true=data-bs-backdrop="static" data-bs-keyboard="false"
+false=
+%FUNC%> style="$prop_style">
+  <div class="modal-dialog modal-lg $prop_class [%_function_name=Tholos\TholosCallback::_eqs;param=prop_scrollable;value=;true=modal-dialog-scrollable;false=</>%]">
+    <div class="modal-content">
+      <div class="modal-header labely-primary">
+        <h5 class="modal-title">$prop_title~='&nbsp;';</h5>
+<%FUNC%
+_function_name=Tholos\TholosCallback::_eqs
+param=prop_showClose
+value=false
+true=
+false=<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+%FUNC%>
+      </div>
+      <div class="modal-body">
+$content
+      </div>
+
+    </div>
+  </div>
+</div>
+$templateabs_tholos__TContainer_baseevents
+<script type="text/javascript" nonce="$Tholos_nonce">
+<%FUNC%
+_function_name=Tholos\TholosCallback::_eqs
+param=event_onErrorAlert
+value=
+true=
+false=$('#$prop_id').on('onErrorAlert', function (event,eventData) { $event_onErrorAlert });
+%FUNC%>
+<%FUNC%
+_function_name=Tholos\TholosCallback::_eqs
+param=event_onSuccessAlert
+value=
+true=
+false=$('#$prop_id').on('onSuccessAlert', function (event,eventData) { $event_onSuccessAlert });
+%FUNC%>
+<%FUNC%
+_function_name=Tholos\TholosCallback::_eqs
+param=event_onSubmitSuccess
+value=
+true=
+false=$('#$prop_id').on('onSubmitSuccess', function (event,eventData) { $event_onSubmitSuccess });
+%FUNC%>
+
+$("#$prop_id").on("hide.bs.modal", Tholos.methods.TModal_handleOnHide);
+$("#$prop_id").on("show.bs.modal", Tholos.methods.TModal_handleOnShow);
+
+</script>
+## <!--  /Modal $prop_name -->

@@ -1,9 +1,0 @@
-## <FUNC%
-## _include=tholos/tholos_callback.php
-## _function_name=_cases
-## param=prop_mapsourcetype
-## Markers=$prop_name:"markers",
-## Polylines=$prop_name:"polylines",
-## Polygons=$prop_name:"polygons",
-## %FUNC>
-$prop_name:[],

@@ -53,8 +53,8 @@
      */
     public function init(): void {
       
-      Tholos::$app->trace('BEGIN', $this);
-      Tholos::$app->trace('(' . $this->_componentType . ') (ID ' . $this->_id . ')', $this);
+      Tholos::$logger->trace('BEGIN', $this);
+      Tholos::$logger->trace('(' . $this->_componentType . ') (ID ' . $this->_id . ')', $this);
       
       if ($this->getProperty('MDB2DataType', '') === '') {
         switch ($this->getProperty('DataType', '')) {
@@ -79,10 +79,10 @@
             $this->setProperty('MDB2DataType', 'text');
             break;
         }
-        Tholos::$app->trace('Setting MDB2DataType to ' . $this->getProperty('MDB2DataType') . ' from DataType ' . $this->getProperty('DataType'));
+        Tholos::$logger->trace('Setting MDB2DataType to ' . $this->getProperty('MDB2DataType') . ' from DataType ' . $this->getProperty('DataType'));
       }
       parent::init();
-      Tholos::$app->trace('END', $this);
+      Tholos::$logger->trace('END', $this);
     }
     
     /**
@@ -146,7 +146,7 @@
           $em = $e->getMessage();
           if ($this->getProperty('SuppressDataTypeError', 'false') == 'true') {
             $value='';
-            Tholos::$app->trace($this->getProperty('Name') . ' raised parameter type error [' . $em . ']!');
+            Tholos::$logger->trace($this->getProperty('Name') . ' raised parameter type error [' . $em . ']!');
           } else {
             throw new RuntimeException($this->getProperty('Name') . ' raised parameter type error [' . $em . ']!');
           }
@@ -168,7 +168,7 @@
         if ($value_ === '') {
           $this->setProperty('DBValue', $value_, $type_, $value_component_id_, $raw_);
         } elseif (in_array($this->getProperty('DataType', 'string'), ['date', 'datetime', 'time', 'datetimehm', 'timestamp'])) { // date formatting
-          Tholos::$app->trace('Formatting ' . $this->getProperty('MDB2DataType') . ' (' . Eisodos::$parameterHandler->getParam('PHP' . $this->getProperty('DateFormatParameter', 'datetime') . 'Format') .
+          Tholos::$logger->trace('Formatting ' . $this->getProperty('MDB2DataType') . ' (' . Eisodos::$parameterHandler->getParam('PHP' . $this->getProperty('DateFormatParameter', 'datetime') . 'Format') .
             ' -> ' . Eisodos::$parameterHandler->getParam($this->getProperty('NativeDataType') . '.SPFormat', 'Y-m-d H:i:s') . ') ' . $value_);
           $this->setProperty('DBValue',
             DateTime::createFromFormat('!' . Eisodos::$parameterHandler->getParam('PHP' . $this->getProperty('DateFormatParameter', 'datetime') . 'Format'),

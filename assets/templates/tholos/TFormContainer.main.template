@@ -1,0 +1,34 @@
+## <!--  FormContainer $prop_name -->
+$templateabs_tholos__TComponent_properties
+<$prop_containertype id="$prop_id" $templateabs_tholos__TComponent_basedata
+  class="TFormContainer $prop_class">$content
+</$prop_containertype>
+$templateabs_tholos__TContainer_baseevents
+<script type="text/javascript" nonce="$Tholos_nonce">
+<%FUNC%
+_function_name=Tholos\TholosCallback::_eqs
+param=event_onErrorAlert
+value=
+true=
+false=$('#$prop_id').on('onErrorAlert', function (event,eventData) { $event_onErrorAlert });
+%FUNC%>
+<%FUNC%
+_function_name=Tholos\TholosCallback::_eqs
+param=event_onSuccessAlert
+value=
+true=
+false=$('#$prop_id').on('onSuccessAlert', function (event,eventData) { $event_onSuccessAlert });
+%FUNC%>
+<%FUNC%
+_function_name=Tholos\TholosCallback::_eqs
+param=event_onSubmitSuccess
+value=
+true=
+false=$('#$prop_id').on('onSubmitSuccess', function (event,eventData) { $event_onSubmitSuccess });
+%FUNC%>
+
+$("#$prop_id").on("hide.bs.modal", Tholos.methods.TModal_handleOnHide);
+$("#$prop_id").on("show.bs.modal", Tholos.methods.TModal_handleOnShow);
+
+</script>
+## <!-- /FormContainer $prop_name -->

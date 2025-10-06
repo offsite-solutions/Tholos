@@ -1,0 +1,49 @@
+## <!--  FileUpload $prop_name -->
+<div class="row mb-1 $prop_rowclass [%_function_name=Tholos\TholosCallback::_eqs;param=prop_visible;value=true;false=hidden;true=</>%]" style="$prop_rowstyle">
+  $templateabs_tholos__TComponent_properties
+  <label id="$prop_id-label" for="$prop_id" class="col-form-label $templateabs_tholos__TFormControl_labelsize">$templateabs_tholos__TComponent_labelicon</label>
+  <div class="$templateabs_tholos__TFormControl_controlsize">
+    <div
+      id="$prop_id-dz" class="dropzone $prop_class">
+      <div class="dz-default dz-message"><span>$prop_placeholder</span></div>
+    </div>
+  </div>
+<input id="$prop_id" name="$prop_name" value="$prop_value"
+  style="width: 1px; height: 1px; padding: 0; border: 0; -webkit-user-select: none; -moz-user-select: none; -ms-user-select: none; user-select: none; pointer-events: none;"
+  [%_function_name=Tholos\TholosCallback::_eqs;param=prop_required;value=true;true=required;false=type="hidden"%] />
+</div>
+<script type="text/javascript" nonce="$Tholos_nonce">
+  Dropzone.autoDiscover=false;
+  $(document).ready(function () {
+    var dz = new Dropzone("#$prop_id-dz",
+      {url: "$prop_fileprocessor_route$prop_fileprocessor",
+      addRemoveLinks: true,
+      uploadMultiple: true,
+      autoProcessQueue: false,
+      maxFiles: $prop_maxfiles~='1';,
+      maxFilesize: $prop_maxfilesize~='25';,
+      parallelUploads: 1,
+      timeout: 160000,
+      [%_function_name=Tholos\TholosCallback::_eqs;param=$prop_thumbnailwidth;value=;true=thumbnailWidth:$prop_thumbnailwidth,;true=</>%]
+      [%_function_name=Tholos\TholosCallback::_eqs;param=$prop_thumbnailheight;value=;true=thumbnailWidth:$prop_thumbnailheight,;true=</>%]
+      acceptedFiles: "$prop_acceptedfiletypes",
+      dictDefaultMessage: "[:TFILEUPLOAD.DEFAULT_MESSAGE,Kattintson ide fájlok feltöltéséhez:]",
+      dictFallbackMessage: "[:TFILEUPLOAD.FALLBACK_MESSAGE,A böngésző nem támogatja ezt a műveletet:]",
+      dictFallbackText: "[:TFILEUPLOAD.FALLBACK_TEXT,Használja az alábbi űrlapot a fájlok feltöltéséhez:]",
+      dictFileTooBig: "[:TFILEUPLOAD.FILE_TOO_BIG,Túl nagy a fájl ({{filesize}} MiB). Maximum méret {{maxFilesize}} MiB.:]",
+      dictInvalidFileType: "[:TFILEUPLOAD.INVALID_FILE_TYPE,Érvénytelen fájltípus:]",
+      dictResponseError: "[:TFILEUPLOAD.RESPONSE_ERROR,A szerver az alábbi hibával válaszolt - {{statusCode}}:]",
+      dictCancelUpload: "[:TFILEUPLOAD.CANCEL_UPLOAD,Feltöltés megszakítása:]",
+      dictCancelUploadConfirmation: "[:TFILEUPLOAD.CANCEL_CONFIRM,Biztosan meg akarja szakítani a feltöltést?:]",
+      dictRemoveFile: "[:TFILEUPLOAD.REMOVE_FILE,Eltávolítás:]",
+      dictRemoveFileConfirmation: null,
+      dictMaxFilesExceeded: "[:TFILEUPLOAD.FILES_EXCEEDED,Nem lehet több fájlt feltölteni:]"
+    }
+    );
+
+    dz.on("error", function (f, m) {eventData = {errormsg: m}; this.removeFile(f); $event_onfileselectionerror});
+    dz.on("addedfile", Tholos.methods.TFileUpload_handleAddedFile);
+    dz.on("removedfile", Tholos.methods.TFileUpload_handleRemovedFile);
+  });
+</script>
+## <!-- /FileUpload $prop_name -->

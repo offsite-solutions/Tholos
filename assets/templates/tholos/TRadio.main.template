@@ -1,0 +1,15 @@
+## BS5 <!--  Radio $prop_name -->
+<div class="row mb-1 $prop_rowclass [%_function_name=Tholos\TholosCallback::_eqs;param=prop_visible;value=true;false=hidden;true=</>%]
+     [%_function_name=Tholos\TholosCallback::_eqs;param=prop_required;value=true;true=required;false=%]"
+     style="$prop_rowstyle"
+     $templateabs_tholos__TComponent_basedata>
+  $templateabs_tholos__TComponent_properties
+  <label id="$prop_id-label" class="col-form-label $templateabs_tholos__TFormControl_labelsize [%_function_name=Tholos\TholosCallback::_eqs;param=prop_required;value=true;true=required;false=%]">$templateabs_tholos__TComponent_labelicon</label>
+  <div class="form-check $templateabs_tholos__TFormControl_controlsize [%_function_name=Tholos\TholosCallback::_eqs;param=prop_radioinline;value=true;true=form-check-inline;false=%]">
+    $templateabs_tholos__TRadio_item
+    [%_function_name=Tholos\TholosCallback::_generateListValuesx;component_id=$component_id%]
+    $templateabs_tholos__TControl_helpblock
+  </div>
+</div>
+$templateabs_tholos__TControl_customevents
+## <!-- /Radio $prop_name -->

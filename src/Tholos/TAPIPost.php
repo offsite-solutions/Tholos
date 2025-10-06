@@ -59,7 +59,7 @@
           return;
         }
         
-        Tholos::$app->trace('BEGIN', $this);
+        Tholos::$logger->trace('BEGIN', $this);
         
         if (is_null($dataProxy)) {
           
@@ -76,7 +76,7 @@
           
           $boundParametersJSON = json_encode($boundParameters, JSON_THROW_ON_ERROR);
           
-          Tholos::$app->trace('Bound parameters: ' . $boundParametersJSON, $this);
+          Tholos::$logger->trace('Bound parameters: ' . $boundParametersJSON, $this);
           
           $resultParameters = array();
           
@@ -113,7 +113,7 @@
           curl_setopt_array($curl, $options);
           
           if ($this->getProperty('curlDebug') == 'true') {
-            Tholos::$app->debug(print_r($options, true));
+            Tholos::$logger->debug(print_r($options, true));
           }
           
           $httpResponse = curl_exec($curl);
@@ -124,13 +124,13 @@
           if ($this->getProperty('curlVerbose') == 'true') {
             rewind($streamVerboseHandle);
             $verboseLog = stream_get_contents($streamVerboseHandle);
-            Tholos::$app->debug("Verbose: \n" . $verboseLog);
+            Tholos::$logger->debug("Verbose: \n" . $verboseLog);
           }
           
           if ($this->getProperty('curlDebug') == 'true') {
-            Tholos::$app->debug('HTTP Code: ' . $httpCode);
-            Tholos::$app->debug('HTTP Response: ' . $httpResponse);
-            Tholos::$app->debug('HTTP Error: ' . $httpError);
+            Tholos::$logger->debug('HTTP Code: ' . $httpCode);
+            Tholos::$logger->debug('HTTP Response: ' . $httpResponse);
+            Tholos::$logger->debug('HTTP Error: ' . $httpError);
           }
           
           // hard error
@@ -175,12 +175,12 @@
             $jsonArray = json_decode($dataProxy->open($this, array(), array()), true, 512, JSON_THROW_ON_ERROR);
             $resultParameters = json_decode($jsonArray['data'], true, 512, JSON_THROW_ON_ERROR);
           } catch (Exception $e) {
-            Tholos::$app->error($e->getMessage(), $this);
+            Tholos::$logger->error($e->getMessage(), $this);
             $resultParameters = [];
           }
         }
         
-        Tholos::$app->trace('Result parameters: ' . print_r($resultParameters, true), $this);
+        Tholos::$logger->trace('Result parameters: ' . print_r($resultParameters, true), $this);
         
         $this->setProperty('ResultType', 'ARRAY');
         if ($this->getProperty('CallbackParameter') !== '') { // ha van controlparameter, akkor azt beletolteni a ControlResult JSON property-be
@@ -194,7 +194,7 @@
             }
           } catch (Exception) {
             $this->setProperty('CallbackResult', '');
-            Tholos::$app->error('CallbackParameter contains invalid JSON value', $this);
+            Tholos::$logger->error('CallbackParameter contains invalid JSON value', $this);
           }
         }
         
@@ -239,16 +239,16 @@
         
         if ($this->getProperty('Success', 'false') === 'true') {
           
-          Tholos::$app->debug('Execution success', $this);
+          Tholos::$logger->debug('Execution success', $this);
           Tholos::$app->eventHandler($this, 'onSuccess');
           
         } else {
           
-          Tholos::$app->error('Execution failed', $this);
+          Tholos::$logger->error('Execution failed', $this);
           Tholos::$app->eventHandler($this, 'onError');
           
           if ($this->getProperty('WriteErrorLogOnError', 'false') === 'true') {
-            Eisodos::$logger->writeErrorLog(NULL, 'Tholos TAPIPost handled error debug information');
+            Tholos::$app->writeErrorLog(NULL, 'Tholos TAPIPost handled error debug information');
           }
           
         }
@@ -263,28 +263,28 @@
               $loggerSP->run($this);
             }
           } catch (Exception $e) {
-            Tholos::$app->error($e->getMessage());
+            Tholos::$logger->error($e->getMessage());
           }
         }
         
-        Tholos::$app->trace('END', $this);
+        Tholos::$logger->trace('END', $this);
         
       } catch (Exception $e) {
-        Tholos::$app->error('ERROR', $this);
+        Tholos::$logger->error('ERROR', $this);
         
         $this->setProperty('ResultErrorMessage', $e->getMessage());
         $this->setProperty('ResultErrorCode', -1);
         $this->setProperty('Opened', 'false');
         $this->setProperty('Success', 'false');
         
-        Eisodos::$logger->writeErrorLog($e);
+        Tholos::$app->writeErrorLog($e);
         
         if ($this->getProperty('ThrowException', 'false') === 'true') {
           throw $e;
         }
         Tholos::$app->eventHandler($this, 'onError');
         
-        Tholos::$app->trace('END', $this);
+        Tholos::$logger->trace('END', $this);
       }
     }
     

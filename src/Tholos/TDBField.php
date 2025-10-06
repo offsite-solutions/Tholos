@@ -34,21 +34,21 @@
      * Updates all form control values associated with this DBField component. Value will also be added to the dbvalue property.
      */
     public function propagateValue(): void {
-      Tholos::$app->trace('BEGIN', $this);
+      Tholos::$logger->trace('BEGIN', $this);
       $parseValue = $this->getProperty('ParseValue', 'true');
       foreach (Tholos::$app->findReferencingComponents($this->_id) as $compId) {
         $comp = Tholos::$app->findComponentByID($compId);
         if (!$comp) {
           continue;
         }
-        if (($this->_id !== $comp->getPropertyComponentId('DBField')) !== false && $comp->getPropertyComponentId('DBField')) {
+        if ($this->_id != $comp->getPropertyComponentId('DBField') && $comp->getPropertyComponentId('DBField') !== false) {
           continue;
         }
         $comp->setProperty('ParseValue', $parseValue);
         $comp->setProperty('Value', $this->getProperty('Value', ''), 'STRING', '', ($parseValue === 'false'));
         $comp->setProperty('DBValue', $this->getProperty('Value', ''), 'STRING', '', ($parseValue === 'false'));
       }
-      Tholos::$app->trace('END', $this);
+      Tholos::$logger->trace('END', $this);
     }
     
     public function setProperty(string $name_, $value_, string $type_ = 'STRING', string $value_component_id_ = '', bool $raw_ = false): void {
@@ -82,7 +82,7 @@
               throw new RuntimeException('Date object is false');
             }
           } catch (Exception) {
-            Tholos::$app->error('Error converting date: ' . $value_ .
+            Tholos::$logger->error('Error converting date: ' . $value_ .
               ' from (' . $this->getProperty('NativeDataType') . '.Format' . ') ' . Eisodos::$parameterHandler->getParam($this->getProperty('NativeDataType') . '.Format', 'Y-m-d H:i:s') .
               ' to ' . Eisodos::$parameterHandler->getParam('PHP' . $this->getProperty('DateFormatParameter', 'datetime') . 'Format'), $this);
             $dateValue = '';

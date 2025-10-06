@@ -1,0 +1,84 @@
+/*!
+ * * Tholos TGrid component Responsive CSS
+ * * Copyright 2020 Offsite Solutions
+ * */
+.TGrid-resp-wrapper {
+  margin: 0 auto;
+}
+
+.TGrid-resp-table {
+  margin: 0;
+  width: 100%;
+  display: table;
+  background-color: #fff;
+}
+@media screen and (max-width: 580px) {
+  .TGrid-resp-table {
+    display: block;
+  }
+  .TGrid-resp-table .TGrid-resp-header .TGrid-resp-cell a.filterbutton {
+    display: inline !important;
+  }
+  .TGrid-resp-table .TGrid-resp-row:nth-of-type(even) {
+    background: #f0f0f0;
+  }
+  .TGrid-resp-table .TGrid-resp-row:nth-of-type(even) .TGrid-resp-cell {
+    background: #f0f0f0;
+    padding: 0.3rem;
+  }
+  .TGrid-resp-table .TGrid-resp-row {
+    border-bottom: solid 3px #a0a0a0;
+  }
+  .TGrid-resp-table .TGrid-resp-row .TGrid-resp-cell:last-of-type {
+    border-bottom: none !important;
+  }
+}
+.TGrid-resp-table .TGrid-resp-row {
+  display: table-row;
+  border-bottom: solid 3px #a0a0a0;
+}
+@media screen and (max-width: 580px) {
+  .TGrid-resp-table .TGrid-resp-row {
+    display: block;
+  }
+  .TGrid-resp-table .TGrid-resp-row.header {
+    padding: 0;
+    height: 6px;
+  }
+  .TGrid-resp-table .TGrid-resp-row.header .TGrid-resp-cell {
+    display: none;
+  }
+  .TGrid-resp-table .TGrid-resp-row .TGrid-resp-cell {
+    margin-bottom: 10px;
+    min-height: 34px;
+    vertical-align: top;
+  }
+  .TGrid-resp-table .TGrid-resp-row .TGrid-resp-cell:before {
+    margin-bottom: 6px;
+    content: attr(data-resptitle);
+    min-width: 98px;
+    font-size: 10px;
+    line-height: 10px;
+    font-weight: bold;
+    color: #969696;
+    display: block;
+  }
+  .TGrid-resp-table .TGrid-resp-row .TGrid-resp-cell.text-center {
+    text-align: left;
+  }
+  .TGrid-resp-table .TGrid-resp-row .TGrid-resp-cell.text-right {
+    text-align: left;
+  }
+}
+.TGrid-resp-table .TGrid-resp-cell {
+  font-size: 9pt;
+  display: table-cell;
+}
+@media screen and (max-width: 580px) {
+  .TGrid-resp-table .TGrid-resp-cell {
+    padding: 2px 16px;
+    display: block;
+  }
+}
+
+/*# sourceMappingURL=TGrid-responsive.css.map */

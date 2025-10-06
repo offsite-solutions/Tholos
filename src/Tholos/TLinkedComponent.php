@@ -22,8 +22,8 @@
         return '';
       }
       
-      Tholos::$app->trace('BEGIN', $this);
-      Tholos::$app->trace('(TComponent) (ID ' . $this->_id . ') ' . $this->_componentType . ', SENDER: ' . ($sender === NULL ? 'null' : $sender->getProperty('Name', '')), $this);
+      Tholos::$logger->trace('BEGIN', $this);
+      Tholos::$logger->trace('(TComponent) (ID ' . $this->_id . ') ' . $this->_componentType . ', SENDER: ' . ($sender === NULL ? 'null' : $sender->getProperty('Name', '')), $this);
       
       $this->renderedContent = '';
       Tholos::$app->eventHandler($this, 'onBeforeRender');
@@ -36,8 +36,8 @@
       
       Tholos::$app->eventHandler($this, 'onAfterRender');
       
-      Tholos::$app->trace('(TComponent) (ID ' . $this->_id . ') ' . $this->_componentType . ', SENDER: ' . ($sender === NULL ? 'null' : $sender->getProperty('Name', '')) . ', LENGTH: ' . strlen($this->renderedContent), $this);
-      Tholos::$app->trace('END', $this);
+      Tholos::$logger->trace('(TComponent) (ID ' . $this->_id . ') ' . $this->_componentType . ', SENDER: ' . ($sender === NULL ? 'null' : $sender->getProperty('Name', '')) . ', LENGTH: ' . strlen($this->renderedContent), $this);
+      Tholos::$logger->trace('END', $this);
       
       return $this->renderedContent;
     }
