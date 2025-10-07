@@ -7,10 +7,7 @@
   namespace Tholos;
   
   use Eisodos\Eisodos;
-  use Mpdf\Tag\Th;
   use RuntimeException;
-  use Tholos\TDataProvider;
-  use Tholos\Tholos;
   
   class TholosCallback {
     public static function _eq($params = array(), $parameterPrefix = ''): string {

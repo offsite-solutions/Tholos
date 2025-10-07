@@ -1,0 +1,1 @@
+composer update --no-interaction --prefer-dist --no-dev --no-ansi --optimize-autoloader

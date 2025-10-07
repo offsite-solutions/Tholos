@@ -8,15 +8,8 @@
       "email": "info@offsite-solutions.com"
     }
   ],
-  "minimum-stability": "dev",
+  "minimum-stability": "stable",
   "repositories": [
-    {
-      "type": "path",
-      "url": "../../_eisodos/Base",
-      "options": {
-        "symlink": true
-      }
-    },
     {
       "type": "composer",
       "url": "https://asset-packagist.org"
@@ -24,7 +17,7 @@
   ],
   "require": {
     "php": ">=8.4",
-    "offsite-solutions/eisodos": "@dev",
+    "offsite-solutions/eisodos": "1.1.5",
     "ext-json": "*",
     "ext-mbstring": "*",
     "ext-bcmath": "*",
@@ -34,9 +27,9 @@
     "ext-openssl": "*",
     "ext-curl": "*",
     "ext-redis": "*",
-    "phpoffice/phpspreadsheet": "^1.29",
-    "mpdf/mpdf": "8.*",
-    "azurre/php-array-xml-converter": "^0.5.1"
+    "phpoffice/phpspreadsheet": "1.30.0",
+    "mpdf/mpdf": "8.2.6",
+    "azurre/php-array-xml-converter": "0.5.1"
   },
   "require-dev": {
   },

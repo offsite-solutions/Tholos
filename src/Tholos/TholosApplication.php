@@ -1,18 +1,9 @@
-<?php /** @noinspection PhpSameParameterValueInspection */
-  /** @noinspection DuplicatedCode SpellCheckingInspection PhpUnusedFunctionInspection NotOptimalIfConditionsInspection */
-  
-  /*
-  =============================================================================
-  Copyright (c) 2015 Offsite Solutions Kft.
-  =============================================================================
-  $Id:: tholos_application.php 1746 2021-01-07 07:15:27Z laszlo.banfalvi     $:
-  
-  $Description: Tholos Application
-  
-  $History:
-  2015.08.14 Bánfalvi László Létrehozás
-  =============================================================================
-  */
+<?php
+  /** @noinspection PhpSameParameterValueInspection */
+  /** @noinspection DuplicatedCode */
+  /** @noinspection SpellCheckingInspection */
+  /** @noinspection PhpUnusedFunctionInspection */
+  /** @noinspection NotOptimalIfConditionsInspection */
   
   namespace Tholos;
   
