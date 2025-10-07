@@ -17,7 +17,7 @@
   ],
   "require": {
     "php": ">=8.4",
-    "offsite-solutions/eisodos": "1.1.5",
+    "offsite-solutions/eisodos": "^1.1.6",
     "ext-json": "*",
     "ext-mbstring": "*",
     "ext-bcmath": "*",
@@ -30,10 +30,6 @@
     "phpoffice/phpspreadsheet": "1.30.0",
     "mpdf/mpdf": "8.2.6",
     "azurre/php-array-xml-converter": "0.5.1"
-  },
-  "require-dev": {
-  },
-  "suggest": {
   },
   "autoload": {
     "psr-0": {

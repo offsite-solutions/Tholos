@@ -10,6 +10,8 @@
   use DateTime;
   use Eisodos\Abstracts\Singleton;
   use Eisodos\Eisodos;
+  use Eisodos\Parsers\CallbackFunctionParser;
+  use Eisodos\Parsers\CallbackFunctionShortParser;
   use Exception;
   use JsonException;
   use Mpdf\Mpdf;
@@ -265,6 +267,9 @@
       try {
         
         $this->callback = new TholosCallback();
+        
+        Eisodos::$templateEngine->registerParser(new CallbackFunctionParser());
+        Eisodos::$templateEngine->registerParser(new CallbackFunctionShortParser());
         
         try {
           $time = DateTime::createFromFormat('U.u', number_format(microtime(true), 6, '.', ''));
