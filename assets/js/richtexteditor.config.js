@@ -20,8 +20,8 @@ let tholos_rte_toolbar_simple = ""
   + "|{insertlink,unlink,insertemoji,insertchars}";
 
 let tholos_rte_config = {
-      url_base: "/tholos/assets/js/richtexteditor",
-      contentCssUrl: "/assets/css/richtexteditor.css",
+      url_base: TholosAssetsDir+"/js/richtexteditor",
+      contentCssUrl: TholosAssetsDir+"/assets/css/richtexteditor.css",
       editorResizeMode: "height",
       enterKeyTag: "p",
       subtoolbar_more: null,

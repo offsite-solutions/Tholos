@@ -1,7 +1,7 @@
-<link rel="stylesheet" href="/tholos/assets/js/richtexteditor/rte_theme_default.css" />
-<script type="text/javascript" src="/tholos/assets/js/richtexteditor/rte.js"></script>
-<script type="text/javascript" src="/tholos/assets/js/richtexteditor/plugins/all_plugins.js"></script>
-<script type='text/javascript' src="/tholos/assets/js/richtexteditor/lang/rte-lang-$LANG_SMALL.js"></script>
-<script type="text/javascript" src="/tholos/assets/js/richtexteditor.config.js"></script>
+<link rel="stylesheet" href="$TholosAssetsDir/js/richtexteditor/rte_theme_default.css" />
+<script type="text/javascript" src="$TholosAssetsDir/js/richtexteditor/rte.js"></script>
+<script type="text/javascript" src="$TholosAssetsDir/js/richtexteditor/plugins/all_plugins.js"></script>
+<script type='text/javascript' src="$TholosAssetsDir/js/richtexteditor/lang/rte-lang-$LANG_SMALL.js"></script>
+<script type="text/javascript" src="$TholosAssetsDir/js/richtexteditor.config.js"></script>
 ## Loading app level configuration script
 <script type="text/javascript" src="/assets/js/config/richtexteditor.config.js"></script>

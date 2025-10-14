@@ -30,7 +30,7 @@ $templateabs_tholos__TControl_customevents
 
 /*    $("textarea#$prop_id").ckeditor({
       language: "$lang",
-      customConfig: '/tholos/assets/js/ckeditor-assets/config.js',
+      customConfig: '$TholosAssetsDir/js/ckeditor-assets/config.js',
       toolbar:'$prop_htmleditortype~='advanced';',
       readonly:[%_function_name=Tholos\TholosCallback::_eqs;param=prop_enabled;value=false;true=false;false=true%]
     }); */

@@ -15,6 +15,7 @@ true>>=
   const TholosComponentTypes = $TholosComponentTypes;
   const TholosJSDebugLevel = '$TholosJSDebugLevel';
   const TholosHelpFile = '$TholosHelpFile';
+  const TholosAssetsDir= '$TholosAssetsDir';
 
 <%FUNC%
 _function_name=Tholos\TholosCallback::_eqs
