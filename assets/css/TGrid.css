@@ -51,17 +51,17 @@ table.TGrid th {
 
 table.TGrid th.sortable,
 .TGrid-resp-header .TGrid-resp-cell.sortable {
-  background: url('/tholos/assets/img/sole-sort-unsorted.png') no-repeat top right;
+  background: url('../img/sole-sort-unsorted.png') no-repeat top right;
 }
 
 table.TGrid th.sorted_asc,
 .TGrid-resp-header .TGrid-resp-cell.sorted_asc {
-  background: url('/tholos/assets/img/sole-sort-ascending.png') no-repeat top right, #f0f0f0;
+  background: url('../img/sole-sort-ascending.png') no-repeat top right, #f0f0f0;
 }
 
 table.TGrid th.sorted_desc,
 .TGrid-resp-header .TGrid-resp-cell.sorted_desc {
-  background: url('/tholos/assets/img/sole-sort-descending.png') no-repeat top right, #f0f0f0;
+  background: url('../img/sole-sort-descending.png') no-repeat top right, #f0f0f0;
 }
 
 table.TGrid thead.right-border > tr > th,
