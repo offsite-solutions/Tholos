@@ -136,7 +136,7 @@
         
       } catch (Exception $e) {
         Tholos::$logger->error($e->getMessage(), $this);
-        Tholos::$app->writeErrorLog($e);
+        Tholos::$logger->writeErrorLog($e);
         throw new RuntimeException('DataProxy call is invalid!');
       }
       

@@ -120,7 +120,7 @@
         }
         
       } catch (Exception $e) {
-        Tholos::$app->writeErrorLog($e);
+        Tholos::$logger->writeErrorLog($e);
         header('X-Tholos-Error-Code: -1');
         header('X-Tholos-Error-Message: ' . $e->getMessage());
         header('X-Tholos-Error-Message-B64: ' . base64_encode($e->getMessage()));

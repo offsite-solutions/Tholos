@@ -248,7 +248,7 @@
           Tholos::$app->eventHandler($this, 'onError');
           
           if ($this->getProperty('WriteErrorLogOnError', 'false') === 'true') {
-            Tholos::$app->writeErrorLog(NULL, 'Tholos TAPIPost handled error debug information');
+            Tholos::$logger->writeErrorLog(NULL, 'Tholos TAPIPost handled error debug information');
           }
           
         }
@@ -277,7 +277,7 @@
         $this->setProperty('Opened', 'false');
         $this->setProperty('Success', 'false');
         
-        Tholos::$app->writeErrorLog($e);
+        Tholos::$logger->writeErrorLog($e);
         
         if ($this->getProperty('ThrowException', 'false') === 'true') {
           throw $e;

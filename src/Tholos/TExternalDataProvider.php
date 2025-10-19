@@ -292,7 +292,7 @@
           Tholos::$app->eventHandler($this, 'onSuccess');
           
         } catch (Exception $e) {
-          ETholos::$app->writeErrorLog($e);
+          Tholos::$logger->writeErrorLog($e);
           Tholos::$app->eventHandler($this, 'onError');
           throw $e;
         }

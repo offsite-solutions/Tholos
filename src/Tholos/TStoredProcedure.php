@@ -179,7 +179,7 @@
           }
           
           if ($this->getProperty('WriteErrorLogOnError', 'false') === 'true') {
-            Tholos::$app->writeErrorLog(NULL, 'Tholos TStoredProcedure handled error debug information');
+            Tholos::$logger->writeErrorLog(NULL, 'Tholos TStoredProcedure handled error debug information');
           }
           
         }
