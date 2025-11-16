@@ -64,10 +64,10 @@
     display: block;
   }
   .TGrid-resp-table .TGrid-resp-row .TGrid-resp-cell.text-center {
-    text-align: left;
+    text-align: left !important;
   }
   .TGrid-resp-table .TGrid-resp-row .TGrid-resp-cell.text-right {
-    text-align: left;
+    text-align: left !important;
   }
 }
 .TGrid-resp-table .TGrid-resp-cell {

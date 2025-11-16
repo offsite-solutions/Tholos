@@ -184,7 +184,7 @@
         
         $this->setProperty('ResultType', 'ARRAY');
         if ($this->getProperty('CallbackParameter') !== '') { // ha van controlparameter, akkor azt beletolteni a ControlResult JSON property-be
-          $callbackResult = $resultParameters[Tholos::$app->findComponentByID($this->getPropertyComponentId('CallbackParameter'))->getProperty('ParameterName')];
+          $callbackResult = Eisodos::$utils->safe_array_value($resultParameters,Tholos::$app->findComponentByID($this->getPropertyComponentId('CallbackParameter'))->getProperty('ParameterName'),'');
           try {
             if ($callbackResult !== '') {
               if (json_decode($callbackResult, true, 512, JSON_THROW_ON_ERROR) === false) {
@@ -200,7 +200,7 @@
         
         if ($this->getProperty('ErrorCodeParameter', '') !== '') {
           $this->setProperty('ResultErrorCode',
-            $resultParameters[Tholos::$app->findComponentByID($this->getPropertyComponentId('ErrorCodeParameter'))->getProperty('ParameterName')]);
+            Eisodos::$utils->safe_array_value($resultParameters,Tholos::$app->findComponentByID($this->getPropertyComponentId('ErrorCodeParameter'))->getProperty('ParameterName')));
           
           if ($this->getProperty('ErrorCodeOnSuccess', '') !== ''
             && $this->getProperty('ResultErrorCode') !== $this->getProperty('ErrorCodeOnSuccess', '')) {
@@ -212,7 +212,7 @@
         
         if ($this->getProperty('ErrorMessageParameter', '') !== '') {
           $this->setProperty('ResultErrorMessage',
-            $resultParameters[Tholos::$app->findComponentByID($this->getPropertyComponentId('ErrorMessageParameter'))->getProperty('ParameterName')]);
+            Eisodos::$utils->safe_array_value($resultParameters,Tholos::$app->findComponentByID($this->getPropertyComponentId('ErrorMessageParameter'))->getProperty('ParameterName')));
         }
         
         header('X-Tholos-Error-Code: ' . $this->getProperty('ResultErrorCode'));
@@ -224,11 +224,11 @@
         
         foreach (Tholos::$app->findChildIDsByType($this, 'TDBParam') as $paramId) {
           $param = Tholos::$app->findComponentByID($paramId);
-          $param->setProperty('DBValue', $resultParameters[$param->getProperty('ParameterName')]);
+          $param->setProperty('DBValue', Eisodos::$utils->safe_array_value($resultParameters,$param->getProperty('ParameterName'),''));
           //$param->setProperty('Value',$resultParameters[$param->getProperty('ParameterName')]);
           if ($this->getProperty('GenerateDataResult', 'true') === 'true'
             && $param->getProperty('AddToResult', 'true') === 'true') {
-            $result[$param->getProperty('ParameterName')] = $resultParameters[$param->getProperty('ParameterName')];
+            $result[$param->getProperty('ParameterName')] = $param->getProperty('DBValue','');
           }
         }
         
@@ -254,7 +254,7 @@
         }
         
         if ($this->getProperty('LogParameter', '') !== '' && $this->getPropertyComponentId('LoggerStoredProcedure') !== false) { // ha van controlparameter, akkor azt beletolteni a ControlResult JSON property-be
-          $logs = $resultParameters[Tholos::$app->findComponentByID($this->getPropertyComponentId('LogParameter'))->getProperty('ParameterName')];
+          $logs = Eisodos::$utils->safe_array_value($resultParameters,Tholos::$app->findComponentByID($this->getPropertyComponentId('LogParameter'))->getProperty('ParameterName'));
           try {
             if ($logs !== '') {
               Eisodos::$parameterHandler->setParam($this->getProperty('LogDBParameterName'), $logs);

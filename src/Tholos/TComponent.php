@@ -549,7 +549,9 @@
       $return = '';
       foreach ($this->_properties as $key => $prop) {
         if (!isset($prop['nodata']) || $prop['nodata'] !== 'Y') {
-          $return .= 'data-' . $key . '="' . str_replace('"', '&quot;', $this->getProperty($key, '')) . '" ';
+          if (!is_array($this->getProperty($key, ''))) {
+            $return .= 'data-' . $key . '="' . str_replace('"', '&quot;', $this->getProperty($key, '')) . '" ';
+          }
           if ($prop['type'] === 'COMPONENT' && $prop['component_id']) {
             $component_route = Tholos::$app->getComponentRouteActionFromIndex($prop['component_id']);
             if ($self_route !== $component_route) {

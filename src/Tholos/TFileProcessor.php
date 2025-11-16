@@ -20,16 +20,16 @@
      * @throws RuntimeException
      * @throws Exception
      */
-    protected function open(?TComponent $sender, string $nativeSQL = ''): string {
+    protected function open(?TComponent $sender, string $nativeSQL = ''): void {
       
       if ($this->getProperty('Opened', 'false') == 'true') {
         Tholos::$logger->trace('Already opened, exiting');
         
-        return '';
+        return;
       }
       
       if (!Tholos::$app->checkRole($this)) {
-        return '';
+        return;
       }
       
       Tholos::$logger->trace('BEGIN', $this);
@@ -123,6 +123,6 @@
         Tholos::$app->eventHandler($this, 'onError');
       }
       Tholos::$logger->trace('END', $this);
-      return '';
+      return;
     }
   }
