@@ -264,13 +264,13 @@
           }
           
           if (1 * $httpCode >= 200 && 1 * $httpCode < 300) {
-            if (strpos($httpResponse, 'HTTP/') == 0) {
+            if (str_starts_with($httpResponse, 'HTTP/')) {
               $httpNormalResponse = explode("\r\n\r\n", $httpResponse, 2);
               if (count($httpNormalResponse) > 1) {
-                $resultParameters = json_decode($httpNormalResponse[1], true, 512, JSON_THROW_ON_ERROR);
+                $resultParameters = json_decode((trim($httpNormalResponse[1])===''?'{}':$httpNormalResponse[1]), true, 512, JSON_THROW_ON_ERROR);
               }
             } else {
-              $resultParameters = json_decode($httpResponse, true, 512, JSON_THROW_ON_ERROR);
+              $resultParameters = json_decode((trim($httpResponse)===''?'{}':$httpResponse), true, 512, JSON_THROW_ON_ERROR);
             }
             $this->setProperty('Success', 'true');
           } else {
