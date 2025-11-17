@@ -424,79 +424,152 @@
               }
             }
             if (!$dateError) {
+              $SQLValue = '';
+              switch ($dbField->getProperty('datatype')) {
+                case 'string':
+                  $SQLValue = (in_array($filterParam[1], ['in', 'notin']) ? Eisodos::$dbConnectors->db()->toList(@$filterParam[2], true) : $this->nullStr(@$filterParam[2], true));
+                  break;
+                case 'list':
+                case 'text':
+                  $SQLValue = $this->nullStr(@$filterParam[2], true);
+                  break;
+                case 'bool':
+                  $SQLValue = @$filterParam[2] === '*' ? $dbField->getProperty('FieldName') : $this->boolConvert(@$filterParam[2]);
+                  break;
+                case 'boolIN':
+                case 'boolYN':
+                  $SQLValue = @$filterParam[2] === '*' ? $dbField->getProperty('FieldName') : $this->nullStr(@$filterParam[2], true);
+                  break;
+                case 'bool10':
+                  $SQLValue = @$filterParam[2] === '-1' ? $dbField->getProperty('FieldName') : $this->nullStr(@$filterParam[2], false);
+                  break;
+                case 'datebetween':
+                case 'date':
+                  $SQLValue = "to_date('" . @$filterParam[2] . "','" . Eisodos::$parameterHandler->getParam("dateformat") . "')";
+                  break;
+                case 'datetime':
+                  $SQLValue = "to_date('" . @$filterParam[2] . "','" . Eisodos::$parameterHandler->getParam("datetimeformat") . "')";
+                  break;
+                case 'datetimehm':
+                  $SQLValue = "to_date('" . @$filterParam[2] . "','" . Eisodos::$parameterHandler->getParam("datetimehmformat") . "')";
+                  break;
+                case 'time':
+                  $SQLValue = "to_date('" . @$filterParam[2] . "','" . Eisodos::$parameterHandler->getParam("timeformat") . "')";
+                  break;
+                case 'timestamp':
+                  $SQLValue = "to_date('" . @$filterParam[2] . "','" . Eisodos::$parameterHandler->getParam("timestampformat") . "')";
+                  break;
+                case 'float':
+                case 'integer':
+                  $SQLValue = (in_array($filterParam[1], ['in', 'notin']) ? Eisodos::$dbConnectors->db()->toList(@$filterParam[2], false) : $this->nullStr(@$filterParam[2], false));
+                  break;
+              }
+              
+              $SQLSentence = '';
+              
+              switch ($filterParam[1]) {
+                case 'NULL':
+                  $SQLSentence = ' IS NULL';
+                  break;
+                case 'NOT NULL':
+                  $SQLSentence = ' IS NOT NULL';
+                  break;
+                case 'eq':
+                  $SQLSentence = '=%s';
+                  break;
+                case 'neq':
+                  $SQLSentence = '!=%s';
+                  break;
+                case 'like':
+                  $SQLSentence = ' like lower(%s) ';
+                  break;
+                case 'nlike':
+                  $SQLSentence = ' not like lower(%s) ';
+                  break;
+                case 'gt':
+                  $SQLSentence = '>%s';
+                  break;
+                case 'gteq':
+                  $SQLSentence = '>=%s';
+                  break;
+                case 'lt':
+                  $SQLSentence = '<%s';
+                  break;
+                case 'lteq':
+                  $SQLSentence = '<=%s';
+                  break;
+                case 'bw':
+                  $SQLSentence = $filter->getProperty('SQL', '');
+                  break;
+                case 'in':
+                  $SQLSentence = ' in %s ';
+                  break;
+                case 'notin':
+                  $SQLSentence = ' not in %s ';
+                  break;
+              }
+              
               $this->filterSQL .= ' and ' .
                 (($filterParam[1] === 'like' || $filterParam[1] === 'nlike') ? 'lower(' . $dbField->getProperty('FieldName') . ')' : $dbField->getProperty('FieldName')) .
-                sprintf(Eisodos::$utils->ODecode(array($filterParam[1],
-                  'NULL', ' IS NULL',
-                  'NOT NULL', ' IS NOT NULL',
-                  'eq', '=%s',
-                  'neq', '!=%s',
-                  'like', ' like lower(%s) ',
-                  'nlike', ' not like lower(%s) ',
-                  'gt', '>%s',
-                  'gteq', '>=%s',
-                  'lt', '<%s',
-                  'lteq', '<=%s',
-                  'bw', $filter->getProperty('SQL', ''),
-                  'in', ' in %s ',
-                  'notin', ' not in %s '
-                )),
-                  Eisodos::$utils->ODecode(array($dbField->getProperty('datatype'),
-                      'string', (in_array($filterParam[1], ['in', 'notin']) ? Eisodos::$dbConnectors->db()->toList(@$filterParam[2], true) : $this->nullStr(@$filterParam[2], true)),
-                      'text', $this->nullStr(@$filterParam[2], true),
-                      'bool', @$filterParam[2] === '*' ? $dbField->getProperty('FieldName') : $this->boolConvert(@$filterParam[2]),
-                      'boolYN', @$filterParam[2] === '*' ? $dbField->getProperty('FieldName') : $this->nullStr(@$filterParam[2], true),
-                      'boolIN', @$filterParam[2] === '*' ? $dbField->getProperty('FieldName') : $this->nullStr(@$filterParam[2], true),
-                      'bool10', @$filterParam[2] === '-1' ? $dbField->getProperty('FieldName') : $this->nullStr(@$filterParam[2], false),
-                      'list', $this->nullStr(@$filterParam[2], true),
-                      'date', "to_date('" . @$filterParam[2] . "','" . Eisodos::$parameterHandler->getParam("dateformat") . "')",
-                      'datetime', "to_date('" . @$filterParam[2] . "','" . Eisodos::$parameterHandler->getParam("datetimeformat") . "')",
-                      'datetimehm', "to_date('" . @$filterParam[2] . "','" . Eisodos::$parameterHandler->getParam("datetimehmformat") . "')",
-                      'time', "to_date('" . @$filterParam[2] . "','" . Eisodos::$parameterHandler->getParam("timeformat") . "')",
-                      'timestamp', "to_date('" . @$filterParam[2] . "','" . Eisodos::$parameterHandler->getParam("timestampformat") . "')",
-                      'datebetween', "to_date('" . @$filterParam[2] . "','" . Eisodos::$parameterHandler->getParam("dateformat") . "')",
-                      'integer', (in_array($filterParam[1], ['in', 'notin']) ? Eisodos::$dbConnectors->db()->toList(@$filterParam[2], false) : $this->nullStr(@$filterParam[2], false)),
-                      'float', (in_array($filterParam[1], ["in", "notin"]) ? Eisodos::$dbConnectors->db()->toList(@$filterParam[2], false) : $this->nullStr(@$filterParam[2], false))
-                    )
-                  )
-                ) . " \n";
-              // date formatting JSON format
+                sprintf($SQLSentence, $SQLValue) . " \n";
               
               if (!((@$filterParam[2] == "-1"
                   && $dbField->getProperty('datatype') == 'bool10')
                 || (@$filterParam[2] == "*"
                   && in_array($dbField->getProperty('datatype'), ['bool', 'boolYN', 'boolIN'])))
               ) {
+                
+                $JSONValue = NULL;
+                
+                switch ($dbField->getProperty('datatype')) {
+                  case 'text':
+                  case 'string':
+                    $JSONValue = (in_array($filterParam[1], ["in", "notin"]) ? NULL : @$filterParam[2]);
+                    break;
+                  case 'bool':
+                    $JSONValue = $this->boolConvert(@$filterParam[2], false);
+                    break;
+                  case 'boolIN':
+                  case 'bool10':
+                  case 'boolYN':
+                    $JSONValue = @$filterParam[2];
+                    break;
+                  case 'datetime':
+                  case 'datetimehm':
+                  case 'time':
+                  case 'timestamp':
+                  case 'date':
+                    $JSONValue = $JSONDateValue;
+                    break;
+                  case 'datebetween':
+                    $JSONValue = @$filterParam[2];
+                    break;
+                  case 'integer':
+                    $JSONValue = (in_array($filterParam[1], ['in', 'notin']) ? NULL : @$filterParam[2]);
+                    break;
+                  case 'float':
+                    $JSONValue = (in_array($filterParam[1], ['in', 'notin']) ? NULL : str_replace(',', '.', @$filterParam[2]));
+                    break;
+                }
+                
+                $JSONValueArray = NULL;
+                
+                switch ($dbField->getProperty('datatype')) {
+                  case 'text':
+                  case 'integer':
+                  case 'float':
+                  case 'string':
+                    $JSONValueArray = (in_array($filterParam[1], ['in', 'notin']) ? explode(',', @$filterParam[2]) : NULL);
+                    break;
+                  case 'list':
+                    $JSONValueArray = explode(',', @$filterParam[2]);
+                    break;
+                }
+                
                 $JSONFilter = [
                   'fieldName' => $dbField->getProperty('FieldName'),
-                  'value' => Eisodos::$utils->ODecode(array($dbField->getProperty('datatype'),
-                      'string', (in_array($filterParam[1], ["in", "notin"]) ? NULL : @$filterParam[2]),
-                      'text', (in_array($filterParam[1], ["in", "notin"]) ? NULL : @$filterParam[2]),
-                      'bool', $this->boolConvert(@$filterParam[2], false),
-                      'boolYN', @$filterParam[2],
-                      'boolIN', @$filterParam[2],
-                      'bool10', @$filterParam[2],
-                      'list', NULL,
-                      'date', $JSONDateValue,
-                      'datetime', $JSONDateValue,
-                      'datetimehm', $JSONDateValue,
-                      'time', $JSONDateValue,
-                      'timestamp', $JSONDateValue,
-                      'datebetween', @$filterParam[2],
-                      'integer', (in_array($filterParam[1], ['in', 'notin']) ? NULL : @$filterParam[2]),
-                      'float', (in_array($filterParam[1], ['in', 'notin']) ? NULL : str_replace(',', '.', @$filterParam[2])),
-                      NULL
-                    )
-                  ),
-                  'valueArray' => Eisodos::$utils->ODecode(array($dbField->getProperty('datatype'),
-                      'string', (in_array($filterParam[1], ['in', 'notin']) ? explode(',', @$filterParam[2]) : NULL),
-                      'text', (in_array($filterParam[1], ['in', 'notin']) ? explode(',', @$filterParam[2]) : NULL),
-                      'list', explode(',', @$filterParam[2]),
-                      'integer', (in_array($filterParam[1], ['in', 'notin']) ? explode(',', @$filterParam[2]) : NULL),
-                      'float', (in_array($filterParam[1], ['in', 'notin']) ? explode(',', @$filterParam[2]) : NULL),
-                      NULL
-                    )
-                  ),
+                  'value' => $JSONValue,
+                  'valueArray' => $JSONValueArray,
                   'operator' => $filterParam[1],
                   'relation' => NULL,
                   'nativeDataType' => $dbField->getProperty('NativeDataType'),
@@ -532,21 +605,37 @@
           ];
         } else {
           $dbField = Tholos::$app->findComponentByID($this->getPropertyComponentId('MasterDBField', NULL));
+          
+          $SQLValue = '';
+          
+          switch ($dbField->getProperty('datatype')) {
+            case 'string':
+              $SQLValue = $this->nullStr($masterValue, true);
+              break;
+            case 'date':
+              $SQLValue = "to_date('" . $masterValue . "','" . Eisodos::$parameterHandler->getParam("dateformat") . "')";
+              break;
+            case 'datetime':
+              $SQLValue = "to_date('" . $masterValue . "','" . Eisodos::$parameterHandler->getParam("datetimeformat") . "')";
+              break;
+            case 'datetimehm':
+              $SQLValue = "to_date('" . $masterValue . "','" . Eisodos::$parameterHandler->getParam("datetimehmformat") . "')";
+              break;
+            case 'time':
+              $SQLValue = "to_date('" . $masterValue . "','" . Eisodos::$parameterHandler->getParam("timeformat") . "')";
+              break;
+            case 'timestamp':
+              $SQLValue = "to_date('" . $masterValue . "','" . Eisodos::$parameterHandler->getParam("timestampformat") . "')";
+              break;
+            case 'float':
+            case 'integer':
+              $SQLValue = $this->nullStr($masterValue, false);
+              break;
+          }
+          
           $this->filterSQL .= ' and ' .
             $dbField->getProperty('FieldName') .
-            sprintf('=%s',
-              Eisodos::$utils->ODecode(array($dbField->getProperty('datatype'),
-                  'string', $this->nullStr($masterValue, true),
-                  'date', "to_date('" . $masterValue . "','" . Eisodos::$parameterHandler->getParam("dateformat") . "')",
-                  'datetime', "to_date('" . $masterValue . "','" . Eisodos::$parameterHandler->getParam("datetimeformat") . "')",
-                  'datetimehm', "to_date('" . $masterValue . "','" . Eisodos::$parameterHandler->getParam("datetimehmformat") . "')",
-                  'time', "to_date('" . $masterValue . "','" . Eisodos::$parameterHandler->getParam("timeformat") . "')",
-                  'timestamp', "to_date('" . $masterValue . "','" . Eisodos::$parameterHandler->getParam("timestampformat") . "')",
-                  'integer', $this->nullStr($masterValue, false),
-                  'float', $this->nullStr($masterValue, false)
-                )
-              )
-            ) . " \n";
+            sprintf('=%s', $SQLValue) . " \n";
           $JSONFilter = [
             'fieldName' => $dbField->getProperty('FieldName'),
             'value' => Eisodos::$utils->ODecode(array($dbField->getProperty('datatype'),
