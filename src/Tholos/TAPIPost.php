@@ -144,7 +144,6 @@
           } else if (1 * $httpCode >= 200 && 1 * $httpCode < 300) {
             if (str_starts_with($httpResponse, 'HTTP/')) {
               $httpNormalResponse = explode("\r\n\r\n", $httpResponse, 2);
-              Eisodos::$parameterHandler->setParam('httpResponse', $httpResponse);
               if (count($httpNormalResponse) > 1) {
                 try {
                   $resultParameters = json_decode($httpNormalResponse[1], true, 512, JSON_THROW_ON_ERROR);
