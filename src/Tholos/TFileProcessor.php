@@ -42,7 +42,7 @@
         if (!empty($_FILES)) {
           $fileSet = array();
           $i = 0;
-          foreach ($_FILES['file']['name'] as $tempFile) { // Bug!!!
+          foreach ($_FILES['file']['tmp_name'] as $tempFile) { // Bug!!!
             //$tempFile = $_FILES['file']['tmp_name'][$i];
             $extension = mb_strtolower(pathinfo($_FILES['file']['name'][$i])['extension']);
             Tholos::$logger->trace('Extension is ' . $extension . ', ExtractArchive is ' . $this->getProperty('ExtractArchive', 'false') . ', TempFile is ' . $tempFile);
