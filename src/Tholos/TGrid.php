@@ -121,12 +121,14 @@
       // saving original values for caching
       // $listSource = Tholos::$app->findComponentByID($this->getPropertyComponentId("ListSource"));
       if ($this->getPropertyComponentId("SortedBy", NULL) != NULL
-        and $this->getProperty("SortedByAlways", "") == "") {
+        && $this->getProperty("SortedByAlways", "") == "") {
         $this->origOrderBy = Tholos::$app->findComponentByID(
             Tholos::$app->findComponentByID($this->getPropertyComponentId("SortedBy")
             )->getPropertyComponentId("DBField"))->getProperty("Index") . " " .
           $this->getProperty("SortingDirection", "ASC");
-      } else $this->origOrderBy = $this->getProperty("SortedByAlways", "1 ASC");
+      } else {
+        $this->origOrderBy = $this->getProperty("SortedByAlways", "1 ASC");
+      }
       
       $this->loadState();
       
@@ -158,7 +160,7 @@
           $this->setProperty('SortingDirection', Tholos::$app->findComponentByID($this->getPropertyComponentId('SortedBy'))->getProperty('SortingDirection', 'ASC'));
         }
         
-        if ($this->getPropertyComponentId('SortedBy', NULL) !== NULL) {
+        if ($this->getPropertyComponentId('SortedBy', false) !== false) {
           Tholos::$app->findComponentByID($this->getPropertyComponentId('SortedBy', NULL))->setProperty('Sorted', $this->getProperty('SortingDirection', 'ASC'));
         }
       }

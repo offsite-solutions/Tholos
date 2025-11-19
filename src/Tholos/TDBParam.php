@@ -128,7 +128,7 @@
               throw new RuntimeException('');
             }
             $r = DateTime::getLastErrors();
-            if ($r['warning_count'] > 0 || $r['error_count'] > 0) {
+            if ($r !== false && ($r['warning_count'] > 0 || $r['error_count'] > 0)) {
               throw new RuntimeException('expected input format: ' . Eisodos::$parameterHandler->getParam('PHP' . $this->getProperty('DateFormatParameter', 'datetime') . 'Format'));
             }
           } elseif ($dt === 'float') {
@@ -145,7 +145,7 @@
         } catch (Exception $e) {
           $em = $e->getMessage();
           if ($this->getProperty('SuppressDataTypeError', 'false') == 'true') {
-            $value='';
+            $value = '';
             Tholos::$logger->trace($this->getProperty('Name') . ' raised parameter type error [' . $em . ']!');
           } else {
             throw new RuntimeException($this->getProperty('Name') . ' raised parameter type error [' . $em . ']!');
