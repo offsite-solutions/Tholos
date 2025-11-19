@@ -75,7 +75,7 @@
           $sender->getProperty('SortingDirection') === 'ASC' ? 'sorting_asc' : 'sorting_desc'
           ) : 'sorting'
           ),
-            'sortingdirection' => ($sender->getPropertyComponentId('SortedBy') === $this->_id ? ($sender->getProperty('SortingDirection') === 'ASC' ? 'DESC' : 'ASC') : $this->getProperty('SortingDirection')),
+            'sortingdirection' => ($sender->getPropertyComponentId('SortedBy') == $this->_id ? ($sender->getProperty('SortingDirection') == 'ASC' ? 'DESC' : 'ASC') : $this->getProperty('SortingDirection')),
             'columnbutton' => $columnButton
           ),
           false);
