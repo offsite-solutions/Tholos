@@ -61,7 +61,7 @@
         
         Tholos::$logger->trace('BEGIN', $this);
         
-        if (is_null($dataProxy)) {
+        if (is_null($dataProxy) || Eisodos::$parameterHandler->isOff('Tholos.TAPIPost.DataProxy.Enabled', 'true')) {
           
           $boundParameters = array();
           foreach (Tholos::$app->findChildIDsByType($this, 'TDBParam') as $paramId) {
