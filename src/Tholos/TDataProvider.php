@@ -183,10 +183,11 @@
         if ($force_
           || $this->getProperty('Caching', 'Disabled') === 'Disabled'
           || Eisodos::$parameterHandler->eq('TholosCacheAction', 'refresh')) {
-          //if ($this->getPropertyType('DatabaseIndex',null)!==null) {
-          //  Tholos::$logger->debug('Database connection is not needed');
-          //  return;
-          //}
+          if ($this->getPropertyType('DatabaseIndex', NULL) != NULL) {
+            Tholos::$logger->debug('Database connection is not needed');
+            
+            return;
+          }
           Eisodos::$dbConnectors->connector($this->getProperty('DatabaseIndex'))->connect(
             'Database' . $this->getProperty('DatabaseIndex')
           );
