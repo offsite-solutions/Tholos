@@ -50,12 +50,12 @@
      * @throws \JsonException
      * @throws Throwable
      */
-    protected function open(?TComponent $sender, string $nativeSQL = ''): string {
+    protected function open(?TComponent $sender, string $nativeSQL = ''): void {
       
       Tholos::$app->checkRole($this, true);
       
       if ($this->getProperty('Opened') == 'true') {
-        return '';
+        return ;
       } // ha mar meg volt nyitva, akkor ne fusson le meg egyszer
       
       if ($this->getProperty('URL')) {
@@ -76,7 +76,7 @@
           Tholos::$logger->error('Missing required or malformed filter', $this);
           Tholos::$logger->trace('END', $this);
           
-          return '';
+          return ;
         }
         
         $orderBy_ = [];
@@ -150,7 +150,7 @@
             header('X-Tholos-Error-Message-B64: ' . base64_encode('Authentication error'));
             Tholos::$app->eventHandler($this, 'onAuthError');
             
-            return '';
+            return ;
           }
         }
         
@@ -164,7 +164,7 @@
           if (Tholos::$app->findComponentByID($initproc_id)->getProperty('Success') == 'false') {
             Tholos::$app->eventHandler($this, 'onInitError');
             
-            return '';
+            return ;
           }
         }
         
@@ -301,7 +301,7 @@
         
       }
       
-      return '';
+      return ;
     }
     
     /**
