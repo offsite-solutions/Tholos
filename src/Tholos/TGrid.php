@@ -414,7 +414,7 @@
               $dateformat = Eisodos::$parameterHandler->getParam('PHP' . $dbField->getProperty('DateFormatParameter') . 'Format');
               $universalDt = DateTime::createFromFormat('!' . $dateformat, @$filterParam[2]);
               $r = DateTime::getLastErrors();
-              if ($r["warning_count"] > 0 || $r["error_count"] > 0) {
+              if ($r && ($r["warning_count"] > 0 || $r["error_count"] > 0)) {
                 $dateError = true;
                 Tholos::$logger->error(print_r(array_merge($filterParam, $r), true), $this);
               } else {

@@ -46,7 +46,7 @@
             $filter_array[$filter->getProperty('FilterGroupParameter', ':filter')] = Eisodos::$utils->safe_array_value($filter_array, $filter->getProperty('FilterGroupParameter', ':filter')) . 'AND ' . $filter_SQL . " \n";
           }
         } catch (Throwable $e) {
-        Tholos::$logger->error('TQuery filter error: ' . $e->getMessage(), $this);
+          Tholos::$logger->error('TQuery filter error: ' . $e->getMessage(), $this);
           $this->setProperty('FilterError', 'true');
           $filter_array = [];
         }
@@ -387,7 +387,9 @@
           } else if ($this->getProperty('CountTotalRows', 'false') === 'true' &&
             $this->getProperty('TotalRowCountField', '') !== '') {
             if (count($back) > 0) {
-              $this->setProperty('TotalRowCount', $back[0][$this->getProperty('TotalRowCountField', '')]);
+              if (array_key_exists($this->getProperty('TotalRowCountField', ''), $back[0])) {
+                $this->setProperty('TotalRowCount', $back[0][$this->getProperty('TotalRowCountField', '')]);
+              }
             } else {
               $this->setProperty('TotalRowCount', '0');
             }

@@ -3,7 +3,7 @@
   /**
    * Callback functions used in Tholos templates
    */
-   
+  
   namespace Tholos;
   
   use Eisodos\Eisodos;
@@ -158,14 +158,14 @@
       }
       $result = '';
       
-      Tholos::$logger->debug(print_r($ls->getProperty('result'),true));
+      Tholos::$logger->debug(print_r($ls->getProperty('result'), true));
       
       if (is_array($ls->getProperty('result')) && count($ls->getProperty('result')) > 0) {
         foreach ($ls->getProperty('result') as $_val) {
           $result .= Eisodos::$templateEngine->getTemplate('tholos/' . $compType . '.item',
-            array('prop_itemactive' => (in_array($_val[$fieldId], $value, false) ? 'true' : 'false'),
-              'prop_itemid' => htmlspecialchars($_val[$fieldId]),
-              'prop_itemtext' => htmlspecialchars($_val[$fieldText])),
+            array('prop_itemactive' => (in_array(Eisodos::$utils->safe_array_value($_val, $fieldId, ''), $value, false) ? 'true' : 'false'),
+              'prop_itemid' => htmlspecialchars(Eisodos::$utils->safe_array_value($_val, $fieldId, '')),
+              'prop_itemtext' => htmlspecialchars(Eisodos::$utils->safe_array_value($_val, $fieldText, ''))),
             false);
         }
       }
