@@ -17,7 +17,7 @@ class TMapSource extends TComponent {
   /**
    * @inheritdoc
    */
-  public function init() {
+  public function init(): void {
       Tholos::$logger->trace('BEGIN', $this);
       Tholos::$logger->trace('(' . $this->_componentType . ') (ID ' . $this->_id . ')', $this);
       parent::init();
