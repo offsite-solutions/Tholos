@@ -1374,7 +1374,7 @@
                 || $this->getProperty('ShowTransposeCheckbox') === 'true') ? '' : 'hidden'),
               'columnHeadItems' => $this->columnHeadItems,
               'chartInit' => $this->getPropertyComponentId('ChartXAxis') ? Eisodos::$templateEngine->getTemplate('tholos/' . $this->_componentType . '.chart.init',
-                array('chartDatasetsOptions' => "[' . implode(", ", $this->chartDatasetsOptions) . ']")
+                array('chartDatasetsOptions' => '[' . implode(', ', $this->chartDatasetsOptions) . ']')
                 , false) : ''
             )
           ) . "\n";

@@ -19,7 +19,7 @@
     }
     
     public static function _eqs($params = array(), $parameterPrefix = ''): string {
-      return Eisodos::$parameterHandler->eq($params['param'], $params['value'], Eisodos::$utils->safe_array_value($params, 'defaultvalue')) ? $params['true'] : $params['false'];
+      return Eisodos::$parameterHandler->eq($params['param'], $params['value'], Eisodos::$utils->safe_array_value($params, 'defaultvalue')) ? Eisodos::$utils->safe_array_value($params,'true') : Eisodos::$utils->safe_array_value($params,'false');
     }
     
     public static function _neq($params = array(), $parameterPrefix = ''): string {

@@ -307,7 +307,7 @@
         $debugFileName = str_replace(array('SESSIONID', 'TIME'), array(Eisodos::$parameterHandler->getParam('_sessionid'), date('YmdHis')), $debugFileName);
         Tholos::$logger->setDebugOutputs(
           ['debugToFile' => $debugFileName,
-           'debugToUrl' => Eisodos::$parameterHandler->getParam('Tholos.debugToUrl'),
+            'debugToUrl' => Eisodos::$parameterHandler->getParam('Tholos.debugToUrl'),
           ]);
         Tholos::$logger->debug('----- Start -----', $this);
         Eisodos::$parameterHandler->setParam('TholosJSDebugLevel', Eisodos::$parameterHandler->getParam('Tholos.JSDebugLevel'));
@@ -367,6 +367,8 @@
         uksort($this->components, function ($cid1, $cid2) {
           return ($this->componentCreationOrder[$cid1] - $this->componentCreationOrder[$cid2]);
         });
+        
+        $this->partial_id = -1;
         
         if (Eisodos::$parameterHandler->neq('tholos_partial', '')) {
           $partial = $this->findChildByName($this->findComponentByID($this->action_id), Eisodos::$parameterHandler->getParam('tholos_partial'));
@@ -1020,6 +1022,7 @@
       } catch (Exception $e) {
         Tholos::$logger->writeErrorLog($e);
       }
+      
       return $notFound_;
     }
     
