@@ -524,16 +524,18 @@
                   break;
               }
               
+              if (!$skipFilter) {
+                $this->filterSQL .= ' and ' .
+                  (($filterParam[1] === 'like' || $filterParam[1] === 'nlike') ? 'lower(' . $dbField->getProperty('FieldName') . ')' : $dbField->getProperty('FieldName')) .
+                  sprintf($SQLSentence, $SQLValue) . " \n";
+              }
+              
               if (!$skipFilter
                 && !((@$filterParam[2] == "-2"
                     && $dbField->getProperty('datatype') == 'bool10')
                   || (@$filterParam[2] == "**"
                     && in_array($dbField->getProperty('datatype'), ['bool', 'boolYN', 'boolIN'])))
               ) {
-                
-                $this->filterSQL .= ' and ' .
-                  (($filterParam[1] === 'like' || $filterParam[1] === 'nlike') ? 'lower(' . $dbField->getProperty('FieldName') . ')' : $dbField->getProperty('FieldName')) .
-                  sprintf($SQLSentence, $SQLValue) . " \n";
                 
                 $JSONValue = NULL;
                 
