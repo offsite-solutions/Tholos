@@ -427,6 +427,7 @@
             }
             if (!$dateError) {
               $SQLValue = '';
+              $skipFilter = false;
               switch ($dbField->getProperty('datatype')) {
                 case 'string':
                   $SQLValue = (in_array($filterParam[1], ['in', 'notin']) ? Eisodos::$dbConnectors->db()->toList(@$filterParam[2], true) : $this->nullStr(@$filterParam[2], true));
@@ -435,15 +436,27 @@
                 case 'text':
                   $SQLValue = $this->nullStr(@$filterParam[2], true);
                   break;
-                case 'bool':
-                  $SQLValue = @$filterParam[2] === '*' ? $dbField->getProperty('FieldName') : $this->boolConvert(@$filterParam[2]);
+                case 'bool': // TODO ha bool=*, akkor FIELD=FIELD generalodik es ha null a field, akkor nem jelenik meg
+                  if (@$filterParam[2] === '*') {
+                    $skipFilter = true;
+                  } else {
+                    $SQLValue = $this->boolConvert(@$filterParam[2]);
+                  }
                   break;
                 case 'boolIN':
                 case 'boolYN':
-                  $SQLValue = @$filterParam[2] === '*' ? $dbField->getProperty('FieldName') : $this->nullStr(@$filterParam[2], true);
+                  if (@$filterParam[2] === '*') {
+                    $skipFilter = true;
+                  } else {
+                    $SQLValue = $this->nullStr(@$filterParam[2], true);
+                  }
                   break;
                 case 'bool10':
-                  $SQLValue = @$filterParam[2] === '-1' ? $dbField->getProperty('FieldName') : $this->nullStr(@$filterParam[2], false);
+                  if (@$filterParam[2] === '-1') {
+                    $skipFilter = true;
+                  } else {
+                    $SQLValue = $this->nullStr(@$filterParam[2], false);
+                  }
                   break;
                 case 'datebetween':
                 case 'date':
@@ -511,15 +524,11 @@
                   break;
               }
               
-              $this->filterSQL .= ' and ' .
+              if (!$skipFilter) {
+              
+                $this->filterSQL .= ' and ' .
                 (($filterParam[1] === 'like' || $filterParam[1] === 'nlike') ? 'lower(' . $dbField->getProperty('FieldName') . ')' : $dbField->getProperty('FieldName')) .
                 sprintf($SQLSentence, $SQLValue) . " \n";
-              
-              if (!((@$filterParam[2] == "-1"
-                  && $dbField->getProperty('datatype') == 'bool10')
-                || (@$filterParam[2] == "*"
-                  && in_array($dbField->getProperty('datatype'), ['bool', 'boolYN', 'boolIN'])))
-              ) {
                 
                 $JSONValue = NULL;
                 
