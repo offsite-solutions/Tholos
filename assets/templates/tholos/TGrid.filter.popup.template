@@ -49,6 +49,7 @@
                 <option value="I" >[:GRID.FILTER.bool_yes,Igen:]</option>
                 <option value="N" >[:GRID.FILTER.bool_no,Nem:]</option>
                 <option value="*" >[:GRID.FILTER.bool_all,Összes:]</option>
+                <option value="**" >[:GRID.FILTER.bool_all_not_null,Összes, nem üres:]</option>
               </select>
             </div>
             <div class="TGrid-filter-container TGrid-filter-bool col-lg-8">
@@ -56,6 +57,7 @@
                 <option value="Y" >[:GRID.FILTER.bool_yes,Igen:]</option>
                 <option value="N" >[:GRID.FILTER.bool_no,Nem:]</option>
                 <option value="*" >[:GRID.FILTER.bool_all,Összes:]</option>
+                <option value="**" >[:GRID.FILTER.bool_all_not_null,Összes, nem üres:]</option>
               </select>
             </div>
             <div class="TGrid-filter-container TGrid-filter-boolYN col-lg-8">
@@ -63,6 +65,7 @@
                 <option value="Y" >[:GRID.FILTER.bool_yes,Igen:]</option>
                 <option value="N" >[:GRID.FILTER.bool_no,Nem:]</option>
                 <option value="*" >[:GRID.FILTER.bool_all,Összes:]</option>
+                <option value="**" >[:GRID.FILTER.bool_all_not_null,Összes, nem üres:]</option>
               </select>
             </div>
             <div class="TGrid-filter-container TGrid-filter-bool10 col-lg-8">
@@ -70,6 +73,7 @@
                 <option value="1" >[:GRID.FILTER.bool_yes,Igen:]</option>
                 <option value="0" >[:GRID.FILTER.bool_no,Nem:]</option>
                 <option value="-1" >[:GRID.FILTER.bool_all,Összes:]</option>
+                <option value="-2" >[:GRID.FILTER.bool_all_not_null,Összes, nem üres:]</option>
               </select>
             </div>
             <div class="TGrid-filter-container TGrid-filter-list col-lg-8">

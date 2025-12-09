@@ -41,6 +41,7 @@
                   <option value="I" >[:GRID.FILTER.bool_yes,Igen:]</option>
                   <option value="N" >[:GRID.FILTER.bool_no,Nem:]</option>
                   <option value="*" >[:GRID.FILTER.bool_all,Összes:]</option>
+                  <option value="**" >[:GRID.FILTER.bool_all_not_null,Összes, nem üres:]</option>
                 </select>
               </div>
 
@@ -49,6 +50,7 @@
                   <option value="Y" >[:GRID.FILTER.bool_yes,Igen:]</option>
                   <option value="N" >[:GRID.FILTER.bool_no,Nem:]</option>
                   <option value="*" >[:GRID.FILTER.bool_all,Összes:]</option>
+                  <option value="**" >[:GRID.FILTER.bool_all_not_null,Összes, nem üres:]</option>
                 </select>
               </div>
 
@@ -57,6 +59,7 @@
                   <option value="Y" >[:GRID.FILTER.bool_yes,Igen:]</option>
                   <option value="N" >[:GRID.FILTER.bool_no,Nem:]</option>
                   <option value="*" >[:GRID.FILTER.bool_all,Összes:]</option>
+                  <option value="**" >[:GRID.FILTER.bool_all_not_null,Összes, nem üres:]</option>
                 </select>
               </div>
 
@@ -65,6 +68,7 @@
                   <option value="1" >[:GRID.FILTER.bool_yes,Igen:]</option>
                   <option value="0" >[:GRID.FILTER.bool_no,Nem:]</option>
                   <option value="-1" >[:GRID.FILTER.bool_all,Összes:]</option>
+                  <option value="-2" >[:GRID.FILTER.bool_all_not_null,Összes, nem üres:]</option>
                 </select>
               </div>
 
