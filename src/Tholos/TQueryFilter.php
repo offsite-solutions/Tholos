@@ -113,7 +113,7 @@
                 $value
               )->format('Y-m-d');
               $r = DateTime::getLastErrors();
-              if ($r['warning_count'] > 0 || $r['error_count'] > 0) {
+              if ($r && ($r['warning_count'] > 0 || $r['error_count'] > 0)) {
                 throw new RuntimeException('');
               }
               $value = 'to_date(' . Eisodos::$dbConnectors->connector(Tholos::$app->findComponentByID($this->_parent_id)->getProperty('DBIndex'))->nullStr($value) . ",'" . $DBDateFormat . "')";
