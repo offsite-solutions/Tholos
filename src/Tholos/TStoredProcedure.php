@@ -75,7 +75,7 @@
             $boundParameters,
             $resultParameters
           );
-          Eisodos::$dbConnectors->connector($this->getProperty('DatabaseIndex'))->commit(); // TODO ha nincs TransactionMode akkor is?
+          // Eisodos::$dbConnectors->connector($this->getProperty('DatabaseIndex'))->commit(); // TODO ha nincs TransactionMode akkor is?
           
         } else {
           try {
