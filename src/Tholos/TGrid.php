@@ -1128,7 +1128,7 @@
         $column = Tholos::$app->findComponentByID($id);
         if ($column->getProperty('Exportable') === 'true'
           && Tholos::$app->checkRole($column)
-          && (Tholos::$app->findComponentByID($id)->getComponentType() === 'TGridColumn')) {
+          && Tholos::$app->findComponentByID($id)->getComponentType() === 'TGridColumn') {
           if (strtolower($type_) !== 'rawjson') {
             $exp_row .= ($exp_row === '' ? '' : $separator) . '"' . Eisodos::$translator->translateText($column->getProperty('Label')) . '"';
           }
@@ -1150,7 +1150,7 @@
           $column = Tholos::$app->findComponentByID($id);
           if ($column->getProperty('Exportable') === 'true'
             && Tholos::$app->checkRole($column)
-            && (Tholos::$app->findComponentByID($id)->getComponentType() === 'TGridColumn')) {
+            && Tholos::$app->findComponentByID($id)->getComponentType() === 'TGridColumn') {
             if (strtolower($type_) !== 'rawjson') {
               $exp_row .= ($exp_row === '' ? '' : $separator) . '"' . Eisodos::$translator->translateText($column->getProperty('Label')) . '"';
             }
