@@ -969,7 +969,7 @@
         $column = Tholos::$app->findComponentByID($id);
         if ($column->getProperty('Exportable') === 'true'
           && Tholos::$app->checkRole($column)
-          (Tholos::$app->findComponentByID($id)->getComponentType() === 'TGridColumn')) {
+          && Tholos::$app->findComponentByID($id)->getComponentType() === 'TGridColumn') {
           $exp_row .= ($exp_row === '' ? '' : $separator) . '"' . Eisodos::$translator->translateText($column->getProperty('Label')) . '"';
           $i++;
           /* @var array[] $columns
@@ -986,7 +986,7 @@
           $column = Tholos::$app->findComponentByID($id);
           if ($column->getProperty('Exportable') === 'true'
             && Tholos::$app->checkRole($column)
-            && (Tholos::$app->findComponentByID($id)->getComponentType() === 'TGridColumn')) {
+            && Tholos::$app->findComponentByID($id)->getComponentType() === 'TGridColumn') {
             $exp_row .= ($exp_row === '' ? '' : $separator) . '"' . Eisodos::$translator->translateText($column->getProperty('Label')) . '"';
             $i++;
             /* @var array[] $columns
