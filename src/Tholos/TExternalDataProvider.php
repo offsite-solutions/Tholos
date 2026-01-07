@@ -85,7 +85,7 @@
         foreach ($orderBys as $orderByX) {
           if ($orderByX != '') {
             $o_ = explode(' ', $orderByX);
-            if (D_isint($o_[0])) {
+            if (Eisodos::$utils->isInteger($o_[0])) {
               $orderBy['fieldIndex'] = $o_[0];
               foreach (Tholos::$app->findChildIDsByType($this, 'TDBField') as $dbFieldId) {
                 /* @var TDBField $dbField */
