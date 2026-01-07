@@ -279,14 +279,12 @@
           
           if ($this->getProperty("curlDebug") == 'true') {
             Tholos::$logger->debug(print_r($resultParameters, true), $this);
-            Tholos::$logger->debug(print_r($resultParameters[$this->getProperty('ResultParameter', 'result')], true), $this);
           } else {
             Tholos::$logger->trace(print_r($resultParameters, true), $this);
           }
           
           $this->setProperty('Opened', 'true');
           $this->setProperty('Result', $resultParameters[$this->getProperty('ResultParameter', 'result')], 'ARRAY');
-          Tholos::$logger->debug(print_r($this->getProperty('Result'),true), $this);
           $this->setProperty('ResultType', 'ARRAY');
           $this->setProperty('RowCount', count($resultParameters[$this->getProperty('ResultParameter', 'result')]));
           $this->setProperty('TotalRowCount', Eisodos::$utils->safe_array_value($resultParameters, $this->getProperty('TotalRowCountField'), $this->getProperty('RowCount')));

@@ -36,6 +36,7 @@
       } elseif ($this->getProperty('RowCount', '0') > 0) {
         if ($this->getProperty('ResultType', '') === 'ARRAY') {
           if (count($this->getProperty('Result', array())) > 0) {
+            Tholos::$logger->debug('Result is: '.print_r($this->getProperty('Result', array()),true), $this);
             $queryResult = $this->getProperty('Result', array())[0];
           } else {
             $queryResult = [];
