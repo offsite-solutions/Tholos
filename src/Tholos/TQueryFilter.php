@@ -110,13 +110,12 @@
                 $DBDateFormat = Eisodos::$parameterHandler->getParam($this->getProperty('DateFormatParameter', 'datetime') . 'Format');
               }
               try {
-                DateTime::createFromFormat('!' . $dateFormat,
-                  $value
-                )->format('Y-m-d');
+                $x = DateTime::createFromFormat('!' . $dateFormat, $value);
                 $r = DateTime::getLastErrors();
                 if ($r && ($r['warning_count'] > 0 || $r['error_count'] > 0)) {
                   throw new RuntimeException('');
                 }
+                $x->format('Y-m-d');
               } catch (Exception $e) {
                 Tholos::$logger->error('Date conversion error ' . $dateFormat . ' on value - ' . $value, $this);
                 throw new RuntimeException($e->getMessage());
