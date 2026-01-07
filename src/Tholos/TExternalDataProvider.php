@@ -55,7 +55,7 @@
       Tholos::$app->checkRole($this, true);
       
       if ($this->getProperty('Opened') == 'true') {
-        return ;
+        return;
       } // ha mar meg volt nyitva, akkor ne fusson le meg egyszer
       
       if ($this->getProperty('URL')) {
@@ -76,7 +76,7 @@
           Tholos::$logger->error('Missing required or malformed filter', $this);
           Tholos::$logger->trace('END', $this);
           
-          return ;
+          return;
         }
         
         $orderBy_ = [];
@@ -150,7 +150,7 @@
             header('X-Tholos-Error-Message-B64: ' . base64_encode('Authentication error'));
             Tholos::$app->eventHandler($this, 'onAuthError');
             
-            return ;
+            return;
           }
         }
         
@@ -164,7 +164,7 @@
           if (Tholos::$app->findComponentByID($initproc_id)->getProperty('Success') == 'false') {
             Tholos::$app->eventHandler($this, 'onInitError');
             
-            return ;
+            return;
           }
         }
         
@@ -267,10 +267,10 @@
             if (str_starts_with($httpResponse, 'HTTP/')) {
               $httpNormalResponse = explode("\r\n\r\n", $httpResponse, 2);
               if (count($httpNormalResponse) > 1) {
-                $resultParameters = json_decode((trim($httpNormalResponse[1])===''?'{}':$httpNormalResponse[1]), true, 512, JSON_THROW_ON_ERROR);
+                $resultParameters = json_decode((trim($httpNormalResponse[1]) === '' ? '{}' : $httpNormalResponse[1]), true, 512, JSON_THROW_ON_ERROR);
               }
             } else {
-              $resultParameters = json_decode((trim($httpResponse)===''?'{}':$httpResponse), true, 512, JSON_THROW_ON_ERROR);
+              $resultParameters = json_decode((trim($httpResponse) === '' ? '{}' : $httpResponse), true, 512, JSON_THROW_ON_ERROR);
             }
             $this->setProperty('Success', 'true');
           } else {
@@ -284,7 +284,7 @@
           }
           
           $this->setProperty('Opened', 'true');
-          $this->setProperty('Result', $resultParameters[$this->getProperty('ResultParameter', 'result')]);
+          $this->setProperty('Result', $resultParameters[$this->getProperty('ResultParameter', 'result')], 'ARRAY');
           $this->setProperty('ResultType', 'ARRAY');
           $this->setProperty('RowCount', count($resultParameters[$this->getProperty('ResultParameter', 'result')]));
           $this->setProperty('TotalRowCount', Eisodos::$utils->safe_array_value($resultParameters, $this->getProperty('TotalRowCountField'), $this->getProperty('RowCount')));
@@ -301,7 +301,7 @@
         
       }
       
-      return ;
+      return;
     }
     
     /**
