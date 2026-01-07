@@ -54,6 +54,8 @@
         $queryResult = array_change_key_case($queryResult);
       }
       
+      Tholos::$logger->debug('QueryResult '.print_r($queryResult,true), $this);
+      
       foreach (Tholos::$app->findChildIDsByType($this, 'TDBField') as $component) {
         $dbField = Tholos::$app->findComponentByID($component);
         if (!$dbField) {
