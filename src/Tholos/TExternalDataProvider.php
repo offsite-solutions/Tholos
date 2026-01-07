@@ -287,7 +287,7 @@
           $this->setProperty('Result', $resultParameters[$this->getProperty('ResultParameter', 'result')]);
           $this->setProperty('ResultType', 'ARRAY');
           $this->setProperty('RowCount', count($resultParameters[$this->getProperty('ResultParameter', 'result')]));
-          $this->setProperty('TotalRowCount', sa($resultParameters, $this->getProperty('TotalRowCountField'), $this->getProperty('RowCount')));
+          $this->setProperty('TotalRowCount', Eisodos::$utils->safe_array_value($resultParameters, $this->getProperty('TotalRowCountField'), $this->getProperty('RowCount')));
           
           Tholos::$app->eventHandler($this, 'onSuccess');
           
