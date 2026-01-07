@@ -30,7 +30,7 @@
         
         try {
           
-          Tholos::$logger->trace('Parse JSON ' . $nativeSQL);
+          Tholos::$logger->debug('Parse JSON ' . $nativeSQL);
           
           $result_ = json_decode($nativeSQL, true, 512, JSON_THROW_ON_ERROR);
           if (!$result_) {
