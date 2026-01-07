@@ -220,7 +220,7 @@
             CURLOPT_USERAGENT => 'Tholos (' . Eisodos::$parameterHandler->getParam('last_tholos_release', 'dev') . ')',
             CURLOPT_HTTPHEADER => array_merge(['X-Tholos-SessionID: ' . Eisodos::$parameterHandler->getParam('Tholos_sessionID'),
               'Expect:'], // JAVA Rest API nem jól kezeli a "Expect: 100-continue" headert
-              explode("\n", Eisodos::$templateEngine->replaceParamInString(implode("\n", explode("\n", $this->getProperty('HTTPRequestHeader'))))),
+              explode("\n", Eisodos::$templateEngine->replaceParamInString(implode("\n", explode('\n', $this->getProperty('HTTPRequestHeader'))))),
               Tholos::$app->roleManager->getHTTPRequestAuthHeaders()
             ),
             CURLOPT_HEADER => true,
