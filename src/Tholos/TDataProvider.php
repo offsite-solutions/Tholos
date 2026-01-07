@@ -49,7 +49,10 @@
       
       if (!empty($queryResult)) {
         if (!is_array($queryResult)) {
-          throw new RuntimeException('Query result should be an array: '.print_r($queryResult, true)."\n".print_r($resultRow_,true));
+          throw new RuntimeException('Query result should be an array: '.
+          print_r($queryResult, true)."\n".
+          print_r($resultRow_,true)."\n".
+          print_r($this->getProperty('Result', array()), true));
         }
         $queryResult = array_change_key_case($queryResult);
       }
