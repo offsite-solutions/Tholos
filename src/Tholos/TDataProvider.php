@@ -49,7 +49,7 @@
       
       if (!empty($queryResult)) {
         if (!is_array($queryResult)) {
-          throw new RuntimeException('Query result should be an array '.print_r($queryResult, true));
+          throw new RuntimeException('Query result should be an array: '.print_r($queryResult, true));
         }
         $queryResult = array_change_key_case($queryResult);
       }
