@@ -38,6 +38,9 @@
           if (count($this->getProperty('Result', array())) > 0) {
             // Tholos::$logger->debug('Result is: '.print_r($this->getProperty('Result', array()),true), $this);
             $queryResult = $this->getProperty('Result', array());
+            Tholos::$logger->debug('Result is 1: '.print_r($queryResult,true), $this);
+            Tholos::$logger->debug('Result is 2: '.print_r($queryResult[0],true), $this);
+            Tholos::$logger->debug('Result is 3: '.print_r($queryResult['0'],true), $this);
             $queryResult = $queryResult[0];
           } else {
             $queryResult = [];
