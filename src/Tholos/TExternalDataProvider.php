@@ -279,6 +279,7 @@
           
           if ($this->getProperty("curlDebug") == 'true') {
             Tholos::$logger->debug(print_r($resultParameters, true), $this);
+            Tholos::$logger->debug(print_r($resultParameters[$this->getProperty('ResultParameter', 'result')], true), $this);
           } else {
             Tholos::$logger->trace(print_r($resultParameters, true), $this);
           }
