@@ -48,6 +48,9 @@
       }
       
       if (!empty($queryResult)) {
+        if (!is_array($queryResult)) {
+          throw new RuntimeException('Query result should be an array '.$queryResult);
+        }
         $queryResult = array_change_key_case($queryResult);
       }
       
