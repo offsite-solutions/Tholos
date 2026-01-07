@@ -36,12 +36,7 @@
       } elseif ($this->getProperty('RowCount', '0') > 0) {
         if ($this->getProperty('ResultType', '') === 'ARRAY') {
           if (count($this->getProperty('Result', array())) > 0) {
-            // Tholos::$logger->debug('Result is: '.print_r($this->getProperty('Result', array()),true), $this);
-            $queryResult = $this->getProperty('Result', array());
-            Tholos::$logger->debug('Result is 1: '.print_r($queryResult,true), $this);
-            Tholos::$logger->debug('Result is 2: '.print_r($queryResult[0],true), $this);
-            Tholos::$logger->debug('Result is 3: '.print_r($queryResult['0'],true), $this);
-            $queryResult = $queryResult[0];
+            $queryResult = $this->getProperty('Result', array())[0];
           } else {
             $queryResult = [];
           }
@@ -54,10 +49,7 @@
       
       if (!empty($queryResult)) {
         if (!is_array($queryResult)) {
-          throw new RuntimeException('Query result should be an array: ' .
-            print_r($queryResult, true) . "\n" .
-            print_r($resultRow_, true) . "\n" .
-            print_r($this->getProperty('Result', array()), true));
+          $queryResult = [];
         }
         $queryResult = array_change_key_case($queryResult);
       }
