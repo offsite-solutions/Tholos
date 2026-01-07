@@ -109,12 +109,17 @@
                 $dateFormat = Eisodos::$parameterHandler->getParam('PHP' . $this->getProperty('DateFormatParameter', 'datetime') . 'Format');
                 $DBDateFormat = Eisodos::$parameterHandler->getParam($this->getProperty('DateFormatParameter', 'datetime') . 'Format');
               }
-              DateTime::createFromFormat('!' . $dateFormat,
-                $value
-              )->format('Y-m-d');
-              $r = DateTime::getLastErrors();
-              if ($r && ($r['warning_count'] > 0 || $r['error_count'] > 0)) {
-                throw new RuntimeException('');
+              try {
+                DateTime::createFromFormat('!' . $dateFormat,
+                  $value
+                )->format('Y-m-d');
+                $r = DateTime::getLastErrors();
+                if ($r && ($r['warning_count'] > 0 || $r['error_count'] > 0)) {
+                  throw new RuntimeException('');
+                }
+              } catch (Exception $e) {
+                Tholos::$logger->error('Date conversion error ' . $dateFormat . ' on value - ' . $value, $this);
+                throw new RuntimeException($e->getMessage());
               }
               $value = 'to_date(' . Eisodos::$dbConnectors->connector(Tholos::$app->findComponentByID($this->_parent_id)->getProperty('DBIndex'))->nullStr($value) . ",'" . $DBDateFormat . "')";
             } elseif ($dt === 'time') {
@@ -126,10 +131,15 @@
                 $DBDateFormat = Eisodos::$parameterHandler->getParam($this->getProperty('DateFormatParameter', 'datetime') . 'Format');
               }
               /* testing datetime and converts to microservice (universal) format */
-              $universalDt = DateTime::createFromFormat('!' . $dateFormat, $value);
-              $r = DateTime::getLastErrors();
-              if ($r['warning_count'] > 0 || $r['error_count'] > 0) {
-                throw new RuntimeException('');
+              try {
+                $universalDt = DateTime::createFromFormat('!' . $dateFormat, $value);
+                $r = DateTime::getLastErrors();
+                if ($r && ($r['warning_count'] > 0 || $r['error_count'] > 0)) {
+                  throw new RuntimeException('');
+                }
+              } catch (Exception $e) {
+                Tholos::$logger->error('Date conversion error ' . $dateFormat . ' on value - ' . $value, $this);
+                throw new RuntimeException($e->getMessage());
               }
               $JSONFilter['value'] = $universalDt->format(Eisodos::$parameterHandler->getParam($this->getProperty('NativeDataType', $dt) . '.SPFormat'));
               $value = 'to_date(' . Eisodos::$dbConnectors->connector(Tholos::$app->findComponentByID($this->_parent_id)->getProperty('DBIndex'))->nullStr($value) . ",'" . $DBDateFormat . "')";
