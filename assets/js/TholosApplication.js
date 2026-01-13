@@ -77,6 +77,18 @@ var Tholos = {
       var o = Tholos.getObject(target);
       return o.val();
     },
+    TLOV_getValue: function (sender, target, route, eventData) {
+      Tholos.trace("TLOV_getValue()", sender, target, route, eventData);
+      var o = Tholos.getObject(target);
+      var value = o.val();
+      if (value instanceof Array) {
+        if (value.length === 0) {
+          return null;
+        }
+        return JSON.stringify(value);
+      }
+      return value;
+    },
     TGrid_getValue: function (sender, target, route, eventData) {
       Tholos.trace("TGrid_getValue()", sender, target, route, eventData);
       var d = Tholos.getData(target);
