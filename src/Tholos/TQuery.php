@@ -311,10 +311,14 @@
               Tholos::$logger->debug("SQL query opening", $this);
               $this->openDatabase(true);
               try {
-                Eisodos::$dbConnectors->connector($this->getProperty('DatabaseIndex'))->query(
-                  RT_ALL_ROWS,
-                  $sql,
-                  $back);
+                if ($this->getProperty('StructureInfoOnly', 'false') != 'true') {
+                  Eisodos::$dbConnectors->connector($this->getProperty('DatabaseIndex'))->query(
+                    RT_ALL_ROWS,
+                    $sql,
+                    $back);
+                } else {
+                  $back=[];
+                }
                 
                 if ($this->getProperty('StructureInfoOnly', 'false') == 'true') {
                   Tholos::$logger->debug('Structure written to cache for grid', $this);

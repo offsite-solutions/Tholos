@@ -1516,70 +1516,61 @@ var Tholos = {
 
             var markers = [];
             $.each(JSON.parse(data.data), function (markerIdx, markerData) {
-              const marker = {};
-              marker.tholos = {
-                map: map,
-                mapSource: mapSource,
-                mapName: md.name,
-                mapSourceName: msd.name,
-                lat: markerData[msd.fieldlatitude],
-                lng: markerData[msd.fieldlongitude],
-                listSource: msd.listsource,
-                listSourceRoute: msd.listsourceroute,
-                id: markerData[msd.fieldid]
-              };
-              marker.infowindow = new google.maps.InfoWindow({
-                content: markerData[msd.fieldinfowindowcontent]
-              });
-              if (msd.fieldinfowindowzindex) {
-                marker.infowindow.setZIndex(markerData[msd.fieldinfowindowzindex]);
-              }
-              if (msd.fieldicon) {
-                marker.img = document.createElement("img");
-                marker.img.src = markerData[msd.fieldicon];
-              } else marker.img = null;
-              marker.element = new AdvancedMarkerElement({
-                map: window["map_" + md.name],
-                position: {lat: +markerData[msd.fieldlatitude], lng: +markerData[msd.fieldlongitude]},
-                content: marker.img
-              });
-              if (msd.fieldtitle) {
-                marker.element.title = markerData[msd.fieldtitle];
-                const h = document.createElement("h3");
-                h.innerHTML = markerData[msd.fieldtitle];
-                marker.infowindow.setHeaderContent(h);
-                marker.tholos.title = markerData[msd.fieldtitle];
-              }
-              if (msd.zindex) {
-                marker.element.zIndex = msd.zindex;
-              }
-              marker.element.addListener('click', ((infowindow, element, tholos) => {
-                return () => {
-                  if (window.currentInfoWindow != null) {
-                    window.currentInfoWindow.close();
-                  }
-                  infowindow.open({
-                    anchor: element,
-                    map: window["map_" + md.name],
-                  });
-                  window.currentInfoWindow = infowindow;
-                  Tholos.trace("TMap_refresh(): Triggering onMarkerClick", tholos);
-                  mo.trigger("onMarkerClick", tholos);
+              if (markerData[msd.fieldlatitude] && markerData[msd.fieldlongitude]) {
+                const marker = {};
+                marker.tholos = {
+                  map: map,
+                  mapSource: mapSource,
+                  mapName: md.name,
+                  mapSourceName: msd.name,
+                  lat: markerData[msd.fieldlatitude],
+                  lng: markerData[msd.fieldlongitude],
+                  listSource: msd.listsource,
+                  listSourceRoute: msd.listsourceroute,
+                  id: markerData[msd.fieldid]
                 };
-              })(marker.infowindow, marker.element, marker.tholos));
-
-              markers.push(marker);
-              /*
+                marker.infowindow = new google.maps.InfoWindow({
+                  content: markerData[msd.fieldinfowindowcontent]
+                });
+                if (msd.fieldinfowindowzindex) {
+                  marker.infowindow.setZIndex(markerData[msd.fieldinfowindowzindex]);
+                }
+                if (msd.fieldicon) {
+                  marker.img = document.createElement("img");
+                  marker.img.src = markerData[msd.fieldicon];
+                } else marker.img = null;
+                marker.element = new AdvancedMarkerElement({
+                  map: window["map_" + md.name],
+                  position: {lat: +markerData[msd.fieldlatitude], lng: +markerData[msd.fieldlongitude]},
+                  content: marker.img
+                });
                 if (msd.fieldtitle) {
-                  marker.title = markerData[msd.fieldtitle];
+                  marker.element.title = markerData[msd.fieldtitle];
+                  const h = document.createElement("h3");
+                  h.innerHTML = markerData[msd.fieldtitle];
+                  marker.infowindow.setHeaderContent(h);
                   marker.tholos.title = markerData[msd.fieldtitle];
                 }
-
-                if (msd.fieldlabel) {
-                  marker.label = markerData[msd.fieldlabel];
+                if (msd.zindex) {
+                  marker.element.zIndex = msd.zindex;
                 }
+                marker.element.addListener('click', ((infowindow, element, tholos) => {
+                  return () => {
+                    if (window.currentInfoWindow != null) {
+                      window.currentInfoWindow.close();
+                    }
+                    infowindow.open({
+                      anchor: element,
+                      map: window["map_" + md.name],
+                    });
+                    window.currentInfoWindow = infowindow;
+                    Tholos.trace("TMap_refresh(): Triggering onMarkerClick", tholos);
+                    mo.trigger("onMarkerClick", tholos);
+                  };
+                })(marker.infowindow, marker.element, marker.tholos));
 
-                */
+                markers.push(marker);
+              }
             });
 
             mapObj.tholos[msd.name].push(markers);
