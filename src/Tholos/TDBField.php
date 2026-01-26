@@ -90,7 +90,10 @@
           $this->setProperty('Value',
             $dateValue, 'STRING', '', $raw_
           );
-        } elseif ($this->getProperty('DataType', 'string') === 'bool' && Eisodos::$parameterHandler->eq('Tholos.UseLogicalBool', 'true')
+        } elseif ($this->getProperty('DataType', 'string') === 'bool'
+          && (Eisodos::$parameterHandler->eq('Tholos.UseLogicalBool', 'true')
+            || str_ends_with($this->getProperty('NativeDataType', ''), '.BOOL')
+          )
         ) {
           if (in_array($value_, [1, '1', 'Y', 'I', 'true', 't', true], true)) {
             $this->setProperty('Value', 'true', 'STRING', '', $raw_);
