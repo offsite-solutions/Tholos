@@ -87,7 +87,7 @@ var Tholos = {
         }
         // skip empty values - select2 bug fix
         return JSON.stringify(value.filter(function (item) {
-          return item != null;
+          return item != null && item !== "";
         }));
       }
       return value;
