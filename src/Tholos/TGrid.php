@@ -1664,7 +1664,7 @@
         if ($this->getProperty('RowsPerPage', '0') === '0') {
           $pageCount = 1;
         } else {
-          $pageCount = ceil((1 * $this->getProperty('TotalRowCount', '0')) / $this->getProperty('RowsPerPage', '0'));
+          $pageCount = (int)ceil((1 * $this->getProperty('TotalRowCount', '0')) / $this->getProperty('RowsPerPage', '0'));
         }
         $activePage = 1 * ($this->getProperty('ActivePage', '1'));
         $this->setProperty('PageCount', $pageCount);
