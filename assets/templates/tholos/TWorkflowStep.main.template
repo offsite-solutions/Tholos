@@ -6,7 +6,7 @@ _function_name=Tholos\TholosCallback::_eqs
 param=event_onExecute
 value=
 true=
-false=$('#$prop_id').on('onExecute', function (event,eventData) { $event_onExecute });
+false=$('#$prop_id').on('onExecute', function (event,eventData) { if ($event_onExecute) { $('#$prop_id').trigger('onSuccess'); } else { $('#$prop_id').trigger('onError'); } });
 %FUNC%>
 <%FUNC%
 _function_name=Tholos\TholosCallback::_eqs
