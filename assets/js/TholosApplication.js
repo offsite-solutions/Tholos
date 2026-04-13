@@ -1387,6 +1387,7 @@ var Tholos = {
       var o = Tholos.getObject(target);
       Tholos.trace("TWorkflowStep_execute(): Triggering onExecute");
       o.trigger("onExecute", eventData);
+      o.trigger("onFinished", eventData);
     }
     ,
     TWizardStep_activate: function (sender, target, route, eventData) {

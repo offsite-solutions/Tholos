@@ -6,7 +6,7 @@ _function_name=Tholos\TholosCallback::_eqs
 param=event_onExecute
 value=
 true=
-false=$('#$prop_id').on('onExecute', function (event,eventData) { if ($event_onExecute) { $('#$prop_id').trigger('onSuccess'); } else { $('#$prop_id').trigger('onError'); } });
+false=$('#$prop_id').on('onExecute', function (event,eventData) { $event_onExecute });
 %FUNC%>
 <%FUNC%
 _function_name=Tholos\TholosCallback::_eqs
@@ -35,5 +35,12 @@ param=event_onResume
 value=
 true=
 false=$('#$prop_id').on('onResume', function (event,eventData) { $event_onResume });
+%FUNC%>
+<%FUNC%
+_function_name=Tholos\TholosCallback::_eqs
+param=event_onFinished
+value=
+true=
+false=$('#$prop_id').on('onFinished', function (event,eventData) { $event_onFinished });
 %FUNC%>
 </script>
