@@ -24,7 +24,8 @@ $templateabs_tholos__TControl_customevents
       paragraphStyles: app_rte_paragraphStyles,
       imageStyles: app_rte_imageStyles,
       linkStyles: app_rte_linkStyles,
-      htmlTemplates: app_rte_htmlTemplates
+      htmlTemplates: app_rte_htmlTemplates,
+      readonly: [%_function_name=Tholos\TholosCallback::_eqs;param=prop_readonly;value=false;true=false;false=true%]
     })
   );
 
