@@ -1284,7 +1284,7 @@ var Tholos = {
       var sd = Tholos.getData(sender);
 
       if (!d || !sd || !d.validator || d.submitting) {
-        Tholos.error("TForm_validate(): target or validator is undefined. Aborting...");
+        // Tholos.error("TForm_validate(): target or validator is undefined. Aborting...");
         return;
       }
 
