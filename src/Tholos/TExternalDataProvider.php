@@ -30,7 +30,12 @@
           $filter->init();
           $filter->initValue($sender);
           if ($filter->getProperty('JSONFilter', false) !== false) {
-            $filter_array[] = $filter->getProperty('JSONFilter');
+            $generatedFilter = $filter->getProperty('JSONFilter');
+            if (!in_array($generatedFilter['fieldName'], array_column($filter_array, 'fieldName'), true)) {
+              $filter_array[] = $generatedFilter;
+            } else {
+              Tholos::$logger->debug('Skipped duplicate filter with field name: ' . $generatedFilter['fieldName'], $this);
+            }
           }
         } catch (Exception $e) {
           Tholos::$logger->error('Build filter error: ' . $e->getMessage(), $this);
@@ -220,7 +225,7 @@
             CURLOPT_USERAGENT => 'Tholos (' . Eisodos::$parameterHandler->getParam('last_tholos_release', 'dev') . ')',
             CURLOPT_HTTPHEADER => array_merge(['X-Tholos-SessionID: ' . Eisodos::$parameterHandler->getParam('Tholos_sessionID'),
               'Expect:'], // JAVA Rest API nem jól kezeli a "Expect: 100-continue" headert
-              explode("\n", Eisodos::$templateEngine->replaceParamInString(implode("\n", explode('\n', str_replace('_dollar_','$',$this->getProperty('HTTPRequestHeader')))))),
+              explode("\n", Eisodos::$templateEngine->replaceParamInString(implode("\n", explode('\n', str_replace('_dollar_', '$', $this->getProperty('HTTPRequestHeader')))))),
               Tholos::$app->roleManager->getHTTPRequestAuthHeaders()
             ),
             CURLOPT_HEADER => true,
