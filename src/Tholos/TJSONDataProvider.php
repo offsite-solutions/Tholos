@@ -67,7 +67,12 @@
      * @return array
      */
     public function buildFilters($sender): array {
-      return [];
+      $parent=Tholos::$app->findComponentByID($this->_parent_id);
+      if (!$parent) {
+        $parent=Tholos::$app->instantiateComponent($this->_parent_id, false);
+        $parent?->init();
+      }
+      return $parent->buildFilters($sender);
     }
     
     /**
@@ -88,7 +93,12 @@
      * @inheritDoc
      */
     public function run(?TComponent $sender):void {
-      //
+      $parent=Tholos::$app->findComponentByID($this->_parent_id);
+      if (!$parent) {
+        $parent=Tholos::$app->instantiateComponent($this->_parent_id, false);
+        $parent?->init();
+      }
+      $parent->run($sender);
     }
     
     /**
