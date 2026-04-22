@@ -69,7 +69,7 @@
     public function buildFilters($sender): array {
       $parent=Tholos::$app->findComponentByID($this->_parent_id);
       if (!$parent) {
-        $parent=Tholos::$app->instantiateComponent($this->_parent_id, false);
+        $parent=Tholos::$app->instantiateComponent($this->_parent_id, true);
         $parent?->init();
       }
       return $parent->buildFilters($sender);
@@ -95,7 +95,7 @@
     public function run(?TComponent $sender):void {
       $parent=Tholos::$app->findComponentByID($this->_parent_id);
       if (!$parent) {
-        $parent=Tholos::$app->instantiateComponent($this->_parent_id, false);
+        $parent=Tholos::$app->instantiateComponent($this->_parent_id, true);
         $parent?->init();
       }
       $parent->run($sender);
