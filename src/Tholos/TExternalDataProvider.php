@@ -31,7 +31,7 @@
           $filter->initValue($sender);
           if ($filter->getProperty('JSONFilter', false) !== false) {
             $generatedFilter = $filter->getProperty('JSONFilter');
-            if (!in_array($generatedFilter['fieldName'], array_column($filter_array, 'fieldName'), true)) {
+            if (!in_array($generatedFilter['fieldName'], array_column($this->getProperty('JSONFilters', []), 'fieldName'), true)) {
               $filter_array[] = $generatedFilter;
             } else {
               Tholos::$logger->debug('Skipped duplicate filter with field name: ' . $generatedFilter['fieldName'], $this);
