@@ -62,6 +62,15 @@
     }
     
     /**
+     * Call parent's buildfilter method - usually TQuery or TExternalDataProvider
+     * @param $sender
+     * @return array
+     */
+    public function buildFilters($sender): array {
+      return Tholos::$app->findComponentByID($this->_parent_id)->buildFilters($sender);
+    }
+    
+    /**
      * @inheritDoc
      */
     public function autoOpen():void {
