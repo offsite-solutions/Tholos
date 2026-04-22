@@ -67,7 +67,7 @@
      * @return array
      */
     public function buildFilters($sender): array {
-      return Tholos::$app->findComponentByID($this->_parent_id)->buildFilters($sender);
+      return [];
     }
     
     /**
