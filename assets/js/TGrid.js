@@ -187,6 +187,8 @@ function TGrid_submit(sender, target, urldata) {                                
         },
         error: function (response, textStatus, errorThrown) {
           if (response.status === 401) location.href = '/';
+          $("#container_" + target).fadeTo(0, 1);
+          $("#loader_" + target).hide();
           Tholos.action(false, sender, target);
         }
       });
@@ -207,6 +209,8 @@ function TGrid_submit(sender, target, urldata) {                                
         },
         error: function (response, textStatus, errorThrown) {
           if (response.status === 401) location.href = '/';
+          $("#container_" + target).fadeTo(0, 1);
+          $("#loader_" + target).hide();
           Tholos.action(false, sender, target);
         }
       });
