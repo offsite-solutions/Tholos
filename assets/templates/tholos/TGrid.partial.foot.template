@@ -1,5 +1,11 @@
 [%_function_name=Tholos\TholosCallback::_case;param=prop_gridhtmltype;div=tholos/TGrid.partial.div.foot;div-responsive=tholos/TGrid.partial.divresponsive.foot;else=tholos/TGrid.partial.table.foot%]
-$showdataerror
+<%FUNC%
+_function_name=Tholos\TholosCallback::_eqs
+param=showdataerror
+value=
+true=
+false=<div id="$prop_id-showdataerror" class="col-md-12"><div class="alert alert-danger mb-3" style="margin-bottom: 0px"><i class="fa fa-exclamation-triangle text-danger"></i> [:TGRID.ERROR.DATASOURCE,Adatok betöltése sikertelen:]</div></div>
+%FUNC%>
 </div>
 
 </div>
