@@ -81,4 +81,13 @@
   }
 }
 
+@media screen and (max-width: 580px) {
+  .TGrid-title {
+    display: block;
+    margin-left: 0;
+    margin-top: 5px;
+    margin-bottom: 5px;
+  }
+}
+
 /*# sourceMappingURL=TGrid-responsive.css.map */

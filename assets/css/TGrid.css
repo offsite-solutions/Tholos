@@ -327,3 +327,14 @@ table.TGrid-transposed td.TGrid-changed {
 .table:not(.table-bordered) tr:last-child, .table:not(.table-bordered) th:last-child, .table:not(.table-bordered) td:last-child {
   padding-right: 3px;
 }
+
+/* title */
+
+.TGrid-title {
+  display: inline-block;
+  font-weight: 600;
+  margin-left: 10px;
+  vertical-align: middle;
+  font-size: 1rem;
+  line-height: 1.5;
+}
