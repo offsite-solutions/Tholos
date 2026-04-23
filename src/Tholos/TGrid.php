@@ -1463,6 +1463,12 @@
         }
         $listSource->run($this);
       }
+
+      $hasDataError = Tholos::$app->responseErrorMessage !== '';
+      if ($hasDataError) {
+        Tholos::$app->responseErrorMessage = '';
+      }
+
       $this->setProperty('RowCount', $listSource->getProperty('RowCount', '0'));
       $this->setProperty('TotalRowCount', $listSource->getProperty('TotalRowCount', '0'));
       
@@ -1728,7 +1734,8 @@
               && !$selection_found
               && $this->getProperty('DBField', '') !== ''
               && $this->getProperty('LookupValue', '') !== '') ? $this->getProperty('LabelSelectionOutOfList', '') : ''),
-            'cacheinfo' => $cacheInfo
+            'cacheinfo' => $cacheInfo,
+            'showdataerror' => $hasDataError ? 'true' : ''
           )
         );
       } else if ($this->getProperty('ViewMode') === 'CHART') {
