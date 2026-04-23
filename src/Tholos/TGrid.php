@@ -156,8 +156,10 @@
         }
         if (Eisodos::$parameterHandler->neq('TGrid_SortingDirection_', '')) {
           $this->setProperty('SortingDirection', Eisodos::$parameterHandler->getParam('TGrid_SortingDirection_', 'ASC'));
-        } else {
+        } elseif ($this->getPropertyComponentId('SortedBy', false) !== false) {
           $this->setProperty('SortingDirection', Tholos::$app->findComponentByID($this->getPropertyComponentId('SortedBy'))->getProperty('SortingDirection', 'ASC'));
+        } else {
+          $this->setProperty('SortingDirection', 'ASC');
         }
         
         if ($this->getPropertyComponentId('SortedBy', false) !== false) {
