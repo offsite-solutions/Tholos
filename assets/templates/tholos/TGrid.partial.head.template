@@ -47,7 +47,7 @@ $filterslots
   <div class="col-xs-12">
     <div class="row">
     <div class="col-md-6">
-$filters
+$filters[%_function_name=Tholos\TholosCallback::_eqs;param=prop_title;value=;true=;false= <span class="TGrid-title">$prop_title</span>%]
     </div>
     <div class="col-md-6">
 $templateabs_tholos__TGrid_export
