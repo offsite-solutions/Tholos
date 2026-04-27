@@ -1348,7 +1348,13 @@
       }
       
       // setting value
-      if ($this->getProperty('LookupValue', '') === '') {
+      // when the master grid changed, the JS clears TGrid_Value_ and signals
+      // TGrid_MasterValueChanged_=T; in that case we must override the stale
+      // @this.DBField.Value default of LookupValue, otherwise the previously
+      // selected detail row resurrects after the master changes.
+      if (Eisodos::$parameterHandler->eq('TGrid_MasterValueChanged_', 'T')) {
+        $this->setProperty('LookupValue', '');
+      } elseif ($this->getProperty('LookupValue', '') === '') {
         $this->setProperty('LookupValue', Eisodos::$parameterHandler->getParam('TGrid_Value_'));
       }
       $this->setProperty('Value', $this->getProperty('LookupValue', ''));
@@ -1472,7 +1478,10 @@
       }
 
       $this->setProperty('RowCount', $listSource->getProperty('RowCount', '0'));
-      $this->setProperty('TotalRowCount', $listSource->getProperty('TotalRowCount', '0'));
+      $this->setProperty('TotalRowCount',
+        (integer)$this->getProperty('RowsPerPage', '0') > 0
+          ? $listSource->getProperty('TotalRowCount', '0')
+          : $listSource->getProperty('RowCount', '0'));
       
       $subComponents = Tholos::$app->findChildIDsByType($this, 'TComponent');
       
@@ -1672,7 +1681,7 @@
         if ($this->getProperty('RowsPerPage', '0') === '0') {
           $pageCount = 1;
         } else {
-          $pageCount = (int)ceil((1 * $this->getProperty('TotalRowCount', '0')) / $this->getProperty('RowsPerPage', '0'));
+          $pageCount = max(1, (int)ceil((1 * $this->getProperty('TotalRowCount', '0')) / $this->getProperty('RowsPerPage', '0')));
         }
         $activePage = 1 * ($this->getProperty('ActivePage', '1'));
         $this->setProperty('PageCount', $pageCount);
