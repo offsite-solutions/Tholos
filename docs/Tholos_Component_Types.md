@@ -2347,6 +2347,8 @@ TGrid
 | RowStyle | STRING | No | No | No |  |  |  |
 | Scrollable | BOOLEAN | Yes | No | No | @(parameter).Tholos.TGrid.Scrollable\|false |  |  |
 | Selectable | BOOLEAN | Yes | No | Yes | false |  |  |
+| SelectedCount | NUMBER | No | Yes | Yes |  |  | Count of selected items when Multiselect is on |
+| SelectedValues | TEXT | No | Yes | Yes |  |  | String of a JSON array with selected values |
 | ShowCacheInfo | BOOLEAN | Yes | No | Yes | true |  |  |
 | ShowExportButton | BOOLEAN | Yes | No | Yes | true |  | Show export button |
 | ShowRefreshButton | BOOLEAN | Yes | No | Yes | true |  | Show or hide refresh button |
