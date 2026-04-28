@@ -363,4 +363,5 @@ table.TGrid-transposed td.TGrid-changed {
 .TGrid-multiselect-checkbox {
   cursor: pointer;
   transform: scale(1.1);
+  accent-color: #888;
 }
