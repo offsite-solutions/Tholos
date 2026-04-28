@@ -73,11 +73,14 @@
      * @var bool
      */
     private bool $reloadStateNeeded = false;
-    
+
     /**
      * @var string
      */
     private $origOrderBy = "";
+
+    /** @var string[] decoded selection set; rebuilt from SelectedValues at the start of render() */
+    private array $selectedValuesArray = [];
     
     /**
      * @throws Exception Throws exception
@@ -94,7 +97,11 @@
       $this->setProperty('cellHeadType', $this->getProperty('GridHTMLType') === 'table' ? 'th' : 'div');
       $this->setProperty('cellType', $this->getProperty('GridHTMLType') === 'table' ? 'td' : 'div');
       $this->setProperty('cellRowType', $this->getProperty('GridHTMLType') === 'table' ? 'tr' : 'div');
-      
+
+      // MultiSelect runtime state defaults — overwritten below if the post carries values
+      $this->setProperty('SelectedValues', '[]');
+      $this->setProperty('SelectedCount', '0');
+
       if ($this->getProperty('GridHTMLType') !== 'table') {
         $this->setProperty('ShowTransposeCheckbox', 'false');
         $this->setProperty('ShowScrollCheckbox', 'false');
@@ -190,7 +197,20 @@
       if (Eisodos::$parameterHandler->neq('TGrid_MasterValue_', '')) {
         $this->setProperty('MasterValue', Eisodos::$parameterHandler->getParam('TGrid_MasterValue_'));
       }
-      
+
+      if (Eisodos::$parameterHandler->neq('TGrid_Selection_', '')) {
+        $raw = Eisodos::$parameterHandler->getParam('TGrid_Selection_');
+        $decoded = json_decode($raw, true);
+        if (is_array($decoded)) {
+          $this->setProperty('SelectedValues', $raw);
+          $this->setProperty('SelectedCount', (string)count($decoded));
+        } else {
+          Tholos::$logger->warning('TGrid_Selection_ payload is not a JSON array, ignored', $this);
+          $this->setProperty('SelectedValues', '[]');
+          $this->setProperty('SelectedCount', '0');
+        }
+      }
+
       if (Eisodos::$parameterHandler->neq('TGrid_ViewMode_', '')) {
         $this->setProperty('ViewMode', Eisodos::$parameterHandler->getParam('TGrid_ViewMode_'));
       }
@@ -1289,11 +1309,14 @@
      */
     
     public function render(?TComponent $sender, string $content): string {
-      
+
       Tholos::$app->eventHandler($this, 'onBeforeRender');
-      
+
       $result = '';
-      
+
+      $decodedSelection = json_decode($this->getProperty('SelectedValues', '[]'), true);
+      $this->selectedValuesArray = is_array($decodedSelection) ? array_map('strval', $decodedSelection) : [];
+
       Tholos::$logger->debug('render start', $this);
       if (!Tholos::$app->checkRole($this)) {
         return '';
