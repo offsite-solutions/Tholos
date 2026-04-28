@@ -14,9 +14,11 @@ Let TGrid present a checkbox column when `MultiSelect=true`. The user selects/de
 |---|---|---|---|
 | `MultiSelect` (property) | BOOLEAN | `false` | Master switch. When `true`, render the checkbox column, footer indicator, and clear button. |
 | `SelectedValues` (property, runtime, hidden data) | TEXT | `[]` (the literal two-character JSON empty array) | JSON array string of currently selected `DBField` values. Server- and client-readable; round-trips on every AJAX refresh. |
-| `LabelSelected` (property) | STRING | `[:GRID.SELECTED,Kiválasztva: %s:]` | Translatable footer label; `%s` is replaced with the count. |
+| `SelectedCount` (property, runtime, hidden data) | NUMBER | `0` | Size of `SelectedValues` parsed array; exposed for templates as `$prop_selectedcount`. |
 | `onSelectionChange` (event, GUI) | — | — | Fires after every checkbox toggle, select-all-visible, or clear-all action. |
 | `getValues()` (method, JS) | returns `string[]` | — | Returns the parsed selection array. `getValue()` is unchanged and still returns `LookupValue`. |
+
+The footer's "Kiválasztva: N" label is rendered directly in the multiselect-footer template via the existing language-tag mechanism: `[:GRID.SELECTED,Kiválasztva:]: $prop_selectedcount`. No new label property is needed — translations live in the language-tag store like every other GRID.* tag.
 
 `Selectable`, `LookupValue`, `Value`, and the existing `onChange` event are not modified — single-row "current row" semantics are preserved so a multi-select grid can still drive child master/detail grids.
 
@@ -31,13 +33,13 @@ JS owns a `Set<string>` per grid as the runtime source of truth, mirrored into a
 1. User toggles a body checkbox / clicks header tri-state / clicks clear-all.
 2. JS updates the Set, writes `JSON.stringify([...set])` into `TGrid_Selection_`, refreshes footer indicator, refreshes header tri-state icon, fires `onSelectionChange`.
 3. (Sort / filter / page / refresh) Helper form submits with the up-to-date hidden input.
-4. PHP parses `SelectedValues` from the post param, clears it if `TGrid_MasterValueChanged_=T` (existing flag, see TGrid.php:1355), and exposes `IsSelected` per row to the row template.
-5. After HTML swap, JS re-reads the hidden input and rebuilds the Set (the in-memory state is now redundant but matches the wire), then re-runs `updateHeaderIcon` and `updateFooter`.
+4. PHP parses `SelectedValues` from the post param and exposes `IsSelected` per row to the row template. Master-change clearing happens client-side (see step in `TGrid_ready` wiring below), so the post arrives empty when a master change just fired.
+5. After HTML swap, `TGrid_ready(formId_)` re-reads the hidden input, re-binds checkbox handlers, and runs `TGrid_updateHeaderIcon` + `TGrid_updateFooter`.
 
 ### Why this approach
 
 It mirrors the existing `LookupValue` / `TGrid_Value_` pattern that already drives single-row selection, so:
-- Master change clearing reuses the existing `TGrid_MasterValueChanged_` plumbing.
+- Master change clearing piggybacks on the existing `masterDataChange` jQuery handler in `TGrid_ready` — same place that already wipes `TGrid_Value_`.
 - AJAX refresh logic is unchanged — the existing helper form simply carries one extra field on the same request; no new endpoint, no new partial route.
 - Server-rendered `checked` removes flicker that a pure-client approach would have.
 
@@ -47,10 +49,11 @@ Trade-off: the selection array travels in every refresh request. Acceptable: typ
 
 **File: `src/Tholos/TGrid.php`**
 
-- In the existing pre-render block (around the `LookupValue` master-change handling at line 1355), read `TGrid_Selection_<id>` from the parameter handler into the `SelectedValues` property. Clear it (set to `[]`) when `TGrid_MasterValueChanged_=T`.
+- In the existing pre-render block (around the `LookupValue` master-change handling at line 1355), read `TGrid_Selection_<id>` from the parameter handler into the `SelectedValues` property. No server-side master-clear is needed — the client clears `TGrid_Selection_` in the existing `masterDataChange` handler (TGrid.js:582) before the refresh fires, so the request arrives with an already-empty array.
 - Decode `SelectedValues` once into a PHP array; keep it on the TGrid instance for fast per-row lookup.
 - During row iteration (in the row-rendering path that already emits `selectionoutoflist` and per-row template vars), set a per-row `IsSelected` template var: `IsSelected = in_array($rowDBFieldValue, $selectedValuesArray, true) ? 'true' : 'false'`.
-- When `MultiSelect=true`, expose one extra template var at table foot: `SelectedCount` (size of the parsed array). The tri-state header icon is rendered as a static initial state (`fa fa-square-o text-muted`) — JS recomputes the correct state on `init` after HTML swap. Keeping this single-owner avoids server/client divergence on what counts as "all visible".
+- Set the `SelectedCount` runtime property to `count($selectedValuesArray)` so the footer template can read it as `$prop_selectedcount`.
+- The tri-state header icon is rendered as a static initial state (`fa fa-square-o text-muted`) — JS recomputes the correct state in `TGrid_ready` after every HTML swap. Keeping this single-owner avoids server/client divergence on what counts as "all visible".
 
 **Templates (new):**
 - `assets/templates/tholos/TGrid.partial.multiselect.head.template` — renders the `<th>` containing the tri-state header icon.
@@ -66,26 +69,34 @@ The checkbox column is rendered inline at the template level rather than as a re
 
 ## Client-Side (TGrid.js)
 
-New module section under `tgrid` (object literal):
+Add new flat top-level functions following the existing `TGrid_*` naming pattern (no module / object literal). All operate on `formId_` and read/write the `Set<string>` of selections via the hidden input `#helper_<formId_> #TGrid_Selection_`:
 
 ```
-tgrid.multiSelect = {
-  init(gridId)                  // wire DOM listeners, rebuild Set from hidden input
-  toggle(gridId, value)         // single-row checkbox toggle
-  selectVisible(gridId)         // header icon → check all visible rows
-  deselectVisible(gridId)       // header icon → uncheck all visible rows
-  clearAll(gridId)              // footer button → empty Set, refresh grid
-  isSelected(gridId, value)     // helper for tests/console
-  getValues(gridId)             // returns Array.from(set)
-  updateHeaderIcon(gridId)      // recompute & swap fa-square-o / fa-minus-square / fa-check-square
-  updateFooter(gridId)          // write "N selected" + show/hide clear button
-  fireSelectionChange(gridId)   // invoke configured onSelectionChange handler
-}
+TGrid_toggleSelection(formId_, value_)        // single-row checkbox toggle
+TGrid_selectVisible(formId_)                  // header tri-state → check all visible rows
+TGrid_deselectVisible(formId_)                // header tri-state → uncheck all visible rows
+TGrid_clearSelection(formId_)                 // footer clear button → empty array, refresh grid
+TGrid_getValues(formId_)                      // returns parsed JS array
+TGrid_isSelected(formId_, value_)             // helper used by handlers and console
+TGrid_updateHeaderIcon(formId_)               // recompute fa-square-o / fa-minus-square / fa-check-square
+TGrid_updateFooter(formId_)                   // write count into the multiselect footer span + toggle clear button visibility
 ```
 
-Hooked into the existing AJAX-refresh callback so `init` runs after every HTML swap.
+`onSelectionChange` is invoked through the standard Tholos event handler the same way the existing TGrid events are fired (e.g., `Tholos.eventHandler(formId_, formId_, 'TGrid', 'selectionchange')`) — no helper wrapper needed.
 
-`getValues(gridId)` is exposed at the grid-instance level so user JS can call `tgrid_<id>.getValues()` symmetrically with the existing `getValue()`.
+### Wiring into `TGrid_ready(formId_)`
+
+`TGrid_ready` (TGrid.js:568) is the existing per-grid init hook that runs after every HTML swap. The multiselect bootstrap goes there:
+
+1. After existing logic, if `MultiSelect=true`:
+   - Read the `TGrid_Selection_` hidden input, treat as the post-render source of truth.
+   - Bind body-checkbox `change` handlers → `TGrid_toggleSelection`.
+   - Bind header tri-state icon `click` → `TGrid_selectVisible` / `TGrid_deselectVisible` (depending on current state).
+   - Bind footer clear button `click` → `TGrid_clearSelection`.
+   - Call `TGrid_updateHeaderIcon(formId_)` and `TGrid_updateFooter(formId_)` for initial state.
+2. In the existing `masterDataChange` handler (TGrid.js:582), alongside the line that clears `TGrid_Value_` (line 585), also clear `TGrid_Selection_` (write `[]`) so master change wipes both single and multi selection in one place — no separate `MasterValueChanged_` handling needed in the multiselect functions.
+
+`TGrid_getValues(formId_)` mirrors the existing `TGrid_*` access pattern and serves as the JS-callable equivalent to PHP `getValues()`.
 
 ## UI Details
 
@@ -105,9 +116,9 @@ Hooked into the existing AJAX-refresh callback so `init` runs after every HTML s
 
 ### Footer
 
-- Inline span next to existing row-count: `[:GRID.SELECTED,Kiválasztva: %s:]` (translatable via `LabelSelected`).
-- Clear-all button: icon-only `fa fa-times-circle text-danger`, `title="Clear selection"`, hidden when count is `0`.
-- Clicking clear-all empties the Set, writes `[]` into the hidden input, fires `onSelectionChange`, then triggers a grid refresh so server-side state matches.
+- Inline span next to existing row-count, rendered in the multiselect-footer template as `[:GRID.SELECTED,Kiválasztva:]: $prop_selectedcount`. Translation lives in the language-tag store; `$prop_selectedcount` is the runtime `SelectedCount` property.
+- Clear-all button: icon-only `fa fa-times-circle text-danger`, `title="Clear selection"`, hidden when `SelectedCount = 0`.
+- Clicking clear-all writes `[]` into `TGrid_Selection_`, fires `onSelectionChange`, then triggers a grid refresh so server-rendered `checked` state matches.
 
 ## Edge Cases & Guards
 
@@ -115,7 +126,7 @@ Hooked into the existing AJAX-refresh callback so `init` runs after every HTML s
 - **Transposed mode (`Transposed=true`)**: skip the multiselect column rendering entirely; `Tholos::$logger->warn` once. Selection state is preserved (kept in the hidden input) but not user-actionable.
 - **Chart view (`ViewMode=CHART`)**: skip rendering the column; selection state preserved.
 - **Duplicate DBField values across rows**: by spec, DBField values identify rows. If duplicates exist, both checkboxes for that value share state — toggling either toggles both on next refresh.
-- **Master change**: existing `TGrid_MasterValueChanged_=T` flag clears `LookupValue` (TGrid.php:1355–1359). We piggyback there and also clear `SelectedValues` to `[]`.
+- **Master change**: handled client-side. The existing `masterDataChange` jQuery handler in `TGrid_ready` (TGrid.js:582–590) already wipes `TGrid_Value_` on master change; we extend the same handler to also wipe `TGrid_Selection_` so the next refresh request posts an empty array.
 
 ## Out of Scope
 
@@ -141,5 +152,5 @@ No test suite exists in this repo (per CLAUDE.md). Verify in-browser:
 8. **Clear button**: appears only when count > 0; click empties the array and refreshes the grid.
 9. **Master change**: parent grid changes selected row → child grid's selection clears (footer shows 0, all checkboxes empty).
 10. **Coexistence with `Selectable`**: single-row click still highlights the "current" row and updates `LookupValue`; checkbox column is independent.
-11. **`getValues()`**: from browser console, `tgrid_<id>.getValues()` returns expected array of strings.
+11. **`getValues()`**: from browser console, `TGrid_getValues('<formId_>')` returns expected array of strings.
 12. **No DBField fallback**: define a TGrid with `MultiSelect=true` and no `DBField` → checkboxes render disabled; logger shows warning.
