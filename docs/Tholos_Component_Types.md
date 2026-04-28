@@ -2332,6 +2332,7 @@ TGrid
 | Master | TControl | No | No | Yes |  |  | Used in dependant control situations. Specifies the master component which this control depends on. When master component refreshes its value, this component will also be refreshed. |
 | MasterDBField | TDBField | No | No | No |  |  |  |
 | MasterValue | STRING | No | Yes | No |  |  |  |
+| MultiSelect | BOOLEAN | Yes | No | Yes | false |  | When true, multiple entries can be selected in a dropdown list. When false, only a single entry is accepted. |
 | Name | STRING | Yes | No | Yes |  | TComponent | Generic name |
 | NameSuffix | STRING | No | No | Yes |  | TComponent | Value of Name property will be suffixed with this value. Use ++ sign to concatenation, ex: "_++@this.DBField.Value" |
 | PageCount | NUMBER | No | Yes | No |  |  |  |
@@ -2346,6 +2347,8 @@ TGrid
 | RowStyle | STRING | No | No | No |  |  |  |
 | Scrollable | BOOLEAN | Yes | No | No | @(parameter).Tholos.TGrid.Scrollable\|false |  |  |
 | Selectable | BOOLEAN | Yes | No | Yes | false |  |  |
+| SelectedCount | NUMBER | No | Yes | Yes |  |  | Count of selected items when Multiselect is on |
+| SelectedValues | TEXT | No | Yes | Yes |  |  | String of a JSON array with selected values |
 | ShowCacheInfo | BOOLEAN | Yes | No | Yes | true |  |  |
 | ShowExportButton | BOOLEAN | Yes | No | Yes | true |  | Show export button |
 | ShowRefreshButton | BOOLEAN | Yes | No | Yes | true |  | Show or hide refresh button |
@@ -2380,6 +2383,7 @@ TGrid
 | onMouseOut | GUI | TControl |  |
 | onMouseOver | GUI | TControl |  |
 | onMouseUp | GUI | TControl |  |
+| onSelectionChange | GUI |  | Fired when selection changed in Multiselect mode |
 | onShow | GUI | TControl | Fired when component transitions from hidden to shown |
 | onAfterInit | PHP | TComponent |  |
 | onAfterRender | PHP | TComponent |  |
@@ -2391,6 +2395,7 @@ TGrid
 | Name | Ancestor | Description |
 | --- | --- | --- |
 | downloadExcel() |  | Download grid records in Excel format |
+| getValues() |  | If component is multiselectable, getValues gives back the selected values in JSON array |
 | initialize() |  | First time refresh. Runs only one time. |
 | parseControlParameters() | TControl | Parses and executes a number of control parameters |
 | refresh() |  | Refreshes component data |

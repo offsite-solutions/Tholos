@@ -1,0 +1,13 @@
+<td class="TGrid-multiselect-cell">
+  <input type="checkbox"
+         class="TGrid-multiselect-checkbox"
+         data-value="$prop_value"
+         <%FUNC%
+         _function_name=Tholos\TholosCallback::_eqs
+         param=prop_isselected
+         value=true
+         true=checked
+         false=
+         %FUNC%>
+         onchange="TGrid_toggleSelection('$prop_id', $(this).data('value'));">
+</td>

@@ -73,11 +73,14 @@
      * @var bool
      */
     private bool $reloadStateNeeded = false;
-    
+
     /**
      * @var string
      */
     private $origOrderBy = "";
+
+    /** @var string[] decoded selection set; rebuilt from SelectedValues at the start of render() */
+    private array $selectedValuesArray = [];
     
     /**
      * @throws Exception Throws exception
@@ -94,7 +97,21 @@
       $this->setProperty('cellHeadType', $this->getProperty('GridHTMLType') === 'table' ? 'th' : 'div');
       $this->setProperty('cellType', $this->getProperty('GridHTMLType') === 'table' ? 'td' : 'div');
       $this->setProperty('cellRowType', $this->getProperty('GridHTMLType') === 'table' ? 'tr' : 'div');
-      
+
+      // MultiSelect runtime state defaults — overwritten below if the post carries values
+      $this->setProperty('SelectedValues', '[]');
+      $this->setProperty('SelectedCount', '0');
+
+      if ($this->getProperty('MultiSelect', 'false') === 'true'
+        && $this->getPropertyComponentId('DBField', false) === false) {
+        Tholos::$logger->warning('TGrid MultiSelect=true requires a DBField; checkbox column will be skipped', $this);
+      }
+
+      if ($this->getProperty('MultiSelect', 'false') === 'true'
+        && $this->getProperty('Transposed', 'false') === 'true') {
+        Tholos::$logger->warning('TGrid MultiSelect is not supported in transposed mode; checkbox column will be skipped', $this);
+      }
+
       if ($this->getProperty('GridHTMLType') !== 'table') {
         $this->setProperty('ShowTransposeCheckbox', 'false');
         $this->setProperty('ShowScrollCheckbox', 'false');
@@ -190,7 +207,20 @@
       if (Eisodos::$parameterHandler->neq('TGrid_MasterValue_', '')) {
         $this->setProperty('MasterValue', Eisodos::$parameterHandler->getParam('TGrid_MasterValue_'));
       }
-      
+
+      if (Eisodos::$parameterHandler->neq('TGrid_Selection_', '')) {
+        $raw = Eisodos::$parameterHandler->getParam('TGrid_Selection_');
+        $decoded = json_decode($raw, true);
+        if (is_array($decoded)) {
+          $this->setProperty('SelectedValues', $raw);
+          $this->setProperty('SelectedCount', (string)count($decoded));
+        } else {
+          Tholos::$logger->warning('TGrid_Selection_ payload is not a JSON array, ignored', $this);
+          $this->setProperty('SelectedValues', '[]');
+          $this->setProperty('SelectedCount', '0');
+        }
+      }
+
       if (Eisodos::$parameterHandler->neq('TGrid_ViewMode_', '')) {
         $this->setProperty('ViewMode', Eisodos::$parameterHandler->getParam('TGrid_ViewMode_'));
       }
@@ -730,9 +760,14 @@
       }
       
       if (!$transposed && $hasAnyStandaloneGridColumn) {
+        if ($this->getProperty('MultiSelect', 'false') === 'true'
+          && $this->getProperty('ViewMode', 'GRID') === 'GRID'
+          && $this->getPropertyComponentId('DBField', false) !== false) {
+          $items = array_merge(['__MultiSelectHeader' => $this->renderPartial($this, 'multiselect.head')], $items);
+        }
         $this->columnHeadItems .= $this->renderPartial($this, 'headitems', implode($items));
       }
-      
+
       foreach (Tholos::$app->findChildIDsByType($this, 'TGridRow') as $rowID) {
         if (!$transposed && $hasAnyStandaloneGridColumn) {
           $items = array();
@@ -759,6 +794,12 @@
           }
         }
         if (!$transposed && count($items) > 0 && Tholos::$app->findComponentByID($rowID)->getProperty('ShowColumnHead', '') == 'true') {
+          if (!$hasAnyStandaloneGridColumn
+            && $this->getProperty('MultiSelect', 'false') === 'true'
+            && $this->getProperty('ViewMode', 'GRID') === 'GRID'
+            && $this->getPropertyComponentId('DBField', false) !== false) {
+            $items = array_merge(['__MultiSelectHeader' => $this->renderPartial($this, 'multiselect.head')], $items);
+          }
           $this->columnHeadItems .= $this->renderPartial($this, 'headitems', implode($items));
         }
       }
@@ -1289,11 +1330,14 @@
      */
     
     public function render(?TComponent $sender, string $content): string {
-      
+
       Tholos::$app->eventHandler($this, 'onBeforeRender');
-      
+
       $result = '';
-      
+
+      $decodedSelection = json_decode($this->getProperty('SelectedValues', '[]'), true);
+      $this->selectedValuesArray = is_array($decodedSelection) ? array_map('strval', $decodedSelection) : [];
+
       Tholos::$logger->debug('render start', $this);
       if (!Tholos::$app->checkRole($this)) {
         return '';
@@ -1549,10 +1593,17 @@
                 if ($this->getPropertyComponentId('DBField') !== false) {
                   $columns = $this->renderPartial($this, 'selectable') . $columns;
                 }
+                if ($this->getProperty('MultiSelect', 'false') === 'true'
+                  && $this->getProperty('ViewMode', 'GRID') === 'GRID'
+                  && $this->getPropertyComponentId('DBField', false) !== false) {
+                  $rowValue = $this->getProperty('Value', '');
+                  $this->setProperty('IsSelected', in_array($rowValue, $this->selectedValuesArray, true) ? 'true' : 'false');
+                  $columns = $this->renderPartial($this, 'multiselect.cell') . $columns;
+                }
                 $result .= $this->renderPartial($this, 'row', $columns) . "\n";
                 $hasAnyStandaloneGridColumn = true;
               }
-              
+
               // a row-ba rendezett komponensek jonnek
               foreach (Tholos::$app->findChildIDsByType($this, 'TGridRow') as $rowID) {
                 $columns = '';
@@ -1598,6 +1649,14 @@
                     } else {
                       $columns = $this->renderPartial($this, 'selectable') . $columns;
                     }
+                  }
+                  if ($this->getProperty('MultiSelect', 'false') === 'true'
+                    && $this->getProperty('ViewMode', 'GRID') === 'GRID'
+                    && $this->getPropertyComponentId('DBField', false) !== false
+                    && !$hasAnyStandaloneGridColumn) {
+                    $rowValue = $this->getProperty('Value', '');
+                    $this->setProperty('IsSelected', in_array($rowValue, $this->selectedValuesArray, true) ? 'true' : 'false');
+                    $columns = $this->renderPartial($this, 'multiselect.cell') . $columns;
                   }
                   $result .= Tholos::$app->findComponentByID($rowID)->render($this, $columns) . "\n";
                 }

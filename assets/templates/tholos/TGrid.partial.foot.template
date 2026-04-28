@@ -25,6 +25,21 @@ false=<div class="col-md-12" id="needrefresh_$prop_id"><div class="alert alert-w
 %FUNC%>
 </div>
 $pagination
+<%FUNC%
+_function_name=Tholos\TholosCallback::_eqs
+param=pagination
+value=
+true>>=
+<%FUNC%
+_function_name=Tholos\TholosCallback::_eqs
+param=prop_multiselect
+value=true
+true=<div class="row"><div class="col-md-12 d-flex align-items-center px-3 py-2">$templateabs_tholos__TGrid_partial_multiselect_footer</div></div>
+false=
+%FUNC%>
+<<
+false=
+%FUNC%>
 $cacheinfo
 </div>
 $templateabs_tholos__TGrid_chart_main
