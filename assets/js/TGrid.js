@@ -681,12 +681,10 @@ function TGrid_updateHeaderIcon(formId_) {
   var total = $checkboxes.length;
   var checked = $checkboxes.filter(":checked").length;
   $icon.removeClass("fa-square-o fa-minus-square fa-check-square text-muted text-warning text-success");
-  if (checked === 0) {
-    $icon.addClass("fa-square-o text-muted");
-  } else if (checked === total) {
-    $icon.addClass("fa-check-square text-success");
-  } else {
+  if (total > 0 && checked === total) {
     $icon.addClass("fa-minus-square text-warning");
+  } else {
+    $icon.addClass("fa-check-square text-success");
   }
 }
 

@@ -3,6 +3,6 @@
      onclick="TGrid_toggleVisibleSelection('$prop_id');"
      class="TGrid-multiselect-toggle"
      title="[:GRID.MULTISELECT.TOGGLE_VISIBLE,Összes láthatóság kijelölése/visszavonása:]">
-    <i id="multiselect_head_icon_$prop_id" class="fa fa-square-o text-muted"></i>
+    <i id="multiselect_head_icon_$prop_id" class="fa fa-check-square text-success"></i>
   </a>
 </th>
