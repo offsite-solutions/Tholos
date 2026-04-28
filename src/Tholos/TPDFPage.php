@@ -104,9 +104,6 @@
         } else {
           if ($this->getProperty('Download') == 'true') {
             Tholos::$app->responsePDF->Output();
-            header('Content-Type: application/force-download');
-            header('Content-Type: application/octet-stream');
-            header('Content-Type: application/download');
             if (!$this->getProperty('FileName')) {
               $this->setProperty('FileName', date('YmdHis'));
             }
@@ -116,7 +113,6 @@
             Tholos::$app->responseType = 'PDF';
           }
           Eisodos::$parameterHandler->setParam('Tholos.WriteLanguageFile', 'T');
-          Tholos::$app->responseType = 'PDF';
         }
         
       } catch (Exception $e) {
