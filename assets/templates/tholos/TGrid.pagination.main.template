@@ -11,7 +11,7 @@ separator=,
 selected=prop_RowsPerPage
 %FUNC%>
 </select></div>
-  <div class="col-md-2 d-flex"><span class="badge badge-secondary">[:GRID.PAGINATION.NUMBER_OF_ROWS,%s sor:$prop_TotalRowCount:]</span></div>
+  <div class="col-md-2 d-flex align-items-center"><span class="badge badge-secondary">[:GRID.PAGINATION.NUMBER_OF_ROWS,%s sor:$prop_TotalRowCount:]</span>$templateabs_tholos__TGrid_partial_multiselect_footer</div>
   <div class="col-md-8 d-flex justify-content-md-end">
 <%FUNC%
 _function_name=Tholos\TholosCallback::_eqs
