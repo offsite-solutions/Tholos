@@ -169,6 +169,7 @@ function TGrid_submit(sender, target, urldata) {                                
             if ($("#helper_" + $(this).data().id + " #TGrid_MasterValue_").val() != edata) {
               $("#helper_" + $(this).data().id + " #TGrid_MasterValue_").val(edata);
               $("#helper_" + $(this).data().id + " #TGrid_Value_").val('');
+              $("#helper_" + $(this).data().id + " #TGrid_Selection_").val('[]');
               $("#helper_" + $(this).data().id + " #TGrid_ActivePage_").val(1);
               $("#helper_" + $(this).data().id + " #TGrid_MasterValueChanged_").val('T');
               Tholos.eventHandler($(this).data().id, $(this).data().id, 'TGrid', 'refresh');
@@ -583,11 +584,19 @@ function TGrid_ready(formId_) {
     if ($("#helper_" + $(this).data().id + " #TGrid_MasterValue_").val() != edata) {
       $("#helper_" + $(this).data().id + " #TGrid_MasterValue_").val(edata);
       $("#helper_" + $(this).data().id + " #TGrid_Value_").val('');
+      $("#helper_" + $(this).data().id + " #TGrid_Selection_").val('[]');
       $("#helper_" + $(this).data().id + " #TGrid_ActivePage_").val(1);
       $("#helper_" + $(this).data().id + " #TGrid_MasterValueChanged_").val('T');
       Tholos.eventHandler($(this).data().id, $(this).data().id, 'TGrid', 'refresh');
     }
   });
+
+  // multiselect bootstrap — runs after every HTML swap
+  if ($("#helper_" + formId_ + " #TGrid_Selection_").length > 0) {
+    TGrid_updateHeaderIcon(formId_);
+    var set = TGrid_getSelectionSet(formId_);
+    TGrid_setSelectionSet(formId_, set);
+  }
 }
 
 function TGrid_getSelectionSet(formId_) {
