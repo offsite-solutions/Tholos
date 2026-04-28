@@ -750,9 +750,14 @@
       }
       
       if (!$transposed && $hasAnyStandaloneGridColumn) {
+        if ($this->getProperty('MultiSelect', 'false') === 'true'
+          && $this->getProperty('ViewMode', 'GRID') === 'GRID'
+          && $this->getPropertyComponentId('DBField', false) !== false) {
+          $items = array_merge(['__MultiSelectHeader' => $this->renderPartial($this, 'multiselect.head')], $items);
+        }
         $this->columnHeadItems .= $this->renderPartial($this, 'headitems', implode($items));
       }
-      
+
       foreach (Tholos::$app->findChildIDsByType($this, 'TGridRow') as $rowID) {
         if (!$transposed && $hasAnyStandaloneGridColumn) {
           $items = array();
@@ -779,6 +784,12 @@
           }
         }
         if (!$transposed && count($items) > 0 && Tholos::$app->findComponentByID($rowID)->getProperty('ShowColumnHead', '') == 'true') {
+          if (!$hasAnyStandaloneGridColumn
+            && $this->getProperty('MultiSelect', 'false') === 'true'
+            && $this->getProperty('ViewMode', 'GRID') === 'GRID'
+            && $this->getPropertyComponentId('DBField', false) !== false) {
+            $items = array_merge(['__MultiSelectHeader' => $this->renderPartial($this, 'multiselect.head')], $items);
+          }
           $this->columnHeadItems .= $this->renderPartial($this, 'headitems', implode($items));
         }
       }
@@ -1569,13 +1580,20 @@
                 }
               }
               if ($columns !== '') {
+                if ($this->getProperty('MultiSelect', 'false') === 'true'
+                  && $this->getProperty('ViewMode', 'GRID') === 'GRID'
+                  && $this->getPropertyComponentId('DBField', false) !== false) {
+                  $rowValue = $this->getProperty('Value', '');
+                  $this->setProperty('IsSelected', in_array($rowValue, $this->selectedValuesArray, true) ? 'true' : 'false');
+                  $columns = $this->renderPartial($this, 'multiselect.cell') . $columns;
+                }
                 if ($this->getPropertyComponentId('DBField') !== false) {
                   $columns = $this->renderPartial($this, 'selectable') . $columns;
                 }
                 $result .= $this->renderPartial($this, 'row', $columns) . "\n";
                 $hasAnyStandaloneGridColumn = true;
               }
-              
+
               // a row-ba rendezett komponensek jonnek
               foreach (Tholos::$app->findChildIDsByType($this, 'TGridRow') as $rowID) {
                 $columns = '';
@@ -1615,6 +1633,14 @@
                   }
                 }
                 if (!$isEmptyRow || Tholos::$app->findComponentByID($rowID)->getProperty('HideWhenEmpty', 'false') === 'false') {
+                  if ($this->getProperty('MultiSelect', 'false') === 'true'
+                    && $this->getProperty('ViewMode', 'GRID') === 'GRID'
+                    && $this->getPropertyComponentId('DBField', false) !== false
+                    && !$hasAnyStandaloneGridColumn) {
+                    $rowValue = $this->getProperty('Value', '');
+                    $this->setProperty('IsSelected', in_array($rowValue, $this->selectedValuesArray, true) ? 'true' : 'false');
+                    $columns = $this->renderPartial($this, 'multiselect.cell') . $columns;
+                  }
                   if ($this->getPropertyComponentId('DBField') !== false) {
                     if ($hasAnyStandaloneGridColumn) {
                       $columns = $this->renderPartial($this, 'noselectable') . $columns;
