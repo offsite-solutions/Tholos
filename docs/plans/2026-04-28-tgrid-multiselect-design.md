@@ -61,9 +61,10 @@ Trade-off: the selection array travels in every refresh request. Acceptable: typ
 - `assets/templates/tholos/TGrid.partial.multiselect.footer.template` — renders the "N selected" indicator + clear button next to the existing row-count text.
 
 **Templates (edited):**
-- `TGrid.partial.table.head.template` and `TGrid.partial.div.head.template` — conditionally include the multiselect head partial as the first column when `MultiSelect=true`.
-- `TGrid.partial.row.template` — conditionally prepend the multiselect cell partial.
-- `TGrid.partial.foot.template` (and the `divresponsive` foot variant) — conditionally include the multiselect footer partial near the existing `n sor/rows` label.
+- `TGrid.partial.head.template` — add the `TGrid_Selection_` hidden input alongside the existing `TGrid_Value_` input.
+- `TGrid.pagination.main.template` — include the multiselect footer partial inside the existing `<div class="col-md-2 ...">` that holds the `n sor/rows` badge, so the indicator sits next to the row count across all `GridHTMLType` variants (the foot templates already include `pagination.main.template` via `$pagination`).
+
+The multiselect head and per-row cell are injected at the **PHP level** rather than via template edits — `TGrid.php` prepends `multiselect.head` to `$columnHeadItems` and `multiselect.cell` to each row's `$columns` string when `MultiSelect=true`. This keeps the existing `partial.table.head` / `partial.row` / `partial.div.head` templates untouched.
 
 The checkbox column is rendered inline at the template level rather than as a real `TGridColumn`. This keeps it out of column iteration, sorting, and Excel export, and means the column doesn't need a corresponding entry in the user's grid definition.
 
