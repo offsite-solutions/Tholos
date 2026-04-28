@@ -2,6 +2,6 @@
 _function_name=Tholos\TholosCallback::_eqs
 param=prop_multiselect
 value=true
-true=<span id="multiselect_footer_$prop_id" class="badge badge-primary ms-2" [%_function_name=Tholos\TholosCallback::_eqs;param=prop_selectedcount;value=0;true=style="display:none;";false=%]>[:GRID.SELECTED,Kiválasztva:]: <span id="multiselect_count_$prop_id">$prop_selectedcount</span><a href="javascript:void(0);" onclick="TGrid_clearSelection('$prop_id');" class="ms-2 text-white" title="[:GRID.MULTISELECT.CLEAR,Kijelölés törlése:]"><i class="fa fa-times-circle"></i></a></span>
+true=<span id="multiselect_footer_$prop_id" class="badge badge-danger ms-2" [%_function_name=Tholos\TholosCallback::_eqs;param=prop_selectedcount;value=0;true=style="display:none;";false=%]>[:GRID.SELECTED,Kiválasztva:]: <span id="multiselect_count_$prop_id">$prop_selectedcount</span><a href="javascript:void(0);" onclick="TGrid_clearSelection('$prop_id');" class="ms-2 text-white" title="[:GRID.MULTISELECT.CLEAR,Kijelölés törlése:]"><i class="fa fa-times-circle"></i></a></span>
 false=
 %FUNC%>
