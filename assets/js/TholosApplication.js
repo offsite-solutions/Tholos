@@ -97,6 +97,10 @@ var Tholos = {
       var d = Tholos.getData(target);
       return d.value;
     },
+    TGrid_getValues: function (sender, target, route, eventData) {
+      Tholos.trace("TGrid_getValues()", sender, target, route, eventData);
+      return TGrid_getValues(target);
+    },
     TGrid_getFilterSQL: function (sender, target, route, eventData) {
       Tholos.trace("TGrid_getFilterSQL()", sender, target, route, eventData);
       return $("#helper_" + target + " #TGrid_FilterSQL_").val();
