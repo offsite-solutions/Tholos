@@ -347,6 +347,7 @@ table.TGrid-transposed td.TGrid-changed {
   min-width: 36px;
   text-align: center;
   vertical-align: middle;
+  background-color: #f7f7f7;
 }
 
 .TGrid-multiselect-head a {
