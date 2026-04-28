@@ -590,6 +590,97 @@ function TGrid_ready(formId_) {
   });
 }
 
+function TGrid_getSelectionSet(formId_) {
+  var raw = $("#helper_" + formId_ + " #TGrid_Selection_").val() || "[]";
+  var parsed;
+  try { parsed = JSON.parse(raw); } catch (e) { parsed = []; }
+  if (!Array.isArray(parsed)) { parsed = []; }
+  return new Set(parsed.map(String));
+}
+
+function TGrid_setSelectionSet(formId_, set_) {
+  var arr = Array.from(set_);
+  $("#helper_" + formId_ + " #TGrid_Selection_").val(JSON.stringify(arr));
+  $("#multiselect_count_" + formId_).text(arr.length);
+  if (arr.length === 0) {
+    $("#multiselect_footer_" + formId_).hide();
+  } else {
+    $("#multiselect_footer_" + formId_).show();
+  }
+}
+
+function TGrid_getValues(formId_) {
+  return Array.from(TGrid_getSelectionSet(formId_));
+}
+
+function TGrid_isSelected(formId_, value_) {
+  return TGrid_getSelectionSet(formId_).has(String(value_));
+}
+
+function TGrid_toggleSelection(formId_, value_) {
+  var set = TGrid_getSelectionSet(formId_);
+  var v = String(value_);
+  if (set.has(v)) { set.delete(v); } else { set.add(v); }
+  TGrid_setSelectionSet(formId_, set);
+  TGrid_updateHeaderIcon(formId_);
+  Tholos.eventHandler(formId_, formId_, 'TGrid', 'selectionchange');
+}
+
+function TGrid_selectVisible(formId_) {
+  var set = TGrid_getSelectionSet(formId_);
+  $("#" + formId_ + " .TGrid-multiselect-checkbox").each(function () {
+    set.add(String($(this).data('value')));
+    $(this).prop('checked', true);
+  });
+  TGrid_setSelectionSet(formId_, set);
+  TGrid_updateHeaderIcon(formId_);
+  Tholos.eventHandler(formId_, formId_, 'TGrid', 'selectionchange');
+}
+
+function TGrid_deselectVisible(formId_) {
+  var set = TGrid_getSelectionSet(formId_);
+  $("#" + formId_ + " .TGrid-multiselect-checkbox").each(function () {
+    set.delete(String($(this).data('value')));
+    $(this).prop('checked', false);
+  });
+  TGrid_setSelectionSet(formId_, set);
+  TGrid_updateHeaderIcon(formId_);
+  Tholos.eventHandler(formId_, formId_, 'TGrid', 'selectionchange');
+}
+
+function TGrid_toggleVisibleSelection(formId_) {
+  var $checkboxes = $("#" + formId_ + " .TGrid-multiselect-checkbox");
+  if ($checkboxes.length === 0) { return; }
+  var allChecked = $checkboxes.length === $checkboxes.filter(":checked").length;
+  if (allChecked) {
+    TGrid_deselectVisible(formId_);
+  } else {
+    TGrid_selectVisible(formId_);
+  }
+}
+
+function TGrid_clearSelection(formId_) {
+  TGrid_setSelectionSet(formId_, new Set());
+  Tholos.eventHandler(formId_, formId_, 'TGrid', 'selectionchange');
+  Tholos.eventHandler(formId_, formId_, 'TGrid', 'refresh');
+}
+
+function TGrid_updateHeaderIcon(formId_) {
+  var $icon = $("#multiselect_head_icon_" + formId_);
+  if ($icon.length === 0) { return; }
+  var $checkboxes = $("#" + formId_ + " .TGrid-multiselect-checkbox");
+  var total = $checkboxes.length;
+  var checked = $checkboxes.filter(":checked").length;
+  $icon.removeClass("fa-square-o fa-minus-square fa-check-square text-muted text-warning text-success");
+  if (checked === 0) {
+    $icon.addClass("fa-square-o text-muted");
+  } else if (checked === total) {
+    $icon.addClass("fa-check-square text-success");
+  } else {
+    $icon.addClass("fa-minus-square text-warning");
+  }
+}
+
 $(document).ready(function () {
   $("iframe.autoresize").each(function () {
     $(this).height($(this).contents().find("body").height());
