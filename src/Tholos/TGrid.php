@@ -102,6 +102,16 @@
       $this->setProperty('SelectedValues', '[]');
       $this->setProperty('SelectedCount', '0');
 
+      if ($this->getProperty('MultiSelect', 'false') === 'true'
+        && $this->getPropertyComponentId('DBField', false) === false) {
+        Tholos::$logger->warning('TGrid MultiSelect=true requires a DBField; checkbox column will be skipped', $this);
+      }
+
+      if ($this->getProperty('MultiSelect', 'false') === 'true'
+        && $this->getProperty('Transposed', 'false') === 'true') {
+        Tholos::$logger->warning('TGrid MultiSelect is not supported in transposed mode; checkbox column will be skipped', $this);
+      }
+
       if ($this->getProperty('GridHTMLType') !== 'table') {
         $this->setProperty('ShowTransposeCheckbox', 'false');
         $this->setProperty('ShowScrollCheckbox', 'false');
