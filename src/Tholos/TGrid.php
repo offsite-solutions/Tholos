@@ -1590,15 +1590,15 @@
                 }
               }
               if ($columns !== '') {
+                if ($this->getPropertyComponentId('DBField') !== false) {
+                  $columns = $this->renderPartial($this, 'selectable') . $columns;
+                }
                 if ($this->getProperty('MultiSelect', 'false') === 'true'
                   && $this->getProperty('ViewMode', 'GRID') === 'GRID'
                   && $this->getPropertyComponentId('DBField', false) !== false) {
                   $rowValue = $this->getProperty('Value', '');
                   $this->setProperty('IsSelected', in_array($rowValue, $this->selectedValuesArray, true) ? 'true' : 'false');
                   $columns = $this->renderPartial($this, 'multiselect.cell') . $columns;
-                }
-                if ($this->getPropertyComponentId('DBField') !== false) {
-                  $columns = $this->renderPartial($this, 'selectable') . $columns;
                 }
                 $result .= $this->renderPartial($this, 'row', $columns) . "\n";
                 $hasAnyStandaloneGridColumn = true;
@@ -1643,6 +1643,13 @@
                   }
                 }
                 if (!$isEmptyRow || Tholos::$app->findComponentByID($rowID)->getProperty('HideWhenEmpty', 'false') === 'false') {
+                  if ($this->getPropertyComponentId('DBField') !== false) {
+                    if ($hasAnyStandaloneGridColumn) {
+                      $columns = $this->renderPartial($this, 'noselectable') . $columns;
+                    } else {
+                      $columns = $this->renderPartial($this, 'selectable') . $columns;
+                    }
+                  }
                   if ($this->getProperty('MultiSelect', 'false') === 'true'
                     && $this->getProperty('ViewMode', 'GRID') === 'GRID'
                     && $this->getPropertyComponentId('DBField', false) !== false
@@ -1650,13 +1657,6 @@
                     $rowValue = $this->getProperty('Value', '');
                     $this->setProperty('IsSelected', in_array($rowValue, $this->selectedValuesArray, true) ? 'true' : 'false');
                     $columns = $this->renderPartial($this, 'multiselect.cell') . $columns;
-                  }
-                  if ($this->getPropertyComponentId('DBField') !== false) {
-                    if ($hasAnyStandaloneGridColumn) {
-                      $columns = $this->renderPartial($this, 'noselectable') . $columns;
-                    } else {
-                      $columns = $this->renderPartial($this, 'selectable') . $columns;
-                    }
                   }
                   $result .= Tholos::$app->findComponentByID($rowID)->render($this, $columns) . "\n";
                 }
