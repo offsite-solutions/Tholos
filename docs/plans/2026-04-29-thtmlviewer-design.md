@@ -151,6 +151,8 @@ THTMLViewer_getValue: function (sender, target, route, eventData) {
 
 Added to `Base/src/Tholos/TholosCallback.php`. Used by the template to encode `Value` on the way into the textarea. Idempotent: if the input already passes the base64 charset/length/round-trip check, it's returned unchanged.
 
+Before encoding, the callback reverses Tholos's pre-encoding of `"` → `&quot;`. `TComponent.php:599` rewrites every `prop_*` parameter so that literal `"` becomes `&quot;` (so values are safe inside `attribute="…"` substitution contexts in templates). Our payload, however, is destined for `iframe.srcdoc` — a pure HTML document context where `<img src="url">` requires literal `"` around the URL. Without this reversal, the iframe parser sees `<img src=&quot;url&quot;>` as an unquoted attribute, decodes the entities, and ends up with literal `"` characters embedded in the URL, breaking image and stylesheet loads.
+
 ```php
 public static function _b64encode_html($params = array(), $parameterPrefix = ''): string {
   $value = Eisodos::$parameterHandler->getParam($params['param']);
@@ -163,6 +165,7 @@ public static function _b64encode_html($params = array(), $parameterPrefix = '')
       return $value;
     }
   }
+  $value = str_replace('&quot;', '"', $value);
   return base64_encode($value);
 }
 ```

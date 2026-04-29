@@ -75,6 +75,11 @@
           return $value;
         }
       }
+      // TComponent pre-encodes " to &quot; on prop_* params for attribute-safe substitution
+      // (TComponent.php:599). Our payload is destined for iframe.srcdoc (pure HTML context),
+      // so reverse that here — otherwise <img src=&quot;url&quot;> parses as an unquoted attr
+      // and the decoded literal " ends up embedded in the URL.
+      $value = str_replace('&quot;', '"', $value);
       return base64_encode($value);
     }
 
