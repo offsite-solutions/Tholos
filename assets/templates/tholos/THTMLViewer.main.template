@@ -1,0 +1,27 @@
+## <!-- HTMLViewer $prop_name -->
+<div class="row mb-1 $prop_rowclass [%_function_name=Tholos\TholosCallback::_eqs;param=prop_visible;value=true;false=hidden;true=</>%]" style="$prop_rowstyle">
+  $templateabs_tholos__TComponent_properties
+  <label id="$prop_id-label" for="$prop_id" class="col-form-label $templateabs_tholos__TFormControl_labelsize">$templateabs_tholos__TComponent_labelicon</label>
+
+  <div class="$templateabs_tholos__TFormControl_controlsize">
+    <textarea id="$prop_id" $templateabs_tholos__TComponent_basedata
+      name="$prop_name" hidden>$prop_value</textarea>
+    <iframe id="$prop_id-frame"
+            data-source="#$prop_id"
+            class="form-control $prop_class"
+            style="$prop_style"
+            sandbox="[%_function_name=Tholos\TholosCallback::_eqs;param=prop_scriptsallowed;value=true;true=allow-scripts;false=%]"></iframe>
+    $templateabs_tholos__TControl_helpblock
+  </div>
+</div>
+$templateabs_tholos__TControl_baseevents
+$templateabs_tholos__TControl_customevents
+
+<script type="text/javascript" nonce="$Tholos_nonce">
+  (function () {
+    var ta = document.getElementById('$prop_id');
+    var f  = document.getElementById('$prop_id-frame');
+    if (ta && f) f.srcdoc = ta.value;
+  })();
+</script>
+## <!-- /HTMLViewer $prop_name -->
