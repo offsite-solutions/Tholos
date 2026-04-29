@@ -408,6 +408,17 @@ var Tholos = {
       o.val(eventData.value).trigger("change");
       return true;
     },
+    THTMLViewer_setValue: function (sender, target, route, eventData) {
+      Tholos.trace("THTMLViewer_setValue()", sender, target, route, eventData);
+      var o = Tholos.getObject(target);
+      Tholos.setData(target, "value", eventData.value);
+      o.val(eventData.value);
+      var frame = document.getElementById(o.attr('id') + '-frame');
+      if (frame) frame.srcdoc = eventData.value;
+      Tholos.trace("THTMLViewer_setValue(): Triggering change");
+      o.trigger("change");
+      return true;
+    },
     TGrid_setValue: function (sender, target, route, eventData) {
       Tholos.trace("TGrid_setValue()", sender, target, route, eventData);
       var o = Tholos.getObject(target);
