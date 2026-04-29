@@ -10,7 +10,7 @@
             data-source="#$prop_id"
             class="form-control $prop_class"
             style="$prop_style"
-            sandbox="[%_function_name=Tholos\TholosCallback::_eqs;param=prop_scriptsallowed;value=true;true=allow-scripts;false=%]"></iframe>
+            sandbox="allow-popups allow-popups-to-escape-sandbox [%_function_name=Tholos\TholosCallback::_eqs;param=prop_scriptsallowed;value=true;true=allow-scripts;false=%]"></iframe>
     $templateabs_tholos__TControl_helpblock
   </div>
 </div>

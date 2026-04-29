@@ -80,6 +80,22 @@
       // so reverse that here — otherwise <img src=&quot;url&quot;> parses as an unquoted attr
       // and the decoded literal " ends up embedded in the URL.
       $value = str_replace('&quot;', '"', $value);
+      // Inject <base target="_blank"> so links open in a new tab. The iframe is sandboxed
+      // without same-origin and (typically) without scripts; default-target navigation in
+      // such a frame is blocked, so without this links would do nothing on click. Skip if
+      // the HTML already has its own <base>.
+      if (stripos($value, '<base ') === false) {
+        if (preg_match('/<head\b[^>]*>/i', $value)) {
+          $value = preg_replace(
+            '/<head\b([^>]*)>/i',
+            '<head$1><base target="_blank">',
+            $value,
+            1
+          );
+        } else {
+          $value = '<base target="_blank">' . $value;
+        }
+      }
       return base64_encode($value);
     }
 

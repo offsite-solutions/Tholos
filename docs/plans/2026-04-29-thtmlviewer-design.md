@@ -192,8 +192,12 @@ public static function _b64encode_html($params = array(), $parameterPrefix = '')
 
 ## Security
 
-- **Default (`ScriptsAllowed=false`):** `sandbox=""`. Most restrictive: no scripts, no forms, no top-nav, no popups, opaque cross-origin. Stored `<script>`/`onclick`/`<form>` is rendered visually but inert. Safe for HTML of unknown provenance.
-- **Opt-in (`ScriptsAllowed=true`):** `sandbox="allow-scripts"`. Scripts run inside the iframe; still no same-origin, no top-nav, no form submission, no popups. Suitable for trusted authored HTML (RTE preview, generated reports).
+The iframe always carries `allow-popups allow-popups-to-escape-sandbox` so links inside the rendered HTML can open in a new tab when clicked. The viewer also injects `<base target="_blank">` into the iframe HTML (server-side, in `_b64encode_html`, only when no `<base>` is already present), so default-target `<a>` clicks open out-of-frame instead of being blocked. Without these flags, the safe-mode iframe blocks all navigation including `<a href>` clicks and `mailto:` links.
+
+- **Default (`ScriptsAllowed=false`):** `sandbox="allow-popups allow-popups-to-escape-sandbox"`. Scripts blocked, forms blocked, top-nav blocked, opaque cross-origin. Links open in new tabs (which are unsandboxed normal browser pages). Stored `<script>`/`onclick`/`<form>` is rendered visually but inert. Safe for HTML of unknown provenance with functional links.
+- **Opt-in (`ScriptsAllowed=true`):** `sandbox="allow-popups allow-popups-to-escape-sandbox allow-scripts"`. Scripts run inside the iframe; still no same-origin, no top-nav, no form submission. Suitable for trusted authored HTML (RTE preview, generated reports).
+
+**Trade-off:** `<base target="_blank">` makes all relative-target links open in new tabs. If a future use case wants in-frame navigation via `<a target="_self">`, that explicit target wins over `<base>` so it still works.
 
 **Explicitly out of scope (YAGNI):** per-instance sandbox flag overrides; server-side HTML sanitization (responsibility of whoever stores the HTML); per-frame CSP overrides.
 
