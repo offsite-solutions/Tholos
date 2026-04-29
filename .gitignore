@@ -6,3 +6,4 @@
 /composer.dev.json
 /composer.dev.lock
 /docs/*.html
+.DS_Store

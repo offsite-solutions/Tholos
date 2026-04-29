@@ -16,6 +16,28 @@ var TholosLastClickType = "left";
 var TholosDPArray = {};
 
 var Tholos = {
+  b64: {
+    isEncoded: function (s) {
+      return typeof s === 'string' && s.length > 0 && s.length % 4 === 0
+        && /^[A-Za-z0-9+/]+=*$/.test(s);
+    },
+    decode: function (s) {
+      try {
+        var bin = atob(s);
+        var bytes = new Uint8Array(bin.length);
+        for (var i = 0; i < bin.length; i++) bytes[i] = bin.charCodeAt(i);
+        return new TextDecoder('utf-8').decode(bytes);
+      } catch (e) { return s; }
+    },
+    encode: function (s) {
+      var bytes = new TextEncoder().encode(s);
+      var bin = '';
+      for (var i = 0; i < bytes.length; i++) bin += String.fromCharCode(bytes[i]);
+      return btoa(bin);
+    },
+    ensureEncoded: function (s) { return Tholos.b64.isEncoded(s) ? s : Tholos.b64.encode(s); },
+    ensureDecoded: function (s) { return Tholos.b64.isEncoded(s) ? Tholos.b64.decode(s) : s; }
+  },
   methods: {
     TComponent_parseControlParameters: function (sender, target, route, eventData) {
       Tholos.trace("TComponent_parseControlParameters()", sender, target, route, eventData);
@@ -76,6 +98,11 @@ var Tholos = {
       Tholos.trace("TControl_getValue()", sender, target, route, eventData);
       var o = Tholos.getObject(target);
       return o.val();
+    },
+    THTMLViewer_getValue: function (sender, target, route, eventData) {
+      Tholos.trace("THTMLViewer_getValue()", sender, target, route, eventData);
+      var o = Tholos.getObject(target);
+      return Tholos.b64.ensureDecoded(o.val());
     },
     TLOV_getValue: function (sender, target, route, eventData) {
       Tholos.trace("TLOV_getValue()", sender, target, route, eventData);
@@ -406,6 +433,18 @@ var Tholos = {
       o.parent().find('.form-control-plaintext').html(eventData.value);
       Tholos.trace("TStatic_setValue(): Triggering change");
       o.val(eventData.value).trigger("change");
+      return true;
+    },
+    THTMLViewer_setValue: function (sender, target, route, eventData) {
+      Tholos.trace("THTMLViewer_setValue()", sender, target, route, eventData);
+      var o = Tholos.getObject(target);
+      var encoded = Tholos.b64.ensureEncoded(eventData.value);
+      Tholos.setData(target, "value", encoded);
+      o.val(encoded);
+      var frame = document.getElementById(o.attr('id') + '-frame');
+      if (frame) frame.srcdoc = Tholos.b64.ensureDecoded(eventData.value);
+      Tholos.trace("THTMLViewer_setValue(): Triggering change");
+      o.trigger("change");
       return true;
     },
     TGrid_setValue: function (sender, target, route, eventData) {

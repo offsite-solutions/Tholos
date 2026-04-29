@@ -54,13 +54,51 @@
         if (strpos($s, "\n")) {
           $s = '<pre>' . $s . '</pre>';
         }
-        
+
         return $s;
       }
-      
+
       return '';
     }
-    
+
+    public static function _b64encode_html($params = array(), $parameterPrefix = ''): string {
+      $value = Eisodos::$parameterHandler->getParam($params['param']);
+      if ($value === '' || $value === null) {
+        return '';
+      }
+      // Already base64? Charset + length-multiple-of-4 + round-trip check.
+      // HTML always contains '<', '>', whitespace — none of which are in the base64 charset,
+      // so this discriminator reliably distinguishes encoded from raw.
+      if (preg_match('/^[A-Za-z0-9+\/]+=*$/', $value) && strlen($value) % 4 === 0) {
+        $decoded = base64_decode($value, true);
+        if ($decoded !== false && base64_encode($decoded) === $value) {
+          return $value;
+        }
+      }
+      // TComponent pre-encodes " to &quot; on prop_* params for attribute-safe substitution
+      // (TComponent.php:599). Our payload is destined for iframe.srcdoc (pure HTML context),
+      // so reverse that here — otherwise <img src=&quot;url&quot;> parses as an unquoted attr
+      // and the decoded literal " ends up embedded in the URL.
+      $value = str_replace('&quot;', '"', $value);
+      // Inject <base target="_blank"> so links open in a new tab. The iframe is sandboxed
+      // without same-origin and (typically) without scripts; default-target navigation in
+      // such a frame is blocked, so without this links would do nothing on click. Skip if
+      // the HTML already has its own <base>.
+      if (stripos($value, '<base ') === false) {
+        if (preg_match('/<head\b[^>]*>/i', $value)) {
+          $value = preg_replace(
+            '/<head\b([^>]*)>/i',
+            '<head$1><base target="_blank">',
+            $value,
+            1
+          );
+        } else {
+          $value = '<base target="_blank">' . $value;
+        }
+      }
+      return base64_encode($value);
+    }
+
     public static function _trim($params = array(), $parameterPrefix = ''): string {
       return trim(Eisodos::$templateEngine->replaceParamInString($params['value']));
     }
