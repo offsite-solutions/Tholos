@@ -51,9 +51,10 @@
     }
     
     /**
-     * @inheritDoc
-     * @throws \JsonException
-     * @throws Throwable
+     * Interface routine, inherited objects must implement
+     *
+     * @param ?TComponent $sender
+     * @param string $nativeSQL
      */
     protected function open(?TComponent $sender, string $nativeSQL = ''): void {
       
