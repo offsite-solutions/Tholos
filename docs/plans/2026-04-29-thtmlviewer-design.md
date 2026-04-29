@@ -24,7 +24,8 @@ Closest analog: `THTMLEdit` (uses a textarea + RichTextEditor); `TStatic` (stati
 | File | Status | Purpose |
 |---|---|---|
 | `Base/assets/templates/tholos/THTMLViewer.main.template` | NEW | Eisodos template emitting hidden textarea + iframe + init script. |
-| `Base/assets/js/TholosApplication.js` | MODIFIED | Add `THTMLViewer_setValue` handler (insertion point: after `TStatic_setValue`, currently around line 410). |
+| `Base/assets/js/TholosApplication.js` | MODIFIED | Add `Tholos.b64` namespace (encode/decode helpers), `THTMLViewer_getValue` (returns decoded HTML), and `THTMLViewer_setValue` (encodes for textarea, decodes for `srcdoc`). |
+| `Base/src/Tholos/TholosCallback.php` | MODIFIED | Add `_b64encode_html` callback used by the template to encode `Value` into the hidden textarea. |
 
 **No new PHP class.** `THTMLEdit`, `TText`, `TStatic`, `TLabel` have no per-component PHP class either; they're driven by the template plus property metadata loaded from `.tcd` files. THTMLViewer follows the same pattern; instances dispatch through the generic `TFormControl` PHP base.
 
@@ -38,9 +39,9 @@ Path: `Base/assets/templates/tholos/THTMLViewer.main.template`
 
 Skeleton mirrors `THTMLEdit.main.template` (row → label → control-size div → control). The control area emits:
 
-1. A hidden `<textarea id="$prop_id" name="$prop_name" hidden>$prop_value</textarea>` — canonical control value, used by form post, DBField round-trip, and `setValue` target. `$prop_id` is the same id `THTMLEdit` uses on its textarea.
+1. A hidden `<textarea id="$prop_id" name="$prop_name" hidden>…</textarea>` carrying the **base64-encoded** HTML payload. Encoding happens at template time via the `Tholos\TholosCallback::_b64encode_html` callback (idempotent: detects already-encoded input and passes it through). This is what makes the textarea body safe regardless of what the underlying HTML contains — `</textarea>` and other DOM-breaking sequences in raw HTML never reach the parser.
 2. A sibling `<iframe id="$prop_id-frame" data-source="#$prop_id" sandbox="…" class="form-control $prop_class" style="$prop_style">` — visual renderer.
-3. A small inline `<script nonce="$Tholos_nonce">` that reads the textarea value and assigns it to `iframe.srcdoc` once at render time.
+3. A small inline `<script nonce="$Tholos_nonce">` that reads the textarea value, base64-decodes it via `Tholos.b64.ensureDecoded`, and assigns the result to `iframe.srcdoc` once at render time.
 
 Sketch:
 
@@ -55,7 +56,7 @@ Sketch:
 
   <div class="$templateabs_tholos__TFormControl_controlsize">
     <textarea id="$prop_id" $templateabs_tholos__TComponent_basedata
-              name="$prop_name" hidden>$prop_value</textarea>
+              name="$prop_name" hidden>[%_function_name=Tholos\TholosCallback::_b64encode_html;param=prop_value%]</textarea>
     <iframe id="$prop_id-frame"
             data-source="#$prop_id"
             class="form-control $prop_class"
@@ -71,7 +72,7 @@ $templateabs_tholos__TControl_customevents
   (function () {
     var ta = document.getElementById('$prop_id');
     var f  = document.getElementById('$prop_id-frame');
-    if (ta && f) f.srcdoc = ta.value;
+    if (ta && f) f.srcdoc = Tholos.b64.ensureDecoded(ta.value);
   })();
 </script>
 ## <!-- /HTMLViewer $prop_name -->
@@ -82,40 +83,109 @@ $templateabs_tholos__TControl_customevents
 - `name="$prop_name"` only on the textarea (form value).
 - `$templateabs_tholos__TComponent_basedata` only on the textarea (so AJAX targeting hits it).
 - The conditional sandbox attribute uses the same `Tholos\TholosCallback::_eqs` callback pattern used elsewhere in templates (e.g. `THTMLEdit.main.template`).
-- `$prop_value` between the textarea tags is HTML-escaped by Eisodos (browser auto-decodes), avoiding attribute-escaping headaches that would arise from `srcdoc="…"`.
+- The textarea body holds **base64-encoded** HTML (via `_b64encode_html`). The init script base64-decodes before piping to `iframe.srcdoc`. This keeps the textarea inert regardless of the raw HTML contents and dodges any `</textarea>` parsing hazard.
 
-## JS — `THTMLViewer_setValue`
+## JS — `Tholos.b64`, `THTMLViewer_setValue`, `THTMLViewer_getValue`
 
-Insertion point: `Base/assets/js/TholosApplication.js`, immediately after `TStatic_setValue` (currently around line 410). Modeled on `TStatic_setValue`.
+### `Tholos.b64` namespace
+
+Added once as a sibling of `Tholos.methods`. Provides UTF-8-safe base64 with idempotent encode/decode. The `isEncoded` heuristic exploits the fact that any HTML always contains characters outside the base64 charset (`<`, `>`, whitespace), making the discriminator reliable.
+
+```js
+b64: {
+  isEncoded: function (s) {
+    return typeof s === 'string' && s.length > 0 && s.length % 4 === 0
+      && /^[A-Za-z0-9+/]+=*$/.test(s);
+  },
+  decode: function (s) {
+    try {
+      var bin = atob(s);
+      var bytes = new Uint8Array(bin.length);
+      for (var i = 0; i < bin.length; i++) bytes[i] = bin.charCodeAt(i);
+      return new TextDecoder('utf-8').decode(bytes);
+    } catch (e) { return s; }
+  },
+  encode: function (s) {
+    var bytes = new TextEncoder().encode(s);
+    var bin = '';
+    for (var i = 0; i < bytes.length; i++) bin += String.fromCharCode(bytes[i]);
+    return btoa(bin);
+  },
+  ensureEncoded: function (s) { return Tholos.b64.isEncoded(s) ? s : Tholos.b64.encode(s); },
+  ensureDecoded: function (s) { return Tholos.b64.isEncoded(s) ? Tholos.b64.decode(s) : s; }
+},
+```
+
+### `THTMLViewer_setValue`
+
+Insertion point: `Base/assets/js/TholosApplication.js`, immediately after `TStatic_setValue`. Modeled on `TStatic_setValue` with base64 encode/decode applied at the appropriate boundaries: textarea always holds encoded form, iframe always renders decoded HTML.
 
 ```js
 THTMLViewer_setValue: function (sender, target, route, eventData) {
   Tholos.trace("THTMLViewer_setValue()", sender, target, route, eventData);
-  var o = Tholos.getObject(target);                  // hidden textarea
-  Tholos.setData(target, "value", eventData.value);
-  o.val(eventData.value);
+  var o = Tholos.getObject(target);
+  var encoded = Tholos.b64.ensureEncoded(eventData.value);
+  Tholos.setData(target, "value", encoded);
+  o.val(encoded);
   var frame = document.getElementById(o.attr('id') + '-frame');
-  if (frame) frame.srcdoc = eventData.value;         // re-render iframe
+  if (frame) frame.srcdoc = Tholos.b64.ensureDecoded(eventData.value);
   Tholos.trace("THTMLViewer_setValue(): Triggering change");
-  o.trigger("change");                               // fires onChange GUI event
+  o.trigger("change");
   return true;
 },
+```
+
+### `THTMLViewer_getValue`
+
+Insertion point: immediately after `TControl_getValue`. Returns the **decoded** HTML so callers (e.g. AJAX form-submit paths that read values via the type-dispatched `getValue` handler) see raw HTML, not the base64 wire format.
+
+```js
+THTMLViewer_getValue: function (sender, target, route, eventData) {
+  Tholos.trace("THTMLViewer_getValue()", sender, target, route, eventData);
+  var o = Tholos.getObject(target);
+  return Tholos.b64.ensureDecoded(o.val());
+},
+```
+
+## PHP — `_b64encode_html` callback
+
+Added to `Base/src/Tholos/TholosCallback.php`. Used by the template to encode `Value` on the way into the textarea. Idempotent: if the input already passes the base64 charset/length/round-trip check, it's returned unchanged.
+
+```php
+public static function _b64encode_html($params = array(), $parameterPrefix = ''): string {
+  $value = Eisodos::$parameterHandler->getParam($params['param']);
+  if ($value === '' || $value === null) {
+    return '';
+  }
+  if (preg_match('/^[A-Za-z0-9+\/]+=*$/', $value) && strlen($value) % 4 === 0) {
+    $decoded = base64_decode($value, true);
+    if ($decoded !== false && base64_encode($decoded) === $value) {
+      return $value;
+    }
+  }
+  return base64_encode($value);
+}
 ```
 
 ## Data flow
 
 **Initial render**
 1. Server: `TFormControl` resolves `Value` (from `DBField.Value` if bound, else literal).
-2. Template emits the textarea with HTML-escaped `$prop_value` between tags.
-3. Browser parses; inline init script runs once: `iframe.srcdoc = textarea.value`.
+2. Template emits the textarea body via `_b64encode_html(prop_value)` — base64-encoded payload regardless of `<`/`>` content.
+3. Browser parses; inline init script runs once: `iframe.srcdoc = Tholos.b64.ensureDecoded(textarea.value)`.
 
 **AJAX update**
-1. Any server-driven action targeting this component returns a Tholos `setValue` envelope.
+1. Any server-driven action targeting this component returns a Tholos `setValue` envelope. The `value` field can be raw HTML or pre-base64-encoded; the handler is idempotent.
 2. Tholos dispatch invokes `THTMLViewer_setValue(sender, target, route, eventData)`.
-3. Handler updates the textarea's `val()`, re-pipes to `iframe.srcdoc`, and triggers `change` (so `onChange` GUI handlers fire).
+3. Handler stores `ensureEncoded(value)` in the textarea, sets `iframe.srcdoc` to `ensureDecoded(value)`, and triggers `change` (so `onChange` GUI handlers fire).
+
+**JS-side read via getValue**
+- `THTMLViewer_getValue` reads the textarea and returns `ensureDecoded(value)` — callers see raw HTML.
 
 **Form post / DBField round-trip**
-- Form submit serialises the textarea by `name`. PHP receives the HTML; `TDBField` writes to the bound DB column. No special handling — same path THTMLEdit uses.
+- The hidden textarea contains base64. On native form submit, the server receives base64 in `$_POST[$name]`. **Decoding on the server side is the consumer's responsibility** in this iteration (e.g. via a paired `_b64decode_html` parameter-handler hook, or by the receiving action explicitly base64-decoding).
+- Why not auto-decode on the receive side here? The Tholos parameter pipeline doesn't offer a per-component server-side post-receive hook in this codebase; introducing one would expand the change scope. Documented as a follow-up — recommended approach: add a paired `_b64decode_html` callback used by any consumer that wants the raw HTML, or wire a TFormControl override for THTMLViewer instances.
+- For consumers using the AJAX-form-submit path (which reads values through the type-dispatched `getValue` handler), `THTMLViewer_getValue` already returns decoded HTML, so they're unaffected.
 
 ## Security
 

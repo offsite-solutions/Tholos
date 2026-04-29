@@ -54,13 +54,30 @@
         if (strpos($s, "\n")) {
           $s = '<pre>' . $s . '</pre>';
         }
-        
+
         return $s;
       }
-      
+
       return '';
     }
-    
+
+    public static function _b64encode_html($params = array(), $parameterPrefix = ''): string {
+      $value = Eisodos::$parameterHandler->getParam($params['param']);
+      if ($value === '' || $value === null) {
+        return '';
+      }
+      // Already base64? Charset + length-multiple-of-4 + round-trip check.
+      // HTML always contains '<', '>', whitespace — none of which are in the base64 charset,
+      // so this discriminator reliably distinguishes encoded from raw.
+      if (preg_match('/^[A-Za-z0-9+\/]+=*$/', $value) && strlen($value) % 4 === 0) {
+        $decoded = base64_decode($value, true);
+        if ($decoded !== false && base64_encode($decoded) === $value) {
+          return $value;
+        }
+      }
+      return base64_encode($value);
+    }
+
     public static function _trim($params = array(), $parameterPrefix = ''): string {
       return trim(Eisodos::$templateEngine->replaceParamInString($params['value']));
     }
