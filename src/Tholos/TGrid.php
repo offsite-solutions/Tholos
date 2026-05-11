@@ -103,8 +103,8 @@
       $this->setProperty('SelectedCount', '0');
 
       if ($this->getProperty('MultiSelect', 'false') === 'true'
-        && $this->getPropertyComponentId('DBField', false) === false) {
-        Tholos::$logger->warning('TGrid MultiSelect=true requires a DBField; checkbox column will be skipped', $this);
+        && $this->getPropertyComponentId('MultiSelectDBField', false) === false) {
+        Tholos::$logger->warning('TGrid MultiSelect=true requires a MultiSelectDBField; checkbox column will be skipped', $this);
       }
 
       if ($this->getProperty('MultiSelect', 'false') === 'true'
