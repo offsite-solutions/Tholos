@@ -688,6 +688,26 @@ function TGrid_updateHeaderIcon(formId_) {
   }
 }
 
+function TGrid_setValues(formId_, json_) {
+  var parsed;
+  try { parsed = JSON.parse(json_); } catch (e) {
+    console.warn('TGrid_setValues: invalid JSON, selection unchanged', json_);
+    return;
+  }
+  if (!Array.isArray(parsed)) {
+    console.warn('TGrid_setValues: payload is not an array, selection unchanged', json_);
+    return;
+  }
+  var set = new Set(parsed.map(String));
+  TGrid_setSelectionSet(formId_, set);
+  $("#" + formId_ + " .TGrid-multiselect-checkbox").each(function () {
+    var v = String($(this).data('value'));
+    $(this).prop('checked', set.has(v));
+  });
+  TGrid_updateHeaderIcon(formId_);
+  Tholos.eventHandler(formId_, formId_, 'TGrid', 'selectionchange');
+}
+
 $(document).ready(function () {
   $("iframe.autoresize").each(function () {
     $(this).height($(this).contents().find("body").height());
