@@ -3,11 +3,12 @@
   _function_name=Tholos\TholosCallback::_eqs
   param=prop_ischeckable
   value=true
-  true=<input type="checkbox"
+  true>>=<input type="checkbox"
          class="TGrid-multiselect-checkbox"
          data-value="$prop_multiselectvalue"
          [%_function_name=Tholos\TholosCallback::_eqs;param=prop_isselected;value=true;true=checked;false=%]
          onchange="TGrid_toggleSelection('$prop_id', $(this).data('value'));">
+  <<
   false=
   %FUNC%>
 </td>

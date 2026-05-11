@@ -67,15 +67,18 @@ Switch the input's `data-value` to `$prop_multiselectvalue` and gate the entire 
   _function_name=Tholos\TholosCallback::_eqs
   param=prop_ischeckable
   value=true
-  true=<input type="checkbox"
+  true>>=<input type="checkbox"
          class="TGrid-multiselect-checkbox"
          data-value="$prop_multiselectvalue"
          [%_function_name=Tholos\TholosCallback::_eqs;param=prop_isselected;value=true;true=checked;false=%]
          onchange="TGrid_toggleSelection('$prop_id', $(this).data('value'));">
+  <<
   false=
   %FUNC%>
 </td>
 ```
+
+The `true` branch is multi-line, so its value is opened with `true>>=` and closed with `<<` on its own line — Eisodos's multi-line value delimiter (same form used in `TGrid.partial.selectable.template`). The single-line `false=` branch keeps the plain `=` form.
 
 The head partial and footer partial are unchanged.
 

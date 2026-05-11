@@ -330,21 +330,23 @@ becomes:
   _function_name=Tholos\TholosCallback::_eqs
   param=prop_ischeckable
   value=true
-  true=<input type="checkbox"
+  true>>=<input type="checkbox"
          class="TGrid-multiselect-checkbox"
          data-value="$prop_multiselectvalue"
          [%_function_name=Tholos\TholosCallback::_eqs;param=prop_isselected;value=true;true=checked;false=%]
          onchange="TGrid_toggleSelection('$prop_id', $(this).data('value'));">
+  <<
   false=
   %FUNC%>
 </td>
 ```
 
-Two changes:
+Three changes:
 1. The `<input>` is now wrapped in a `_eqs(prop_ischeckable, true)` block — when `IsCheckable=false`, the cell renders as bare `<td></td>`.
 2. `data-value` reads `$prop_multiselectvalue` (set by PHP per row in Task 3) instead of `$prop_value` (which is the `DBField` row value).
+3. The `<input>` body spans multiple lines, so the `true` branch uses Eisodos's multi-line value delimiter: open with `true>>=` and close with `<<` on its own line (same shape as the `false>>= ... <<` block in `TGrid.partial.selectable.template`). Plain `true=...` only works for single-line values and would truncate the `<input>` block at the first newline.
 
-The nested `_eqs` callback that emits `checked` is rewritten using the inline `[%...%]` form so it sits cleanly inside the outer block's `true=...` branch.
+The nested `_eqs` callback that emits `checked` is rewritten using the inline `[%...%]` form so it stays single-line inside the outer block's `true>>=` branch.
 
 - [ ] **Step 2: Manual verification (browser)**
 
