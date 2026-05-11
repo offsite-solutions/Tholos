@@ -762,7 +762,7 @@
       if (!$transposed && $hasAnyStandaloneGridColumn) {
         if ($this->getProperty('MultiSelect', 'false') === 'true'
           && $this->getProperty('ViewMode', 'GRID') === 'GRID'
-          && $this->getPropertyComponentId('DBField', false) !== false) {
+          && $this->getPropertyComponentId('MultiSelectDBField', false) !== false) {
           $items = array_merge(['__MultiSelectHeader' => $this->renderPartial($this, 'multiselect.head')], $items);
         }
         $this->columnHeadItems .= $this->renderPartial($this, 'headitems', implode($items));
@@ -797,7 +797,7 @@
           if (!$hasAnyStandaloneGridColumn
             && $this->getProperty('MultiSelect', 'false') === 'true'
             && $this->getProperty('ViewMode', 'GRID') === 'GRID'
-            && $this->getPropertyComponentId('DBField', false) !== false) {
+            && $this->getPropertyComponentId('MultiSelectDBField', false) !== false) {
             $items = array_merge(['__MultiSelectHeader' => $this->renderPartial($this, 'multiselect.head')], $items);
           }
           $this->columnHeadItems .= $this->renderPartial($this, 'headitems', implode($items));
