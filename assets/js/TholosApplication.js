@@ -128,6 +128,10 @@ var Tholos = {
       Tholos.trace("TGrid_getValues()", sender, target, route, eventData);
       return JSON.stringify(TGrid_getValues(target));
     },
+    TGrid_setValues: function (sender, target, route, eventData) {
+      Tholos.trace("TGrid_setValues()", sender, target, route, eventData);
+      TGrid_setValues(target, eventData);
+    },
     TGrid_getFilterSQL: function (sender, target, route, eventData) {
       Tholos.trace("TGrid_getFilterSQL()", sender, target, route, eventData);
       return $("#helper_" + target + " #TGrid_FilterSQL_").val();
