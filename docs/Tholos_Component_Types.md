@@ -1,8 +1,22 @@
 # Tholos :: Component Type documentation
 
+<!-- RELEASE HISTORY START -->
+## Release history
+
+- **2026-05-11** — `Tholos_Component_Types-20260511111444.html`
+  - `TGrid`: new property **`MultiSelectDBField`** (TDBField, runtime, hidden) — value of the row checkbox when grid is MultiSelect; empty hides the checkbox.
+  - `TGrid`: new method **`setValues()`** — sets multiple values (checked items) on a multi-select grid.
+  - `TFormControl`: `Enabled` default value now documented as `true`.
+  - `TFormControl`: `Label` default value now documented as `@this.DBField.Label`.
+- **2026-04-29** — `Tholos_Component_Types-20260429124455.html` (baseline)
+  - Initial release history baseline. 84 documented component types. See the file body for the full reference.
+
+<!-- RELEASE HISTORY END -->
+
 <div class="row">
 
-<div class="col-sm-5 col-sm-offset-1" style="border: 1px solid #eee; border-radius: 10px; margin-right: 10px;">
+<div class="col-sm-5 col-sm-offset-1"
+style="border: 1px solid #eee; border-radius: 10px; margin-right: 10px;">
 
 #### Component Type structure
 
@@ -93,7 +107,8 @@
 
 </div>
 
-<div class="col-sm-5" style="border: 1px solid #eee; border-radius: 10px;">
+<div class="col-sm-5"
+style="border: 1px solid #eee; border-radius: 10px;">
 
 #### Application structure
 
@@ -186,7 +201,8 @@
 
 Parent must be: *only inherited types can be placed*
 
-TComponent is the father of all Tholos components. Super minimalistic, only defines few basic properties, methods and events.
+TComponent is the father of all Tholos components. Super minimalistic,
+only defines few basic properties, methods and events.
 
 ### TComponent properties
 
@@ -228,7 +244,8 @@ No
 
 No
 
-Function Code for Role management, use \# in case of function needs logged user only (without any role)
+Function Code for Role management, use \# in case of function needs
+logged user only (without any role)
 
 **Name**
 
@@ -252,7 +269,8 @@ No
 
 No
 
-Value of Name property will be suffixed with this value. Use ++ sign to concatenation, ex: "\_++@this.DBField.Value"
+Value of Name property will be suffixed with this value. Use ++ sign to
+concatenation, ex: "\_++@this.DBField.Value"
 
 ### TComponent events
 
@@ -300,13 +318,15 @@ Description
 
 [](javascript:jumpToDoc('');)
 
-Sets data-dataparameters values. If previous values exist they will be merged.
+Sets data-dataparameters values. If previous values exist they will be
+merged.
 
 ------------------------------------------------------------------------
 
 ## TAction
 
-[TComponent](javascript:jumpToDoc('TComponent');) / [TAction](javascript:jumpToDoc('TAction');)
+[TComponent](javascript:jumpToDoc('TComponent');) /
+[TAction](javascript:jumpToDoc('TAction');)
 
 Parent must be: [TRoute](javascript:jumpToDoc('TRoute');)
 
@@ -356,7 +376,8 @@ No
 
 [TComponent](javascript:jumpToDoc('TComponent');)
 
-Function Code for Role management, use \# in case of function needs logged user only (without any role)
+Function Code for Role management, use \# in case of function needs
+logged user only (without any role)
 
 **HTTPMethod**
 
@@ -408,7 +429,8 @@ No
 
 [TComponent](javascript:jumpToDoc('TComponent');)
 
-Value of Name property will be suffixed with this value. Use ++ sign to concatenation, ex: "\_++@this.DBField.Value"
+Value of Name property will be suffixed with this value. Use ++ sign to
+concatenation, ex: "\_++@this.DBField.Value"
 
 **Page**
 
@@ -432,7 +454,9 @@ Yes
 
 HTML
 
-Type of the generated response. HTML will render a full HTML5-compliant page while HTMLSnippet will only render a partial useful for AJAX page generators. JSON and PLAINTEXT are self-explanatory.
+Type of the generated response. HTML will render a full HTML5-compliant
+page while HTMLSnippet will only render a partial useful for AJAX page
+generators. JSON and PLAINTEXT are self-explanatory.
 
 **List of possible values**
 
@@ -495,13 +519,15 @@ Navigate to this action
 
 [TComponent](javascript:jumpToDoc('TComponent');)
 
-Sets data-dataparameters values. If previous values exist they will be merged.
+Sets data-dataparameters values. If previous values exist they will be
+merged.
 
 ------------------------------------------------------------------------
 
 ## TApplication
 
-[TComponent](javascript:jumpToDoc('TComponent');) / [TApplication](javascript:jumpToDoc('TApplication');)
+[TComponent](javascript:jumpToDoc('TComponent');) /
+[TApplication](javascript:jumpToDoc('TApplication');)
 
 Parent must be: *must be a root element of application structure*
 
@@ -565,7 +591,8 @@ Yes
 
 [TComponent](javascript:jumpToDoc('TComponent');)
 
-Value of Name property will be suffixed with this value. Use ++ sign to concatenation, ex: "\_++@this.DBField.Value"
+Value of Name property will be suffixed with this value. Use ++ sign to
+concatenation, ex: "\_++@this.DBField.Value"
 
 ### TApplication events
 
@@ -619,13 +646,15 @@ Description
 
 [TComponent](javascript:jumpToDoc('TComponent');)
 
-Sets data-dataparameters values. If previous values exist they will be merged.
+Sets data-dataparameters values. If previous values exist they will be
+merged.
 
 ------------------------------------------------------------------------
 
 ## TCacheArrayItem
 
-[TComponent](javascript:jumpToDoc('TComponent');) / [TCacheArrayItem](javascript:jumpToDoc('TCacheArrayItem');)
+[TComponent](javascript:jumpToDoc('TComponent');) /
+[TCacheArrayItem](javascript:jumpToDoc('TCacheArrayItem');)
 
 Parent must be: [TComponent](javascript:jumpToDoc('TComponent');)
 
@@ -749,7 +778,8 @@ No
 
 [TComponent](javascript:jumpToDoc('TComponent');)
 
-Value of Name property will be suffixed with this value. Use ++ sign to concatenation, ex: "\_++@this.DBField.Value"
+Value of Name property will be suffixed with this value. Use ++ sign to
+concatenation, ex: "\_++@this.DBField.Value"
 
 **OrderField**
 
@@ -821,17 +851,20 @@ Description
 
 [TComponent](javascript:jumpToDoc('TComponent');)
 
-Sets data-dataparameters values. If previous values exist they will be merged.
+Sets data-dataparameters values. If previous values exist they will be
+merged.
 
 ------------------------------------------------------------------------
 
 ## TCacheArrayRenderer
 
-[TComponent](javascript:jumpToDoc('TComponent');) / [TCacheArrayRenderer](javascript:jumpToDoc('TCacheArrayRenderer');)
+[TComponent](javascript:jumpToDoc('TComponent');) /
+[TCacheArrayRenderer](javascript:jumpToDoc('TCacheArrayRenderer');)
 
 Parent must be: [TComponent](javascript:jumpToDoc('TComponent');)
 
-TCacheArrayRenderer - renders an array from the cache stored by a TCacheArray component
+TCacheArrayRenderer - renders an array from the cache stored by a
+TCacheArray component
 
 ### TCacheArrayRenderer properties
 
@@ -973,7 +1006,8 @@ No
 
 [TComponent](javascript:jumpToDoc('TComponent');)
 
-Value of Name property will be suffixed with this value. Use ++ sign to concatenation, ex: "\_++@this.DBField.Value"
+Value of Name property will be suffixed with this value. Use ++ sign to
+concatenation, ex: "\_++@this.DBField.Value"
 
 **PurgeAt**
 
@@ -1006,7 +1040,8 @@ No
 
 false
 
-In case it is true and an item is not rendered from the array it will be purged
+In case it is true and an item is not rendered from the array it will be
+purged
 
 **Sorting**
 
@@ -1074,13 +1109,15 @@ Description
 
 [TComponent](javascript:jumpToDoc('TComponent');)
 
-Sets data-dataparameters values. If previous values exist they will be merged.
+Sets data-dataparameters values. If previous values exist they will be
+merged.
 
 ------------------------------------------------------------------------
 
 ## TCacheArraySave
 
-[TComponent](javascript:jumpToDoc('TComponent');) / [TCacheArraySave](javascript:jumpToDoc('TCacheArraySave');)
+[TComponent](javascript:jumpToDoc('TComponent');) /
+[TCacheArraySave](javascript:jumpToDoc('TCacheArraySave');)
 
 Parent must be: [TComponent](javascript:jumpToDoc('TComponent');)
 
@@ -1182,7 +1219,8 @@ No
 
 [TComponent](javascript:jumpToDoc('TComponent');)
 
-Value of Name property will be suffixed with this value. Use ++ sign to concatenation, ex: "\_++@this.DBField.Value"
+Value of Name property will be suffixed with this value. Use ++ sign to
+concatenation, ex: "\_++@this.DBField.Value"
 
 ### TCacheArraySave events
 
@@ -1230,15 +1268,18 @@ Description
 
 [TComponent](javascript:jumpToDoc('TComponent');)
 
-Sets data-dataparameters values. If previous values exist they will be merged.
+Sets data-dataparameters values. If previous values exist they will be
+merged.
 
 ------------------------------------------------------------------------
 
 ## TConfirmButton
 
-[TComponent](javascript:jumpToDoc('TComponent');) / [TConfirmButton](javascript:jumpToDoc('TConfirmButton');)
+[TComponent](javascript:jumpToDoc('TComponent');) /
+[TConfirmButton](javascript:jumpToDoc('TConfirmButton');)
 
-Parent must be: [TConfirmDialog](javascript:jumpToDoc('TConfirmDialog');)
+Parent must be:
+[TConfirmDialog](javascript:jumpToDoc('TConfirmDialog');)
 
 TConfirmButton
 
@@ -1298,7 +1339,8 @@ No
 
 [TComponent](javascript:jumpToDoc('TComponent');)
 
-Function Code for Role management, use \# in case of function needs logged user only (without any role)
+Function Code for Role management, use \# in case of function needs
+logged user only (without any role)
 
 **Label**
 
@@ -1340,7 +1382,8 @@ Yes
 
 [TComponent](javascript:jumpToDoc('TComponent');)
 
-Value of Name property will be suffixed with this value. Use ++ sign to concatenation, ex: "\_++@this.DBField.Value"
+Value of Name property will be suffixed with this value. Use ++ sign to
+concatenation, ex: "\_++@this.DBField.Value"
 
 **Value**
 
@@ -1408,13 +1451,15 @@ Description
 
 [TComponent](javascript:jumpToDoc('TComponent');)
 
-Sets data-dataparameters values. If previous values exist they will be merged.
+Sets data-dataparameters values. If previous values exist they will be
+merged.
 
 ------------------------------------------------------------------------
 
 ## TConfirmDialog
 
-[TComponent](javascript:jumpToDoc('TComponent');) / [TConfirmDialog](javascript:jumpToDoc('TConfirmDialog');)
+[TComponent](javascript:jumpToDoc('TComponent');) /
+[TConfirmDialog](javascript:jumpToDoc('TConfirmDialog');)
 
 Parent must be: [TAction](javascript:jumpToDoc('TAction');)
 
@@ -1510,7 +1555,8 @@ No
 
 [TComponent](javascript:jumpToDoc('TComponent');)
 
-Function Code for Role management, use \# in case of function needs logged user only (without any role)
+Function Code for Role management, use \# in case of function needs
+logged user only (without any role)
 
 **Label**
 
@@ -1550,7 +1596,8 @@ Yes
 
 [TComponent](javascript:jumpToDoc('TComponent');)
 
-Value of Name property will be suffixed with this value. Use ++ sign to concatenation, ex: "\_++@this.DBField.Value"
+Value of Name property will be suffixed with this value. Use ++ sign to
+concatenation, ex: "\_++@this.DBField.Value"
 
 **Title**
 
@@ -1666,7 +1713,8 @@ Description
 
 [TComponent](javascript:jumpToDoc('TComponent');)
 
-Sets data-dataparameters values. If previous values exist they will be merged.
+Sets data-dataparameters values. If previous values exist they will be
+merged.
 
 **show()**
 
@@ -1676,7 +1724,8 @@ Sets data-dataparameters values. If previous values exist they will be merged.
 
 ## TContainer
 
-[TComponent](javascript:jumpToDoc('TComponent');) / [TContainer](javascript:jumpToDoc('TContainer');)
+[TComponent](javascript:jumpToDoc('TComponent');) /
+[TContainer](javascript:jumpToDoc('TContainer');)
 
 Parent must be: [TComponent](javascript:jumpToDoc('TComponent');)
 
@@ -1807,7 +1856,8 @@ No
 
 [TComponent](javascript:jumpToDoc('TComponent');)
 
-Function Code for Role management, use \# in case of function needs logged user only (without any role)
+Function Code for Role management, use \# in case of function needs
+logged user only (without any role)
 
 **Generate**
 
@@ -1861,7 +1911,8 @@ No
 
 [TComponent](javascript:jumpToDoc('TComponent');)
 
-Value of Name property will be suffixed with this value. Use ++ sign to concatenation, ex: "\_++@this.DBField.Value"
+Value of Name property will be suffixed with this value. Use ++ sign to
+concatenation, ex: "\_++@this.DBField.Value"
 
 **SourceURL**
 
@@ -2009,7 +2060,8 @@ Loads a content from extrenal URL received in sourceURL parameter
 
 [TComponent](javascript:jumpToDoc('TComponent');)
 
-Sets data-dataparameters values. If previous values exist they will be merged.
+Sets data-dataparameters values. If previous values exist they will be
+merged.
 
 **setEnabled()**
 
@@ -2035,7 +2087,9 @@ switch Loadable property to true or false
 
 ## TCell
 
-[TComponent](javascript:jumpToDoc('TComponent');) / [TContainer](javascript:jumpToDoc('TContainer');) / [TCell](javascript:jumpToDoc('TCell');)
+[TComponent](javascript:jumpToDoc('TComponent');) /
+[TContainer](javascript:jumpToDoc('TContainer');) /
+[TCell](javascript:jumpToDoc('TCell');)
 
 Parent must be: [TComponent](javascript:jumpToDoc('TComponent');)
 
@@ -2176,7 +2230,8 @@ No
 
 [TComponent](javascript:jumpToDoc('TComponent');)
 
-Function Code for Role management, use \# in case of function needs logged user only (without any role)
+Function Code for Role management, use \# in case of function needs
+logged user only (without any role)
 
 **Generate**
 
@@ -2234,7 +2289,8 @@ No
 
 [TComponent](javascript:jumpToDoc('TComponent');)
 
-Value of Name property will be suffixed with this value. Use ++ sign to concatenation, ex: "\_++@this.DBField.Value"
+Value of Name property will be suffixed with this value. Use ++ sign to
+concatenation, ex: "\_++@this.DBField.Value"
 
 **Position**
 
@@ -2472,7 +2528,8 @@ Loads a content from extrenal URL received in sourceURL parameter
 
 [TComponent](javascript:jumpToDoc('TComponent');)
 
-Sets data-dataparameters values. If previous values exist they will be merged.
+Sets data-dataparameters values. If previous values exist they will be
+merged.
 
 **setEnabled()**
 
@@ -2498,7 +2555,9 @@ switch Loadable property to true or false
 
 ## TColumn
 
-[TComponent](javascript:jumpToDoc('TComponent');) / [TContainer](javascript:jumpToDoc('TContainer');) / [TColumn](javascript:jumpToDoc('TColumn');)
+[TComponent](javascript:jumpToDoc('TComponent');) /
+[TContainer](javascript:jumpToDoc('TContainer');) /
+[TColumn](javascript:jumpToDoc('TColumn');)
 
 Parent must be: [TComponent](javascript:jumpToDoc('TComponent');)
 
@@ -2590,7 +2649,8 @@ No
 
 [TComponent](javascript:jumpToDoc('TComponent');)
 
-Function Code for Role management, use \# in case of function needs logged user only (without any role)
+Function Code for Role management, use \# in case of function needs
+logged user only (without any role)
 
 **Generate**
 
@@ -2648,7 +2708,8 @@ Yes
 
 [TComponent](javascript:jumpToDoc('TComponent');)
 
-Value of Name property will be suffixed with this value. Use ++ sign to concatenation, ex: "\_++@this.DBField.Value"
+Value of Name property will be suffixed with this value. Use ++ sign to
+concatenation, ex: "\_++@this.DBField.Value"
 
 **OffsetExtraSmall**
 
@@ -3032,7 +3093,8 @@ Loads a content from extrenal URL received in sourceURL parameter
 
 [TComponent](javascript:jumpToDoc('TComponent');)
 
-Sets data-dataparameters values. If previous values exist they will be merged.
+Sets data-dataparameters values. If previous values exist they will be
+merged.
 
 **setEnabled()**
 
@@ -3058,7 +3120,9 @@ switch Loadable property to true or false
 
 ## TForm
 
-[TComponent](javascript:jumpToDoc('TComponent');) / [TContainer](javascript:jumpToDoc('TContainer');) / [TForm](javascript:jumpToDoc('TForm');)
+[TComponent](javascript:jumpToDoc('TComponent');) /
+[TContainer](javascript:jumpToDoc('TContainer');) /
+[TForm](javascript:jumpToDoc('TForm');)
 
 Parent must be: [TContainer](javascript:jumpToDoc('TContainer');)
 
@@ -3302,7 +3366,9 @@ No
 
 Yes
 
-EncodingType attribute specifies how the form-data should be encoded when submitting it to the server. Can only be used when the form method is POST.
+EncodingType attribute specifies how the form-data should be encoded
+when submitting it to the server. Can only be used when the form method
+is POST.
 
 **FormState**
 
@@ -3331,7 +3397,8 @@ No
 
 [TComponent](javascript:jumpToDoc('TComponent');)
 
-Function Code for Role management, use \# in case of function needs logged user only (without any role)
+Function Code for Role management, use \# in case of function needs
+logged user only (without any role)
 
 **Generate**
 
@@ -3514,7 +3581,8 @@ No
 
 [TComponent](javascript:jumpToDoc('TComponent');)
 
-Value of Name property will be suffixed with this value. Use ++ sign to concatenation, ex: "\_++@this.DBField.Value"
+Value of Name property will be suffixed with this value. Use ++ sign to
+concatenation, ex: "\_++@this.DBField.Value"
 
 **Style**
 
@@ -3766,7 +3834,8 @@ Loads a content from extrenal URL received in sourceURL parameter
 
 [TComponent](javascript:jumpToDoc('TComponent');)
 
-Sets data-dataparameters values. If previous values exist they will be merged.
+Sets data-dataparameters values. If previous values exist they will be
+merged.
 
 **setEnabled()**
 
@@ -3800,7 +3869,9 @@ switch Loadable property to true or false
 
 ## TFormContainer
 
-[TComponent](javascript:jumpToDoc('TComponent');) / [TContainer](javascript:jumpToDoc('TContainer');) / [TFormContainer](javascript:jumpToDoc('TFormContainer');)
+[TComponent](javascript:jumpToDoc('TComponent');) /
+[TContainer](javascript:jumpToDoc('TContainer');) /
+[TFormContainer](javascript:jumpToDoc('TFormContainer');)
 
 Parent must be: [TComponent](javascript:jumpToDoc('TComponent');)
 
@@ -3953,7 +4024,8 @@ No
 
 [TComponent](javascript:jumpToDoc('TComponent');)
 
-Function Code for Role management, use \# in case of function needs logged user only (without any role)
+Function Code for Role management, use \# in case of function needs
+logged user only (without any role)
 
 **Generate**
 
@@ -4011,7 +4083,8 @@ Yes
 
 [TComponent](javascript:jumpToDoc('TComponent');)
 
-Value of Name property will be suffixed with this value. Use ++ sign to concatenation, ex: "\_++@this.DBField.Value"
+Value of Name property will be suffixed with this value. Use ++ sign to
+concatenation, ex: "\_++@this.DBField.Value"
 
 **OverrideFormEvents**
 
@@ -4195,7 +4268,8 @@ Loads a content from extrenal URL received in sourceURL parameter
 
 [TComponent](javascript:jumpToDoc('TComponent');)
 
-Sets data-dataparameters values. If previous values exist they will be merged.
+Sets data-dataparameters values. If previous values exist they will be
+merged.
 
 **setEnabled()**
 
@@ -4221,7 +4295,9 @@ switch Loadable property to true or false
 
 ## TGridRowActions
 
-[TComponent](javascript:jumpToDoc('TComponent');) / [TContainer](javascript:jumpToDoc('TContainer');) / [TGridRowActions](javascript:jumpToDoc('TGridRowActions');)
+[TComponent](javascript:jumpToDoc('TComponent');) /
+[TContainer](javascript:jumpToDoc('TContainer');) /
+[TGridRowActions](javascript:jumpToDoc('TGridRowActions');)
 
 Parent must be: [TComponent](javascript:jumpToDoc('TComponent');)
 
@@ -4343,7 +4419,8 @@ No
 
 [TComponent](javascript:jumpToDoc('TComponent');)
 
-Function Code for Role management, use \# in case of function needs logged user only (without any role)
+Function Code for Role management, use \# in case of function needs
+logged user only (without any role)
 
 **Generate**
 
@@ -4415,7 +4492,8 @@ No
 
 [TComponent](javascript:jumpToDoc('TComponent');)
 
-Value of Name property will be suffixed with this value. Use ++ sign to concatenation, ex: "\_++@this.DBField.Value"
+Value of Name property will be suffixed with this value. Use ++ sign to
+concatenation, ex: "\_++@this.DBField.Value"
 
 **SourceURL**
 
@@ -4569,7 +4647,8 @@ Loads a content from extrenal URL received in sourceURL parameter
 
 [TComponent](javascript:jumpToDoc('TComponent');)
 
-Sets data-dataparameters values. If previous values exist they will be merged.
+Sets data-dataparameters values. If previous values exist they will be
+merged.
 
 **setEnabled()**
 
@@ -4595,7 +4674,9 @@ switch Loadable property to true or false
 
 ## TModal
 
-[TComponent](javascript:jumpToDoc('TComponent');) / [TContainer](javascript:jumpToDoc('TContainer');) / [TModal](javascript:jumpToDoc('TModal');)
+[TComponent](javascript:jumpToDoc('TComponent');) /
+[TContainer](javascript:jumpToDoc('TContainer');) /
+[TModal](javascript:jumpToDoc('TModal');)
 
 Parent must be: [TAction](javascript:jumpToDoc('TAction');)
 
@@ -4699,7 +4780,8 @@ No
 
 [TComponent](javascript:jumpToDoc('TComponent');)
 
-Function Code for Role management, use \# in case of function needs logged user only (without any role)
+Function Code for Role management, use \# in case of function needs
+logged user only (without any role)
 
 **Generate**
 
@@ -4757,7 +4839,8 @@ Yes
 
 [TComponent](javascript:jumpToDoc('TComponent');)
 
-Value of Name property will be suffixed with this value. Use ++ sign to concatenation, ex: "\_++@this.DBField.Value"
+Value of Name property will be suffixed with this value. Use ++ sign to
+concatenation, ex: "\_++@this.DBField.Value"
 
 **OverrideFormEvents**
 
@@ -4961,7 +5044,8 @@ Loads a content from extrenal URL received in sourceURL parameter
 
 [TComponent](javascript:jumpToDoc('TComponent');)
 
-Sets data-dataparameters values. If previous values exist they will be merged.
+Sets data-dataparameters values. If previous values exist they will be
+merged.
 
 **setEnabled()**
 
@@ -4987,7 +5071,9 @@ switch Loadable property to true or false
 
 ## TPage
 
-[TComponent](javascript:jumpToDoc('TComponent');) / [TContainer](javascript:jumpToDoc('TContainer');) / [TPage](javascript:jumpToDoc('TPage');)
+[TComponent](javascript:jumpToDoc('TComponent');) /
+[TContainer](javascript:jumpToDoc('TContainer');) /
+[TPage](javascript:jumpToDoc('TPage');)
 
 Parent must be: [TApplication](javascript:jumpToDoc('TApplication');)
 
@@ -5077,7 +5163,8 @@ No
 
 [TComponent](javascript:jumpToDoc('TComponent');)
 
-Function Code for Role management, use \# in case of function needs logged user only (without any role)
+Function Code for Role management, use \# in case of function needs
+logged user only (without any role)
 
 **Loadable**
 
@@ -5121,7 +5208,8 @@ No
 
 [TComponent](javascript:jumpToDoc('TComponent');)
 
-Value of Name property will be suffixed with this value. Use ++ sign to concatenation, ex: "\_++@this.DBField.Value"
+Value of Name property will be suffixed with this value. Use ++ sign to
+concatenation, ex: "\_++@this.DBField.Value"
 
 **SourceURL**
 
@@ -5271,7 +5359,8 @@ Loads a content from extrenal URL received in sourceURL parameter
 
 [TComponent](javascript:jumpToDoc('TComponent');)
 
-Sets data-dataparameters values. If previous values exist they will be merged.
+Sets data-dataparameters values. If previous values exist they will be
+merged.
 
 **setEnabled()**
 
@@ -5297,7 +5386,10 @@ switch Loadable property to true or false
 
 ## TPDFPage
 
-[TComponent](javascript:jumpToDoc('TComponent');) / [TContainer](javascript:jumpToDoc('TContainer');) / [TPage](javascript:jumpToDoc('TPage');) / [TPDFPage](javascript:jumpToDoc('TPDFPage');)
+[TComponent](javascript:jumpToDoc('TComponent');) /
+[TContainer](javascript:jumpToDoc('TContainer');) /
+[TPage](javascript:jumpToDoc('TPage');) /
+[TPDFPage](javascript:jumpToDoc('TPDFPage');)
 
 Parent must be: [TApplication](javascript:jumpToDoc('TApplication');)
 
@@ -5449,7 +5541,8 @@ No
 
 [TComponent](javascript:jumpToDoc('TComponent');)
 
-Function Code for Role management, use \# in case of function needs logged user only (without any role)
+Function Code for Role management, use \# in case of function needs
+logged user only (without any role)
 
 **HeaderContainerName**
 
@@ -5505,7 +5598,8 @@ No
 
 [TComponent](javascript:jumpToDoc('TComponent');)
 
-Value of Name property will be suffixed with this value. Use ++ sign to concatenation, ex: "\_++@this.DBField.Value"
+Value of Name property will be suffixed with this value. Use ++ sign to
+concatenation, ex: "\_++@this.DBField.Value"
 
 **PAdES**
 
@@ -5693,7 +5787,8 @@ Loads a content from extrenal URL received in sourceURL parameter
 
 [TComponent](javascript:jumpToDoc('TComponent');)
 
-Sets data-dataparameters values. If previous values exist they will be merged.
+Sets data-dataparameters values. If previous values exist they will be
+merged.
 
 **setEnabled()**
 
@@ -5719,7 +5814,9 @@ switch Loadable property to true or false
 
 ## TTabPane
 
-[TComponent](javascript:jumpToDoc('TComponent');) / [TContainer](javascript:jumpToDoc('TContainer');) / [TTabPane](javascript:jumpToDoc('TTabPane');)
+[TComponent](javascript:jumpToDoc('TComponent');) /
+[TContainer](javascript:jumpToDoc('TContainer');) /
+[TTabPane](javascript:jumpToDoc('TTabPane');)
 
 Parent must be: [TTabs](javascript:jumpToDoc('TTabs');)
 
@@ -5825,7 +5922,8 @@ No
 
 [TComponent](javascript:jumpToDoc('TComponent');)
 
-Function Code for Role management, use \# in case of function needs logged user only (without any role)
+Function Code for Role management, use \# in case of function needs
+logged user only (without any role)
 
 **Generate**
 
@@ -5851,7 +5949,8 @@ No
 
 No
 
-Icon specified in the icon's library format, eg. "fa fa-share" or "glyphicon glyphicon-share"
+Icon specified in the icon's library format, eg. "fa fa-share" or
+"glyphicon glyphicon-share"
 
 **IconAlign**
 
@@ -5863,7 +5962,8 @@ No
 
 No
 
-Alignment of the icon. Left means before the component's label or content, right means after it. Defaults to left.
+Alignment of the icon. Left means before the component's label or
+content, right means after it. Defaults to left.
 
 **List of possible values**
 
@@ -5934,7 +6034,8 @@ No
 
 [TComponent](javascript:jumpToDoc('TComponent');)
 
-Value of Name property will be suffixed with this value. Use ++ sign to concatenation, ex: "\_++@this.DBField.Value"
+Value of Name property will be suffixed with this value. Use ++ sign to
+concatenation, ex: "\_++@this.DBField.Value"
 
 **SourceURL**
 
@@ -6108,7 +6209,8 @@ Loads a content from extrenal URL received in sourceURL parameter
 
 [TComponent](javascript:jumpToDoc('TComponent');)
 
-Sets data-dataparameters values. If previous values exist they will be merged.
+Sets data-dataparameters values. If previous values exist they will be
+merged.
 
 **setEnabled()**
 
@@ -6140,7 +6242,9 @@ switch Loadable property to true or false
 
 ## TTabs
 
-[TComponent](javascript:jumpToDoc('TComponent');) / [TContainer](javascript:jumpToDoc('TContainer');) / [TTabs](javascript:jumpToDoc('TTabs');)
+[TComponent](javascript:jumpToDoc('TComponent');) /
+[TContainer](javascript:jumpToDoc('TContainer');) /
+[TTabs](javascript:jumpToDoc('TTabs');)
 
 Parent must be: [TContainer](javascript:jumpToDoc('TContainer');)
 
@@ -6240,7 +6344,8 @@ No
 
 [TComponent](javascript:jumpToDoc('TComponent');)
 
-Function Code for Role management, use \# in case of function needs logged user only (without any role)
+Function Code for Role management, use \# in case of function needs
+logged user only (without any role)
 
 **Generate**
 
@@ -6310,7 +6415,8 @@ Yes
 
 [TComponent](javascript:jumpToDoc('TComponent');)
 
-Value of Name property will be suffixed with this value. Use ++ sign to concatenation, ex: "\_++@this.DBField.Value"
+Value of Name property will be suffixed with this value. Use ++ sign to
+concatenation, ex: "\_++@this.DBField.Value"
 
 **RememberTabPane**
 
@@ -6474,7 +6580,8 @@ Loads a content from extrenal URL received in sourceURL parameter
 
 [TComponent](javascript:jumpToDoc('TComponent');)
 
-Sets data-dataparameters values. If previous values exist they will be merged.
+Sets data-dataparameters values. If previous values exist they will be
+merged.
 
 **setEnabled()**
 
@@ -6500,7 +6607,9 @@ switch Loadable property to true or false
 
 ## TWidget
 
-[TComponent](javascript:jumpToDoc('TComponent');) / [TContainer](javascript:jumpToDoc('TContainer');) / [TWidget](javascript:jumpToDoc('TWidget');)
+[TComponent](javascript:jumpToDoc('TComponent');) /
+[TContainer](javascript:jumpToDoc('TContainer');) /
+[TWidget](javascript:jumpToDoc('TWidget');)
 
 Parent must be: [TContainer](javascript:jumpToDoc('TContainer');)
 
@@ -6578,7 +6687,8 @@ No
 
 false
 
-Defines whether the component can be collapsed and if so, what its initial state
+Defines whether the component can be collapsed and if so, what its
+initial state
 
 **List of possible values**
 
@@ -6626,7 +6736,8 @@ No
 
 [TComponent](javascript:jumpToDoc('TComponent');)
 
-Function Code for Role management, use \# in case of function needs logged user only (without any role)
+Function Code for Role management, use \# in case of function needs
+logged user only (without any role)
 
 **Generate**
 
@@ -6674,7 +6785,8 @@ No
 
 No
 
-Icon specified in the icon's library format, eg. "fa fa-share" or "glyphicon glyphicon-share"
+Icon specified in the icon's library format, eg. "fa fa-share" or
+"glyphicon glyphicon-share"
 
 **IconAlign**
 
@@ -6686,7 +6798,8 @@ No
 
 No
 
-Alignment of the icon. Left means before the component's label or content, right means after it. Defaults to left.
+Alignment of the icon. Left means before the component's label or
+content, right means after it. Defaults to left.
 
 **List of possible values**
 
@@ -6747,7 +6860,8 @@ Yes
 
 [TComponent](javascript:jumpToDoc('TComponent');)
 
-Value of Name property will be suffixed with this value. Use ++ sign to concatenation, ex: "\_++@this.DBField.Value"
+Value of Name property will be suffixed with this value. Use ++ sign to
+concatenation, ex: "\_++@this.DBField.Value"
 
 **ShowHeader**
 
@@ -6941,7 +7055,8 @@ Loads a content from extrenal URL received in sourceURL parameter
 
 [TComponent](javascript:jumpToDoc('TComponent');)
 
-Sets data-dataparameters values. If previous values exist they will be merged.
+Sets data-dataparameters values. If previous values exist they will be
+merged.
 
 **setEnabled()**
 
@@ -6967,7 +7082,9 @@ switch Loadable property to true or false
 
 ## TWizard
 
-[TComponent](javascript:jumpToDoc('TComponent');) / [TContainer](javascript:jumpToDoc('TContainer');) / [TWizard](javascript:jumpToDoc('TWizard');)
+[TComponent](javascript:jumpToDoc('TComponent');) /
+[TContainer](javascript:jumpToDoc('TContainer');) /
+[TWizard](javascript:jumpToDoc('TWizard');)
 
 Parent must be: [TContainer](javascript:jumpToDoc('TContainer');)
 
@@ -7165,7 +7282,8 @@ No
 
 [TComponent](javascript:jumpToDoc('TComponent');)
 
-Function Code for Role management, use \# in case of function needs logged user only (without any role)
+Function Code for Role management, use \# in case of function needs
+logged user only (without any role)
 
 **Generate**
 
@@ -7223,7 +7341,8 @@ Yes
 
 [TComponent](javascript:jumpToDoc('TComponent');)
 
-Value of Name property will be suffixed with this value. Use ++ sign to concatenation, ex: "\_++@this.DBField.Value"
+Value of Name property will be suffixed with this value. Use ++ sign to
+concatenation, ex: "\_++@this.DBField.Value"
 
 **RememberWizardStep**
 
@@ -7423,7 +7542,8 @@ Loads a content from extrenal URL received in sourceURL parameter
 
 [TComponent](javascript:jumpToDoc('TComponent');)
 
-Sets data-dataparameters values. If previous values exist they will be merged.
+Sets data-dataparameters values. If previous values exist they will be
+merged.
 
 **setEnabled()**
 
@@ -7449,7 +7569,9 @@ switch Loadable property to true or false
 
 ## TWizardStep
 
-[TComponent](javascript:jumpToDoc('TComponent');) / [TContainer](javascript:jumpToDoc('TContainer');) / [TWizardStep](javascript:jumpToDoc('TWizardStep');)
+[TComponent](javascript:jumpToDoc('TComponent');) /
+[TContainer](javascript:jumpToDoc('TContainer');) /
+[TWizardStep](javascript:jumpToDoc('TWizardStep');)
 
 Parent must be: [TWizard](javascript:jumpToDoc('TWizard');)
 
@@ -7541,7 +7663,8 @@ No
 
 [TComponent](javascript:jumpToDoc('TComponent');)
 
-Function Code for Role management, use \# in case of function needs logged user only (without any role)
+Function Code for Role management, use \# in case of function needs
+logged user only (without any role)
 
 **Generate**
 
@@ -7611,7 +7734,8 @@ Yes
 
 [TComponent](javascript:jumpToDoc('TComponent');)
 
-Value of Name property will be suffixed with this value. Use ++ sign to concatenation, ex: "\_++@this.DBField.Value"
+Value of Name property will be suffixed with this value. Use ++ sign to
+concatenation, ex: "\_++@this.DBField.Value"
 
 **Sequence**
 
@@ -7775,7 +7899,8 @@ Loads a content from extrenal URL received in sourceURL parameter
 
 [TComponent](javascript:jumpToDoc('TComponent');)
 
-Sets data-dataparameters values. If previous values exist they will be merged.
+Sets data-dataparameters values. If previous values exist they will be
+merged.
 
 **setEnabled()**
 
@@ -7801,7 +7926,8 @@ switch Loadable property to true or false
 
 ## TControl
 
-[TComponent](javascript:jumpToDoc('TComponent');) / [TControl](javascript:jumpToDoc('TControl');)
+[TComponent](javascript:jumpToDoc('TComponent');) /
+[TControl](javascript:jumpToDoc('TControl');)
 
 Parent must be: *only inherited types can be placed*
 
@@ -7859,7 +7985,8 @@ No
 
 Yes
 
-Database field attached to the control. When specified, the control is database-aware.
+Database field attached to the control. When specified, the control is
+database-aware.
 
 **DBParameterName**
 
@@ -7919,7 +8046,8 @@ Yes
 
 [TComponent](javascript:jumpToDoc('TComponent');)
 
-Function Code for Role management, use \# in case of function needs logged user only (without any role)
+Function Code for Role management, use \# in case of function needs
+logged user only (without any role)
 
 **HelpText**
 
@@ -7981,7 +8109,8 @@ Yes
 
 [TComponent](javascript:jumpToDoc('TComponent');)
 
-Value of Name property will be suffixed with this value. Use ++ sign to concatenation, ex: "\_++@this.DBField.Value"
+Value of Name property will be suffixed with this value. Use ++ sign to
+concatenation, ex: "\_++@this.DBField.Value"
 
 **ReadOnly**
 
@@ -8184,7 +8313,8 @@ Parses and executes a number of control parameters
 
 [TComponent](javascript:jumpToDoc('TComponent');)
 
-Sets data-dataparameters values. If previous values exist they will be merged.
+Sets data-dataparameters values. If previous values exist they will be
+merged.
 
 **setEnabled()**
 
@@ -8218,7 +8348,9 @@ Sets the label text of a component
 
 ## TButton
 
-[TComponent](javascript:jumpToDoc('TComponent');) / [TControl](javascript:jumpToDoc('TControl');) / [TButton](javascript:jumpToDoc('TButton');)
+[TComponent](javascript:jumpToDoc('TComponent');) /
+[TControl](javascript:jumpToDoc('TControl');) /
+[TButton](javascript:jumpToDoc('TButton');)
 
 Parent must be: [TContainer](javascript:jumpToDoc('TContainer');)
 
@@ -8266,7 +8398,9 @@ No
 
 No
 
-Twitter Bootstrap compliant standard control size as follows: xs (extra small), sm (small) and lg (large). When not specified control has normal size.
+Twitter Bootstrap compliant standard control size as follows: xs (extra
+small), sm (small) and lg (large). When not specified control has normal
+size.
 
 **List of possible values**
 
@@ -8340,7 +8474,8 @@ No
 
 [TComponent](javascript:jumpToDoc('TComponent');)
 
-Function Code for Role management, use \# in case of function needs logged user only (without any role)
+Function Code for Role management, use \# in case of function needs
+logged user only (without any role)
 
 **HelpText**
 
@@ -8366,7 +8501,8 @@ No
 
 No
 
-Icon specified in the icon's library format, eg. "fa fa-share" or "glyphicon glyphicon-share"
+Icon specified in the icon's library format, eg. "fa fa-share" or
+"glyphicon glyphicon-share"
 
 **IconAlign**
 
@@ -8378,7 +8514,8 @@ No
 
 No
 
-Alignment of the icon. Left means before the component's label or content, right means after it. Defaults to left.
+Alignment of the icon. Left means before the component's label or
+content, right means after it. Defaults to left.
 
 **List of possible values**
 
@@ -8451,7 +8588,8 @@ Yes
 
 [TComponent](javascript:jumpToDoc('TComponent');)
 
-Value of Name property will be suffixed with this value. Use ++ sign to concatenation, ex: "\_++@this.DBField.Value"
+Value of Name property will be suffixed with this value. Use ++ sign to
+concatenation, ex: "\_++@this.DBField.Value"
 
 **Style**
 
@@ -8637,7 +8775,8 @@ Parses and executes a number of control parameters
 
 [TComponent](javascript:jumpToDoc('TComponent');)
 
-Sets data-dataparameters values. If previous values exist they will be merged.
+Sets data-dataparameters values. If previous values exist they will be
+merged.
 
 **setEnabled()**
 
@@ -8671,7 +8810,10 @@ Sets the label text of a component
 
 ## TButtonDropdown
 
-[TComponent](javascript:jumpToDoc('TComponent');) / [TControl](javascript:jumpToDoc('TControl');) / [TButton](javascript:jumpToDoc('TButton');) / [TButtonDropdown](javascript:jumpToDoc('TButtonDropdown');)
+[TComponent](javascript:jumpToDoc('TComponent');) /
+[TControl](javascript:jumpToDoc('TControl');) /
+[TButton](javascript:jumpToDoc('TButton');) /
+[TButtonDropdown](javascript:jumpToDoc('TButtonDropdown');)
 
 Parent must be: [TContainer](javascript:jumpToDoc('TContainer');)
 
@@ -8721,7 +8863,9 @@ No
 
 [TButton](javascript:jumpToDoc('TButton');)
 
-Twitter Bootstrap compliant standard control size as follows: xs (extra small), sm (small) and lg (large). When not specified control has normal size.
+Twitter Bootstrap compliant standard control size as follows: xs (extra
+small), sm (small) and lg (large). When not specified control has normal
+size.
 
 **List of possible values**
 
@@ -8839,7 +8983,8 @@ No
 
 [TComponent](javascript:jumpToDoc('TComponent');)
 
-Function Code for Role management, use \# in case of function needs logged user only (without any role)
+Function Code for Role management, use \# in case of function needs
+logged user only (without any role)
 
 **HelpText**
 
@@ -8867,7 +9012,8 @@ No
 
 [TButton](javascript:jumpToDoc('TButton');)
 
-Icon specified in the icon's library format, eg. "fa fa-share" or "glyphicon glyphicon-share"
+Icon specified in the icon's library format, eg. "fa fa-share" or
+"glyphicon glyphicon-share"
 
 **IconAlign**
 
@@ -8883,7 +9029,8 @@ left
 
 [TButton](javascript:jumpToDoc('TButton');)
 
-Alignment of the icon. Left means before the component's label or content, right means after it. Defaults to left.
+Alignment of the icon. Left means before the component's label or
+content, right means after it. Defaults to left.
 
 **List of possible values**
 
@@ -8958,7 +9105,8 @@ Yes
 
 [TComponent](javascript:jumpToDoc('TComponent');)
 
-Value of Name property will be suffixed with this value. Use ++ sign to concatenation, ex: "\_++@this.DBField.Value"
+Value of Name property will be suffixed with this value. Use ++ sign to
+concatenation, ex: "\_++@this.DBField.Value"
 
 **ReadOnly**
 
@@ -9163,7 +9311,8 @@ Parses and executes a number of control parameters
 
 [TComponent](javascript:jumpToDoc('TComponent');)
 
-Sets data-dataparameters values. If previous values exist they will be merged.
+Sets data-dataparameters values. If previous values exist they will be
+merged.
 
 **setEnabled()**
 
@@ -9197,7 +9346,9 @@ Sets the label text of a component
 
 ## TFormControl
 
-[TComponent](javascript:jumpToDoc('TComponent');) / [TControl](javascript:jumpToDoc('TControl');) / [TFormControl](javascript:jumpToDoc('TFormControl');)
+[TComponent](javascript:jumpToDoc('TComponent');) /
+[TControl](javascript:jumpToDoc('TControl');) /
+[TFormControl](javascript:jumpToDoc('TFormControl');)
 
 Parent must be: *must be a root element of application structure*
 
@@ -9363,7 +9514,8 @@ Yes
 
 [TControl](javascript:jumpToDoc('TControl');)
 
-Database field attached to the control. When specified, the control is database-aware.
+Database field attached to the control. When specified, the control is
+database-aware.
 
 **DBParameterName**
 
@@ -9429,7 +9581,8 @@ Yes
 
 [TComponent](javascript:jumpToDoc('TComponent');)
 
-Function Code for Role management, use \# in case of function needs logged user only (without any role)
+Function Code for Role management, use \# in case of function needs
+logged user only (without any role)
 
 **HelpText**
 
@@ -9607,7 +9760,8 @@ Yes
 
 [TComponent](javascript:jumpToDoc('TComponent');)
 
-Value of Name property will be suffixed with this value. Use ++ sign to concatenation, ex: "\_++@this.DBField.Value"
+Value of Name property will be suffixed with this value. Use ++ sign to
+concatenation, ex: "\_++@this.DBField.Value"
 
 **PlaceHolder**
 
@@ -9619,7 +9773,8 @@ No
 
 Yes
 
-When control value is not specified, placeholder text will be displayed. Not supported by all controls.
+When control value is not specified, placeholder text will be displayed.
+Not supported by all controls.
 
 **ReadOnly**
 
@@ -9860,7 +10015,8 @@ Parses and executes a number of control parameters
 
 [TComponent](javascript:jumpToDoc('TComponent');)
 
-Sets data-dataparameters values. If previous values exist they will be merged.
+Sets data-dataparameters values. If previous values exist they will be
+merged.
 
 **setEnabled()**
 
@@ -9894,7 +10050,10 @@ Sets the label text of a component
 
 ## TCheckbox
 
-[TComponent](javascript:jumpToDoc('TComponent');) / [TControl](javascript:jumpToDoc('TControl');) / [TFormControl](javascript:jumpToDoc('TFormControl');) / [TCheckbox](javascript:jumpToDoc('TCheckbox');)
+[TComponent](javascript:jumpToDoc('TComponent');) /
+[TControl](javascript:jumpToDoc('TControl');) /
+[TFormControl](javascript:jumpToDoc('TFormControl');) /
+[TCheckbox](javascript:jumpToDoc('TCheckbox');)
 
 Parent must be: [TContainer](javascript:jumpToDoc('TContainer');)
 
@@ -10074,7 +10233,8 @@ Yes
 
 [TControl](javascript:jumpToDoc('TControl');)
 
-Database field attached to the control. When specified, the control is database-aware.
+Database field attached to the control. When specified, the control is
+database-aware.
 
 **DBParameterName**
 
@@ -10142,7 +10302,8 @@ No
 
 [TComponent](javascript:jumpToDoc('TComponent');)
 
-Function Code for Role management, use \# in case of function needs logged user only (without any role)
+Function Code for Role management, use \# in case of function needs
+logged user only (without any role)
 
 **HelpText**
 
@@ -10353,7 +10514,8 @@ Yes
 
 [TComponent](javascript:jumpToDoc('TComponent');)
 
-Value of Name property will be suffixed with this value. Use ++ sign to concatenation, ex: "\_++@this.DBField.Value"
+Value of Name property will be suffixed with this value. Use ++ sign to
+concatenation, ex: "\_++@this.DBField.Value"
 
 **PlaceHolder**
 
@@ -10367,7 +10529,8 @@ No
 
 [TFormControl](javascript:jumpToDoc('TFormControl');)
 
-When control value is not specified, placeholder text will be displayed. Not supported by all controls.
+When control value is not specified, placeholder text will be displayed.
+Not supported by all controls.
 
 **ReadOnly**
 
@@ -10660,7 +10823,8 @@ Parses and executes a number of control parameters
 
 [TComponent](javascript:jumpToDoc('TComponent');)
 
-Sets data-dataparameters values. If previous values exist they will be merged.
+Sets data-dataparameters values. If previous values exist they will be
+merged.
 
 **setEnabled()**
 
@@ -10694,7 +10858,10 @@ Sets the label text of a component
 
 ## TDateTimePicker
 
-[TComponent](javascript:jumpToDoc('TComponent');) / [TControl](javascript:jumpToDoc('TControl');) / [TFormControl](javascript:jumpToDoc('TFormControl');) / [TDateTimePicker](javascript:jumpToDoc('TDateTimePicker');)
+[TComponent](javascript:jumpToDoc('TComponent');) /
+[TControl](javascript:jumpToDoc('TControl');) /
+[TFormControl](javascript:jumpToDoc('TFormControl');) /
+[TDateTimePicker](javascript:jumpToDoc('TDateTimePicker');)
 
 Parent must be: [TContainer](javascript:jumpToDoc('TContainer');)
 
@@ -10886,7 +11053,8 @@ Yes
 
 [TControl](javascript:jumpToDoc('TControl');)
 
-Database field attached to the control. When specified, the control is database-aware.
+Database field attached to the control. When specified, the control is
+database-aware.
 
 **DBParameterName**
 
@@ -10936,7 +11104,8 @@ No
 
 No
 
-Disables the section of days of the week, e.g. weekends. Default is \[\] and accepts an array of numbers from 0-6.
+Disables the section of days of the week, e.g. weekends. Default is \[\]
+and accepts an array of numbers from 0-6.
 
 **DisabledHours**
 
@@ -10978,7 +11147,8 @@ No
 
 [TComponent](javascript:jumpToDoc('TComponent');)
 
-Function Code for Role management, use \# in case of function needs logged user only (without any role)
+Function Code for Role management, use \# in case of function needs
+logged user only (without any role)
 
 **HelpText**
 
@@ -11184,7 +11354,8 @@ Yes
 
 [TComponent](javascript:jumpToDoc('TComponent');)
 
-Value of Name property will be suffixed with this value. Use ++ sign to concatenation, ex: "\_++@this.DBField.Value"
+Value of Name property will be suffixed with this value. Use ++ sign to
+concatenation, ex: "\_++@this.DBField.Value"
 
 **PlaceHolder**
 
@@ -11198,7 +11369,8 @@ No
 
 [TFormControl](javascript:jumpToDoc('TFormControl');)
 
-When control value is not specified, placeholder text will be displayed. Not supported by all controls.
+When control value is not specified, placeholder text will be displayed.
+Not supported by all controls.
 
 **PosHorizontal**
 
@@ -11317,7 +11489,8 @@ No
 
 true
 
-Show the "Clear" button in the icon toolbar. Clicking the "Clear" button will set the calendar to null.
+Show the "Clear" button in the icon toolbar. Clicking the "Clear" button
+will set the calendar to null.
 
 **ShowClose**
 
@@ -11359,7 +11532,8 @@ No
 
 true
 
-Show the "Today" button in the icon toolbar. Clicking the "Today" button will set the calendar view and set the date to now.
+Show the "Today" button in the icon toolbar. Clicking the "Today" button
+will set the calendar view and set the date to now.
 
 **SideBySide**
 
@@ -11373,7 +11547,9 @@ No
 
 true
 
-When true date and time pickers are displayed on a single page, side-by-side. When false, one has to switch between date and time picker forms.
+When true date and time pickers are displayed on a single page,
+side-by-side. When false, one has to switch between date and time picker
+forms.
 
 **Stepping**
 
@@ -11579,7 +11755,8 @@ Parses and executes a number of control parameters
 
 [TComponent](javascript:jumpToDoc('TComponent');)
 
-Sets data-dataparameters values. If previous values exist they will be merged.
+Sets data-dataparameters values. If previous values exist they will be
+merged.
 
 **setEnabled()**
 
@@ -11613,7 +11790,10 @@ Sets the label text of a component
 
 ## TEdit
 
-[TComponent](javascript:jumpToDoc('TComponent');) / [TControl](javascript:jumpToDoc('TControl');) / [TFormControl](javascript:jumpToDoc('TFormControl');) / [TEdit](javascript:jumpToDoc('TEdit');)
+[TComponent](javascript:jumpToDoc('TComponent');) /
+[TControl](javascript:jumpToDoc('TControl');) /
+[TFormControl](javascript:jumpToDoc('TFormControl');) /
+[TEdit](javascript:jumpToDoc('TEdit');)
 
 Parent must be: [TContainer](javascript:jumpToDoc('TContainer');)
 
@@ -11827,7 +12007,8 @@ Yes
 
 [TControl](javascript:jumpToDoc('TControl');)
 
-Database field attached to the control. When specified, the control is database-aware.
+Database field attached to the control. When specified, the control is
+database-aware.
 
 **DBParameterName**
 
@@ -11895,7 +12076,8 @@ No
 
 [TComponent](javascript:jumpToDoc('TComponent');)
 
-Function Code for Role management, use \# in case of function needs logged user only (without any role)
+Function Code for Role management, use \# in case of function needs
+logged user only (without any role)
 
 **HelpText**
 
@@ -11959,7 +12141,8 @@ No
 
 No
 
-Icon specified in the icon's library format, eg. "fa fa-share" or "glyphicon glyphicon-share"
+Icon specified in the icon's library format, eg. "fa fa-share" or
+"glyphicon glyphicon-share"
 
 **IconAlign**
 
@@ -11971,7 +12154,8 @@ No
 
 No
 
-Alignment of the icon. Left means before the component's label or content, right means after it. Defaults to left.
+Alignment of the icon. Left means before the component's label or
+content, right means after it. Defaults to left.
 
 **List of possible values**
 
@@ -12170,7 +12354,8 @@ Yes
 
 [TComponent](javascript:jumpToDoc('TComponent');)
 
-Value of Name property will be suffixed with this value. Use ++ sign to concatenation, ex: "\_++@this.DBField.Value"
+Value of Name property will be suffixed with this value. Use ++ sign to
+concatenation, ex: "\_++@this.DBField.Value"
 
 **PlaceHolder**
 
@@ -12184,7 +12369,8 @@ No
 
 [TFormControl](javascript:jumpToDoc('TFormControl');)
 
-When control value is not specified, placeholder text will be displayed. Not supported by all controls.
+When control value is not specified, placeholder text will be displayed.
+Not supported by all controls.
 
 **ReadOnly**
 
@@ -12445,7 +12631,8 @@ Parses and executes a number of control parameters
 
 [TComponent](javascript:jumpToDoc('TComponent');)
 
-Sets data-dataparameters values. If previous values exist they will be merged.
+Sets data-dataparameters values. If previous values exist they will be
+merged.
 
 **setEnabled()**
 
@@ -12485,11 +12672,15 @@ Sets the label text of a component
 
 ## TFileUpload
 
-[TComponent](javascript:jumpToDoc('TComponent');) / [TControl](javascript:jumpToDoc('TControl');) / [TFormControl](javascript:jumpToDoc('TFormControl');) / [TFileUpload](javascript:jumpToDoc('TFileUpload');)
+[TComponent](javascript:jumpToDoc('TComponent');) /
+[TControl](javascript:jumpToDoc('TControl');) /
+[TFormControl](javascript:jumpToDoc('TFormControl');) /
+[TFileUpload](javascript:jumpToDoc('TFileUpload');)
 
 Parent must be: [TContainer](javascript:jumpToDoc('TContainer');)
 
-This is a comma separated list of mime types or extensions. E.g.: audio/\*,video/\*,image/png,.pdf
+This is a comma separated list of mime types or extensions. E.g.:
+audio/\*,video/\*,image/png,.pdf
 
 ### TFileUpload properties
 
@@ -12521,7 +12712,8 @@ No
 
 image/\*
 
-This is a comma separated list of mime types or extensions. E.g.: audio/\*,video/\*,image/png,.pdf
+This is a comma separated list of mime types or extensions. E.g.:
+audio/\*,video/\*,image/png,.pdf
 
 **Attributes**
 
@@ -12679,7 +12871,8 @@ Yes
 
 [TControl](javascript:jumpToDoc('TControl');)
 
-Database field attached to the control. When specified, the control is database-aware.
+Database field attached to the control. When specified, the control is
+database-aware.
 
 **DBParameterName**
 
@@ -12757,7 +12950,8 @@ No
 
 [TComponent](javascript:jumpToDoc('TComponent');)
 
-Function Code for Role management, use \# in case of function needs logged user only (without any role)
+Function Code for Role management, use \# in case of function needs
+logged user only (without any role)
 
 **HelpText**
 
@@ -12783,7 +12977,8 @@ No
 
 No
 
-Icon specified in the icon's library format, eg. "fa fa-share" or "glyphicon glyphicon-share"
+Icon specified in the icon's library format, eg. "fa fa-share" or
+"glyphicon glyphicon-share"
 
 **IconAlign**
 
@@ -12795,7 +12990,8 @@ No
 
 No
 
-Alignment of the icon. Left means before the component's label or content, right means after it. Defaults to left.
+Alignment of the icon. Left means before the component's label or
+content, right means after it. Defaults to left.
 
 **List of possible values**
 
@@ -13002,7 +13198,8 @@ Yes
 
 [TComponent](javascript:jumpToDoc('TComponent');)
 
-Value of Name property will be suffixed with this value. Use ++ sign to concatenation, ex: "\_++@this.DBField.Value"
+Value of Name property will be suffixed with this value. Use ++ sign to
+concatenation, ex: "\_++@this.DBField.Value"
 
 **PlaceHolder**
 
@@ -13014,11 +13211,13 @@ No
 
 No
 
-\[:TFILEUPLOAD.PLACEHOLDER,Feltöltéshez kattintson vagy húzzon a szaggatott területre egy fájlt:\]
+\[:TFILEUPLOAD.PLACEHOLDER,Feltöltéshez kattintson vagy húzzon a
+szaggatott területre egy fájlt:\]
 
 [TFormControl](javascript:jumpToDoc('TFormControl');)
 
-When control value is not specified, placeholder text will be displayed. Not supported by all controls.
+When control value is not specified, placeholder text will be displayed.
+Not supported by all controls.
 
 **ReadOnly**
 
@@ -13245,7 +13444,8 @@ GUI
 
 [](javascript:jumpToDoc('');)
 
-File cannot be added to the upload component due to some error, eg. file too big, too many files, etc.
+File cannot be added to the upload component due to some error, eg. file
+too big, too many files, etc.
 
 **onFileUploadError**
 
@@ -13337,7 +13537,8 @@ Parses and executes a number of control parameters
 
 [TComponent](javascript:jumpToDoc('TComponent');)
 
-Sets data-dataparameters values. If previous values exist they will be merged.
+Sets data-dataparameters values. If previous values exist they will be
+merged.
 
 **setEnabled()**
 
@@ -13371,7 +13572,10 @@ Sets the label text of a component
 
 ## THTMLEdit
 
-[TComponent](javascript:jumpToDoc('TComponent');) / [TControl](javascript:jumpToDoc('TControl');) / [TFormControl](javascript:jumpToDoc('TFormControl');) / [THTMLEdit](javascript:jumpToDoc('THTMLEdit');)
+[TComponent](javascript:jumpToDoc('TComponent');) /
+[TControl](javascript:jumpToDoc('TControl');) /
+[TFormControl](javascript:jumpToDoc('TFormControl');) /
+[THTMLEdit](javascript:jumpToDoc('THTMLEdit');)
 
 Parent must be: [TContainer](javascript:jumpToDoc('TContainer');)
 
@@ -13551,7 +13755,8 @@ Yes
 
 [TControl](javascript:jumpToDoc('TControl');)
 
-Database field attached to the control. When specified, the control is database-aware.
+Database field attached to the control. When specified, the control is
+database-aware.
 
 **DBParameterName**
 
@@ -13619,7 +13824,8 @@ Yes
 
 [TComponent](javascript:jumpToDoc('TComponent');)
 
-Function Code for Role management, use \# in case of function needs logged user only (without any role)
+Function Code for Role management, use \# in case of function needs
+logged user only (without any role)
 
 **HelpText**
 
@@ -13647,7 +13853,8 @@ No
 
 advanced
 
-Type of the HTML editor. Simple offers basic features, advanced offers more control over editing the text.
+Type of the HTML editor. Simple offers basic features, advanced offers
+more control over editing the text.
 
 **List of possible values**
 
@@ -13664,7 +13871,8 @@ No
 
 No
 
-Icon specified in the icon's library format, eg. "fa fa-share" or "glyphicon glyphicon-share"
+Icon specified in the icon's library format, eg. "fa fa-share" or
+"glyphicon glyphicon-share"
 
 **IconAlign**
 
@@ -13676,7 +13884,8 @@ No
 
 No
 
-Alignment of the icon. Left means before the component's label or content, right means after it. Defaults to left.
+Alignment of the icon. Left means before the component's label or
+content, right means after it. Defaults to left.
 
 **List of possible values**
 
@@ -13861,7 +14070,8 @@ Yes
 
 [TComponent](javascript:jumpToDoc('TComponent');)
 
-Value of Name property will be suffixed with this value. Use ++ sign to concatenation, ex: "\_++@this.DBField.Value"
+Value of Name property will be suffixed with this value. Use ++ sign to
+concatenation, ex: "\_++@this.DBField.Value"
 
 **PlaceHolder**
 
@@ -13875,7 +14085,8 @@ No
 
 [TFormControl](javascript:jumpToDoc('TFormControl');)
 
-When control value is not specified, placeholder text will be displayed. Not supported by all controls.
+When control value is not specified, placeholder text will be displayed.
+Not supported by all controls.
 
 **ReadOnly**
 
@@ -14128,7 +14339,8 @@ Parses and executes a number of control parameters
 
 [TComponent](javascript:jumpToDoc('TComponent');)
 
-Sets data-dataparameters values. If previous values exist they will be merged.
+Sets data-dataparameters values. If previous values exist they will be
+merged.
 
 **setEnabled()**
 
@@ -14162,7 +14374,10 @@ Sets the label text of a component
 
 ## THTMLViewer
 
-[TComponent](javascript:jumpToDoc('TComponent');) / [TControl](javascript:jumpToDoc('TControl');) / [TFormControl](javascript:jumpToDoc('TFormControl');) / [THTMLViewer](javascript:jumpToDoc('THTMLViewer');)
+[TComponent](javascript:jumpToDoc('TComponent');) /
+[TControl](javascript:jumpToDoc('TControl');) /
+[TFormControl](javascript:jumpToDoc('TFormControl');) /
+[THTMLViewer](javascript:jumpToDoc('THTMLViewer');)
 
 Parent must be: [TContainer](javascript:jumpToDoc('TContainer');)
 
@@ -14342,7 +14557,8 @@ Yes
 
 [TControl](javascript:jumpToDoc('TControl');)
 
-Database field attached to the control. When specified, the control is database-aware.
+Database field attached to the control. When specified, the control is
+database-aware.
 
 **DBParameterName**
 
@@ -14392,6 +14608,8 @@ No
 
 Yes
 
+true
+
 [TControl](javascript:jumpToDoc('TControl');)
 
 When true (default), control is enabled. Otherwise control is disabled.
@@ -14408,7 +14626,8 @@ No
 
 [TComponent](javascript:jumpToDoc('TComponent');)
 
-Function Code for Role management, use \# in case of function needs logged user only (without any role)
+Function Code for Role management, use \# in case of function needs
+logged user only (without any role)
 
 **HelpText**
 
@@ -14433,6 +14652,8 @@ No
 No
 
 No
+
+@this.DBField.Label
 
 [TControl](javascript:jumpToDoc('TControl');)
 
@@ -14600,7 +14821,8 @@ Yes
 
 [TComponent](javascript:jumpToDoc('TComponent');)
 
-Value of Name property will be suffixed with this value. Use ++ sign to concatenation, ex: "\_++@this.DBField.Value"
+Value of Name property will be suffixed with this value. Use ++ sign to
+concatenation, ex: "\_++@this.DBField.Value"
 
 **RowClass**
 
@@ -14832,7 +15054,8 @@ Parses and executes a number of control parameters
 
 [TComponent](javascript:jumpToDoc('TComponent');)
 
-Sets data-dataparameters values. If previous values exist they will be merged.
+Sets data-dataparameters values. If previous values exist they will be
+merged.
 
 **setEnabled()**
 
@@ -14866,7 +15089,10 @@ Sets the label text of a component
 
 ## TLabel
 
-[TComponent](javascript:jumpToDoc('TComponent');) / [TControl](javascript:jumpToDoc('TControl');) / [TFormControl](javascript:jumpToDoc('TFormControl');) / [TLabel](javascript:jumpToDoc('TLabel');)
+[TComponent](javascript:jumpToDoc('TComponent');) /
+[TControl](javascript:jumpToDoc('TControl');) /
+[TFormControl](javascript:jumpToDoc('TFormControl');) /
+[TLabel](javascript:jumpToDoc('TLabel');)
 
 Parent must be: [TComponent](javascript:jumpToDoc('TComponent');)
 
@@ -14930,7 +15156,8 @@ Yes
 
 [TControl](javascript:jumpToDoc('TControl');)
 
-Database field attached to the control. When specified, the control is database-aware.
+Database field attached to the control. When specified, the control is
+database-aware.
 
 **DBParameterName**
 
@@ -14998,7 +15225,8 @@ No
 
 [TComponent](javascript:jumpToDoc('TComponent');)
 
-Function Code for Role management, use \# in case of function needs logged user only (without any role)
+Function Code for Role management, use \# in case of function needs
+logged user only (without any role)
 
 **HelpText**
 
@@ -15024,7 +15252,8 @@ No
 
 No
 
-Icon specified in the icon's library format, eg. "fa fa-share" or "glyphicon glyphicon-share"
+Icon specified in the icon's library format, eg. "fa fa-share" or
+"glyphicon glyphicon-share"
 
 **IconAlign**
 
@@ -15036,7 +15265,8 @@ No
 
 No
 
-Alignment of the icon. Left means before the component's label or content, right means after it. Defaults to left.
+Alignment of the icon. Left means before the component's label or
+content, right means after it. Defaults to left.
 
 **List of possible values**
 
@@ -15097,7 +15327,8 @@ Yes
 
 [TComponent](javascript:jumpToDoc('TComponent');)
 
-Value of Name property will be suffixed with this value. Use ++ sign to concatenation, ex: "\_++@this.DBField.Value"
+Value of Name property will be suffixed with this value. Use ++ sign to
+concatenation, ex: "\_++@this.DBField.Value"
 
 **RowClass**
 
@@ -15344,7 +15575,8 @@ Parses and executes a number of control parameters
 
 [TComponent](javascript:jumpToDoc('TComponent');)
 
-Sets data-dataparameters values. If previous values exist they will be merged.
+Sets data-dataparameters values. If previous values exist they will be
+merged.
 
 **setEnabled()**
 
@@ -15378,7 +15610,10 @@ Sets the label text of a component
 
 ## TLOV
 
-[TComponent](javascript:jumpToDoc('TComponent');) / [TControl](javascript:jumpToDoc('TControl');) / [TFormControl](javascript:jumpToDoc('TFormControl');) / [TLOV](javascript:jumpToDoc('TLOV');)
+[TComponent](javascript:jumpToDoc('TComponent');) /
+[TControl](javascript:jumpToDoc('TControl');) /
+[TFormControl](javascript:jumpToDoc('TFormControl');) /
+[TLOV](javascript:jumpToDoc('TLOV');)
 
 Parent must be: [TContainer](javascript:jumpToDoc('TContainer');)
 
@@ -15414,7 +15649,8 @@ Yes
 
 false
 
-Fetches associated list at render time (false) or loading time via AJAX (true)
+Fetches associated list at render time (false) or loading time via AJAX
+(true)
 
 **AJAXQueueID**
 
@@ -15584,7 +15820,8 @@ Yes
 
 [TControl](javascript:jumpToDoc('TControl');)
 
-Database field attached to the control. When specified, the control is database-aware.
+Database field attached to the control. When specified, the control is
+database-aware.
 
 **DBParameterName**
 
@@ -15704,7 +15941,8 @@ No
 
 [TComponent](javascript:jumpToDoc('TComponent');)
 
-Function Code for Role management, use \# in case of function needs logged user only (without any role)
+Function Code for Role management, use \# in case of function needs
+logged user only (without any role)
 
 **HelpText**
 
@@ -15730,7 +15968,8 @@ No
 
 No
 
-Icon specified in the icon's library format, eg. "fa fa-share" or "glyphicon glyphicon-share"
+Icon specified in the icon's library format, eg. "fa fa-share" or
+"glyphicon glyphicon-share"
 
 **IconAlign**
 
@@ -15742,7 +15981,8 @@ No
 
 No
 
-Alignment of the icon. Left means before the component's label or content, right means after it. Defaults to left.
+Alignment of the icon. Left means before the component's label or
+content, right means after it. Defaults to left.
 
 **List of possible values**
 
@@ -15935,7 +16175,9 @@ No
 
 Yes
 
-Used in dependant control situations. Specifies the master component which this control depends on. When master component refreshes its value, this component will also be refreshed.
+Used in dependant control situations. Specifies the master component
+which this control depends on. When master component refreshes its
+value, this component will also be refreshed.
 
 **MasterFilterField**
 
@@ -15957,7 +16199,8 @@ No
 
 No
 
-Only works with MultiSelect on. It limits the number of items can be selected in a dropdown list. Defaults to no limit.
+Only works with MultiSelect on. It limits the number of items can be
+selected in a dropdown list. Defaults to no limit.
 
 **MiddleClick**
 
@@ -15995,7 +16238,8 @@ Yes
 
 false
 
-When true, multiple entries can be selected in the control. When false, only a single entry is accepted.
+When true, multiple entries can be selected in the control. When false,
+only a single entry is accepted.
 
 **Name**
 
@@ -16023,7 +16267,8 @@ Yes
 
 [TComponent](javascript:jumpToDoc('TComponent');)
 
-Value of Name property will be suffixed with this value. Use ++ sign to concatenation, ex: "\_++@this.DBField.Value"
+Value of Name property will be suffixed with this value. Use ++ sign to
+concatenation, ex: "\_++@this.DBField.Value"
 
 **PlaceHolder**
 
@@ -16037,7 +16282,8 @@ No
 
 [TFormControl](javascript:jumpToDoc('TFormControl');)
 
-When control value is not specified, placeholder text will be displayed. Not supported by all controls.
+When control value is not specified, placeholder text will be displayed.
+Not supported by all controls.
 
 **ReadOnly**
 
@@ -16110,7 +16356,8 @@ Yes
 
 true
 
-When true, search box is displayed on top of the dropdown. Defaults to true.
+When true, search box is displayed on top of the dropdown. Defaults to
+true.
 
 **ServerSideSearch**
 
@@ -16344,7 +16591,8 @@ Refreshes component data
 
 [TComponent](javascript:jumpToDoc('TComponent');)
 
-Sets data-dataparameters values. If previous values exist they will be merged.
+Sets data-dataparameters values. If previous values exist they will be
+merged.
 
 **setEnabled()**
 
@@ -16378,7 +16626,10 @@ Sets the label text of a component
 
 ## TRadio
 
-[TComponent](javascript:jumpToDoc('TComponent');) / [TControl](javascript:jumpToDoc('TControl');) / [TFormControl](javascript:jumpToDoc('TFormControl');) / [TRadio](javascript:jumpToDoc('TRadio');)
+[TComponent](javascript:jumpToDoc('TComponent');) /
+[TControl](javascript:jumpToDoc('TControl');) /
+[TFormControl](javascript:jumpToDoc('TFormControl');) /
+[TRadio](javascript:jumpToDoc('TRadio');)
 
 Parent must be: [TContainer](javascript:jumpToDoc('TContainer');)
 
@@ -16558,7 +16809,8 @@ Yes
 
 [TControl](javascript:jumpToDoc('TControl');)
 
-Database field attached to the control. When specified, the control is database-aware.
+Database field attached to the control. When specified, the control is
+database-aware.
 
 **DBParameterName**
 
@@ -16650,7 +16902,8 @@ No
 
 [TComponent](javascript:jumpToDoc('TComponent');)
 
-Function Code for Role management, use \# in case of function needs logged user only (without any role)
+Function Code for Role management, use \# in case of function needs
+logged user only (without any role)
 
 **HelpText**
 
@@ -16676,7 +16929,8 @@ No
 
 No
 
-Icon specified in the icon's library format, eg. "fa fa-share" or "glyphicon glyphicon-share"
+Icon specified in the icon's library format, eg. "fa fa-share" or
+"glyphicon glyphicon-share"
 
 **IconAlign**
 
@@ -16688,7 +16942,8 @@ No
 
 No
 
-Alignment of the icon. Left means before the component's label or content, right means after it. Defaults to left.
+Alignment of the icon. Left means before the component's label or
+content, right means after it. Defaults to left.
 
 **List of possible values**
 
@@ -16895,7 +17150,8 @@ Yes
 
 [TComponent](javascript:jumpToDoc('TComponent');)
 
-Value of Name property will be suffixed with this value. Use ++ sign to concatenation, ex: "\_++@this.DBField.Value"
+Value of Name property will be suffixed with this value. Use ++ sign to
+concatenation, ex: "\_++@this.DBField.Value"
 
 **RadioInline**
 
@@ -17163,7 +17419,8 @@ Parses and executes a number of control parameters
 
 [TComponent](javascript:jumpToDoc('TComponent');)
 
-Sets data-dataparameters values. If previous values exist they will be merged.
+Sets data-dataparameters values. If previous values exist they will be
+merged.
 
 **setEnabled()**
 
@@ -17197,7 +17454,10 @@ Sets the label text of a component
 
 ## TStatic
 
-[TComponent](javascript:jumpToDoc('TComponent');) / [TControl](javascript:jumpToDoc('TControl');) / [TFormControl](javascript:jumpToDoc('TFormControl');) / [TStatic](javascript:jumpToDoc('TStatic');)
+[TComponent](javascript:jumpToDoc('TComponent');) /
+[TControl](javascript:jumpToDoc('TControl');) /
+[TFormControl](javascript:jumpToDoc('TFormControl');) /
+[TStatic](javascript:jumpToDoc('TStatic');)
 
 Parent must be: [TContainer](javascript:jumpToDoc('TContainer');)
 
@@ -17377,7 +17637,8 @@ Yes
 
 [TControl](javascript:jumpToDoc('TControl');)
 
-Database field attached to the control. When specified, the control is database-aware.
+Database field attached to the control. When specified, the control is
+database-aware.
 
 **DBParameterName**
 
@@ -17445,7 +17706,8 @@ No
 
 [TComponent](javascript:jumpToDoc('TComponent');)
 
-Function Code for Role management, use \# in case of function needs logged user only (without any role)
+Function Code for Role management, use \# in case of function needs
+logged user only (without any role)
 
 **HelpText**
 
@@ -17471,7 +17733,8 @@ No
 
 No
 
-Icon specified in the icon's library format, eg. "fa fa-share" or "glyphicon glyphicon-share"
+Icon specified in the icon's library format, eg. "fa fa-share" or
+"glyphicon glyphicon-share"
 
 **IconAlign**
 
@@ -17483,7 +17746,8 @@ No
 
 No
 
-Alignment of the icon. Left means before the component's label or content, right means after it. Defaults to left.
+Alignment of the icon. Left means before the component's label or
+content, right means after it. Defaults to left.
 
 **List of possible values**
 
@@ -17662,7 +17926,8 @@ Yes
 
 [TComponent](javascript:jumpToDoc('TComponent');)
 
-Value of Name property will be suffixed with this value. Use ++ sign to concatenation, ex: "\_++@this.DBField.Value"
+Value of Name property will be suffixed with this value. Use ++ sign to
+concatenation, ex: "\_++@this.DBField.Value"
 
 **RowClass**
 
@@ -17880,7 +18145,8 @@ Parses and executes a number of control parameters
 
 [TComponent](javascript:jumpToDoc('TComponent');)
 
-Sets data-dataparameters values. If previous values exist they will be merged.
+Sets data-dataparameters values. If previous values exist they will be
+merged.
 
 **setEnabled()**
 
@@ -17914,7 +18180,10 @@ Sets the label text of a component
 
 ## TText
 
-[TComponent](javascript:jumpToDoc('TComponent');) / [TControl](javascript:jumpToDoc('TControl');) / [TFormControl](javascript:jumpToDoc('TFormControl');) / [TText](javascript:jumpToDoc('TText');)
+[TComponent](javascript:jumpToDoc('TComponent');) /
+[TControl](javascript:jumpToDoc('TControl');) /
+[TFormControl](javascript:jumpToDoc('TFormControl');) /
+[TText](javascript:jumpToDoc('TText');)
 
 Parent must be: [TContainer](javascript:jumpToDoc('TContainer');)
 
@@ -18118,7 +18387,8 @@ Yes
 
 [TControl](javascript:jumpToDoc('TControl');)
 
-Database field attached to the control. When specified, the control is database-aware.
+Database field attached to the control. When specified, the control is
+database-aware.
 
 **DBParameterName**
 
@@ -18186,7 +18456,8 @@ No
 
 [TComponent](javascript:jumpToDoc('TComponent');)
 
-Function Code for Role management, use \# in case of function needs logged user only (without any role)
+Function Code for Role management, use \# in case of function needs
+logged user only (without any role)
 
 **HelpText**
 
@@ -18212,7 +18483,8 @@ No
 
 No
 
-Icon specified in the icon's library format, eg. "fa fa-share" or "glyphicon glyphicon-share"
+Icon specified in the icon's library format, eg. "fa fa-share" or
+"glyphicon glyphicon-share"
 
 **IconAlign**
 
@@ -18224,7 +18496,8 @@ No
 
 No
 
-Alignment of the icon. Left means before the component's label or content, right means after it. Defaults to left.
+Alignment of the icon. Left means before the component's label or
+content, right means after it. Defaults to left.
 
 **List of possible values**
 
@@ -18425,7 +18698,8 @@ Yes
 
 [TComponent](javascript:jumpToDoc('TComponent');)
 
-Value of Name property will be suffixed with this value. Use ++ sign to concatenation, ex: "\_++@this.DBField.Value"
+Value of Name property will be suffixed with this value. Use ++ sign to
+concatenation, ex: "\_++@this.DBField.Value"
 
 **PlaceHolder**
 
@@ -18439,7 +18713,8 @@ No
 
 [TFormControl](javascript:jumpToDoc('TFormControl');)
 
-When control value is not specified, placeholder text will be displayed. Not supported by all controls.
+When control value is not specified, placeholder text will be displayed.
+Not supported by all controls.
 
 **ReadOnly**
 
@@ -18704,7 +18979,8 @@ Parses and executes a number of control parameters
 
 [TComponent](javascript:jumpToDoc('TComponent');)
 
-Sets data-dataparameters values. If previous values exist they will be merged.
+Sets data-dataparameters values. If previous values exist they will be
+merged.
 
 **setEnabled()**
 
@@ -18738,7 +19014,9 @@ Sets the label text of a component
 
 ## TGrid
 
-[TComponent](javascript:jumpToDoc('TComponent');) / [TControl](javascript:jumpToDoc('TControl');) / [TGrid](javascript:jumpToDoc('TGrid');)
+[TComponent](javascript:jumpToDoc('TComponent');) /
+[TControl](javascript:jumpToDoc('TControl');) /
+[TGrid](javascript:jumpToDoc('TGrid');)
 
 Parent must be: [TContainer](javascript:jumpToDoc('TContainer');)
 
@@ -18786,7 +19064,8 @@ Yes
 
 true
 
-Fetches associated list at render time (false) or loading time via AJAX (true)
+Fetches associated list at render time (false) or loading time via AJAX
+(true)
 
 **AJAXQueueID**
 
@@ -18840,7 +19119,8 @@ Yes
 
 true
 
-Loads data on render time. If false, manual refresh needed on client side.
+Loads data on render time. If false, manual refresh needed on client
+side.
 
 **CacheValidity**
 
@@ -18938,7 +19218,8 @@ Yes
 
 Yes
 
-Data is generated - in case of AJAX mode the value of this property is false to indicate to the JS side to refresh the grid's data
+Data is generated - in case of AJAX mode the value of this property is
+false to indicate to the JS side to refresh the grid's data
 
 **DBField**
 
@@ -18952,7 +19233,8 @@ Yes
 
 [TControl](javascript:jumpToDoc('TControl');)
 
-Database field attached to the control. When specified, the control is database-aware.
+Database field attached to the control. When specified, the control is
+database-aware.
 
 **DBParameterName**
 
@@ -19072,7 +19354,8 @@ No
 
 [TComponent](javascript:jumpToDoc('TComponent');)
 
-Function Code for Role management, use \# in case of function needs logged user only (without any role)
+Function Code for Role management, use \# in case of function needs
+logged user only (without any role)
 
 **GridHTMLType**
 
@@ -19140,9 +19423,11 @@ No
 
 No
 
-\[:GRID.HEADER.NO_DATA_GENERATED,Az adatok megjelenítéséhez frissíteni kell!:\]
+\[:GRID.HEADER.NO_DATA_GENERATED,Az adatok megjelenítéséhez frissíteni
+kell!:\]
 
-Label if no data generated to the grid (in case of first render when AutoLoad is false )
+Label if no data generated to the grid (in case of first render when
+AutoLoad is false )
 
 **LabelNoFilter**
 
@@ -19204,7 +19489,8 @@ Yes
 
 false
 
-In case multiple grids use a single listsource, reopen must be forced because of internal cache handling
+In case multiple grids use a single listsource, reopen must be forced
+because of internal cache handling
 
 **LookupValue**
 
@@ -19298,7 +19584,9 @@ No
 
 Yes
 
-Used in dependant control situations. Specifies the master component which this control depends on. When master component refreshes its value, this component will also be refreshed.
+Used in dependant control situations. Specifies the master component
+which this control depends on. When master component refreshes its
+value, this component will also be refreshed.
 
 **MasterDBField**
 
@@ -19332,7 +19620,21 @@ Yes
 
 false
 
-When true, multiple entries can be selected in the control. When false, only a single entry is accepted.
+When true, multiple entries can be selected in the control. When false,
+only a single entry is accepted.
+
+**MultiSelectDBField**
+
+[TDBField](javascript:jumpToDoc('TDBField');)
+
+No
+
+No
+
+Yes
+
+When grid is MultiSelect, this field contains the Value of the checkbox.
+If it is empty, checkbox doesn't shown - item is not checkable.
 
 **Name**
 
@@ -19360,7 +19662,8 @@ Yes
 
 [TComponent](javascript:jumpToDoc('TComponent');)
 
-Value of Name property will be suffixed with this value. Use ++ sign to concatenation, ex: "\_++@this.DBField.Value"
+Value of Name property will be suffixed with this value. Use ++ sign to
+concatenation, ex: "\_++@this.DBField.Value"
 
 **PageCount**
 
@@ -19645,7 +19948,8 @@ No
 
 No
 
-If set column headers sorting option is disabled and sends this to orderby
+If set column headers sorting option is disabled and sends this to
+orderby
 
 **SortingDirection**
 
@@ -19935,7 +20239,8 @@ Download grid records in Excel format
 
 [](javascript:jumpToDoc('');)
 
-If component is multiselectable, getValues gives back the selected values in JSON array
+If component is multiselectable, getValues gives back the selected
+values in JSON array
 
 **initialize()**
 
@@ -19959,7 +20264,8 @@ Refreshes component data
 
 [TComponent](javascript:jumpToDoc('TComponent');)
 
-Sets data-dataparameters values. If previous values exist they will be merged.
+Sets data-dataparameters values. If previous values exist they will be
+merged.
 
 **setEnabled()**
 
@@ -19991,6 +20297,12 @@ Sets the label text of a component
 
 Sets value and refresh
 
+**setValues()**
+
+[](javascript:jumpToDoc('');)
+
+Set multiple values (checked items) to a Grid
+
 **setVisible()**
 
 [TControl](javascript:jumpToDoc('TControl');)
@@ -20007,7 +20319,9 @@ Sets value and refresh
 
 ## THidden
 
-[TComponent](javascript:jumpToDoc('TComponent');) / [TControl](javascript:jumpToDoc('TControl');) / [THidden](javascript:jumpToDoc('THidden');)
+[TComponent](javascript:jumpToDoc('TComponent');) /
+[TControl](javascript:jumpToDoc('TControl');) /
+[THidden](javascript:jumpToDoc('THidden');)
 
 Parent must be: [TContainer](javascript:jumpToDoc('TContainer');)
 
@@ -20057,7 +20371,8 @@ Yes
 
 [TControl](javascript:jumpToDoc('TControl');)
 
-Database field attached to the control. When specified, the control is database-aware.
+Database field attached to the control. When specified, the control is
+database-aware.
 
 **DBParameterName**
 
@@ -20109,7 +20424,8 @@ No
 
 [TComponent](javascript:jumpToDoc('TComponent');)
 
-Function Code for Role management, use \# in case of function needs logged user only (without any role)
+Function Code for Role management, use \# in case of function needs
+logged user only (without any role)
 
 **Name**
 
@@ -20137,7 +20453,8 @@ Yes
 
 [TComponent](javascript:jumpToDoc('TComponent');)
 
-Value of Name property will be suffixed with this value. Use ++ sign to concatenation, ex: "\_++@this.DBField.Value"
+Value of Name property will be suffixed with this value. Use ++ sign to
+concatenation, ex: "\_++@this.DBField.Value"
 
 **Value**
 
@@ -20301,7 +20618,8 @@ Parses and executes a number of control parameters
 
 [TComponent](javascript:jumpToDoc('TComponent');)
 
-Sets data-dataparameters values. If previous values exist they will be merged.
+Sets data-dataparameters values. If previous values exist they will be
+merged.
 
 **setEnabled()**
 
@@ -20335,7 +20653,9 @@ Sets the label text of a component
 
 ## TImage
 
-[TComponent](javascript:jumpToDoc('TComponent');) / [TControl](javascript:jumpToDoc('TControl');) / [TImage](javascript:jumpToDoc('TImage');)
+[TComponent](javascript:jumpToDoc('TComponent');) /
+[TControl](javascript:jumpToDoc('TControl');) /
+[TImage](javascript:jumpToDoc('TImage');)
 
 Parent must be: [TContainer](javascript:jumpToDoc('TContainer');)
 
@@ -20411,7 +20731,8 @@ Yes
 
 [TControl](javascript:jumpToDoc('TControl');)
 
-Database field attached to the control. When specified, the control is database-aware.
+Database field attached to the control. When specified, the control is
+database-aware.
 
 **DBParameterName**
 
@@ -20463,7 +20784,8 @@ No
 
 [TComponent](javascript:jumpToDoc('TComponent');)
 
-Function Code for Role management, use \# in case of function needs logged user only (without any role)
+Function Code for Role management, use \# in case of function needs
+logged user only (without any role)
 
 **HelpText**
 
@@ -20529,7 +20851,8 @@ Yes
 
 [TComponent](javascript:jumpToDoc('TComponent');)
 
-Value of Name property will be suffixed with this value. Use ++ sign to concatenation, ex: "\_++@this.DBField.Value"
+Value of Name property will be suffixed with this value. Use ++ sign to
+concatenation, ex: "\_++@this.DBField.Value"
 
 **Responsive**
 
@@ -20543,7 +20866,9 @@ No
 
 true
 
-Images can be made responsive-friendly by using this flag. This applies max-width: 100%;, height: auto; and display: block; to the image so that it scales nicely to the parent element.
+Images can be made responsive-friendly by using this flag. This applies
+max-width: 100%;, height: auto; and display: block; to the image so that
+it scales nicely to the parent element.
 
 **Style**
 
@@ -20737,7 +21062,8 @@ Parses and executes a number of control parameters
 
 [TComponent](javascript:jumpToDoc('TComponent');)
 
-Sets data-dataparameters values. If previous values exist they will be merged.
+Sets data-dataparameters values. If previous values exist they will be
+merged.
 
 **setEnabled()**
 
@@ -20771,7 +21097,9 @@ Sets the label text of a component
 
 ## TLink
 
-[TComponent](javascript:jumpToDoc('TComponent');) / [TControl](javascript:jumpToDoc('TControl');) / [TLink](javascript:jumpToDoc('TLink');)
+[TComponent](javascript:jumpToDoc('TComponent');) /
+[TControl](javascript:jumpToDoc('TControl');) /
+[TLink](javascript:jumpToDoc('TLink');)
 
 Parent must be: [TContainer](javascript:jumpToDoc('TContainer');)
 
@@ -20857,7 +21185,8 @@ Yes
 
 [TControl](javascript:jumpToDoc('TControl');)
 
-Database field attached to the control. When specified, the control is database-aware.
+Database field attached to the control. When specified, the control is
+database-aware.
 
 **DBParameterName**
 
@@ -20909,7 +21238,8 @@ No
 
 [TComponent](javascript:jumpToDoc('TComponent');)
 
-Function Code for Role management, use \# in case of function needs logged user only (without any role)
+Function Code for Role management, use \# in case of function needs
+logged user only (without any role)
 
 **HelpText**
 
@@ -20935,7 +21265,8 @@ No
 
 No
 
-Icon specified in the icon's library format, eg. "fa fa-share" or "glyphicon glyphicon-share"
+Icon specified in the icon's library format, eg. "fa fa-share" or
+"glyphicon glyphicon-share"
 
 **IconAlign**
 
@@ -20949,7 +21280,8 @@ No
 
 left
 
-Alignment of the icon. Left means before the component's label or content, right means after it. Defaults to left.
+Alignment of the icon. Left means before the component's label or
+content, right means after it. Defaults to left.
 
 **List of possible values**
 
@@ -21034,7 +21366,8 @@ Yes
 
 [TComponent](javascript:jumpToDoc('TComponent');)
 
-Value of Name property will be suffixed with this value. Use ++ sign to concatenation, ex: "\_++@this.DBField.Value"
+Value of Name property will be suffixed with this value. Use ++ sign to
+concatenation, ex: "\_++@this.DBField.Value"
 
 **Style**
 
@@ -21246,7 +21579,8 @@ Parses and executes a number of control parameters
 
 [TComponent](javascript:jumpToDoc('TComponent');)
 
-Sets data-dataparameters values. If previous values exist they will be merged.
+Sets data-dataparameters values. If previous values exist they will be
+merged.
 
 **setEnabled()**
 
@@ -21280,9 +21614,13 @@ Sets the label text of a component
 
 ## TButtonDropdownItem
 
-[TComponent](javascript:jumpToDoc('TComponent');) / [TControl](javascript:jumpToDoc('TControl');) / [TLink](javascript:jumpToDoc('TLink');) / [TButtonDropdownItem](javascript:jumpToDoc('TButtonDropdownItem');)
+[TComponent](javascript:jumpToDoc('TComponent');) /
+[TControl](javascript:jumpToDoc('TControl');) /
+[TLink](javascript:jumpToDoc('TLink');) /
+[TButtonDropdownItem](javascript:jumpToDoc('TButtonDropdownItem');)
 
-Parent must be: [TButtonDropdown](javascript:jumpToDoc('TButtonDropdown');)
+Parent must be:
+[TButtonDropdown](javascript:jumpToDoc('TButtonDropdown');)
 
 TDropDownItem
 
@@ -21370,7 +21708,8 @@ Yes
 
 [TControl](javascript:jumpToDoc('TControl');)
 
-Database field attached to the control. When specified, the control is database-aware.
+Database field attached to the control. When specified, the control is
+database-aware.
 
 **DBParameterName**
 
@@ -21422,7 +21761,8 @@ No
 
 [TComponent](javascript:jumpToDoc('TComponent');)
 
-Function Code for Role management, use \# in case of function needs logged user only (without any role)
+Function Code for Role management, use \# in case of function needs
+logged user only (without any role)
 
 **HelpText**
 
@@ -21450,7 +21790,8 @@ No
 
 [TLink](javascript:jumpToDoc('TLink');)
 
-Icon specified in the icon's library format, eg. "fa fa-share" or "glyphicon glyphicon-share"
+Icon specified in the icon's library format, eg. "fa fa-share" or
+"glyphicon glyphicon-share"
 
 **IconAlign**
 
@@ -21466,7 +21807,8 @@ left
 
 [TLink](javascript:jumpToDoc('TLink');)
 
-Alignment of the icon. Left means before the component's label or content, right means after it. Defaults to left.
+Alignment of the icon. Left means before the component's label or
+content, right means after it. Defaults to left.
 
 **List of possible values**
 
@@ -21555,7 +21897,8 @@ Yes
 
 [TComponent](javascript:jumpToDoc('TComponent');)
 
-Value of Name property will be suffixed with this value. Use ++ sign to concatenation, ex: "\_++@this.DBField.Value"
+Value of Name property will be suffixed with this value. Use ++ sign to
+concatenation, ex: "\_++@this.DBField.Value"
 
 **Style**
 
@@ -21769,7 +22112,8 @@ Parses and executes a number of control parameters
 
 [TComponent](javascript:jumpToDoc('TComponent');)
 
-Sets data-dataparameters values. If previous values exist they will be merged.
+Sets data-dataparameters values. If previous values exist they will be
+merged.
 
 **setEnabled()**
 
@@ -21803,7 +22147,10 @@ Sets the label text of a component
 
 ## TMenuItem
 
-[TComponent](javascript:jumpToDoc('TComponent');) / [TControl](javascript:jumpToDoc('TControl');) / [TLink](javascript:jumpToDoc('TLink');) / [TMenuItem](javascript:jumpToDoc('TMenuItem');)
+[TComponent](javascript:jumpToDoc('TComponent');) /
+[TControl](javascript:jumpToDoc('TControl');) /
+[TLink](javascript:jumpToDoc('TLink');) /
+[TMenuItem](javascript:jumpToDoc('TMenuItem');)
 
 Parent must be: [TComponent](javascript:jumpToDoc('TComponent');)
 
@@ -21881,7 +22228,8 @@ Yes
 
 [TControl](javascript:jumpToDoc('TControl');)
 
-Database field attached to the control. When specified, the control is database-aware.
+Database field attached to the control. When specified, the control is
+database-aware.
 
 **DBParameterName**
 
@@ -21933,7 +22281,8 @@ No
 
 [TComponent](javascript:jumpToDoc('TComponent');)
 
-Function Code for Role management, use \# in case of function needs logged user only (without any role)
+Function Code for Role management, use \# in case of function needs
+logged user only (without any role)
 
 **HelpText**
 
@@ -21961,7 +22310,8 @@ No
 
 [TLink](javascript:jumpToDoc('TLink');)
 
-Icon specified in the icon's library format, eg. "fa fa-share" or "glyphicon glyphicon-share"
+Icon specified in the icon's library format, eg. "fa fa-share" or
+"glyphicon glyphicon-share"
 
 **Label**
 
@@ -22063,7 +22413,8 @@ Yes
 
 [TComponent](javascript:jumpToDoc('TComponent');)
 
-Value of Name property will be suffixed with this value. Use ++ sign to concatenation, ex: "\_++@this.DBField.Value"
+Value of Name property will be suffixed with this value. Use ++ sign to
+concatenation, ex: "\_++@this.DBField.Value"
 
 **Style**
 
@@ -22289,7 +22640,8 @@ Parses and executes a number of control parameters
 
 [TComponent](javascript:jumpToDoc('TComponent');)
 
-Sets data-dataparameters values. If previous values exist they will be merged.
+Sets data-dataparameters values. If previous values exist they will be
+merged.
 
 **setEnabled()**
 
@@ -22323,7 +22675,9 @@ Sets the label text of a component
 
 ## TMap
 
-[TComponent](javascript:jumpToDoc('TComponent');) / [TControl](javascript:jumpToDoc('TControl');) / [TMap](javascript:jumpToDoc('TMap');)
+[TComponent](javascript:jumpToDoc('TComponent');) /
+[TControl](javascript:jumpToDoc('TControl');) /
+[TMap](javascript:jumpToDoc('TMap');)
 
 Parent must be: [TContainer](javascript:jumpToDoc('TContainer');)
 
@@ -22451,7 +22805,8 @@ No
 
 [TComponent](javascript:jumpToDoc('TComponent');)
 
-Function Code for Role management, use \# in case of function needs logged user only (without any role)
+Function Code for Role management, use \# in case of function needs
+logged user only (without any role)
 
 **HelpText**
 
@@ -22491,7 +22846,8 @@ No
 
 false
 
-Map type control enabled or disabled. It allows the user to switch between map types (map, satellite, terrain, etc.). Defaults to false.
+Map type control enabled or disabled. It allows the user to switch
+between map types (map, satellite, terrain, etc.). Defaults to false.
 
 **MapWidth**
 
@@ -22543,7 +22899,8 @@ Yes
 
 [TComponent](javascript:jumpToDoc('TComponent');)
 
-Value of Name property will be suffixed with this value. Use ++ sign to concatenation, ex: "\_++@this.DBField.Value"
+Value of Name property will be suffixed with this value. Use ++ sign to
+concatenation, ex: "\_++@this.DBField.Value"
 
 **PanControl**
 
@@ -22749,7 +23106,8 @@ No
 
 5
 
-Controls the starting zoom level of the map as follows: 1: World 5: Landmass/continent 10: City 15: Streets 20: Buildings Defaults to 5
+Controls the starting zoom level of the map as follows: 1: World 5:
+Landmass/continent 10: City 15: Streets 20: Buildings Defaults to 5
 
 ### TMap events
 
@@ -22923,7 +23281,8 @@ Refreshes component data
 
 [TComponent](javascript:jumpToDoc('TComponent');)
 
-Sets data-dataparameters values. If previous values exist they will be merged.
+Sets data-dataparameters values. If previous values exist they will be
+merged.
 
 **setEnabled()**
 
@@ -22957,7 +23316,8 @@ Sets the label text of a component
 
 ## TDataProvider
 
-[TComponent](javascript:jumpToDoc('TComponent');) / [TDataProvider](javascript:jumpToDoc('TDataProvider');)
+[TComponent](javascript:jumpToDoc('TComponent');) /
+[TDataProvider](javascript:jumpToDoc('TDataProvider');)
 
 Parent must be: *only inherited types can be placed*
 
@@ -23033,7 +23393,10 @@ No
 
 ReadWrite
 
-Cache access mode. In ReadWrite mode the component writes its result to the cache and reads it the next time it is opened. In WriteOnly mode the component always writes the cache, never reads it. In ReadOnly mode, the component always reads the cache, never writes.
+Cache access mode. In ReadWrite mode the component writes its result to
+the cache and reads it the next time it is opened. In WriteOnly mode the
+component always writes the cache, never reads it. In ReadOnly mode, the
+component always reads the cache, never writes.
 
 **List of possible values**
 
@@ -23051,7 +23414,9 @@ No
 
 No
 
-The column name partitioning by. If empty the whole result will be cached, otherwise th result array will be cached in an indexed array with the first column.
+The column name partitioning by. If empty the whole result will be
+cached, otherwise th result array will be cached in an indexed array
+with the first column.
 
 **CachePartitionFilter**
 
@@ -23063,7 +23428,8 @@ No
 
 No
 
-Cache partition parameter. If exists and cache is partitioned only the referenced index will be refreshed.
+Cache partition parameter. If exists and cache is partitioned only the
+referenced index will be refreshed.
 
 **CacheRefresh**
 
@@ -23149,7 +23515,8 @@ No
 
 No
 
-Database index in the config file to be used for database operations. It allows using multiple databases in an application. Defaults to 1.
+Database index in the config file to be used for database operations. It
+allows using multiple databases in an application. Defaults to 1.
 
 **DataProxy**
 
@@ -23189,7 +23556,8 @@ No
 
 [TComponent](javascript:jumpToDoc('TComponent');)
 
-Function Code for Role management, use \# in case of function needs logged user only (without any role)
+Function Code for Role management, use \# in case of function needs
+logged user only (without any role)
 
 **Name**
 
@@ -23217,7 +23585,8 @@ Yes
 
 [TComponent](javascript:jumpToDoc('TComponent');)
 
-Value of Name property will be suffixed with this value. Use ++ sign to concatenation, ex: "\_++@this.DBField.Value"
+Value of Name property will be suffixed with this value. Use ++ sign to
+concatenation, ex: "\_++@this.DBField.Value"
 
 **PlainTextFormat**
 
@@ -23262,7 +23631,9 @@ No
 
 JSON
 
-Type of the generated response. HTML will render a full HTML5-compliant page while HTMLSnippet will only render a partial useful for AJAX page generators. JSON and PLAINTEXT are self-explanatory.
+Type of the generated response. HTML will render a full HTML5-compliant
+page while HTMLSnippet will only render a partial useful for AJAX page
+generators. JSON and PLAINTEXT are self-explanatory.
 
 **List of possible values**
 
@@ -23367,13 +23738,16 @@ Description
 
 [TComponent](javascript:jumpToDoc('TComponent');)
 
-Sets data-dataparameters values. If previous values exist they will be merged.
+Sets data-dataparameters values. If previous values exist they will be
+merged.
 
 ------------------------------------------------------------------------
 
 ## TExternalDataProvider
 
-[TComponent](javascript:jumpToDoc('TComponent');) / [TDataProvider](javascript:jumpToDoc('TDataProvider');) / [TExternalDataProvider](javascript:jumpToDoc('TExternalDataProvider');)
+[TComponent](javascript:jumpToDoc('TComponent');) /
+[TDataProvider](javascript:jumpToDoc('TDataProvider');) /
+[TExternalDataProvider](javascript:jumpToDoc('TExternalDataProvider');)
 
 Parent must be: [TRoute](javascript:jumpToDoc('TRoute');)
 
@@ -23493,7 +23867,8 @@ No
 
 [TComponent](javascript:jumpToDoc('TComponent');)
 
-Function Code for Role management, use \# in case of function needs logged user only (without any role)
+Function Code for Role management, use \# in case of function needs
+logged user only (without any role)
 
 **HTTPRequestHeader**
 
@@ -23567,7 +23942,8 @@ No
 
 [TComponent](javascript:jumpToDoc('TComponent');)
 
-Value of Name property will be suffixed with this value. Use ++ sign to concatenation, ex: "\_++@this.DBField.Value"
+Value of Name property will be suffixed with this value. Use ++ sign to
+concatenation, ex: "\_++@this.DBField.Value"
 
 **PlainTextFormat**
 
@@ -23644,7 +24020,9 @@ JSON
 
 [TDataProvider](javascript:jumpToDoc('TDataProvider');)
 
-Type of the generated response. HTML will render a full HTML5-compliant page while HTMLSnippet will only render a partial useful for AJAX page generators. JSON and PLAINTEXT are self-explanatory.
+Type of the generated response. HTML will render a full HTML5-compliant
+page while HTMLSnippet will only render a partial useful for AJAX page
+generators. JSON and PLAINTEXT are self-explanatory.
 
 **List of possible values**
 
@@ -23848,13 +24226,16 @@ Description
 
 [TComponent](javascript:jumpToDoc('TComponent');)
 
-Sets data-dataparameters values. If previous values exist they will be merged.
+Sets data-dataparameters values. If previous values exist they will be
+merged.
 
 ------------------------------------------------------------------------
 
 ## TFileProcessor
 
-[TComponent](javascript:jumpToDoc('TComponent');) / [TDataProvider](javascript:jumpToDoc('TDataProvider');) / [TFileProcessor](javascript:jumpToDoc('TFileProcessor');)
+[TComponent](javascript:jumpToDoc('TComponent');) /
+[TDataProvider](javascript:jumpToDoc('TDataProvider');) /
+[TFileProcessor](javascript:jumpToDoc('TFileProcessor');)
 
 Parent must be: [TAction](javascript:jumpToDoc('TAction');)
 
@@ -23934,7 +24315,8 @@ No
 
 [TComponent](javascript:jumpToDoc('TComponent');)
 
-Function Code for Role management, use \# in case of function needs logged user only (without any role)
+Function Code for Role management, use \# in case of function needs
+logged user only (without any role)
 
 **LocalFilePath**
 
@@ -23986,7 +24368,8 @@ Yes
 
 [TComponent](javascript:jumpToDoc('TComponent');)
 
-Value of Name property will be suffixed with this value. Use ++ sign to concatenation, ex: "\_++@this.DBField.Value"
+Value of Name property will be suffixed with this value. Use ++ sign to
+concatenation, ex: "\_++@this.DBField.Value"
 
 **Opened**
 
@@ -24049,7 +24432,9 @@ JSON
 
 [TDataProvider](javascript:jumpToDoc('TDataProvider');)
 
-Type of the generated response. HTML will render a full HTML5-compliant page while HTMLSnippet will only render a partial useful for AJAX page generators. JSON and PLAINTEXT are self-explanatory.
+Type of the generated response. HTML will render a full HTML5-compliant
+page while HTMLSnippet will only render a partial useful for AJAX page
+generators. JSON and PLAINTEXT are self-explanatory.
 
 **List of possible values**
 
@@ -24160,13 +24545,16 @@ Description
 
 [TComponent](javascript:jumpToDoc('TComponent');)
 
-Sets data-dataparameters values. If previous values exist they will be merged.
+Sets data-dataparameters values. If previous values exist they will be
+merged.
 
 ------------------------------------------------------------------------
 
 ## TJSONDataProvider
 
-[TComponent](javascript:jumpToDoc('TComponent');) / [TDataProvider](javascript:jumpToDoc('TDataProvider');) / [TJSONDataProvider](javascript:jumpToDoc('TJSONDataProvider');)
+[TComponent](javascript:jumpToDoc('TComponent');) /
+[TDataProvider](javascript:jumpToDoc('TDataProvider');) /
+[TJSONDataProvider](javascript:jumpToDoc('TJSONDataProvider');)
 
 Parent must be: [TDataProvider](javascript:jumpToDoc('TDataProvider');)
 
@@ -24228,7 +24616,8 @@ Yes
 
 false
 
-Data result is not an indexed array, it must be converted to an iterable array
+Data result is not an indexed array, it must be converted to an iterable
+array
 
 **DevNote**
 
@@ -24256,7 +24645,8 @@ Yes
 
 [TComponent](javascript:jumpToDoc('TComponent');)
 
-Function Code for Role management, use \# in case of function needs logged user only (without any role)
+Function Code for Role management, use \# in case of function needs
+logged user only (without any role)
 
 **Name**
 
@@ -24284,7 +24674,8 @@ Yes
 
 [TComponent](javascript:jumpToDoc('TComponent');)
 
-Value of Name property will be suffixed with this value. Use ++ sign to concatenation, ex: "\_++@this.DBField.Value"
+Value of Name property will be suffixed with this value. Use ++ sign to
+concatenation, ex: "\_++@this.DBField.Value"
 
 **ResponseType**
 
@@ -24298,7 +24689,9 @@ Yes
 
 [TDataProvider](javascript:jumpToDoc('TDataProvider');)
 
-Type of the generated response. HTML will render a full HTML5-compliant page while HTMLSnippet will only render a partial useful for AJAX page generators. JSON and PLAINTEXT are self-explanatory.
+Type of the generated response. HTML will render a full HTML5-compliant
+page while HTMLSnippet will only render a partial useful for AJAX page
+generators. JSON and PLAINTEXT are self-explanatory.
 
 **List of possible values**
 
@@ -24373,13 +24766,16 @@ Description
 
 [TComponent](javascript:jumpToDoc('TComponent');)
 
-Sets data-dataparameters values. If previous values exist they will be merged.
+Sets data-dataparameters values. If previous values exist they will be
+merged.
 
 ------------------------------------------------------------------------
 
 ## TQuery
 
-[TComponent](javascript:jumpToDoc('TComponent');) / [TDataProvider](javascript:jumpToDoc('TDataProvider');) / [TQuery](javascript:jumpToDoc('TQuery');)
+[TComponent](javascript:jumpToDoc('TComponent');) /
+[TDataProvider](javascript:jumpToDoc('TDataProvider');) /
+[TQuery](javascript:jumpToDoc('TQuery');)
 
 Parent must be: [TRoute](javascript:jumpToDoc('TRoute');)
 
@@ -24475,7 +24871,10 @@ ReadWrite
 
 [TDataProvider](javascript:jumpToDoc('TDataProvider');)
 
-Cache access mode. In ReadWrite mode the component writes its result to the cache and reads it the next time it is opened. In WriteOnly mode the component always writes the cache, never reads it. In ReadOnly mode, the component always reads the cache, never writes.
+Cache access mode. In ReadWrite mode the component writes its result to
+the cache and reads it the next time it is opened. In WriteOnly mode the
+component always writes the cache, never reads it. In ReadOnly mode, the
+component always reads the cache, never writes.
 
 **List of possible values**
 
@@ -24495,7 +24894,9 @@ No
 
 [TDataProvider](javascript:jumpToDoc('TDataProvider');)
 
-The column name partitioning by. If empty the whole result will be cached, otherwise th result array will be cached in an indexed array with the first column.
+The column name partitioning by. If empty the whole result will be
+cached, otherwise th result array will be cached in an indexed array
+with the first column.
 
 **CachePartitionFilter**
 
@@ -24509,7 +24910,8 @@ No
 
 [TDataProvider](javascript:jumpToDoc('TDataProvider');)
 
-Cache partition parameter. If exists and cache is partitioned only the referenced index will be refreshed.
+Cache partition parameter. If exists and cache is partitioned only the
+referenced index will be refreshed.
 
 **CacheRefresh**
 
@@ -24609,7 +25011,10 @@ No
 
 false
 
-If true TQuery will count the total number of result before generating result. TotalRowCount property will hold the value. It may differ from RowCount property which is the number of rows given back after QueryLimit applied.
+If true TQuery will count the total number of result before generating
+result. TotalRowCount property will hold the value. It may differ from
+RowCount property which is the number of rows given back after
+QueryLimit applied.
 
 **DatabaseIndex**
 
@@ -24623,7 +25028,8 @@ No
 
 [TDataProvider](javascript:jumpToDoc('TDataProvider');)
 
-Database index in the config file to be used for database operations. It allows using multiple databases in an application. Defaults to 1.
+Database index in the config file to be used for database operations. It
+allows using multiple databases in an application. Defaults to 1.
 
 **DataProxy**
 
@@ -24677,7 +25083,8 @@ No
 
 false
 
-In dynamic mode TQuery object runs query two times: first query has to give back a new SQL command, which will be queried on the second run.
+In dynamic mode TQuery object runs query two times: first query has to
+give back a new SQL command, which will be queried on the second run.
 
 **Filter**
 
@@ -24727,7 +25134,8 @@ No
 
 [TComponent](javascript:jumpToDoc('TComponent');)
 
-Function Code for Role management, use \# in case of function needs logged user only (without any role)
+Function Code for Role management, use \# in case of function needs
+logged user only (without any role)
 
 **GlobalParameterPrefix**
 
@@ -24779,7 +25187,8 @@ No
 
 [TComponent](javascript:jumpToDoc('TComponent');)
 
-Value of Name property will be suffixed with this value. Use ++ sign to concatenation, ex: "\_++@this.DBField.Value"
+Value of Name property will be suffixed with this value. Use ++ sign to
+concatenation, ex: "\_++@this.DBField.Value"
 
 **Opened**
 
@@ -24902,7 +25311,9 @@ JSON
 
 [TDataProvider](javascript:jumpToDoc('TDataProvider');)
 
-Type of the generated response. HTML will render a full HTML5-compliant page while HTMLSnippet will only render a partial useful for AJAX page generators. JSON and PLAINTEXT are self-explanatory.
+Type of the generated response. HTML will render a full HTML5-compliant
+page while HTMLSnippet will only render a partial useful for AJAX page
+generators. JSON and PLAINTEXT are self-explanatory.
 
 **List of possible values**
 
@@ -25124,13 +25535,16 @@ Description
 
 [TComponent](javascript:jumpToDoc('TComponent');)
 
-Sets data-dataparameters values. If previous values exist they will be merged.
+Sets data-dataparameters values. If previous values exist they will be
+merged.
 
 ------------------------------------------------------------------------
 
 ## TQueryGroup
 
-[TComponent](javascript:jumpToDoc('TComponent');) / [TDataProvider](javascript:jumpToDoc('TDataProvider');) / [TQueryGroup](javascript:jumpToDoc('TQueryGroup');)
+[TComponent](javascript:jumpToDoc('TComponent');) /
+[TDataProvider](javascript:jumpToDoc('TDataProvider');) /
+[TQueryGroup](javascript:jumpToDoc('TQueryGroup');)
 
 Parent must be: [TRoute](javascript:jumpToDoc('TRoute');)
 
@@ -25214,7 +25628,10 @@ ReadWrite
 
 [TDataProvider](javascript:jumpToDoc('TDataProvider');)
 
-Cache access mode. In ReadWrite mode the component writes its result to the cache and reads it the next time it is opened. In WriteOnly mode the component always writes the cache, never reads it. In ReadOnly mode, the component always reads the cache, never writes.
+Cache access mode. In ReadWrite mode the component writes its result to
+the cache and reads it the next time it is opened. In WriteOnly mode the
+component always writes the cache, never reads it. In ReadOnly mode, the
+component always reads the cache, never writes.
 
 **List of possible values**
 
@@ -25348,7 +25765,8 @@ Yes
 
 [TComponent](javascript:jumpToDoc('TComponent');)
 
-Function Code for Role management, use \# in case of function needs logged user only (without any role)
+Function Code for Role management, use \# in case of function needs
+logged user only (without any role)
 
 **Name**
 
@@ -25376,7 +25794,8 @@ Yes
 
 [TComponent](javascript:jumpToDoc('TComponent');)
 
-Value of Name property will be suffixed with this value. Use ++ sign to concatenation, ex: "\_++@this.DBField.Value"
+Value of Name property will be suffixed with this value. Use ++ sign to
+concatenation, ex: "\_++@this.DBField.Value"
 
 **ResponseType**
 
@@ -25392,7 +25811,9 @@ JSON
 
 [TDataProvider](javascript:jumpToDoc('TDataProvider');)
 
-Type of the generated response. HTML will render a full HTML5-compliant page while HTMLSnippet will only render a partial useful for AJAX page generators. JSON and PLAINTEXT are self-explanatory.
+Type of the generated response. HTML will render a full HTML5-compliant
+page while HTMLSnippet will only render a partial useful for AJAX page
+generators. JSON and PLAINTEXT are self-explanatory.
 
 **List of possible values**
 
@@ -25467,13 +25888,16 @@ Description
 
 [TComponent](javascript:jumpToDoc('TComponent');)
 
-Sets data-dataparameters values. If previous values exist they will be merged.
+Sets data-dataparameters values. If previous values exist they will be
+merged.
 
 ------------------------------------------------------------------------
 
 ## TStoredProcedure
 
-[TComponent](javascript:jumpToDoc('TComponent');) / [TDataProvider](javascript:jumpToDoc('TDataProvider');) / [TStoredProcedure](javascript:jumpToDoc('TStoredProcedure');)
+[TComponent](javascript:jumpToDoc('TComponent');) /
+[TDataProvider](javascript:jumpToDoc('TDataProvider');) /
+[TStoredProcedure](javascript:jumpToDoc('TStoredProcedure');)
 
 Parent must be: [TRoute](javascript:jumpToDoc('TRoute');)
 
@@ -25523,7 +25947,8 @@ No
 
 No
 
-Parameter contains the Tholos control structure, which will passed back to the GUI
+Parameter contains the Tholos control structure, which will passed back
+to the GUI
 
 **CallbackResult**
 
@@ -25535,7 +25960,8 @@ Yes
 
 No
 
-Runtime parameter, contains the Tholos control structure which will passed back to the GUI
+Runtime parameter, contains the Tholos control structure which will
+passed back to the GUI
 
 **DatabaseIndex**
 
@@ -25549,7 +25975,8 @@ No
 
 [TDataProvider](javascript:jumpToDoc('TDataProvider');)
 
-Database index in the config file to be used for database operations. It allows using multiple databases in an application. Defaults to 1.
+Database index in the config file to be used for database operations. It
+allows using multiple databases in an application. Defaults to 1.
 
 **DataProxy**
 
@@ -25623,7 +26050,8 @@ No
 
 [TComponent](javascript:jumpToDoc('TComponent');)
 
-Function Code for Role management, use \# in case of function needs logged user only (without any role)
+Function Code for Role management, use \# in case of function needs
+logged user only (without any role)
 
 **GenerateDataResult**
 
@@ -25701,7 +26129,8 @@ No
 
 [TComponent](javascript:jumpToDoc('TComponent');)
 
-Value of Name property will be suffixed with this value. Use ++ sign to concatenation, ex: "\_++@this.DBField.Value"
+Value of Name property will be suffixed with this value. Use ++ sign to
+concatenation, ex: "\_++@this.DBField.Value"
 
 **ParameterNameTransformation**
 
@@ -25735,7 +26164,9 @@ No
 
 P\_
 
-Ha meg van adva, akkor ezzel a prefix-szel ellátott névvel keresi a TDBParam-okhoz az értékeket. Tehát, TDBParam=p_ID és a prefix p\_, akkor az ID input a p_ID paraméterbe fog kerülni.
+Ha meg van adva, akkor ezzel a prefix-szel ellátott névvel keresi a
+TDBParam-okhoz az értékeket. Tehát, TDBParam=p_ID és a prefix p\_, akkor
+az ID input a p_ID paraméterbe fog kerülni.
 
 **PlainTextFormat**
 
@@ -25786,7 +26217,9 @@ JSON
 
 [TDataProvider](javascript:jumpToDoc('TDataProvider');)
 
-Type of the generated response. HTML will render a full HTML5-compliant page while HTMLSnippet will only render a partial useful for AJAX page generators. JSON and PLAINTEXT are self-explanatory.
+Type of the generated response. HTML will render a full HTML5-compliant
+page while HTMLSnippet will only render a partial useful for AJAX page
+generators. JSON and PLAINTEXT are self-explanatory.
 
 **List of possible values**
 
@@ -26016,13 +26449,17 @@ Description
 
 [TComponent](javascript:jumpToDoc('TComponent');)
 
-Sets data-dataparameters values. If previous values exist they will be merged.
+Sets data-dataparameters values. If previous values exist they will be
+merged.
 
 ------------------------------------------------------------------------
 
 ## TAPIPost
 
-[TComponent](javascript:jumpToDoc('TComponent');) / [TDataProvider](javascript:jumpToDoc('TDataProvider');) / [TStoredProcedure](javascript:jumpToDoc('TStoredProcedure');) / [TAPIPost](javascript:jumpToDoc('TAPIPost');)
+[TComponent](javascript:jumpToDoc('TComponent');) /
+[TDataProvider](javascript:jumpToDoc('TDataProvider');) /
+[TStoredProcedure](javascript:jumpToDoc('TStoredProcedure');) /
+[TAPIPost](javascript:jumpToDoc('TAPIPost');)
 
 Parent must be: [TRoute](javascript:jumpToDoc('TRoute');)
 
@@ -26074,7 +26511,8 @@ No
 
 [TStoredProcedure](javascript:jumpToDoc('TStoredProcedure');)
 
-Parameter contains the Tholos control structure, which will passed back to the GUI
+Parameter contains the Tholos control structure, which will passed back
+to the GUI
 
 **CallbackResult**
 
@@ -26088,7 +26526,8 @@ No
 
 [TStoredProcedure](javascript:jumpToDoc('TStoredProcedure');)
 
-Runtime parameter, contains the Tholos control structure which will passed back to the GUI
+Runtime parameter, contains the Tholos control structure which will
+passed back to the GUI
 
 **curlDebug**
 
@@ -26218,7 +26657,8 @@ No
 
 [TComponent](javascript:jumpToDoc('TComponent');)
 
-Function Code for Role management, use \# in case of function needs logged user only (without any role)
+Function Code for Role management, use \# in case of function needs
+logged user only (without any role)
 
 **GenerateDataResult**
 
@@ -26352,7 +26792,8 @@ No
 
 [TComponent](javascript:jumpToDoc('TComponent');)
 
-Value of Name property will be suffixed with this value. Use ++ sign to concatenation, ex: "\_++@this.DBField.Value"
+Value of Name property will be suffixed with this value. Use ++ sign to
+concatenation, ex: "\_++@this.DBField.Value"
 
 **ParameterNameTransformation**
 
@@ -26388,7 +26829,9 @@ No
 
 [TStoredProcedure](javascript:jumpToDoc('TStoredProcedure');)
 
-Ha meg van adva, akkor ezzel a prefix-szel ellátott névvel keresi a TDBParam-okhoz az értékeket. Tehát, TDBParam=p_ID és a prefix p\_, akkor az ID input a p_ID paraméterbe fog kerülni.
+Ha meg van adva, akkor ezzel a prefix-szel ellátott névvel keresi a
+TDBParam-okhoz az értékeket. Tehát, TDBParam=p_ID és a prefix p\_, akkor
+az ID input a p_ID paraméterbe fog kerülni.
 
 **PlainTextFormat**
 
@@ -26425,7 +26868,9 @@ JSON
 
 [TDataProvider](javascript:jumpToDoc('TDataProvider');)
 
-Type of the generated response. HTML will render a full HTML5-compliant page while HTMLSnippet will only render a partial useful for AJAX page generators. JSON and PLAINTEXT are self-explanatory.
+Type of the generated response. HTML will render a full HTML5-compliant
+page while HTMLSnippet will only render a partial useful for AJAX page
+generators. JSON and PLAINTEXT are self-explanatory.
 
 **List of possible values**
 
@@ -26687,13 +27132,15 @@ Description
 
 [TComponent](javascript:jumpToDoc('TComponent');)
 
-Sets data-dataparameters values. If previous values exist they will be merged.
+Sets data-dataparameters values. If previous values exist they will be
+merged.
 
 ------------------------------------------------------------------------
 
 ## TDataProxy
 
-[TComponent](javascript:jumpToDoc('TComponent');) / [TDataProxy](javascript:jumpToDoc('TDataProxy');)
+[TComponent](javascript:jumpToDoc('TComponent');) /
+[TDataProxy](javascript:jumpToDoc('TDataProxy');)
 
 Parent must be: [TApplication](javascript:jumpToDoc('TApplication');)
 
@@ -26729,7 +27176,8 @@ No
 
 true
 
-Fetches associated list at render time (false) or loading time via AJAX (true)
+Fetches associated list at render time (false) or loading time via AJAX
+(true)
 
 **DevNote**
 
@@ -26771,7 +27219,8 @@ No
 
 [TComponent](javascript:jumpToDoc('TComponent');)
 
-Function Code for Role management, use \# in case of function needs logged user only (without any role)
+Function Code for Role management, use \# in case of function needs
+logged user only (without any role)
 
 **Name**
 
@@ -26799,7 +27248,8 @@ No
 
 [TComponent](javascript:jumpToDoc('TComponent');)
 
-Value of Name property will be suffixed with this value. Use ++ sign to concatenation, ex: "\_++@this.DBField.Value"
+Value of Name property will be suffixed with this value. Use ++ sign to
+concatenation, ex: "\_++@this.DBField.Value"
 
 **URL**
 
@@ -26859,13 +27309,15 @@ Description
 
 [TComponent](javascript:jumpToDoc('TComponent');)
 
-Sets data-dataparameters values. If previous values exist they will be merged.
+Sets data-dataparameters values. If previous values exist they will be
+merged.
 
 ------------------------------------------------------------------------
 
 ## TDBField
 
-[TComponent](javascript:jumpToDoc('TComponent');) / [TDBField](javascript:jumpToDoc('TDBField');)
+[TComponent](javascript:jumpToDoc('TComponent');) /
+[TDBField](javascript:jumpToDoc('TDBField');)
 
 Parent must be: [TDataProvider](javascript:jumpToDoc('TDataProvider');)
 
@@ -26927,7 +27379,9 @@ Yes
 
 @this.datatype
 
-DateFormatParameter will be prefixed with PHP\|JS\|DB to convert date\|datetime\|time data types from DBValue to Value and back. Date format is multilingual compatible. Lang parameter will be concatenated.
+DateFormatParameter will be prefixed with PHP\|JS\|DB to convert
+date\|datetime\|time data types from DBValue to Value and back. Date
+format is multilingual compatible. Lang parameter will be concatenated.
 
 **List of possible values**
 
@@ -26996,7 +27450,8 @@ Yes
 
 [TComponent](javascript:jumpToDoc('TComponent');)
 
-Function Code for Role management, use \# in case of function needs logged user only (without any role)
+Function Code for Role management, use \# in case of function needs
+logged user only (without any role)
 
 **Index**
 
@@ -27050,7 +27505,8 @@ Yes
 
 [TComponent](javascript:jumpToDoc('TComponent');)
 
-Value of Name property will be suffixed with this value. Use ++ sign to concatenation, ex: "\_++@this.DBField.Value"
+Value of Name property will be suffixed with this value. Use ++ sign to
+concatenation, ex: "\_++@this.DBField.Value"
 
 **NativeDataType**
 
@@ -27237,13 +27693,16 @@ Description
 
 [TComponent](javascript:jumpToDoc('TComponent');)
 
-Sets data-dataparameters values. If previous values exist they will be merged.
+Sets data-dataparameters values. If previous values exist they will be
+merged.
 
 ------------------------------------------------------------------------
 
 ## TJSONField
 
-[TComponent](javascript:jumpToDoc('TComponent');) / [TDBField](javascript:jumpToDoc('TDBField');) / [TJSONField](javascript:jumpToDoc('TJSONField');)
+[TComponent](javascript:jumpToDoc('TComponent');) /
+[TDBField](javascript:jumpToDoc('TDBField');) /
+[TJSONField](javascript:jumpToDoc('TJSONField');)
 
 Parent must be: [TDBField](javascript:jumpToDoc('TDBField');)
 
@@ -27311,7 +27770,9 @@ Yes
 
 [TDBField](javascript:jumpToDoc('TDBField');)
 
-DateFormatParameter will be prefixed with PHP\|JS\|DB to convert date\|datetime\|time data types from DBValue to Value and back. Date format is multilingual compatible. Lang parameter will be concatenated.
+DateFormatParameter will be prefixed with PHP\|JS\|DB to convert
+date\|datetime\|time data types from DBValue to Value and back. Date
+format is multilingual compatible. Lang parameter will be concatenated.
 
 **List of possible values**
 
@@ -27386,7 +27847,8 @@ Yes
 
 [TComponent](javascript:jumpToDoc('TComponent');)
 
-Function Code for Role management, use \# in case of function needs logged user only (without any role)
+Function Code for Role management, use \# in case of function needs
+logged user only (without any role)
 
 **Label**
 
@@ -27430,7 +27892,8 @@ Yes
 
 [TComponent](javascript:jumpToDoc('TComponent');)
 
-Value of Name property will be suffixed with this value. Use ++ sign to concatenation, ex: "\_++@this.DBField.Value"
+Value of Name property will be suffixed with this value. Use ++ sign to
+concatenation, ex: "\_++@this.DBField.Value"
 
 **NullResultParameter**
 
@@ -27540,13 +28003,15 @@ Description
 
 [TComponent](javascript:jumpToDoc('TComponent');)
 
-Sets data-dataparameters values. If previous values exist they will be merged.
+Sets data-dataparameters values. If previous values exist they will be
+merged.
 
 ------------------------------------------------------------------------
 
 ## TDBParam
 
-[TComponent](javascript:jumpToDoc('TComponent');) / [TDBParam](javascript:jumpToDoc('TDBParam');)
+[TComponent](javascript:jumpToDoc('TComponent');) /
+[TDBParam](javascript:jumpToDoc('TDBParam');)
 
 Parent must be: [TDataProvider](javascript:jumpToDoc('TDataProvider');)
 
@@ -27634,7 +28099,9 @@ Yes
 
 @this.DataType
 
-DateFormatParameter will be prefixed with PHP\|JS\|DB to convert date\|datetime\|time data types from DBValue to Value and back. Date format is multilingual compatible. Lang parameter will be concatenated.
+DateFormatParameter will be prefixed with PHP\|JS\|DB to convert
+date\|datetime\|time data types from DBValue to Value and back. Date
+format is multilingual compatible. Lang parameter will be concatenated.
 
 **List of possible values**
 
@@ -27679,7 +28146,8 @@ Yes
 
 [TComponent](javascript:jumpToDoc('TComponent');)
 
-Function Code for Role management, use \# in case of function needs logged user only (without any role)
+Function Code for Role management, use \# in case of function needs
+logged user only (without any role)
 
 **MDB2DataType**
 
@@ -27730,7 +28198,8 @@ Yes
 
 [TComponent](javascript:jumpToDoc('TComponent');)
 
-Value of Name property will be suffixed with this value. Use ++ sign to concatenation, ex: "\_++@this.DBField.Value"
+Value of Name property will be suffixed with this value. Use ++ sign to
+concatenation, ex: "\_++@this.DBField.Value"
 
 **NativeDataType**
 
@@ -27817,7 +28286,8 @@ No
 
 Yes
 
-In case of JSON type parameter, this property contains the parameter mapping options
+In case of JSON type parameter, this property contains the parameter
+mapping options
 
 **ParameterMode**
 
@@ -27875,7 +28345,9 @@ Yes
 
 false
 
-In case of inappropriate formatted input data the property controls whether an exception must be dropped or not. Use it carefully, it might hides programing errors!
+In case of inappropriate formatted input data the property controls
+whether an exception must be dropped or not. Use it carefully, it might
+hides programing errors!
 
 **Value**
 
@@ -27935,13 +28407,15 @@ Description
 
 [TComponent](javascript:jumpToDoc('TComponent');)
 
-Sets data-dataparameters values. If previous values exist they will be merged.
+Sets data-dataparameters values. If previous values exist they will be
+merged.
 
 ------------------------------------------------------------------------
 
 ## TDiagramEditor
 
-[TComponent](javascript:jumpToDoc('TComponent');) / [TDiagramEditor](javascript:jumpToDoc('TDiagramEditor');)
+[TComponent](javascript:jumpToDoc('TComponent');) /
+[TDiagramEditor](javascript:jumpToDoc('TDiagramEditor');)
 
 Parent must be: [TContainer](javascript:jumpToDoc('TContainer');)
 
@@ -28033,7 +28507,8 @@ Yes
 
 [TComponent](javascript:jumpToDoc('TComponent');)
 
-Function Code for Role management, use \# in case of function needs logged user only (without any role)
+Function Code for Role management, use \# in case of function needs
+logged user only (without any role)
 
 **ListSourceConnectors**
 
@@ -28069,7 +28544,9 @@ No
 
 Yes
 
-Used in dependant control situations. Specifies the master component which this control depends on. When master component refreshes its value, this component will also be refreshed.
+Used in dependant control situations. Specifies the master component
+which this control depends on. When master component refreshes its
+value, this component will also be refreshed.
 
 **MasterFilterField**
 
@@ -28107,7 +28584,8 @@ Yes
 
 [TComponent](javascript:jumpToDoc('TComponent');)
 
-Value of Name property will be suffixed with this value. Use ++ sign to concatenation, ex: "\_++@this.DBField.Value"
+Value of Name property will be suffixed with this value. Use ++ sign to
+concatenation, ex: "\_++@this.DBField.Value"
 
 ### TDiagramEditor events
 
@@ -28191,13 +28669,15 @@ Refreshes component data
 
 [TComponent](javascript:jumpToDoc('TComponent');)
 
-Sets data-dataparameters values. If previous values exist they will be merged.
+Sets data-dataparameters values. If previous values exist they will be
+merged.
 
 ------------------------------------------------------------------------
 
 ## TDocumentTitle
 
-[TComponent](javascript:jumpToDoc('TComponent');) / [TDocumentTitle](javascript:jumpToDoc('TDocumentTitle');)
+[TComponent](javascript:jumpToDoc('TComponent');) /
+[TDocumentTitle](javascript:jumpToDoc('TDocumentTitle');)
 
 Parent must be: [TComponent](javascript:jumpToDoc('TComponent');)
 
@@ -28261,7 +28741,8 @@ Yes
 
 [TComponent](javascript:jumpToDoc('TComponent');)
 
-Value of Name property will be suffixed with this value. Use ++ sign to concatenation, ex: "\_++@this.DBField.Value"
+Value of Name property will be suffixed with this value. Use ++ sign to
+concatenation, ex: "\_++@this.DBField.Value"
 
 **Tag**
 
@@ -28335,13 +28816,15 @@ Description
 
 [TComponent](javascript:jumpToDoc('TComponent');)
 
-Sets data-dataparameters values. If previous values exist they will be merged.
+Sets data-dataparameters values. If previous values exist they will be
+merged.
 
 ------------------------------------------------------------------------
 
 ## TDPOpen
 
-[TComponent](javascript:jumpToDoc('TComponent');) / [TDPOpen](javascript:jumpToDoc('TDPOpen');)
+[TComponent](javascript:jumpToDoc('TComponent');) /
+[TDPOpen](javascript:jumpToDoc('TDPOpen');)
 
 Parent must be: [TComponent](javascript:jumpToDoc('TComponent');)
 
@@ -28413,7 +28896,8 @@ No
 
 [TComponent](javascript:jumpToDoc('TComponent');)
 
-Function Code for Role management, use \# in case of function needs logged user only (without any role)
+Function Code for Role management, use \# in case of function needs
+logged user only (without any role)
 
 **Name**
 
@@ -28441,7 +28925,8 @@ Yes
 
 [TComponent](javascript:jumpToDoc('TComponent');)
 
-Value of Name property will be suffixed with this value. Use ++ sign to concatenation, ex: "\_++@this.DBField.Value"
+Value of Name property will be suffixed with this value. Use ++ sign to
+concatenation, ex: "\_++@this.DBField.Value"
 
 ### TDPOpen events
 
@@ -28489,13 +28974,15 @@ Description
 
 [TComponent](javascript:jumpToDoc('TComponent');)
 
-Sets data-dataparameters values. If previous values exist they will be merged.
+Sets data-dataparameters values. If previous values exist they will be
+merged.
 
 ------------------------------------------------------------------------
 
 ## TGridControls
 
-[TComponent](javascript:jumpToDoc('TComponent');) / [TGridControls](javascript:jumpToDoc('TGridControls');)
+[TComponent](javascript:jumpToDoc('TComponent');) /
+[TGridControls](javascript:jumpToDoc('TGridControls');)
 
 Parent must be: *only inherited types can be placed*
 
@@ -28545,7 +29032,8 @@ Yes
 
 [TComponent](javascript:jumpToDoc('TComponent');)
 
-Function Code for Role management, use \# in case of function needs logged user only (without any role)
+Function Code for Role management, use \# in case of function needs
+logged user only (without any role)
 
 **Name**
 
@@ -28573,7 +29061,8 @@ Yes
 
 [TComponent](javascript:jumpToDoc('TComponent');)
 
-Value of Name property will be suffixed with this value. Use ++ sign to concatenation, ex: "\_++@this.DBField.Value"
+Value of Name property will be suffixed with this value. Use ++ sign to
+concatenation, ex: "\_++@this.DBField.Value"
 
 ### TGridControls events
 
@@ -28621,13 +29110,16 @@ Description
 
 [TComponent](javascript:jumpToDoc('TComponent');)
 
-Sets data-dataparameters values. If previous values exist they will be merged.
+Sets data-dataparameters values. If previous values exist they will be
+merged.
 
 ------------------------------------------------------------------------
 
 ## TGridColumn
 
-[TComponent](javascript:jumpToDoc('TComponent');) / [TGridControls](javascript:jumpToDoc('TGridControls');) / [TGridColumn](javascript:jumpToDoc('TGridColumn');)
+[TComponent](javascript:jumpToDoc('TComponent');) /
+[TGridControls](javascript:jumpToDoc('TGridControls');) /
+[TGridColumn](javascript:jumpToDoc('TGridColumn');)
 
 Parent must be: [TComponent](javascript:jumpToDoc('TComponent');)
 
@@ -28752,7 +29244,8 @@ No
 
 No
 
-Database field attached to the control. When specified, the control is database-aware.
+Database field attached to the control. When specified, the control is
+database-aware.
 
 **DBValue**
 
@@ -28804,7 +29297,8 @@ No
 
 [TComponent](javascript:jumpToDoc('TComponent');)
 
-Function Code for Role management, use \# in case of function needs logged user only (without any role)
+Function Code for Role management, use \# in case of function needs
+logged user only (without any role)
 
 **GridFilter**
 
@@ -28894,7 +29388,8 @@ No
 
 [TComponent](javascript:jumpToDoc('TComponent');)
 
-Value of Name property will be suffixed with this value. Use ++ sign to concatenation, ex: "\_++@this.DBField.Value"
+Value of Name property will be suffixed with this value. Use ++ sign to
+concatenation, ex: "\_++@this.DBField.Value"
 
 **Sortable**
 
@@ -29074,13 +29569,16 @@ Description
 
 [TComponent](javascript:jumpToDoc('TComponent');)
 
-Sets data-dataparameters values. If previous values exist they will be merged.
+Sets data-dataparameters values. If previous values exist they will be
+merged.
 
 ------------------------------------------------------------------------
 
 ## TGridFilter
 
-[TComponent](javascript:jumpToDoc('TComponent');) / [TGridControls](javascript:jumpToDoc('TGridControls');) / [TGridFilter](javascript:jumpToDoc('TGridFilter');)
+[TComponent](javascript:jumpToDoc('TComponent');) /
+[TGridControls](javascript:jumpToDoc('TGridControls');) /
+[TGridFilter](javascript:jumpToDoc('TGridFilter');)
 
 Parent must be: [TGrid](javascript:jumpToDoc('TGrid');)
 
@@ -29156,7 +29654,8 @@ No
 
 Yes
 
-Database field attached to the control. When specified, the control is database-aware.
+Database field attached to the control. When specified, the control is
+database-aware.
 
 **DefaultRelation**
 
@@ -29233,7 +29732,8 @@ Yes
 
 [TComponent](javascript:jumpToDoc('TComponent');)
 
-Function Code for Role management, use \# in case of function needs logged user only (without any role)
+Function Code for Role management, use \# in case of function needs
+logged user only (without any role)
 
 **Label**
 
@@ -29299,7 +29799,8 @@ Yes
 
 [TComponent](javascript:jumpToDoc('TComponent');)
 
-Value of Name property will be suffixed with this value. Use ++ sign to concatenation, ex: "\_++@this.DBField.Value"
+Value of Name property will be suffixed with this value. Use ++ sign to
+concatenation, ex: "\_++@this.DBField.Value"
 
 **Value**
 
@@ -29359,13 +29860,16 @@ Description
 
 [TComponent](javascript:jumpToDoc('TComponent');)
 
-Sets data-dataparameters values. If previous values exist they will be merged.
+Sets data-dataparameters values. If previous values exist they will be
+merged.
 
 ------------------------------------------------------------------------
 
 ## TGridParameter
 
-[TComponent](javascript:jumpToDoc('TComponent');) / [TGridControls](javascript:jumpToDoc('TGridControls');) / [TGridParameter](javascript:jumpToDoc('TGridParameter');)
+[TComponent](javascript:jumpToDoc('TComponent');) /
+[TGridControls](javascript:jumpToDoc('TGridControls');) /
+[TGridParameter](javascript:jumpToDoc('TGridParameter');)
 
 Parent must be: [TGrid](javascript:jumpToDoc('TGrid');)
 
@@ -29415,7 +29919,8 @@ Yes
 
 [TComponent](javascript:jumpToDoc('TComponent');)
 
-Function Code for Role management, use \# in case of function needs logged user only (without any role)
+Function Code for Role management, use \# in case of function needs
+logged user only (without any role)
 
 **Name**
 
@@ -29443,7 +29948,8 @@ Yes
 
 [TComponent](javascript:jumpToDoc('TComponent');)
 
-Value of Name property will be suffixed with this value. Use ++ sign to concatenation, ex: "\_++@this.DBField.Value"
+Value of Name property will be suffixed with this value. Use ++ sign to
+concatenation, ex: "\_++@this.DBField.Value"
 
 ### TGridParameter events
 
@@ -29491,13 +29997,16 @@ Description
 
 [TComponent](javascript:jumpToDoc('TComponent');)
 
-Sets data-dataparameters values. If previous values exist they will be merged.
+Sets data-dataparameters values. If previous values exist they will be
+merged.
 
 ------------------------------------------------------------------------
 
 ## TGridRow
 
-[TComponent](javascript:jumpToDoc('TComponent');) / [TGridControls](javascript:jumpToDoc('TGridControls');) / [TGridRow](javascript:jumpToDoc('TGridRow');)
+[TComponent](javascript:jumpToDoc('TComponent');) /
+[TGridControls](javascript:jumpToDoc('TGridControls');) /
+[TGridRow](javascript:jumpToDoc('TGridRow');)
 
 Parent must be: [TGrid](javascript:jumpToDoc('TGrid');)
 
@@ -29559,7 +30068,8 @@ No
 
 [TComponent](javascript:jumpToDoc('TComponent');)
 
-Function Code for Role management, use \# in case of function needs logged user only (without any role)
+Function Code for Role management, use \# in case of function needs
+logged user only (without any role)
 
 **HideWhenEmpty**
 
@@ -29599,7 +30109,8 @@ No
 
 [TComponent](javascript:jumpToDoc('TComponent');)
 
-Value of Name property will be suffixed with this value. Use ++ sign to concatenation, ex: "\_++@this.DBField.Value"
+Value of Name property will be suffixed with this value. Use ++ sign to
+concatenation, ex: "\_++@this.DBField.Value"
 
 **ShowColumnHead**
 
@@ -29671,13 +30182,15 @@ Description
 
 [TComponent](javascript:jumpToDoc('TComponent');)
 
-Sets data-dataparameters values. If previous values exist they will be merged.
+Sets data-dataparameters values. If previous values exist they will be
+merged.
 
 ------------------------------------------------------------------------
 
 ## TIterator
 
-[TComponent](javascript:jumpToDoc('TComponent');) / [TIterator](javascript:jumpToDoc('TIterator');)
+[TComponent](javascript:jumpToDoc('TComponent');) /
+[TIterator](javascript:jumpToDoc('TIterator');)
 
 Parent must be: [TComponent](javascript:jumpToDoc('TComponent');)
 
@@ -29711,7 +30224,8 @@ No
 
 Yes
 
-Database field attached to the control. When specified, the control is database-aware.
+Database field attached to the control. When specified, the control is
+database-aware.
 
 **DBValue**
 
@@ -29749,7 +30263,8 @@ No
 
 [TComponent](javascript:jumpToDoc('TComponent');)
 
-Function Code for Role management, use \# in case of function needs logged user only (without any role)
+Function Code for Role management, use \# in case of function needs
+logged user only (without any role)
 
 **JSONDBField**
 
@@ -29813,7 +30328,8 @@ No
 
 [TComponent](javascript:jumpToDoc('TComponent');)
 
-Value of Name property will be suffixed with this value. Use ++ sign to concatenation, ex: "\_++@this.DBField.Value"
+Value of Name property will be suffixed with this value. Use ++ sign to
+concatenation, ex: "\_++@this.DBField.Value"
 
 **RowCount**
 
@@ -29911,13 +30427,15 @@ Description
 
 [TComponent](javascript:jumpToDoc('TComponent');)
 
-Sets data-dataparameters values. If previous values exist they will be merged.
+Sets data-dataparameters values. If previous values exist they will be
+merged.
 
 ------------------------------------------------------------------------
 
 ## TJSLib
 
-[TComponent](javascript:jumpToDoc('TComponent');) / [TJSLib](javascript:jumpToDoc('TJSLib');)
+[TComponent](javascript:jumpToDoc('TComponent');) /
+[TJSLib](javascript:jumpToDoc('TJSLib');)
 
 Parent must be: [TComponent](javascript:jumpToDoc('TComponent');)
 
@@ -29981,7 +30499,8 @@ No
 
 [TComponent](javascript:jumpToDoc('TComponent');)
 
-Value of Name property will be suffixed with this value. Use ++ sign to concatenation, ex: "\_++@this.DBField.Value"
+Value of Name property will be suffixed with this value. Use ++ sign to
+concatenation, ex: "\_++@this.DBField.Value"
 
 **Placement**
 
@@ -30061,13 +30580,15 @@ Description
 
 [TComponent](javascript:jumpToDoc('TComponent');)
 
-Sets data-dataparameters values. If previous values exist they will be merged.
+Sets data-dataparameters values. If previous values exist they will be
+merged.
 
 ------------------------------------------------------------------------
 
 ## TLinkedComponent
 
-[TComponent](javascript:jumpToDoc('TComponent');) / [TLinkedComponent](javascript:jumpToDoc('TLinkedComponent');)
+[TComponent](javascript:jumpToDoc('TComponent');) /
+[TLinkedComponent](javascript:jumpToDoc('TLinkedComponent');)
 
 Parent must be: [TComponent](javascript:jumpToDoc('TComponent');)
 
@@ -30129,7 +30650,8 @@ No
 
 [TComponent](javascript:jumpToDoc('TComponent');)
 
-Function Code for Role management, use \# in case of function needs logged user only (without any role)
+Function Code for Role management, use \# in case of function needs
+logged user only (without any role)
 
 **Name**
 
@@ -30157,7 +30679,8 @@ No
 
 [TComponent](javascript:jumpToDoc('TComponent');)
 
-Value of Name property will be suffixed with this value. Use ++ sign to concatenation, ex: "\_++@this.DBField.Value"
+Value of Name property will be suffixed with this value. Use ++ sign to
+concatenation, ex: "\_++@this.DBField.Value"
 
 ### TLinkedComponent events
 
@@ -30205,13 +30728,15 @@ Description
 
 [TComponent](javascript:jumpToDoc('TComponent');)
 
-Sets data-dataparameters values. If previous values exist they will be merged.
+Sets data-dataparameters values. If previous values exist they will be
+merged.
 
 ------------------------------------------------------------------------
 
 ## TMapSource
 
-[TComponent](javascript:jumpToDoc('TComponent');) / [TMapSource](javascript:jumpToDoc('TMapSource');)
+[TComponent](javascript:jumpToDoc('TComponent');) /
+[TMapSource](javascript:jumpToDoc('TMapSource');)
 
 Parent must be: [TMap](javascript:jumpToDoc('TMap');)
 
@@ -30413,7 +30938,8 @@ No
 
 [TComponent](javascript:jumpToDoc('TComponent');)
 
-Function Code for Role management, use \# in case of function needs logged user only (without any role)
+Function Code for Role management, use \# in case of function needs
+logged user only (without any role)
 
 **Label**
 
@@ -30465,7 +30991,9 @@ No
 
 Yes
 
-Used in dependant control situations. Specifies the master component which this control depends on. When master component refreshes its value, this component will also be refreshed.
+Used in dependant control situations. Specifies the master component
+which this control depends on. When master component refreshes its
+value, this component will also be refreshed.
 
 **MasterFilterField**
 
@@ -30503,7 +31031,8 @@ Yes
 
 [TComponent](javascript:jumpToDoc('TComponent');)
 
-Value of Name property will be suffixed with this value. Use ++ sign to concatenation, ex: "\_++@this.DBField.Value"
+Value of Name property will be suffixed with this value. Use ++ sign to
+concatenation, ex: "\_++@this.DBField.Value"
 
 **ParentMap**
 
@@ -30651,13 +31180,15 @@ Refreshes component data
 
 [TComponent](javascript:jumpToDoc('TComponent');)
 
-Sets data-dataparameters values. If previous values exist they will be merged.
+Sets data-dataparameters values. If previous values exist they will be
+merged.
 
 ------------------------------------------------------------------------
 
 ## TPAdES
 
-[TComponent](javascript:jumpToDoc('TComponent');) / [TPAdES](javascript:jumpToDoc('TPAdES');)
+[TComponent](javascript:jumpToDoc('TComponent');) /
+[TPAdES](javascript:jumpToDoc('TPAdES');)
 
 Parent must be: [TApplication](javascript:jumpToDoc('TApplication');)
 
@@ -30829,13 +31360,15 @@ Description
 
 [TComponent](javascript:jumpToDoc('TComponent');)
 
-Sets data-dataparameters values. If previous values exist they will be merged.
+Sets data-dataparameters values. If previous values exist they will be
+merged.
 
 ------------------------------------------------------------------------
 
 ## TParameter
 
-[TComponent](javascript:jumpToDoc('TComponent');) / [TParameter](javascript:jumpToDoc('TParameter');)
+[TComponent](javascript:jumpToDoc('TComponent');) /
+[TParameter](javascript:jumpToDoc('TParameter');)
 
 Parent must be: *only inherited types can be placed*
 
@@ -30885,7 +31418,8 @@ Yes
 
 [TComponent](javascript:jumpToDoc('TComponent');)
 
-Function Code for Role management, use \# in case of function needs logged user only (without any role)
+Function Code for Role management, use \# in case of function needs
+logged user only (without any role)
 
 **Name**
 
@@ -30913,7 +31447,8 @@ Yes
 
 [TComponent](javascript:jumpToDoc('TComponent');)
 
-Value of Name property will be suffixed with this value. Use ++ sign to concatenation, ex: "\_++@this.DBField.Value"
+Value of Name property will be suffixed with this value. Use ++ sign to
+concatenation, ex: "\_++@this.DBField.Value"
 
 **ParameterName**
 
@@ -30983,15 +31518,19 @@ Description
 
 [TComponent](javascript:jumpToDoc('TComponent');)
 
-Sets data-dataparameters values. If previous values exist they will be merged.
+Sets data-dataparameters values. If previous values exist they will be
+merged.
 
 ------------------------------------------------------------------------
 
 ## TAPIParameter
 
-[TComponent](javascript:jumpToDoc('TComponent');) / [TParameter](javascript:jumpToDoc('TParameter');) / [TAPIParameter](javascript:jumpToDoc('TAPIParameter');)
+[TComponent](javascript:jumpToDoc('TComponent');) /
+[TParameter](javascript:jumpToDoc('TParameter');) /
+[TAPIParameter](javascript:jumpToDoc('TAPIParameter');)
 
-Parent must be: [TExternalDataProvider](javascript:jumpToDoc('TExternalDataProvider');)
+Parent must be:
+[TExternalDataProvider](javascript:jumpToDoc('TExternalDataProvider');)
 
 TAPIParameter
 
@@ -31039,7 +31578,8 @@ No
 
 [TComponent](javascript:jumpToDoc('TComponent');)
 
-Function Code for Role management, use \# in case of function needs logged user only (without any role)
+Function Code for Role management, use \# in case of function needs
+logged user only (without any role)
 
 **Name**
 
@@ -31067,7 +31607,8 @@ No
 
 [TComponent](javascript:jumpToDoc('TComponent');)
 
-Value of Name property will be suffixed with this value. Use ++ sign to concatenation, ex: "\_++@this.DBField.Value"
+Value of Name property will be suffixed with this value. Use ++ sign to
+concatenation, ex: "\_++@this.DBField.Value"
 
 **ParameterName**
 
@@ -31141,13 +31682,16 @@ Description
 
 [TComponent](javascript:jumpToDoc('TComponent');)
 
-Sets data-dataparameters values. If previous values exist they will be merged.
+Sets data-dataparameters values. If previous values exist they will be
+merged.
 
 ------------------------------------------------------------------------
 
 ## TDataParameter
 
-[TComponent](javascript:jumpToDoc('TComponent');) / [TParameter](javascript:jumpToDoc('TParameter');) / [TDataParameter](javascript:jumpToDoc('TDataParameter');)
+[TComponent](javascript:jumpToDoc('TComponent');) /
+[TParameter](javascript:jumpToDoc('TParameter');) /
+[TDataParameter](javascript:jumpToDoc('TDataParameter');)
 
 Parent must be: [TComponent](javascript:jumpToDoc('TComponent');)
 
@@ -31181,7 +31725,8 @@ No
 
 Yes
 
-Database field attached to the control. When specified, the control is database-aware.
+Database field attached to the control. When specified, the control is
+database-aware.
 
 **DBValue**
 
@@ -31219,7 +31764,8 @@ Yes
 
 [TComponent](javascript:jumpToDoc('TComponent');)
 
-Function Code for Role management, use \# in case of function needs logged user only (without any role)
+Function Code for Role management, use \# in case of function needs
+logged user only (without any role)
 
 **Name**
 
@@ -31247,7 +31793,8 @@ Yes
 
 [TComponent](javascript:jumpToDoc('TComponent');)
 
-Value of Name property will be suffixed with this value. Use ++ sign to concatenation, ex: "\_++@this.DBField.Value"
+Value of Name property will be suffixed with this value. Use ++ sign to
+concatenation, ex: "\_++@this.DBField.Value"
 
 **ParameterName**
 
@@ -31323,13 +31870,16 @@ Description
 
 [TComponent](javascript:jumpToDoc('TComponent');)
 
-Sets data-dataparameters values. If previous values exist they will be merged.
+Sets data-dataparameters values. If previous values exist they will be
+merged.
 
 ------------------------------------------------------------------------
 
 ## TDataProxyParameter
 
-[TComponent](javascript:jumpToDoc('TComponent');) / [TParameter](javascript:jumpToDoc('TParameter');) / [TDataProxyParameter](javascript:jumpToDoc('TDataProxyParameter');)
+[TComponent](javascript:jumpToDoc('TComponent');) /
+[TParameter](javascript:jumpToDoc('TParameter');) /
+[TDataProxyParameter](javascript:jumpToDoc('TDataProxyParameter');)
 
 Parent must be: [TDataProxy](javascript:jumpToDoc('TDataProxy');)
 
@@ -31379,7 +31929,8 @@ No
 
 [TComponent](javascript:jumpToDoc('TComponent');)
 
-Function Code for Role management, use \# in case of function needs logged user only (without any role)
+Function Code for Role management, use \# in case of function needs
+logged user only (without any role)
 
 **Name**
 
@@ -31407,7 +31958,8 @@ No
 
 [TComponent](javascript:jumpToDoc('TComponent');)
 
-Value of Name property will be suffixed with this value. Use ++ sign to concatenation, ex: "\_++@this.DBField.Value"
+Value of Name property will be suffixed with this value. Use ++ sign to
+concatenation, ex: "\_++@this.DBField.Value"
 
 **ParameterName**
 
@@ -31483,17 +32035,21 @@ Description
 
 [TComponent](javascript:jumpToDoc('TComponent');)
 
-Sets data-dataparameters values. If previous values exist they will be merged.
+Sets data-dataparameters values. If previous values exist they will be
+merged.
 
 ------------------------------------------------------------------------
 
 ## TGlobalParameter
 
-[TComponent](javascript:jumpToDoc('TComponent');) / [TParameter](javascript:jumpToDoc('TParameter');) / [TGlobalParameter](javascript:jumpToDoc('TGlobalParameter');)
+[TComponent](javascript:jumpToDoc('TComponent');) /
+[TParameter](javascript:jumpToDoc('TParameter');) /
+[TGlobalParameter](javascript:jumpToDoc('TGlobalParameter');)
 
 Parent must be: [TComponent](javascript:jumpToDoc('TComponent');)
 
-TGlobalParameter gets its value at render time and set it is global parameter
+TGlobalParameter gets its value at render time and set it is global
+parameter
 
 ### TGlobalParameter properties
 
@@ -31539,7 +32095,8 @@ No
 
 [TComponent](javascript:jumpToDoc('TComponent');)
 
-Function Code for Role management, use \# in case of function needs logged user only (without any role)
+Function Code for Role management, use \# in case of function needs
+logged user only (without any role)
 
 **Name**
 
@@ -31567,7 +32124,8 @@ No
 
 [TComponent](javascript:jumpToDoc('TComponent');)
 
-Value of Name property will be suffixed with this value. Use ++ sign to concatenation, ex: "\_++@this.DBField.Value"
+Value of Name property will be suffixed with this value. Use ++ sign to
+concatenation, ex: "\_++@this.DBField.Value"
 
 **ParameterName**
 
@@ -31641,13 +32199,16 @@ Description
 
 [TComponent](javascript:jumpToDoc('TComponent');)
 
-Sets data-dataparameters values. If previous values exist they will be merged.
+Sets data-dataparameters values. If previous values exist they will be
+merged.
 
 ------------------------------------------------------------------------
 
 ## TLOVParameter
 
-[TComponent](javascript:jumpToDoc('TComponent');) / [TParameter](javascript:jumpToDoc('TParameter');) / [TLOVParameter](javascript:jumpToDoc('TLOVParameter');)
+[TComponent](javascript:jumpToDoc('TComponent');) /
+[TParameter](javascript:jumpToDoc('TParameter');) /
+[TLOVParameter](javascript:jumpToDoc('TLOVParameter');)
 
 Parent must be: [TLOV](javascript:jumpToDoc('TLOV');)
 
@@ -31697,7 +32258,8 @@ Yes
 
 [TComponent](javascript:jumpToDoc('TComponent');)
 
-Function Code for Role management, use \# in case of function needs logged user only (without any role)
+Function Code for Role management, use \# in case of function needs
+logged user only (without any role)
 
 **Name**
 
@@ -31725,7 +32287,8 @@ Yes
 
 [TComponent](javascript:jumpToDoc('TComponent');)
 
-Value of Name property will be suffixed with this value. Use ++ sign to concatenation, ex: "\_++@this.DBField.Value"
+Value of Name property will be suffixed with this value. Use ++ sign to
+concatenation, ex: "\_++@this.DBField.Value"
 
 **ParameterName**
 
@@ -31799,13 +32362,15 @@ Description
 
 [TComponent](javascript:jumpToDoc('TComponent');)
 
-Sets data-dataparameters values. If previous values exist they will be merged.
+Sets data-dataparameters values. If previous values exist they will be
+merged.
 
 ------------------------------------------------------------------------
 
 ## TPartial
 
-[TComponent](javascript:jumpToDoc('TComponent');) / [TPartial](javascript:jumpToDoc('TPartial');)
+[TComponent](javascript:jumpToDoc('TComponent');) /
+[TPartial](javascript:jumpToDoc('TPartial');)
 
 Parent must be: [TComponent](javascript:jumpToDoc('TComponent');)
 
@@ -31869,7 +32434,8 @@ Yes
 
 [TComponent](javascript:jumpToDoc('TComponent');)
 
-Function Code for Role management, use \# in case of function needs logged user only (without any role)
+Function Code for Role management, use \# in case of function needs
+logged user only (without any role)
 
 **Name**
 
@@ -31897,7 +32463,8 @@ Yes
 
 [TComponent](javascript:jumpToDoc('TComponent');)
 
-Value of Name property will be suffixed with this value. Use ++ sign to concatenation, ex: "\_++@this.DBField.Value"
+Value of Name property will be suffixed with this value. Use ++ sign to
+concatenation, ex: "\_++@this.DBField.Value"
 
 **ParameterName**
 
@@ -31955,13 +32522,15 @@ Description
 
 [TComponent](javascript:jumpToDoc('TComponent');)
 
-Sets data-dataparameters values. If previous values exist they will be merged.
+Sets data-dataparameters values. If previous values exist they will be
+merged.
 
 ------------------------------------------------------------------------
 
 ## TQueryFilter
 
-[TComponent](javascript:jumpToDoc('TComponent');) / [TQueryFilter](javascript:jumpToDoc('TQueryFilter');)
+[TComponent](javascript:jumpToDoc('TComponent');) /
+[TQueryFilter](javascript:jumpToDoc('TQueryFilter');)
 
 Parent must be: [TComponent](javascript:jumpToDoc('TComponent');)
 
@@ -32025,7 +32594,9 @@ Yes
 
 @this.datatype
 
-DateFormatParameter will be prefixed with PHP\|JS\|DB to convert date\|datetime\|time data types from DBValue to Value and back. Date format is multilingual compatible. Lang parameter will be concatenated.
+DateFormatParameter will be prefixed with PHP\|JS\|DB to convert
+date\|datetime\|time data types from DBValue to Value and back. Date
+format is multilingual compatible. Lang parameter will be concatenated.
 
 **List of possible values**
 
@@ -32096,7 +32667,8 @@ No
 
 [TComponent](javascript:jumpToDoc('TComponent');)
 
-Function Code for Role management, use \# in case of function needs logged user only (without any role)
+Function Code for Role management, use \# in case of function needs
+logged user only (without any role)
 
 **Name**
 
@@ -32124,7 +32696,8 @@ Yes
 
 [TComponent](javascript:jumpToDoc('TComponent');)
 
-Value of Name property will be suffixed with this value. Use ++ sign to concatenation, ex: "\_++@this.DBField.Value"
+Value of Name property will be suffixed with this value. Use ++ sign to
+concatenation, ex: "\_++@this.DBField.Value"
 
 **NativeDataType**
 
@@ -32223,7 +32796,9 @@ Yes
 
 false
 
-This filter is used to select a specific record in the query. RecordSelector filters applied only on AutoOpened query-s and usually has default value.
+This filter is used to select a specific record in the query.
+RecordSelector filters applied only on AutoOpened query-s and usually
+has default value.
 
 **List of possible values**
 
@@ -32340,13 +32915,15 @@ Description
 
 [TComponent](javascript:jumpToDoc('TComponent');)
 
-Sets data-dataparameters values. If previous values exist they will be merged.
+Sets data-dataparameters values. If previous values exist they will be
+merged.
 
 ------------------------------------------------------------------------
 
 ## TQueryFilterGroup
 
-[TComponent](javascript:jumpToDoc('TComponent');) / [TQueryFilterGroup](javascript:jumpToDoc('TQueryFilterGroup');)
+[TComponent](javascript:jumpToDoc('TComponent');) /
+[TQueryFilterGroup](javascript:jumpToDoc('TQueryFilterGroup');)
 
 Parent must be: [TComponent](javascript:jumpToDoc('TComponent');)
 
@@ -32420,7 +32997,8 @@ Yes
 
 [TComponent](javascript:jumpToDoc('TComponent');)
 
-Function Code for Role management, use \# in case of function needs logged user only (without any role)
+Function Code for Role management, use \# in case of function needs
+logged user only (without any role)
 
 **InternalOperator**
 
@@ -32465,7 +33043,8 @@ Yes
 
 [TComponent](javascript:jumpToDoc('TComponent');)
 
-Value of Name property will be suffixed with this value. Use ++ sign to concatenation, ex: "\_++@this.DBField.Value"
+Value of Name property will be suffixed with this value. Use ++ sign to
+concatenation, ex: "\_++@this.DBField.Value"
 
 **SQL**
 
@@ -32525,13 +33104,15 @@ Description
 
 [TComponent](javascript:jumpToDoc('TComponent');)
 
-Sets data-dataparameters values. If previous values exist they will be merged.
+Sets data-dataparameters values. If previous values exist they will be
+merged.
 
 ------------------------------------------------------------------------
 
 ## TRoleManager
 
-[TComponent](javascript:jumpToDoc('TComponent');) / [TRoleManager](javascript:jumpToDoc('TRoleManager');)
+[TComponent](javascript:jumpToDoc('TComponent');) /
+[TRoleManager](javascript:jumpToDoc('TRoleManager');)
 
 Parent must be: [TApplication](javascript:jumpToDoc('TApplication');)
 
@@ -32647,7 +33228,9 @@ No
 
 false
 
-Disable InitSessionProvider in application init phase (in case of proxy is enabled this should be disabled because of the behavior of separate remote calls)
+Disable InitSessionProvider in application init phase (in case of proxy
+is enabled this should be disabled because of the behavior of separate
+remote calls)
 
 **Enabled**
 
@@ -32683,7 +33266,8 @@ No
 
 No
 
-List of headers which will be included into every HTTP Request, separated by comma
+List of headers which will be included into every HTTP Request,
+separated by comma
 
 **FunctionCodes**
 
@@ -32782,7 +33366,8 @@ No
 
 No
 
-Redirect URL in case of no user logged in and component has defined function code
+Redirect URL in case of no user logged in and component has defined
+function code
 
 **LogoutURL**
 
@@ -32822,7 +33407,8 @@ No
 
 [TComponent](javascript:jumpToDoc('TComponent');)
 
-Value of Name property will be suffixed with this value. Use ++ sign to concatenation, ex: "\_++@this.DBField.Value"
+Value of Name property will be suffixed with this value. Use ++ sign to
+concatenation, ex: "\_++@this.DBField.Value"
 
 **NewLoginHeader**
 
@@ -32910,13 +33496,15 @@ Description
 
 [TComponent](javascript:jumpToDoc('TComponent');)
 
-Sets data-dataparameters values. If previous values exist they will be merged.
+Sets data-dataparameters values. If previous values exist they will be
+merged.
 
 ------------------------------------------------------------------------
 
 ## TRoute
 
-[TComponent](javascript:jumpToDoc('TComponent');) / [TRoute](javascript:jumpToDoc('TRoute');)
+[TComponent](javascript:jumpToDoc('TComponent');) /
+[TRoute](javascript:jumpToDoc('TRoute');)
 
 Parent must be: [TApplication](javascript:jumpToDoc('TApplication');)
 
@@ -32980,7 +33568,8 @@ No
 
 [TComponent](javascript:jumpToDoc('TComponent');)
 
-Function Code for Role management, use \# in case of function needs logged user only (without any role)
+Function Code for Role management, use \# in case of function needs
+logged user only (without any role)
 
 **InitSessionProvider**
 
@@ -33018,7 +33607,8 @@ Yes
 
 [TComponent](javascript:jumpToDoc('TComponent');)
 
-Value of Name property will be suffixed with this value. Use ++ sign to concatenation, ex: "\_++@this.DBField.Value"
+Value of Name property will be suffixed with this value. Use ++ sign to
+concatenation, ex: "\_++@this.DBField.Value"
 
 **PersistentSession**
 
@@ -33080,13 +33670,15 @@ Description
 
 [TComponent](javascript:jumpToDoc('TComponent');)
 
-Sets data-dataparameters values. If previous values exist they will be merged.
+Sets data-dataparameters values. If previous values exist they will be
+merged.
 
 ------------------------------------------------------------------------
 
 ## TTemplate
 
-[TComponent](javascript:jumpToDoc('TComponent');) / [TTemplate](javascript:jumpToDoc('TTemplate');)
+[TComponent](javascript:jumpToDoc('TComponent');) /
+[TTemplate](javascript:jumpToDoc('TTemplate');)
 
 Parent must be: [TAction](javascript:jumpToDoc('TAction');)
 
@@ -33136,7 +33728,8 @@ No
 
 [TComponent](javascript:jumpToDoc('TComponent');)
 
-Function Code for Role management, use \# in case of function needs logged user only (without any role)
+Function Code for Role management, use \# in case of function needs
+logged user only (without any role)
 
 **Name**
 
@@ -33164,7 +33757,8 @@ Yes
 
 [TComponent](javascript:jumpToDoc('TComponent');)
 
-Value of Name property will be suffixed with this value. Use ++ sign to concatenation, ex: "\_++@this.DBField.Value"
+Value of Name property will be suffixed with this value. Use ++ sign to
+concatenation, ex: "\_++@this.DBField.Value"
 
 **Template**
 
@@ -33224,13 +33818,15 @@ Description
 
 [TComponent](javascript:jumpToDoc('TComponent');)
 
-Sets data-dataparameters values. If previous values exist they will be merged.
+Sets data-dataparameters values. If previous values exist they will be
+merged.
 
 ------------------------------------------------------------------------
 
 ## TTimer
 
-[TComponent](javascript:jumpToDoc('TComponent');) / [TTimer](javascript:jumpToDoc('TTimer');)
+[TComponent](javascript:jumpToDoc('TComponent');) /
+[TTimer](javascript:jumpToDoc('TTimer');)
 
 Parent must be: [TComponent](javascript:jumpToDoc('TComponent');)
 
@@ -33266,7 +33862,8 @@ No
 
 true
 
-Asynchronus call. If false, it does not execute the onExecute trigger and waits RetryInterval msec before the next execution.
+Asynchronus call. If false, it does not execute the onExecute trigger
+and waits RetryInterval msec before the next execution.
 
 **AutoStart**
 
@@ -33280,7 +33877,8 @@ Yes
 
 true
 
-Start timer on document ready, otherwise Execute method must called manually.
+Start timer on document ready, otherwise Execute method must called
+manually.
 
 **DevNote**
 
@@ -33322,7 +33920,8 @@ Yes
 
 false
 
-If true then activate() method overwrites enabled property to true. In other case enabled must be turned on manually before activates run.
+If true then activate() method overwrites enabled property to true. In
+other case enabled must be turned on manually before activates run.
 
 **FunctionCode**
 
@@ -33336,7 +33935,8 @@ No
 
 [TComponent](javascript:jumpToDoc('TComponent');)
 
-Function Code for Role management, use \# in case of function needs logged user only (without any role)
+Function Code for Role management, use \# in case of function needs
+logged user only (without any role)
 
 **Interval**
 
@@ -33378,7 +33978,8 @@ No
 
 [TComponent](javascript:jumpToDoc('TComponent');)
 
-Value of Name property will be suffixed with this value. Use ++ sign to concatenation, ex: "\_++@this.DBField.Value"
+Value of Name property will be suffixed with this value. Use ++ sign to
+concatenation, ex: "\_++@this.DBField.Value"
 
 **RetryInterval**
 
@@ -33420,7 +34021,8 @@ Yes
 
 interval
 
-interval: run in every Interval msec timeout: run once after Interval msec
+interval: run in every Interval msec timeout: run once after Interval
+msec
 
 **List of possible values**
 
@@ -33499,7 +34101,8 @@ Description
 
 [TComponent](javascript:jumpToDoc('TComponent');)
 
-Sets data-dataparameters values. If previous values exist they will be merged.
+Sets data-dataparameters values. If previous values exist they will be
+merged.
 
 **setEnabled()**
 
@@ -33511,7 +34114,8 @@ Set component enabled/disabled
 
 ## TWorkflow
 
-[TComponent](javascript:jumpToDoc('TComponent');) / [TWorkflow](javascript:jumpToDoc('TWorkflow');)
+[TComponent](javascript:jumpToDoc('TComponent');) /
+[TWorkflow](javascript:jumpToDoc('TWorkflow');)
 
 Parent must be: [TComponent](javascript:jumpToDoc('TComponent');)
 
@@ -33561,7 +34165,8 @@ No
 
 [TComponent](javascript:jumpToDoc('TComponent');)
 
-Function Code for Role management, use \# in case of function needs logged user only (without any role)
+Function Code for Role management, use \# in case of function needs
+logged user only (without any role)
 
 **Name**
 
@@ -33589,7 +34194,8 @@ Yes
 
 [TComponent](javascript:jumpToDoc('TComponent');)
 
-Value of Name property will be suffixed with this value. Use ++ sign to concatenation, ex: "\_++@this.DBField.Value"
+Value of Name property will be suffixed with this value. Use ++ sign to
+concatenation, ex: "\_++@this.DBField.Value"
 
 ### TWorkflow events
 
@@ -33637,13 +34243,15 @@ Description
 
 [TComponent](javascript:jumpToDoc('TComponent');)
 
-Sets data-dataparameters values. If previous values exist they will be merged.
+Sets data-dataparameters values. If previous values exist they will be
+merged.
 
 ------------------------------------------------------------------------
 
 ## TWorkflowStep
 
-[TComponent](javascript:jumpToDoc('TComponent');) / [TWorkflowStep](javascript:jumpToDoc('TWorkflowStep');)
+[TComponent](javascript:jumpToDoc('TComponent');) /
+[TWorkflowStep](javascript:jumpToDoc('TWorkflowStep');)
 
 Parent must be: [TWorkflow](javascript:jumpToDoc('TWorkflow');)
 
@@ -33693,7 +34301,8 @@ No
 
 [TComponent](javascript:jumpToDoc('TComponent');)
 
-Function Code for Role management, use \# in case of function needs logged user only (without any role)
+Function Code for Role management, use \# in case of function needs
+logged user only (without any role)
 
 **Name**
 
@@ -33721,7 +34330,8 @@ Yes
 
 [TComponent](javascript:jumpToDoc('TComponent');)
 
-Value of Name property will be suffixed with this value. Use ++ sign to concatenation, ex: "\_++@this.DBField.Value"
+Value of Name property will be suffixed with this value. Use ++ sign to
+concatenation, ex: "\_++@this.DBField.Value"
 
 ### TWorkflowStep events
 
@@ -33751,7 +34361,8 @@ GUI
 
 [](javascript:jumpToDoc('');)
 
-onFinished triggered when onExecute does not return a success or error event (eg: setVisible)
+onFinished triggered when onExecute does not return a success or error
+event (eg: setVisible)
 
 **onResume**
 
@@ -33815,6 +34426,7 @@ Description
 
 [TComponent](javascript:jumpToDoc('TComponent');)
 
-Sets data-dataparameters values. If previous values exist they will be merged.
+Sets data-dataparameters values. If previous values exist they will be
+merged.
 
 ------------------------------------------------------------------------
