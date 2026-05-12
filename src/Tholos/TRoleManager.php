@@ -183,7 +183,9 @@
         && Eisodos::$parameterHandler->neq('IsAJAXRequest', 'T')
         && Eisodos::$parameterHandler->eq('LoginID', '')
         && $this->getProperty('LoginURL', '') !== '') { // ha nincs bejelentkezve
-        if (!str_contains(Eisodos::$render->currentPageURL(), $this->getProperty('LoginURL', ''))) {
+        $currentFirstPath = explode('/', trim(parse_url(Eisodos::$render->currentPageURL(), PHP_URL_PATH) ?? '', '/'))[0] ?? '';
+        $loginFirstPath = explode('/', trim(parse_url($this->getProperty('LoginURL', ''), PHP_URL_PATH) ?? '', '/'))[0] ?? '';
+        if ($currentFirstPath !== '' && $currentFirstPath !== $loginFirstPath) {
           Eisodos::$render->storeCurrentURL('URLBeforeLogin');
         }
         Eisodos::$parameterHandler->setParam('REDIRECT', $this->getProperty('LoginURL', ''));
