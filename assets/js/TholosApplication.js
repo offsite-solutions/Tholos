@@ -132,6 +132,14 @@ var Tholos = {
       Tholos.trace("TGrid_setValues()", sender, target, route, eventData);
       TGrid_setValues(target, eventData);
     },
+    TGrid_setValuesRefresh: function (sender, target, route, eventData) {
+      Tholos.trace("TGrid_setValuesRefresh()", sender, target, route, eventData);
+      TGrid_setValuesRefresh(target, eventData);
+    },
+    TGrid_clearSelection: function (sender, target, route, eventData) {
+      Tholos.trace("TGrid_clearSelection()", sender, target, route, eventData);
+      TGrid_clearSelection(target);
+    },
     TGrid_getFilterSQL: function (sender, target, route, eventData) {
       Tholos.trace("TGrid_getFilterSQL()", sender, target, route, eventData);
       return $("#helper_" + target + " #TGrid_FilterSQL_").val();

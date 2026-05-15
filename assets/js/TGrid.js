@@ -708,6 +708,11 @@ function TGrid_setValues(formId_, json_) {
   Tholos.eventHandler(formId_, formId_, 'TGrid', 'selectionchange');
 }
 
+function TGrid_setValuesRefresh(formId_, json_) {
+  TGrid_setValues(formId_, json_);
+  Tholos.eventHandler(formId_, formId_, 'TGrid', 'refresh');
+}
+
 $(document).ready(function () {
   $("iframe.autoresize").each(function () {
     $(this).height($(this).contents().find("body").height());
