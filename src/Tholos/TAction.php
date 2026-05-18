@@ -32,6 +32,10 @@
      */
     public function render(?TComponent $sender, string $content): string {
       
+      if (Tholos::$app->responseErrorCode !== '0') {
+        return '';
+      }
+      
       Tholos::$logger->trace('BEGIN', $this);
       
       $this->renderedContent = '';
