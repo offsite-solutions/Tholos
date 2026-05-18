@@ -32,7 +32,7 @@
      */
     public function render(?TComponent $sender, string $content): string {
       
-      if (Tholos::$app->responseErrorCode !== '0') {
+      if (Tholos::$app->responseErrorCode !== '0') { // init process (anywhere) set error code to non zero (eg: onAfterInit event)
         return '';
       }
       
