@@ -107,7 +107,7 @@
         
         if ($this->getProperty('ErrorCodeParameter', '') !== '') {
           $this->setProperty('ResultErrorCode',
-            $resultParameters[Tholos::$app->findComponentByID($this->getPropertyComponentId('ErrorCodeParameter'))->getProperty('ParameterName')]);
+            Eisodos::$utils->safe_array_value($resultParameters,Tholos::$app->findComponentByID($this->getPropertyComponentId('ErrorCodeParameter'))->getProperty('ParameterName'),'-1'));
           
           if ($this->getProperty('ErrorCodeOnSuccess', '') !== ''
             && $this->getProperty('ResultErrorCode') !== $this->getProperty('ErrorCodeOnSuccess', '')) {
