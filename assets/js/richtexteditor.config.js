@@ -21,7 +21,7 @@ let tholos_rte_toolbar_simple = ""
 
 let tholos_rte_config = {
       url_base: TholosAssetsDir+"/js/richtexteditor",
-      contentCssUrl: TholosAssetsDir+"/assets/css/richtexteditor.css",
+      contentCssUrl: TholosAssetsDir+"/css/richtexteditor.css",
       editorResizeMode: "height",
       enterKeyTag: "p",
       subtoolbar_more: null,
