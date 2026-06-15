@@ -1,6 +1,6 @@
 ## <!--  Modal $prop_name -->
 $templateabs_tholos__TComponent_properties
-<div class="modal" id="$prop_id" role="dialog" data-show="false" <%FUNC%
+<div class="modal" id="$prop_id" role="dialog" data-show="false" inert <%FUNC%
 _function_name=Tholos\TholosCallback::_eqs
 param=prop_static
 value=true
@@ -50,6 +50,7 @@ true=
 false=$('#$prop_id').on('onSubmitSuccess', function (event,eventData) { $event_onSubmitSuccess });
 %FUNC%>
 
+Tholos.methods.TModal_bindInertLifecycle("$prop_id");
 $("#$prop_id").on("hide.bs.modal", Tholos.methods.TModal_handleOnHide);
 $("#$prop_id").on("show.bs.modal", Tholos.methods.TModal_handleOnShow);
 

@@ -1,9 +1,9 @@
-<div class="modal fade" id="modal_$prop_id" role="dialog" >
+<div class="modal fade" id="modal_$prop_id" role="dialog" inert>
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal"><span >&times;</span><span class="sr-only">X</span></button>
         <h4 class="modal-title">&nbsp;</h4>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body">
         <form class="form-horizontal" onsubmit="return false;">
@@ -134,7 +134,7 @@
         </form>
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-default" data-dismiss="modal">[:GRID.FILTER.BUTTON.CLOSE,Bezár:]</button>
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">[:GRID.FILTER.BUTTON.CLOSE,Bezár:]</button>
         <button type="button" class="btn btn-primary setbutton">[:GRID.FILTER.BUTTON.SET_FILTER,Szűrő beállítása:]</button>
       </div>
     </div>
@@ -153,6 +153,8 @@
 */
 
 $(document).ready(function() {
+  Tholos.methods.TModal_bindInertLifecycle("modal_$prop_id");
+
   $('#modal_$prop_id .TGrid-filter-list').on('TGrid.show', function (event, filterData) {
 
     $("#modal_$prop_id .TGrid-filter-list > #value1-props").data("listsource", filterData.filterListSource);

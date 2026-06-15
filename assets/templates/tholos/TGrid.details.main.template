@@ -1,4 +1,4 @@
-<div class="modal modal-lg fade" id="details_$prop_id" tabindex="-1" role="dialog" >
+<div class="modal modal-lg fade" id="details_$prop_id" tabindex="-1" role="dialog" inert>
   <div class="modal-dialog modal-dialog-scrollable">
     <div class="modal-content">
       <div class="modal-header label-primary bg-info">
@@ -14,3 +14,6 @@
     </div>
   </div>
 </div>
+<script type="text/javascript" nonce="$Tholos_nonce">
+Tholos.methods.TModal_bindInertLifecycle("details_$prop_id");
+</script>

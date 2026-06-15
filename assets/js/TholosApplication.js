@@ -811,6 +811,21 @@ var Tholos = {
       Tholos.trace("TModal_handleOnShow(): Triggering onShow");
       o.trigger("onShow", []);
     },
+    TModal_bindInertLifecycle: function (id) {
+      var $el = $("#" + id);
+      if (!$el.length) return;
+      $el.on("show.bs.modal", function () {
+        this.removeAttribute("inert");
+        this.removeAttribute("aria-hidden");
+      });
+      $el.on("hide.bs.modal", function () {
+        this.setAttribute("inert", "");
+        this.removeAttribute("aria-hidden");
+      });
+      $el.on("hidden.bs.modal", function () {
+        this.removeAttribute("aria-hidden");
+      });
+    },
     TFormContainer_hide: function (sender, target, route, eventData) {
       Tholos.trace("TFormContainer_hide()", sender, target, route, eventData);
       var d = Tholos.getData(target);
