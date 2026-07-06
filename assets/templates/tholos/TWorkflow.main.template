@@ -1,1 +1,2 @@
-$content
+$templateabs_tholos__TComponent_properties
+<div id="$prop_id" style="display:contents">$content</div>

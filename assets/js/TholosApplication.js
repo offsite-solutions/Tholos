@@ -1460,6 +1460,20 @@ var Tholos = {
       o.trigger("onFinished", eventData);
     }
     ,
+    TWorkflow_execute: function (sender, target, route, eventData) {
+      Tholos.trace("TWorkflow_execute()", sender, target, route, eventData);
+      var d = Tholos.getData(target);
+      if (d.parallel === true || d.parallel === "true") {
+        var o = Tholos.getObject(target);
+        o.find(":input[type='hidden'][id$='-props'][data-componenttype='TWorkflowStep']").each(function () {
+          var stepId = $(this).data("id");
+          Tholos.trace("TWorkflow_execute(): Triggering onExecute on step", stepId);
+          Tholos.getObject(stepId).trigger("onExecute", eventData);
+        });
+      }
+      // Parallel=false -> no-op: steps remain developer-driven (design decision)
+    }
+    ,
     TWizardStep_activate: function (sender, target, route, eventData) {
       Tholos.trace("TWizardStep_activate()", sender, target, route, eventData);
       var o = Tholos.getObject(target);
