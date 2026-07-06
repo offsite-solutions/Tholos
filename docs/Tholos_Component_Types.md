@@ -3,6 +3,12 @@
 <!-- RELEASE HISTORY START -->
 ## Release history
 
+- **2026-07-06** — `Tholos_Component_Types-20260706144817.html`
+  - `TWorkflow`: new property **`Parallel`** (BOOLEAN, mandatory, default `false`) — "Execute all belonging TWorkFlowStep parallel". When `true`, the workflow's frontend `execute()` fires every child `TWorkflowStep`'s `onExecute` in document order without waiting between them; when `false`, steps stay developer-driven.
+  - `TWorkflow`: new method **`execute()`** — frontend workflow entry point.
+  - `TGrid`: new property **`MultiSelectValue`** (STRING) — "MultiSelect checkbox value".
+  - `TGrid`: new methods **`clearSelection()`** ("Clears selection") and **`setValuesRefresh()`** ("Set selection values and refresh").
+  - `TGrid`: **`MultiSelectDBField`** — *Hidden data* flag changed Yes→No (now emitted as a `data-` attribute).
 - **2026-05-11** — `Tholos_Component_Types-20260511111444.html`
   - `TGrid`: new property **`MultiSelectDBField`** (TDBField, runtime, hidden) — value of the row checkbox when grid is MultiSelect; empty hides the checkbox.
   - `TGrid`: new method **`setValues()`** — sets multiple values (checked items) on a multi-select grid.
@@ -19631,10 +19637,22 @@ No
 
 No
 
-Yes
+No
 
 When grid is MultiSelect, this field contains the Value of the checkbox.
 If it is empty, checkbox doesn't shown - item is not checkable.
+
+**MultiSelectValue**
+
+STRING
+
+No
+
+Yes
+
+No
+
+MultiSelect checkbox value
 
 **Name**
 
@@ -20229,6 +20247,12 @@ Ancestor
 
 Description
 
+**clearSelection()**
+
+[](javascript:jumpToDoc('');)
+
+Clears selection
+
 **downloadExcel()**
 
 [](javascript:jumpToDoc('');)
@@ -20302,6 +20326,12 @@ Sets value and refresh
 [](javascript:jumpToDoc('');)
 
 Set multiple values (checked items) to a Grid
+
+**setValuesRefresh()**
+
+[](javascript:jumpToDoc('');)
+
+Set selection values and refresh
 
 **setVisible()**
 
@@ -34197,6 +34227,20 @@ Yes
 Value of Name property will be suffixed with this value. Use ++ sign to
 concatenation, ex: "\_++@this.DBField.Value"
 
+**Parallel**
+
+BOOLEAN
+
+Yes
+
+No
+
+Yes
+
+false
+
+Execute all belonging TWorkFlowStep parallel
+
 ### TWorkflow events
 
 Name
@@ -34238,6 +34282,10 @@ Name
 Ancestor
 
 Description
+
+**execute()**
+
+[](javascript:jumpToDoc('');)
 
 **setDataParameters()**
 
