@@ -1289,7 +1289,7 @@
           $result .= Eisodos::$templateEngine->getTemplate('tholos/' . $this->_componentType . '.details.row',
             array('label' => $column->getProperty('Label'),
               'value' => Eisodos::$utils->ODecode(array(Tholos::$app->findComponentByID($column->getPropertyComponentId('DBField'))->getProperty('DataType', 'string'),
-                'bool', Eisodos::$translator->translateText((!in_array($column->getProperty('Value'), explode(',', strtoupper(Eisodos::$parameterHandler->getParam('Tholos.BoolFalse', ''))), false)) ? '[:GRID.FILTER.BOOL_YES,Igen:]' : '[:GRID.FILTER.BOOL_NO,Nem:]'),
+                'bool', Eisodos::$translator->translateText((!in_array(strtolower($column->getProperty('Value', '')), explode(',', strtolower(Eisodos::$parameterHandler->getParam('Tholos.BoolFalse', ''))), false)) ? '[:GRID.FILTER.BOOL_YES,Igen:]' : '[:GRID.FILTER.BOOL_NO,Nem:]'),
                 'text', $column->getProperty('Value') ? ("<textarea class=\"form-control\" style=\"height: 150px;\" readonly>" . $column->getProperty("Value") . "</textarea>") : '&nbsp;',
                 ($column->getProperty('Value', '') !== '' ? $column->getProperty('Value') : '&nbsp;')
               ))
@@ -1310,7 +1310,7 @@
             $result .= Eisodos::$templateEngine->getTemplate('tholos/' . $this->_componentType . '.details.row',
               array('label' => $column->getProperty('Label'),
                 'value' => Eisodos::$utils->ODecode(array(Tholos::$app->findComponentByID($column->getPropertyComponentId('DBField'))->getProperty('DataType'),
-                  'bool', Eisodos::$translator->translateText((!in_array($column->getProperty('Value'), explode(',', strtoupper(Eisodos::$parameterHandler->getParam('Tholos.BoolFalse', ''))), false)) ? '[:GRID.FILTER.BOOL_YES,Igen:]' : '[:GRID.FILTER.BOOL_NO,Nem:]'),
+                  'bool', Eisodos::$translator->translateText((!in_array(strtolower($column->getProperty('Value', '')), explode(',', strtolower(Eisodos::$parameterHandler->getParam('Tholos.BoolFalse', ''))), false)) ? '[:GRID.FILTER.BOOL_YES,Igen:]' : '[:GRID.FILTER.BOOL_NO,Nem:]'),
                   'text', $column->getProperty('Value') ? ("<textarea class=\"form-control\" style=\"height: 150px;\">" . $column->getProperty('Value') . "</textarea>") : '&nbsp;',
                   ($column->getProperty('Value', '') !== '' ? $column->getProperty('Value') : '&nbsp;')
                 ))
