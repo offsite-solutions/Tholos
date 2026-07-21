@@ -172,6 +172,7 @@ function TGrid_submit(sender, target, urldata) {                                
               $("#helper_" + $(this).data().id + " #TGrid_Selection_").val('[]');
               $("#helper_" + $(this).data().id + " #TGrid_ActivePage_").val(1);
               $("#helper_" + $(this).data().id + " #TGrid_MasterValueChanged_").val('T');
+              $('#' + $(this).data().id).trigger('onMasterValueChanged', [edata]);
               Tholos.eventHandler($(this).data().id, $(this).data().id, 'TGrid', 'refresh');
             }
           });
@@ -256,6 +257,7 @@ function TGrid_reloadPreviousState(formId_) {                                   
               $("#helper_" + $(this).data().id + " #TGrid_Value_").val('');
               $("#helper_" + $(this).data().id + " #TGrid_ActivePage_").val(1);
               $("#helper_" + $(this).data().id + " #TGrid_MasterValueChanged_").val('T');
+              $('#' + $(this).data().id).trigger('onMasterValueChanged', [edata]);
               Tholos.eventHandler($(this).data().id, $(this).data().id, 'TGrid', 'refresh');
             }
           });
@@ -587,6 +589,7 @@ function TGrid_ready(formId_) {
       $("#helper_" + $(this).data().id + " #TGrid_Selection_").val('[]');
       $("#helper_" + $(this).data().id + " #TGrid_ActivePage_").val(1);
       $("#helper_" + $(this).data().id + " #TGrid_MasterValueChanged_").val('T');
+      $('#' + $(this).data().id).trigger('onMasterValueChanged', [edata]);
       Tholos.eventHandler($(this).data().id, $(this).data().id, 'TGrid', 'refresh');
     }
   });
