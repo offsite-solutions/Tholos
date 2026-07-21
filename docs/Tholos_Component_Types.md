@@ -3,6 +3,8 @@
 <!-- RELEASE HISTORY START -->
 ## Release history
 
+- **2026-07-21** — `Tholos_Component_Types-20260721200536.html`
+  - `TGrid`: new event **`onMasterValueChanged`** (GUI) — "Triggers when master value changed on a detail grid". Wired in `TGrid.js` (jQuery trigger at the three `masterDataChange` change-guards) and `TGrid.partial.foot.template`; the handler receives the new master value.
 - **2026-07-06** — `Tholos_Component_Types-20260706144817.html`
   - `TWorkflow`: new property **`Parallel`** (BOOLEAN, mandatory, default `false`) — "Execute all belonging TWorkFlowStep parallel". When `true`, the workflow's frontend `execute()` fires every child `TWorkflowStep`'s `onExecute` in document order without waiting between them; when `false`, steps stay developer-driven.
   - `TWorkflow`: new method **`execute()`** — frontend workflow entry point.
@@ -20174,6 +20176,14 @@ GUI
 [TControl](javascript:jumpToDoc('TControl');)
 
 Fired when component transitions from shown to hidden
+
+**onMasterValueChanged**
+
+GUI
+
+[](javascript:jumpToDoc('');)
+
+Triggers when master value changed on a detail grid
 
 **onMouseDown**
 
