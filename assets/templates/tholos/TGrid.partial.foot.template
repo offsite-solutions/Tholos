@@ -65,7 +65,7 @@ _function_name=Tholos\TholosCallback::_eqs
 param=event_onmastervaluechanged
 value=
 true=
-false=<script type="text/javascript" nonce="$Tholos_nonce">$("#$prop_id").on('onMasterValueChanged', function (e, eventData) { $event_onmastervaluechanged });</script>
+false=<script type="text/javascript" nonce="$Tholos_nonce">$("#$prop_id").on('onMasterValueChanged', function (e) { $event_onmastervaluechanged });</script>
 %FUNC%>
 
 <script type="text/javascript" nonce="$Tholos_nonce">

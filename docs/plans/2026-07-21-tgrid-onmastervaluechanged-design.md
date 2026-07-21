@@ -50,19 +50,15 @@ The `_eqs` guard emits the `.on(...)` binding **only when** `event_onchange` is 
 | Event type | GUI (client-side) |
 | Fires on | The **detail** `TGrid` element (`#<render-id>`) |
 | When | Only when the detail grid's master value genuinely changes (inside the `masterDataChange` `if` guard). Not on pagination/sort/filter refresh, not on initial load. |
-| Handler payload | The **new master value** (`edata`), delivered as the handler's `eventData` argument (see below) |
+| Handler payload | **None.** Bound as `function (e)`, exactly like `onChange`. Fires as a pure client-side notification; the handler reads whatever state it needs via its own `Tholos.eventHandler` params (e.g. `#component.getValue()`). |
 | App binding | Standard GUI event handler in the component definition (`.tcd`), same as `onChange` |
 | No-op when unbound | If the app defines no handler, `event_onmastervaluechanged` is empty → the template binds nothing → the `.trigger()` is a harmless no-op |
 
-### Payload note (intentional, minor enhancement over `onChange`)
+### Payload note (corrected 2026-07-21)
 
-The existing `onChange` binding is `function (e) { $event_onchange }` and does not forward the value into the generated handler call. For `onMasterValueChanged` the new master value is the single most relevant datum, so the binding names the handler's second argument `eventData`:
+An earlier revision named the handler's second argument `eventData` to forward the new master value straight through `generateEvents()`. **This was broken and has been reverted.** The generated handler body calls `Tholos.eventHandler(..., (typeof eventData !== 'undefined' ? eventData : null), {params})`, and `Tholos.eventHandler` (`assets/js/TholosApplication.js:2330`) treats its `eventData` argument as a **mutable object**: it does `if (!eventData) eventData = {}` and then writes every `dataparameters` / `userData` key onto it (`eventData[k] = ...`). If `eventData` is a truthy **scalar** (the raw master value), the reset to `{}` is skipped and every param-write is silently discarded onto the primitive — so `sourceurl` / `RENTAL_ID` / `clearcontent` never reach the handler and the action no-ops. (Passing `null`, as a manual call does, works because `null` is falsy → reset to `{}` → params merge.)
 
-```
-$("#$prop_id").on('onMasterValueChanged', function (e, eventData) { $event_onmastervaluechanged });
-```
-
-Because `generateEvents()` emits the handler call as `func('id', (typeof eventData !== 'undefined' ? eventData : null), ...)`, naming the jQuery handler argument `eventData` makes the trigger's payload flow straight through to the app handler as its event-data parameter. No change to `generateEvents()` is required.
+Therefore the binding matches `onChange` exactly — `function (e)`, no forwarded payload. `eventData` stays `undefined` → `null` → the framework resets it to `{}` and merges the params correctly. `onMasterValueChanged` is a pure notification; handlers read state via their own params (e.g. `#component.getValue()`). The `TGrid.js` trigger still passes `[edata]` as an extra jQuery arg, but the `function (e)` handler intentionally does not capture it.
 
 ## Implementation
 
@@ -91,7 +87,7 @@ _function_name=Tholos\TholosCallback::_eqs
 param=event_onmastervaluechanged
 value=
 true=
-false=<script type="text/javascript" nonce="$Tholos_nonce">$("#$prop_id").on('onMasterValueChanged', function (e, eventData) { $event_onmastervaluechanged });</script>
+false=<script type="text/javascript" nonce="$Tholos_nonce">$("#$prop_id").on('onMasterValueChanged', function (e) { $event_onmastervaluechanged });</script>
 %FUNC%>
 ```
 
