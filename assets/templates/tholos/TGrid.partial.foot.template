@@ -45,7 +45,6 @@ $cacheinfo
 $templateabs_tholos__TGrid_chart_main
 </div><!-- body_$prop_name -->
 </div><!-- container_$prop_name -->
-</div>
 
 <%FUNC%
 _function_name=Tholos\TholosCallback::_eqs
@@ -74,3 +73,4 @@ false=<script type="text/javascript" nonce="$Tholos_nonce">$("#$prop_id").on('on
     TGrid_ready('$prop_id');
   });
 </script>
+</div>
