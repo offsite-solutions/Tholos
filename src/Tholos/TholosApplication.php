@@ -202,6 +202,9 @@
      * @var array
      */
     private array $cacheFindChildIDsByType = array();
+
+    /** @var array<string,array>|null parent_id (string) => list<child_id (string)>, built once for Optimized auto-open */
+    private ?array $childIndex = NULL;
     
     /**
      * @var array Items to be included in the header of the HTML page. These are typically CSS style sheets and Javascript files.
@@ -817,19 +820,128 @@
     // END Init methods
     
     // BEGIN AutoOpen methods
-    
+
     /**
-     * Auto opens TDataProvider components before the rendering phase
+     * Resolves the id of the render root (render point), mirroring run()'s render dispatch.
+     * Falls back to action_id when a named partial is not found (run() throws during render in
+     * that case, so the fallback is never actually rendered).
+     *
+     * @return int
+     */
+    private function getRenderRootId(): int {
+      if (isset($this->renderer)) {
+        return $this->renderer->getId();
+      }
+      if (Eisodos::$parameterHandler->eq('tholos_partial', '')
+        || Eisodos::$parameterHandler->eq('tholos_partial', '*')) {
+        return $this->action_id;
+      }
+      $partial = $this->findChildByName(
+        $this->findComponentByID($this->action_id),
+        Eisodos::$parameterHandler->getParam('tholos_partial'));
+
+      return $partial !== NULL ? (int)$this->findComponentId($partial) : $this->action_id;
+    }
+
+    /**
+     * Returns { $root_ } ∪ all descendants as a set (string id => true) for O(1) membership.
+     * The parent->children index is built once per request and cached in $this->childIndex.
+     *
+     * @param string $root_
+     * @return array<string,true>
+     */
+    private function collectSubtreeIds(string $root_): array {
+      if ($this->childIndex === NULL) {
+        $this->childIndex = array();
+        foreach ($this->components as $id => $component) {
+          $this->childIndex[(string)$component['parent_id']][] = (string)$id;
+        }
+      }
+      $result = array();
+      $stack = array($root_);
+      while ($stack) {
+        $id = array_pop($stack);
+        if (isset($result[$id])) {
+          continue;
+        }
+        $result[$id] = true;
+        foreach ($this->childIndex[$id] ?? array() as $childId) {
+          $stack[] = $childId;
+        }
+      }
+
+      return $result;
+    }
+
+    /**
+     * Optimized-mode decision for a single provider: true iff it is the render root (direct call)
+     * OR some component inside the render subtree - but outside the provider's own subtree -
+     * references the provider or any of its descendant fields.
+     *
+     * @param TComponent $dp_
+     * @param string $renderRoot_
+     * @param array $renderSubtree_ Set (string id => true) of the render root's subtree
+     * @return bool
+     */
+    private function shouldAutoOpenOptimized(TComponent $dp_, string $renderRoot_, array $renderSubtree_): bool {
+      $dpId = (string)$this->findComponentId($dp_);
+
+      if ($dpId === $renderRoot_) {
+        return true; // direct call: the render root IS the provider
+      }
+
+      $dpSubtree = $this->collectSubtreeIds($dpId); // provider + its descendant fields
+      foreach (array_keys($dpSubtree) as $triggerId) {
+        foreach ($this->findReferencingComponents((string)$triggerId) as $refId) {
+          $refId = (string)$refId;
+          if (isset($renderSubtree_[$refId]) && !isset($dpSubtree[$refId])) {
+            return true; // referenced from within the render subtree, from outside the provider
+          }
+        }
+      }
+
+      return false;
+    }
+
+    /**
+     * Auto opens TDataProvider components before the rendering phase, driven by the
+     * Tholos.AutoOpenDataProvider config: 'Always' (default, legacy), 'Disabled' (never),
+     * 'Optimized' (only directly-called or reference-needed providers).
      * @throws Throwable
      */
     private function autoOpen(): void {
-      
+
+      $mode = Eisodos::$parameterHandler->getParam('Tholos.AutoOpenDataProvider', 'Always');
+
+      if ($mode === 'Disabled') {
+        Tholos::$logger->debug('AutoOpen disabled (Tholos.AutoOpenDataProvider=Disabled)');
+
+        return;
+      }
+
+      if ($mode !== 'Optimized') { // 'Always' or any unknown value -> legacy behavior
+        foreach ($this->findComponentsByClass('TDataProvider') as $object) {
+          /* @var TDataProvider $object */
+          $object->autoOpen();
+        }
+
+        return;
+      }
+
+      // Optimized: open a provider only if directly called or referenced from the render subtree.
+      $renderRoot = (string)$this->getRenderRootId();
+      $renderSubtree = $this->collectSubtreeIds($renderRoot);
+
       foreach ($this->findComponentsByClass('TDataProvider') as $object) {
         /* @var TDataProvider $object */
-        $object->autoOpen();
+        if ($this->shouldAutoOpenOptimized($object, $renderRoot, $renderSubtree)) {
+          $object->autoOpen();
+        } else {
+          Tholos::$logger->trace('AutoOpen skipped (Optimized, not referenced in render subtree)', $object);
+        }
       }
     }
-    
+
     // END AutoOpen methods
     
     // BEGIN Role Management functions
