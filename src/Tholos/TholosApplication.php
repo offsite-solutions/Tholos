@@ -1178,29 +1178,27 @@
           
           $this->autoOpen();
           
+          $renderRoot = $this->getRenderRootId();
+
           if (isset($this->renderer)) {
             Tholos::$logger->debug('Render phase started', $this->renderer);
-            $response_ = $this->render(NULL, $this->renderer->getId());
+            $response_ = $this->render(NULL, $renderRoot);
             Tholos::$logger->debug('Render phase finished');
           } else if (Eisodos::$parameterHandler->eq('tholos_partial', '')) {
             Tholos::$logger->debug('Render phase started');
-            $response_ = $this->render(NULL, $this->action_id);
+            $response_ = $this->render(NULL, $renderRoot);
             Tholos::$logger->debug('Render phase finished');
           } else {
             Tholos::$logger->debug('Partial render phase started');
             if (Eisodos::$parameterHandler->eq('responseType', '')) {
               Eisodos::$parameterHandler->setParam('responseType', 'JSON');
             }
-            if (Eisodos::$parameterHandler->eq('tholos_partial', '*')) {
-              $response_ = $this->render(NULL, $this->action_id);
-            } else {
-              $partial = $this->findChildByName($this->findComponentByID($this->action_id), Eisodos::$parameterHandler->getParam('tholos_partial'));
-              if ($partial !== NULL) {
-                $response_ = $this->render(NULL, $this->findComponentId($partial));
-              } else {
-                throw new RuntimeException('No partial (' . Eisodos::$parameterHandler->getParam('tholos_partial') . ') found in action!');
-              }
+            if (Eisodos::$parameterHandler->neq('tholos_partial', '*')
+              && $this->findChildByName($this->findComponentByID($this->action_id),
+                   Eisodos::$parameterHandler->getParam('tholos_partial')) === NULL) {
+              throw new RuntimeException('No partial (' . Eisodos::$parameterHandler->getParam('tholos_partial') . ') found in action!');
             }
+            $response_ = $this->render(NULL, $renderRoot);
             $response_ = implode("\n", Tholos::$app->getHeadItems()) . $response_ . implode("\n", Tholos::$app->getFootItems());
             Tholos::$logger->debug('Partial render phase finished');
           }
