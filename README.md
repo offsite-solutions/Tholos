@@ -572,6 +572,12 @@ Key Eisodos parameters used by Tholos (typically set in application config):
 | `Tholos.AccessLog` | Access log file path |
 | `Tholos.AccessLog.Format` | Log format (use `%` as variable prefix) |
 
+### Data Providers
+
+| Parameter | Default | Description |
+|-----------|---------|-------------|
+| `Tholos.AutoOpenDataProvider` | `Always` | Page-generation auto-open mode for `TDataProvider` components. `Always`: auto-open every eligible provider (legacy). `Disabled`: never auto-open in the page-generation phase. `Optimized`: auto-open only providers that are directly called (render root) or referenced from within the render subtree. In `Optimized` mode, providers coupled only via global parameters / template functions are not detected. |
+
 ### Caching
 
 | Parameter | Default | Description |
