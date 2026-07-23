@@ -169,6 +169,7 @@ function TGrid_submit(sender, target, urldata) {                                
             if ($("#helper_" + $(this).data().id + " #TGrid_MasterValue_").val() != edata) {
               $("#helper_" + $(this).data().id + " #TGrid_MasterValue_").val(edata);
               $("#helper_" + $(this).data().id + " #TGrid_Value_").val('');
+              $("#" + $(this).data().id + "-props").data("value", "");
               $("#helper_" + $(this).data().id + " #TGrid_Selection_").val('[]');
               $("#helper_" + $(this).data().id + " #TGrid_ActivePage_").val(1);
               $("#helper_" + $(this).data().id + " #TGrid_MasterValueChanged_").val('T');
@@ -255,6 +256,7 @@ function TGrid_reloadPreviousState(formId_) {                                   
             if ($("#helper_" + $(this).data().id + " #TGrid_MasterValue_").val() != edata) {
               $("#helper_" + $(this).data().id + " #TGrid_MasterValue_").val(edata);
               $("#helper_" + $(this).data().id + " #TGrid_Value_").val('');
+              $("#" + $(this).data().id + "-props").data("value", "");
               $("#helper_" + $(this).data().id + " #TGrid_ActivePage_").val(1);
               $("#helper_" + $(this).data().id + " #TGrid_MasterValueChanged_").val('T');
               $('#' + $(this).data().id).trigger('onMasterValueChanged', [edata]);
@@ -586,6 +588,7 @@ function TGrid_ready(formId_) {
     if ($("#helper_" + $(this).data().id + " #TGrid_MasterValue_").val() != edata) {
       $("#helper_" + $(this).data().id + " #TGrid_MasterValue_").val(edata);
       $("#helper_" + $(this).data().id + " #TGrid_Value_").val('');
+      $("#" + $(this).data().id + "-props").data("value", "");
       $("#helper_" + $(this).data().id + " #TGrid_Selection_").val('[]');
       $("#helper_" + $(this).data().id + " #TGrid_ActivePage_").val(1);
       $("#helper_" + $(this).data().id + " #TGrid_MasterValueChanged_").val('T');
