@@ -874,6 +874,52 @@
     }
 
     /**
+     * Returns every id that can be rendered starting from the render root, as a set
+     * (string id => true).
+     *
+     * Rendering does not follow the component tree alone: some components render a target that
+     * is not their descendant, so the target's subtree is rendered too and has to be part of the
+     * scope. Those are collected transitively:
+     *  - TLinkedComponent renders its `Component` reference (TLinkedComponent::render()),
+     *  - TAction renders its `Page` reference, which in turn renders its own subtree - the
+     *    TPartials of the layout page (TAction::render(), TPage::render()).
+     * TPDFPage is the one indirection that is not a component reference: it looks up the
+     * action's header/body/footer containers by name, so the action subtree is seeded directly.
+     *
+     * @param string $root_
+     * @return array<string,true>
+     */
+    private function collectRenderScopeIds(string $root_): array {
+      $renderReferences = array('TLinkedComponent' => 'Component', 'TAction' => 'Page');
+
+      $scope = $this->collectSubtreeIds($root_);
+      if (isset($this->renderer, $this->action_id)) { // TPDFPage renders the action's containers
+        $scope += $this->collectSubtreeIds((string)$this->action_id);
+      }
+
+      $pending = array_keys($scope);
+      while ($pending) {
+        $id = (string)array_pop($pending);
+        $propertyName = $renderReferences[$this->components[$id]['class_name'] ?? ''] ?? NULL;
+        if ($propertyName === NULL) {
+          continue;
+        }
+        $component = $this->findComponentByID($id);
+        if ($component === NULL || ($targetId = $component->getPropertyComponentId($propertyName)) === false) {
+          continue;
+        }
+        foreach ($this->collectSubtreeIds((string)$targetId) as $targetSubtreeId => $ignored_) {
+          if (!isset($scope[$targetSubtreeId])) {
+            $scope[$targetSubtreeId] = true;
+            $pending[] = $targetSubtreeId;
+          }
+        }
+      }
+
+      return $scope;
+    }
+
+    /**
      * Optimized-mode decision for a single provider: true iff it is the render root (direct call)
      * OR some component inside the render subtree - but outside the provider's own subtree -
      * references the provider or any of its descendant fields.
@@ -928,16 +974,9 @@
         return;
       }
 
-      // Optimized: open a provider only if directly called or referenced from the render subtree.
+      // Optimized: open a provider only if directly called or referenced from the render scope.
       $renderRoot = (string)$this->getRenderRootId();
-      $renderSubtree = $this->collectSubtreeIds($renderRoot);
-
-      // A renderer (TPDFPage) is a standalone component with no children: it renders the
-      // action's header/body/footer containers, so the action subtree is what is really
-      // rendered and must be part of the reference scope.
-      if (isset($this->renderer, $this->action_id)) {
-        $renderSubtree += $this->collectSubtreeIds((string)$this->action_id);
-      }
+      $renderSubtree = $this->collectRenderScopeIds($renderRoot);
 
       foreach ($this->findComponentsByClass('TDataProvider') as $object) {
         /* @var TDataProvider $object */
