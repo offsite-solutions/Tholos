@@ -17,6 +17,10 @@
     public function init(): void {
       parent::init();
       $this->selfRenderer = true;
+      // the iterator opens its own source per render, no need to auto open it beforehand
+      if (($listSourceId = $this->getPropertyComponentId('ListSource')) !== false) {
+        Tholos::$app->findComponentByID($listSourceId)?->setProperty('AutoOpenAllowed', 'false');
+      }
     }
     
     /**
