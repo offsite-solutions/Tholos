@@ -360,18 +360,18 @@
         
         $this->route_id = $this->findComponentIDByNameClassFromIndex(Eisodos::$parameterHandler->getParam('tholos_route', 'index'), 'TRoute');            // Finding corresponding TRoute component
         if (!$this->route_id) {
-          http_response_code(404);
-          Eisodos::$render->Response = '';
-          Eisodos::$templateEngine->addToResponse('Page not found');
-          Eisodos::$render->finishRaw();
-          exit;
+          $this->respondNotFound('route: ' . Eisodos::$parameterHandler->getParam('tholos_route', 'index'));
         }
         $this->instantiateComponent($this->route_id, false);
         Tholos::$logger->debug('TRoute (' . $this->route_id . ') instantiated', $this);
-        
+
         $this->action_id = $this->findComponentIDByNameClassFromIndex(Eisodos::$parameterHandler->getParam('tholos_action'), '*.TDataProvider', $this->route_id); // Finding corresponding TAction or TDataprovider component within TRoute
         if (!$this->action_id) {
           $this->action_id = $this->getActionId('TAction');
+        }
+        if (!$this->action_id) {
+          $this->respondNotFound('action: ' . Eisodos::$parameterHandler->getParam('tholos_route', 'index')
+            . '/' . Eisodos::$parameterHandler->getParam('tholos_action'));
         }
         $this->instantiateComponent($this->action_id);                                                                              // Instantiating TAction component
         Tholos::$logger->debug('TAction (' . $this->action_id . ') instantiated', $this);
@@ -547,32 +547,60 @@
      * Gets the action ID of the TAction component associated with the current URL
      *
      * @param string $rootType
-     * @return bool|string TAction component's ID
-     * @throws Throwable when no action is found
+     * @return bool|string TAction component's ID, or false when the URL resolves to no action -
+     *                     the caller answers 404 (see respondNotFound())
+     * @throws Throwable when the route's property list is not valid JSON
      */
     private function getActionId(string $rootType): bool|string {
-      
+
       try {
         Tholos::$logger->trace('BEGIN', $this);
-        
+
         $action_id = $this->findComponentIDByNameClassFromIndex(Eisodos::$parameterHandler->getParam('tholos_action'), 'TAction', $this->route_id);
-        if (!$action_id && $rootType === 'TAction') {
-          $action_id = array_search('defaultaction', array_column(json_decode($this->componentDefinitions[$this->route_id]['p'], true, 512, JSON_THROW_ON_ERROR), 'n'), NULL)['c']; // TODO-BAXi
+
+        /* The route's DefaultAction answers a URL that names no action of its own - '/ROUTE/',
+           which the rewrite rules deliver as tholos_action=index (empty as well, defensively,
+           since the rules are per application). A named action that does not resolve stays a
+           404, so a mistyped URL is not masked by the default page. */
+        if (!$action_id
+          && $rootType === 'TAction'
+          && in_array(Eisodos::$parameterHandler->getParam('tholos_action'), array('', 'index'), true)) {
+          $properties = json_decode($this->componentDefinitions[$this->route_id]['p'], true, 512, JSON_THROW_ON_ERROR);
+          $index = array_search('defaultaction', array_column($properties, 'n'), true);
+          if ($index !== false && !empty($properties[$index]['c'])) {
+            $action_id = $properties[$index]['c'];
+          }
         }
-        
-        if (!$action_id) {
-          throw new RuntimeException('No Tholos Action object found!');
-        }
-        Tholos::$logger->trace('Action ID: ' . $action_id, $this);
+
+        Tholos::$logger->trace($action_id ? 'Action ID: ' . $action_id : 'No action found', $this);
         Tholos::$logger->trace('END', $this);
-        
-        return $action_id;
+
+        return $action_id ?: false;
       } catch (Exception $e) {
         Tholos::$logger->trace('ERROR', $this);
         Tholos::$logger->writeErrorLog($e);
         Tholos::$logger->trace('END', $this);
         throw $e;
       }
+    }
+
+    /**
+     * Answers the request with 404 and terminates it.
+     *
+     * An unresolvable route, action or partial is a bad URL, not an application failure: it used
+     * to raise a RuntimeException, which was written to the error log twice - by getActionId()
+     * and again by the application entry point, some 380 lines each with the full request headers
+     * - and still answered 200 with the raw message in the body.
+     *
+     * @param string $reason_ Logged as a single debug line; no stack trace is written.
+     */
+    private function respondNotFound(string $reason_): never {
+      Tholos::$logger->debug('404 not found - ' . $reason_, $this);
+      http_response_code(404);
+      Eisodos::$render->Response = '';
+      Eisodos::$templateEngine->addToResponse('Page not found');
+      Eisodos::$render->finishRaw();
+      exit;
     }
     
     // END Construct
@@ -1282,7 +1310,9 @@
             if (Eisodos::$parameterHandler->neq('tholos_partial', '*')
               && $this->findChildByName($this->findComponentByID($this->action_id),
                    Eisodos::$parameterHandler->getParam('tholos_partial')) === NULL) {
-              throw new RuntimeException('No partial (' . Eisodos::$parameterHandler->getParam('tholos_partial') . ') found in action!');
+              $this->respondNotFound('partial: ' . Eisodos::$parameterHandler->getParam('tholos_route', 'index')
+                . '/' . Eisodos::$parameterHandler->getParam('tholos_action')
+                . '/' . Eisodos::$parameterHandler->getParam('tholos_partial'));
             }
             $response_ = $this->render(NULL, $renderRoot);
             $response_ = implode("\n", Tholos::$app->getHeadItems()) . $response_ . implode("\n", Tholos::$app->getFootItems());
