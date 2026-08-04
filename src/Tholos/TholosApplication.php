@@ -932,6 +932,13 @@
       $renderRoot = (string)$this->getRenderRootId();
       $renderSubtree = $this->collectSubtreeIds($renderRoot);
 
+      // A renderer (TPDFPage) is a standalone component with no children: it renders the
+      // action's header/body/footer containers, so the action subtree is what is really
+      // rendered and must be part of the reference scope.
+      if (isset($this->renderer, $this->action_id)) {
+        $renderSubtree += $this->collectSubtreeIds((string)$this->action_id);
+      }
+
       foreach ($this->findComponentsByClass('TDataProvider') as $object) {
         /* @var TDataProvider $object */
         if ($this->shouldAutoOpenOptimized($object, $renderRoot, $renderSubtree)) {
