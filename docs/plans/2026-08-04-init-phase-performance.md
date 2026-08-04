@@ -90,8 +90,9 @@ What remains of the 148 ms: `_tholos.init` include 68.5, cascade 44, `TRoleManag
   pre-decoded as PHP arrays). Rejected: it targets the 2% (§3.2), while multiplying build output
   and adding a staleness failure mode.
 - **Slicing `_tholos.init` per route at build time.** Real but modest (68.5 ms of the remaining
-  148 ms); dropped as not worth the Builder change and the fallback machinery a partial index
-  needs to avoid silent misses.
+  148 ms). Dropped for good: it needs Builder changes plus fallback machinery to keep a partial
+  index from missing silently, and a different Builder concept is being designed — the current
+  one will not be extended for this.
 - **File cache of the Optimized auto-open scope ids** (`Tholos.ScopeIDCache`). Rejected after
   measuring the thing it would cache at 0.07–0.12 ms per request — less than the `stat` + `include`
   needed to read the cache.
