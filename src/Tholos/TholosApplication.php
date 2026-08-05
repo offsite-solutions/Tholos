@@ -1043,12 +1043,15 @@
       }
 
       // Optimized: open a provider only if directly called or referenced from the render scope.
+      // AutoOpenAlwaysRequired opts a provider out of that decision: one that runs for a
+      // request-level side effect (TFileProcessor and its $_FILES) is triggered by the request
+      // itself, not by a component reference, so the reference analysis can never see it.
       $renderRoot = (string)$this->getRenderRootId();
       $renderSubtree = $this->collectRenderScopeIds($renderRoot);
 
       foreach ($this->findComponentsByClass('TDataProvider') as $object) {
         /* @var TDataProvider $object */
-        if ($object->autoOpenAlwaysRequired()
+        if ($object->getProperty('AutoOpenAlwaysRequired', 'false') === 'true'
           || $this->shouldAutoOpenOptimized($object, $renderRoot, $renderSubtree)) {
           $object->autoOpen();
         } else {
