@@ -1048,7 +1048,8 @@
 
       foreach ($this->findComponentsByClass('TDataProvider') as $object) {
         /* @var TDataProvider $object */
-        if ($this->shouldAutoOpenOptimized($object, $renderRoot, $renderSubtree)) {
+        if ($object->autoOpenAlwaysRequired()
+          || $this->shouldAutoOpenOptimized($object, $renderRoot, $renderSubtree)) {
           $object->autoOpen();
         } else {
           Tholos::$logger->trace('AutoOpen skipped (Optimized, not referenced in render subtree)', $object);

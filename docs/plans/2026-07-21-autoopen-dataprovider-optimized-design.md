@@ -475,6 +475,7 @@ Fixes, in order:
 | 1.0.19 | `TIterator::init()` sets `AutoOpenAllowed='false'` on its `ListSource` (§6) — unrelated double-open, found while investigating |
 | 1.0.20 | seeded the action subtree when a renderer is set (`TPDFPage` only) — superseded |
 | 1.0.21 | `collectRenderScopeIds()` (§5.2b): transitive closure over render indirections, absorbing 1.0.20 |
+| 1.0.24 | `TDataProvider::autoOpenAlwaysRequired()`: side-effect providers opt out of the optimization; `TFileProcessor` returns `true` |
 
 Measured effect on the compiled greengo backoffice definitions:
 
@@ -491,3 +492,24 @@ No provider is dropped on any of the 530 actions, and the mode keeps its value (
 Any new component that renders a target it does not own has to be added to `$renderReferences`
 (§5.2b), or the providers under that target silently stop opening. The failure mode is a blank
 region on the page — no error, no warning, only a `AutoOpen skipped (Optimized …)` trace line.
+
+### 1.0.24 — providers the reference analysis can never see
+
+`TFileProcessor` broke on `upload/standard/fpStandard` (greengo backoffice): the upload completed
+in the browser but no file was ever moved. The reference analysis was working exactly as designed
+— there simply was nothing to find:
+
+- the request is a 3-segment URL, and the rewrite rule only sets `tholos_partial` on the
+  4-segment form, so `tholos_partial` is empty and the render root is the **action**, not the
+  file processor — the direct-call branch of `shouldAutoOpenOptimized()` never fires;
+- the only component referencing `fpStandard` is a `TFileUpload` control in a *different* route
+  (`COR_ATTACHMENTS`), whose definition is not even loaded on the upload request.
+
+The scope walk is a question about **data**: "does anything being rendered need this provider's
+result?" `TFileProcessor` answers no and is still required, because it exists for its side effect
+on `$_FILES`. No amount of reference tracing can discover a trigger that lives in the HTTP request
+rather than in the component graph.
+
+Hence `TDataProvider::autoOpenAlwaysRequired()` — `false` by default, `true` in `TFileProcessor`.
+Any future provider whose reason to run is a request-level side effect (an import, a webhook sink)
+must override it, otherwise Optimized mode will silently skip it.

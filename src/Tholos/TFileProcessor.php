@@ -14,6 +14,19 @@
   class TFileProcessor extends TDataProvider {
     
     /**
+     * Processes the uploaded files of the current request, so it is driven by `$_FILES` rather
+     * than by anything being rendered. Its `TFileUpload` control normally lives in a different
+     * route, which is not even loaded on the upload request, so Optimized AutoOpen would always
+     * skip it and the upload would silently do nothing.
+     *
+     * @return bool
+     */
+    public function autoOpenAlwaysRequired(): bool {
+      
+      return true;
+    }
+    
+    /**
      * @param TComponent|null $sender
      * @param string $nativeSQL
      * @return string
