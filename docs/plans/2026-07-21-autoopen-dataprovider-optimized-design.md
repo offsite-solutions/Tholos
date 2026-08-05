@@ -475,7 +475,7 @@ Fixes, in order:
 | 1.0.19 | `TIterator::init()` sets `AutoOpenAllowed='false'` on its `ListSource` (§6) — unrelated double-open, found while investigating |
 | 1.0.20 | seeded the action subtree when a renderer is set (`TPDFPage` only) — superseded |
 | 1.0.21 | `collectRenderScopeIds()` (§5.2b): transitive closure over render indirections, absorbing 1.0.20 |
-| 1.0.24 | `TDataProvider::autoOpenAlwaysRequired()`: side-effect providers opt out of the optimization; `TFileProcessor` returns `true` |
+| 1.0.24 | `AutoOpenAlwaysRequired` property on `TDataProvider`: side-effect providers opt out of the optimization; defaults to `true` on `TFileProcessor` |
 
 Measured effect on the compiled greengo backoffice definitions:
 
@@ -510,6 +510,15 @@ result?" `TFileProcessor` answers no and is still required, because it exists fo
 on `$_FILES`. No amount of reference tracing can discover a trigger that lives in the HTTP request
 rather than in the component graph.
 
-Hence `TDataProvider::autoOpenAlwaysRequired()` — `false` by default, `true` in `TFileProcessor`.
-Any future provider whose reason to run is a request-level side effect (an import, a webhook sink)
-must override it, otherwise Optimized mode will silently skip it.
+Hence the **`AutoOpenAlwaysRequired`** boolean property, declared on `TDataProvider` and inherited
+by every provider. `autoOpen()` consults it before the Optimized decision; the PHP fallback is
+`'false'`, so the effective value comes from the component definition — `false` everywhere except
+`TFileProcessor`, whose definition defaults it to `true`.
+
+Keeping this in the definition rather than in a PHP override means an individual component can be
+opted in from the `.tcd` without touching the framework: any provider that runs for a
+request-level side effect (an import, a webhook sink) sets the property instead of subclassing.
+
+> **Deployment note.** The value is read from the compiled definition, so a `.tcd` compiled before
+> the property existed yields the `'false'` fallback and the provider is skipped again. Recompile
+> the definitions when rolling this out.

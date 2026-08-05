@@ -239,19 +239,6 @@
     }
     
     /**
-     * Optimized AutoOpen only opens providers whose result the render scope needs. A provider
-     * that exists for a request level side effect is triggered by the request itself and not by
-     * a component reference, so the reference analysis can never see it - those override this
-     * and return true to stay opened in Optimized mode.
-     *
-     * @return bool
-     */
-    public function autoOpenAlwaysRequired(): bool {
-      
-      return false;
-    }
-    
-    /**
      * Dataprovider's render function always return an empty string,
      * but generates its result to the application's response array.
      * Inherited components usually don't need to override this method.
