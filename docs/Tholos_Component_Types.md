@@ -3,6 +3,12 @@
 <!-- RELEASE HISTORY START -->
 ## Release history
 
+- **2026-08-05** — `Tholos_Component_Types-20260805111549.html`
+  - `TDataProvider`: new property **`AutoOpenAlwaysRequired`** (BOOLEAN, runtime, hidden, default `false`) — "In Optimized mode it forces the application to automatically opens the component". Inherited by every provider and consulted by `TholosApplication::autoOpen()` *before* the `Optimized` reference check, so a provider that exists for a request-level side effect can opt out of the render-scope decision entirely.
+  - `TFileProcessor`: inherits **`AutoOpenAlwaysRequired`** with default **`true`** (not hidden) — it is driven by `$_FILES` rather than by anything being rendered, and its `TFileUpload` control usually lives in another route, so `Optimized` mode would otherwise skip it and uploads would silently do nothing.
+  - `TExternalDataProvider`, `TQuery`, `TQueryGroup`, `TStoredProcedure`, `TAPIPost`: inherit **`AutoOpenAlwaysRequired`** with default `false` (not hidden).
+  - `TJSONDataProvider`: inherits **`AutoOpenAlwaysRequired`** with default `false` (hidden).
+  - `TQueryGroup`: **`AutoOpenAllowed`** — *Hidden data* flag changed Yes→No.
 - **2026-07-21** — `Tholos_Component_Types-20260721200536.html`
   - `TGrid`: new event **`onMasterValueChanged`** (GUI) — "Triggers when master value changed on a detail grid". Wired in `TGrid.js` (jQuery trigger at the three `masterDataChange` change-guards) and `TGrid.partial.foot.template`; the handler receives the new master value.
 - **2026-07-06** — `Tholos_Component_Types-20260706144817.html`
@@ -20,6 +26,7 @@
   - Initial release history baseline. 84 documented component types. See the file body for the full reference.
 
 <!-- RELEASE HISTORY END -->
+
 
 <div class="row">
 
@@ -401,15 +408,7 @@ HTTP method that the action will handle
 
 **List of possible values**
 
-    GET
-    HEAD
-    POST
-    PUT
-    DELETE
-    TRACE
-    OPTIONS
-    CONNECT
-    PATCH
+GET HEAD POST PUT DELETE TRACE OPTIONS CONNECT PATCH
 
 **Name**
 
@@ -468,12 +467,7 @@ generators. JSON and PLAINTEXT are self-explanatory.
 
 **List of possible values**
 
-    HTML
-    JSON
-    JSONDATA
-    PLAINTEXT
-    XML
-    NONE
+HTML JSON JSONDATA PLAINTEXT XML NONE
 
 ### TAction events
 
@@ -942,11 +936,7 @@ All
 
 **List of possible values**
 
-    All
-    NewItems
-    NewOrModifiedItems
-    ModifiedItems
-    SyncedItems
+All NewItems NewOrModifiedItems ModifiedItems SyncedItems
 
 **CacheUsed**
 
@@ -1031,10 +1021,7 @@ SameRenderPhase
 
 **List of possible values**
 
-    SameRenderPhase
-    DifferentRenderPhase
-    EveryRenderPhase
-    Never
+SameRenderPhase DifferentRenderPhase EveryRenderPhase Never
 
 **PurgeNotRenderedItems**
 
@@ -1067,9 +1054,7 @@ Order result by TCacheArrayItems OrderField value
 
 **List of possible values**
 
-    ASC
-    DESC
-    NONE
+ASC DESC NONE
 
 ### TCacheArrayRenderer events
 
@@ -1517,11 +1502,7 @@ YesNo
 
 **List of possible values**
 
-    YesNo
-    OKCancel
-    OK
-    YesNoCancel
-    Custom
+YesNo OKCancel OK YesNoCancel Custom
 
 **DevNote**
 
@@ -1807,22 +1788,8 @@ div
 
 **List of possible values**
 
-    div
-    li
-    ul
-    ol
-    tr
-    td
-    tbody
-    thead
-    tfoot
-    table
-    span
-    nav
-    section
-    header
-    footer
-    aside
+div li ul ol tr td tbody thead tfoot table span nav section header
+footer aside
 
 **DevNote**
 
@@ -2179,22 +2146,8 @@ div
 
 **List of possible values**
 
-    div
-    li
-    ul
-    ol
-    tr
-    td
-    tbody
-    thead
-    tfoot
-    table
-    span
-    nav
-    section
-    header
-    footer
-    aside
+div li ul ol tr td tbody thead tfoot table span nav section header
+footer aside
 
 **DevNote**
 
@@ -2314,11 +2267,7 @@ absolute
 
 **List of possible values**
 
-    static
-    relative
-    fixed
-    absolute
-    sticky
+static relative fixed absolute sticky
 
 **PositionBottom**
 
@@ -2733,18 +2682,7 @@ Bootstrap offsets - col-xs-offset-\*
 
 **List of possible values**
 
-    1
-    2
-    3
-    4
-    5
-    6
-    7
-    8
-    9
-    10
-    11
-    12
+1 2 3 4 5 6 7 8 9 10 11 12
 
 **OffsetLarge**
 
@@ -2760,18 +2698,7 @@ Bootstrap offsets - col-lg-offset-\*
 
 **List of possible values**
 
-    1
-    2
-    3
-    4
-    5
-    6
-    7
-    8
-    9
-    10
-    11
-    12
+1 2 3 4 5 6 7 8 9 10 11 12
 
 **OffsetMedium**
 
@@ -2787,18 +2714,7 @@ Bootstrap offsets - col-md-offset-\*
 
 **List of possible values**
 
-    1
-    2
-    3
-    4
-    5
-    6
-    7
-    8
-    9
-    10
-    11
-    12
+1 2 3 4 5 6 7 8 9 10 11 12
 
 **OffsetSmall**
 
@@ -2814,18 +2730,7 @@ Bootstrap offsets - col-sm-offset-\*
 
 **List of possible values**
 
-    1
-    2
-    3
-    4
-    5
-    6
-    7
-    8
-    9
-    10
-    11
-    12
+1 2 3 4 5 6 7 8 9 10 11 12
 
 **SizeExtraSmall**
 
@@ -2841,18 +2746,7 @@ Bootstrap column size - col-xs-\*
 
 **List of possible values**
 
-    1
-    2
-    3
-    4
-    5
-    6
-    7
-    8
-    9
-    10
-    11
-    12
+1 2 3 4 5 6 7 8 9 10 11 12
 
 **SizeLarge**
 
@@ -2868,18 +2762,7 @@ Bootstrap column size - col-lg-\*
 
 **List of possible values**
 
-    1
-    2
-    3
-    4
-    5
-    6
-    7
-    8
-    9
-    10
-    11
-    12
+1 2 3 4 5 6 7 8 9 10 11 12
 
 **SizeMedium**
 
@@ -2895,18 +2778,7 @@ Bootstrap column size - size-md-\*
 
 **List of possible values**
 
-    1
-    2
-    3
-    4
-    5
-    6
-    7
-    8
-    9
-    10
-    11
-    12
+1 2 3 4 5 6 7 8 9 10 11 12
 
 **SizeSmall**
 
@@ -2922,18 +2794,7 @@ Bootstrap column size - col-sm-\*
 
 **List of possible values**
 
-    1
-    2
-    3
-    4
-    5
-    6
-    7
-    8
-    9
-    10
-    11
-    12
+1 2 3 4 5 6 7 8 9 10 11 12
 
 **SourceURL**
 
@@ -3246,18 +3107,7 @@ No
 
 **List of possible values**
 
-    1
-    2
-    3
-    4
-    5
-    6
-    7
-    8
-    9
-    10
-    11
-    12
+1 2 3 4 5 6 7 8 9 10 11 12
 
 **ControlSizeLarge**
 
@@ -3271,18 +3121,7 @@ No
 
 **List of possible values**
 
-    1
-    2
-    3
-    4
-    5
-    6
-    7
-    8
-    9
-    10
-    11
-    12
+1 2 3 4 5 6 7 8 9 10 11 12
 
 **ControlSizeMedium**
 
@@ -3298,18 +3137,7 @@ No
 
 **List of possible values**
 
-    1
-    2
-    3
-    4
-    5
-    6
-    7
-    8
-    9
-    10
-    11
-    12
+1 2 3 4 5 6 7 8 9 10 11 12
 
 **ControlSizeSmall**
 
@@ -3323,18 +3151,7 @@ No
 
 **List of possible values**
 
-    1
-    2
-    3
-    4
-    5
-    6
-    7
-    8
-    9
-    10
-    11
-    12
+1 2 3 4 5 6 7 8 9 10 11 12
 
 **DevNote**
 
@@ -3390,8 +3207,7 @@ Yes
 
 **List of possible values**
 
-    VALIDATION
-    SUBMIT
+VALIDATION SUBMIT
 
 **FunctionCode**
 
@@ -3436,18 +3252,7 @@ Visual control label size for extra small screens.
 
 **List of possible values**
 
-    1
-    2
-    3
-    4
-    5
-    6
-    7
-    8
-    9
-    10
-    11
-    12
+1 2 3 4 5 6 7 8 9 10 11 12
 
 **LabelSizeLarge**
 
@@ -3463,18 +3268,7 @@ Visual control label size for large screens.
 
 **List of possible values**
 
-    1
-    2
-    3
-    4
-    5
-    6
-    7
-    8
-    9
-    10
-    11
-    12
+1 2 3 4 5 6 7 8 9 10 11 12
 
 **LabelSizeMedium**
 
@@ -3492,18 +3286,7 @@ Visual control label size for medium screens.
 
 **List of possible values**
 
-    1
-    2
-    3
-    4
-    5
-    6
-    7
-    8
-    9
-    10
-    11
-    12
+1 2 3 4 5 6 7 8 9 10 11 12
 
 **LabelSizeSmall**
 
@@ -3519,18 +3302,7 @@ Visual control label size for small screens.
 
 **List of possible values**
 
-    1
-    2
-    3
-    4
-    5
-    6
-    7
-    8
-    9
-    10
-    11
-    12
+1 2 3 4 5 6 7 8 9 10 11 12
 
 **Loadable**
 
@@ -3560,8 +3332,7 @@ Yes
 
 **List of possible values**
 
-    POST
-    GET
+POST GET
 
 **Name**
 
@@ -3973,22 +3744,8 @@ div
 
 **List of possible values**
 
-    div
-    li
-    ul
-    ol
-    tr
-    td
-    tbody
-    thead
-    tfoot
-    table
-    span
-    nav
-    section
-    header
-    footer
-    aside
+div li ul ol tr td tbody thead tfoot table span nav section header
+footer aside
 
 **DevNote**
 
@@ -4345,9 +4102,7 @@ Content alignment
 
 **List of possible values**
 
-    left
-    center
-    right
+left center right
 
 **Attributes**
 
@@ -5975,8 +5730,7 @@ content, right means after it. Defaults to left.
 
 **List of possible values**
 
-    left
-    right
+left right
 
 **Label**
 
@@ -6700,9 +6454,7 @@ initial state
 
 **List of possible values**
 
-    false
-    InitialClosed
-    InitialOpen
+false InitialClosed InitialOpen
 
 **DevNote**
 
@@ -6811,8 +6563,7 @@ content, right means after it. Defaults to left.
 
 **List of possible values**
 
-    left
-    right
+left right
 
 **Label**
 
@@ -8134,8 +7885,7 @@ false
 
 **List of possible values**
 
-    false
-    true
+false true
 
 **Style**
 
@@ -8412,9 +8162,7 @@ size.
 
 **List of possible values**
 
-    xs
-    sm
-    lg
+xs sm lg
 
 **Class**
 
@@ -8527,8 +8275,7 @@ content, right means after it. Defaults to left.
 
 **List of possible values**
 
-    left
-    right
+left right
 
 **Label**
 
@@ -8877,9 +8624,7 @@ size.
 
 **List of possible values**
 
-    xs
-    sm
-    lg
+xs sm lg
 
 **Class**
 
@@ -8935,8 +8680,7 @@ end
 
 **List of possible values**
 
-    end
-    begin
+end begin
 
 **DropDirection**
 
@@ -8950,8 +8694,7 @@ No
 
 **List of possible values**
 
-    dropdown
-    dropup
+dropdown dropup
 
 **DropdownClass**
 
@@ -9042,8 +8785,7 @@ content, right means after it. Defaults to left.
 
 **List of possible values**
 
-    left
-    right
+left right
 
 **Label**
 
@@ -9132,8 +8874,7 @@ false
 
 **List of possible values**
 
-    false
-    true
+false true
 
 **Style**
 
@@ -9420,18 +9161,7 @@ Yes
 
 **List of possible values**
 
-    1
-    2
-    3
-    4
-    5
-    6
-    7
-    8
-    9
-    10
-    11
-    12
+1 2 3 4 5 6 7 8 9 10 11 12
 
 **ControlSizeLarge**
 
@@ -9445,18 +9175,7 @@ Yes
 
 **List of possible values**
 
-    1
-    2
-    3
-    4
-    5
-    6
-    7
-    8
-    9
-    10
-    11
-    12
+1 2 3 4 5 6 7 8 9 10 11 12
 
 **ControlSizeMedium**
 
@@ -9472,18 +9191,7 @@ Yes
 
 **List of possible values**
 
-    1
-    2
-    3
-    4
-    5
-    6
-    7
-    8
-    9
-    10
-    11
-    12
+1 2 3 4 5 6 7 8 9 10 11 12
 
 **ControlSizeSmall**
 
@@ -9497,18 +9205,7 @@ Yes
 
 **List of possible values**
 
-    1
-    2
-    3
-    4
-    5
-    6
-    7
-    8
-    9
-    10
-    11
-    12
+1 2 3 4 5 6 7 8 9 10 11 12
 
 **DBField**
 
@@ -9646,18 +9343,7 @@ Visual control label size for extra small screens.
 
 **List of possible values**
 
-    1
-    2
-    3
-    4
-    5
-    6
-    7
-    8
-    9
-    10
-    11
-    12
+1 2 3 4 5 6 7 8 9 10 11 12
 
 **LabelSizeLarge**
 
@@ -9673,18 +9359,7 @@ Visual control label size for large screens.
 
 **List of possible values**
 
-    1
-    2
-    3
-    4
-    5
-    6
-    7
-    8
-    9
-    10
-    11
-    12
+1 2 3 4 5 6 7 8 9 10 11 12
 
 **LabelSizeMedium**
 
@@ -9702,18 +9377,7 @@ Visual control label size for medium screens.
 
 **List of possible values**
 
-    1
-    2
-    3
-    4
-    5
-    6
-    7
-    8
-    9
-    10
-    11
-    12
+1 2 3 4 5 6 7 8 9 10 11 12
 
 **LabelSizeSmall**
 
@@ -9729,18 +9393,7 @@ Visual control label size for small screens.
 
 **List of possible values**
 
-    1
-    2
-    3
-    4
-    5
-    6
-    7
-    8
-    9
-    10
-    11
-    12
+1 2 3 4 5 6 7 8 9 10 11 12
 
 **Name**
 
@@ -9798,8 +9451,7 @@ Yes
 
 **List of possible values**
 
-    false
-    true
+false true
 
 **Required**
 
@@ -10129,18 +9781,7 @@ No
 
 **List of possible values**
 
-    1
-    2
-    3
-    4
-    5
-    6
-    7
-    8
-    9
-    10
-    11
-    12
+1 2 3 4 5 6 7 8 9 10 11 12
 
 **ControlSizeLarge**
 
@@ -10158,18 +9799,7 @@ No
 
 **List of possible values**
 
-    1
-    2
-    3
-    4
-    5
-    6
-    7
-    8
-    9
-    10
-    11
-    12
+1 2 3 4 5 6 7 8 9 10 11 12
 
 **ControlSizeMedium**
 
@@ -10187,18 +9817,7 @@ No
 
 **List of possible values**
 
-    1
-    2
-    3
-    4
-    5
-    6
-    7
-    8
-    9
-    10
-    11
-    12
+1 2 3 4 5 6 7 8 9 10 11 12
 
 **ControlSizeSmall**
 
@@ -10216,18 +9835,7 @@ No
 
 **List of possible values**
 
-    1
-    2
-    3
-    4
-    5
-    6
-    7
-    8
-    9
-    10
-    11
-    12
+1 2 3 4 5 6 7 8 9 10 11 12
 
 **DBField**
 
@@ -10357,8 +9965,7 @@ right
 
 **List of possible values**
 
-    left
-    right
+left right
 
 **LabelClass**
 
@@ -10390,18 +9997,7 @@ Visual control label size for extra small screens.
 
 **List of possible values**
 
-    1
-    2
-    3
-    4
-    5
-    6
-    7
-    8
-    9
-    10
-    11
-    12
+1 2 3 4 5 6 7 8 9 10 11 12
 
 **LabelSizeLarge**
 
@@ -10421,18 +10017,7 @@ Visual control label size for large screens.
 
 **List of possible values**
 
-    1
-    2
-    3
-    4
-    5
-    6
-    7
-    8
-    9
-    10
-    11
-    12
+1 2 3 4 5 6 7 8 9 10 11 12
 
 **LabelSizeMedium**
 
@@ -10452,18 +10037,7 @@ Visual control label size for medium screens.
 
 **List of possible values**
 
-    1
-    2
-    3
-    4
-    5
-    6
-    7
-    8
-    9
-    10
-    11
-    12
+1 2 3 4 5 6 7 8 9 10 11 12
 
 **LabelSizeSmall**
 
@@ -10483,18 +10057,7 @@ Visual control label size for small screens.
 
 **List of possible values**
 
-    1
-    2
-    3
-    4
-    5
-    6
-    7
-    8
-    9
-    10
-    11
-    12
+1 2 3 4 5 6 7 8 9 10 11 12
 
 **Name**
 
@@ -10556,8 +10119,7 @@ false
 
 **List of possible values**
 
-    false
-    true
+false true
 
 **Required**
 
@@ -10949,18 +10511,7 @@ No
 
 **List of possible values**
 
-    1
-    2
-    3
-    4
-    5
-    6
-    7
-    8
-    9
-    10
-    11
-    12
+1 2 3 4 5 6 7 8 9 10 11 12
 
 **ControlSizeLarge**
 
@@ -10978,18 +10529,7 @@ No
 
 **List of possible values**
 
-    1
-    2
-    3
-    4
-    5
-    6
-    7
-    8
-    9
-    10
-    11
-    12
+1 2 3 4 5 6 7 8 9 10 11 12
 
 **ControlSizeMedium**
 
@@ -11007,18 +10547,7 @@ No
 
 **List of possible values**
 
-    1
-    2
-    3
-    4
-    5
-    6
-    7
-    8
-    9
-    10
-    11
-    12
+1 2 3 4 5 6 7 8 9 10 11 12
 
 **ControlSizeSmall**
 
@@ -11036,18 +10565,7 @@ No
 
 **List of possible values**
 
-    1
-    2
-    3
-    4
-    5
-    6
-    7
-    8
-    9
-    10
-    11
-    12
+1 2 3 4 5 6 7 8 9 10 11 12
 
 **DBField**
 
@@ -11230,18 +10748,7 @@ Visual control label size for extra small screens.
 
 **List of possible values**
 
-    1
-    2
-    3
-    4
-    5
-    6
-    7
-    8
-    9
-    10
-    11
-    12
+1 2 3 4 5 6 7 8 9 10 11 12
 
 **LabelSizeLarge**
 
@@ -11261,18 +10768,7 @@ Visual control label size for large screens.
 
 **List of possible values**
 
-    1
-    2
-    3
-    4
-    5
-    6
-    7
-    8
-    9
-    10
-    11
-    12
+1 2 3 4 5 6 7 8 9 10 11 12
 
 **LabelSizeMedium**
 
@@ -11292,18 +10788,7 @@ Visual control label size for medium screens.
 
 **List of possible values**
 
-    1
-    2
-    3
-    4
-    5
-    6
-    7
-    8
-    9
-    10
-    11
-    12
+1 2 3 4 5 6 7 8 9 10 11 12
 
 **LabelSizeSmall**
 
@@ -11323,18 +10808,7 @@ Visual control label size for small screens.
 
 **List of possible values**
 
-    1
-    2
-    3
-    4
-    5
-    6
-    7
-    8
-    9
-    10
-    11
-    12
+1 2 3 4 5 6 7 8 9 10 11 12
 
 **Name**
 
@@ -11392,9 +10866,7 @@ No
 
 **List of possible values**
 
-    auto
-    left
-    right
+auto left right
 
 **PosVertical**
 
@@ -11408,9 +10880,7 @@ No
 
 **List of possible values**
 
-    auto
-    top
-    bottom
+auto top bottom
 
 **ReadOnly**
 
@@ -11428,8 +10898,7 @@ false
 
 **List of possible values**
 
-    false
-    true
+false true
 
 **Required**
 
@@ -11841,9 +11310,7 @@ Content alignment
 
 **List of possible values**
 
-    left
-    center
-    right
+left center right
 
 **Attributes**
 
@@ -11903,18 +11370,7 @@ No
 
 **List of possible values**
 
-    1
-    2
-    3
-    4
-    5
-    6
-    7
-    8
-    9
-    10
-    11
-    12
+1 2 3 4 5 6 7 8 9 10 11 12
 
 **ControlSizeLarge**
 
@@ -11932,18 +11388,7 @@ No
 
 **List of possible values**
 
-    1
-    2
-    3
-    4
-    5
-    6
-    7
-    8
-    9
-    10
-    11
-    12
+1 2 3 4 5 6 7 8 9 10 11 12
 
 **ControlSizeMedium**
 
@@ -11961,18 +11406,7 @@ No
 
 **List of possible values**
 
-    1
-    2
-    3
-    4
-    5
-    6
-    7
-    8
-    9
-    10
-    11
-    12
+1 2 3 4 5 6 7 8 9 10 11 12
 
 **ControlSizeSmall**
 
@@ -11990,18 +11424,7 @@ No
 
 **List of possible values**
 
-    1
-    2
-    3
-    4
-    5
-    6
-    7
-    8
-    9
-    10
-    11
-    12
+1 2 3 4 5 6 7 8 9 10 11 12
 
 **DBField**
 
@@ -12115,29 +11538,9 @@ Standard HTML input type, defaults to text
 
 **List of possible values**
 
-    text
-    password
-    email
-    hidden
-    number
-    button
-    checkbox
-    color
-    date 
-    datetime 
-    datetime-local 
-    file
-    image
-    month 
-    radio
-    range 
-    reset
-    search
-    submit
-    tel
-    time 
-    url
-    week
+text password email hidden number button checkbox color date datetime
+datetime-local file image month radio range reset search submit tel time
+url week
 
 **Icon**
 
@@ -12167,8 +11570,7 @@ content, right means after it. Defaults to left.
 
 **List of possible values**
 
-    left
-    right
+left right
 
 **Label**
 
@@ -12216,18 +11618,7 @@ Visual control label size for extra small screens.
 
 **List of possible values**
 
-    1
-    2
-    3
-    4
-    5
-    6
-    7
-    8
-    9
-    10
-    11
-    12
+1 2 3 4 5 6 7 8 9 10 11 12
 
 **LabelSizeLarge**
 
@@ -12247,18 +11638,7 @@ Visual control label size for large screens.
 
 **List of possible values**
 
-    1
-    2
-    3
-    4
-    5
-    6
-    7
-    8
-    9
-    10
-    11
-    12
+1 2 3 4 5 6 7 8 9 10 11 12
 
 **LabelSizeMedium**
 
@@ -12278,18 +11658,7 @@ Visual control label size for medium screens.
 
 **List of possible values**
 
-    1
-    2
-    3
-    4
-    5
-    6
-    7
-    8
-    9
-    10
-    11
-    12
+1 2 3 4 5 6 7 8 9 10 11 12
 
 **LabelSizeSmall**
 
@@ -12309,18 +11678,7 @@ Visual control label size for small screens.
 
 **List of possible values**
 
-    1
-    2
-    3
-    4
-    5
-    6
-    7
-    8
-    9
-    10
-    11
-    12
+1 2 3 4 5 6 7 8 9 10 11 12
 
 **MaxLength**
 
@@ -12396,8 +11754,7 @@ false
 
 **List of possible values**
 
-    false
-    true
+false true
 
 **Required**
 
@@ -12767,18 +12124,7 @@ No
 
 **List of possible values**
 
-    1
-    2
-    3
-    4
-    5
-    6
-    7
-    8
-    9
-    10
-    11
-    12
+1 2 3 4 5 6 7 8 9 10 11 12
 
 **ControlSizeLarge**
 
@@ -12796,18 +12142,7 @@ No
 
 **List of possible values**
 
-    1
-    2
-    3
-    4
-    5
-    6
-    7
-    8
-    9
-    10
-    11
-    12
+1 2 3 4 5 6 7 8 9 10 11 12
 
 **ControlSizeMedium**
 
@@ -12825,18 +12160,7 @@ No
 
 **List of possible values**
 
-    1
-    2
-    3
-    4
-    5
-    6
-    7
-    8
-    9
-    10
-    11
-    12
+1 2 3 4 5 6 7 8 9 10 11 12
 
 **ControlSizeSmall**
 
@@ -12854,18 +12178,7 @@ No
 
 **List of possible values**
 
-    1
-    2
-    3
-    4
-    5
-    6
-    7
-    8
-    9
-    10
-    11
-    12
+1 2 3 4 5 6 7 8 9 10 11 12
 
 **DBField**
 
@@ -13003,8 +12316,7 @@ content, right means after it. Defaults to left.
 
 **List of possible values**
 
-    left
-    right
+left right
 
 **Label**
 
@@ -13052,18 +12364,7 @@ Visual control label size for extra small screens.
 
 **List of possible values**
 
-    1
-    2
-    3
-    4
-    5
-    6
-    7
-    8
-    9
-    10
-    11
-    12
+1 2 3 4 5 6 7 8 9 10 11 12
 
 **LabelSizeLarge**
 
@@ -13083,18 +12384,7 @@ Visual control label size for large screens.
 
 **List of possible values**
 
-    1
-    2
-    3
-    4
-    5
-    6
-    7
-    8
-    9
-    10
-    11
-    12
+1 2 3 4 5 6 7 8 9 10 11 12
 
 **LabelSizeMedium**
 
@@ -13114,18 +12404,7 @@ Visual control label size for medium screens.
 
 **List of possible values**
 
-    1
-    2
-    3
-    4
-    5
-    6
-    7
-    8
-    9
-    10
-    11
-    12
+1 2 3 4 5 6 7 8 9 10 11 12
 
 **LabelSizeSmall**
 
@@ -13145,18 +12424,7 @@ Visual control label size for small screens.
 
 **List of possible values**
 
-    1
-    2
-    3
-    4
-    5
-    6
-    7
-    8
-    9
-    10
-    11
-    12
+1 2 3 4 5 6 7 8 9 10 11 12
 
 **MaxFiles**
 
@@ -13243,8 +12511,7 @@ false
 
 **List of possible values**
 
-    false
-    true
+false true
 
 **Required**
 
@@ -13651,18 +12918,7 @@ No
 
 **List of possible values**
 
-    1
-    2
-    3
-    4
-    5
-    6
-    7
-    8
-    9
-    10
-    11
-    12
+1 2 3 4 5 6 7 8 9 10 11 12
 
 **ControlSizeLarge**
 
@@ -13680,18 +12936,7 @@ No
 
 **List of possible values**
 
-    1
-    2
-    3
-    4
-    5
-    6
-    7
-    8
-    9
-    10
-    11
-    12
+1 2 3 4 5 6 7 8 9 10 11 12
 
 **ControlSizeMedium**
 
@@ -13709,18 +12954,7 @@ No
 
 **List of possible values**
 
-    1
-    2
-    3
-    4
-    5
-    6
-    7
-    8
-    9
-    10
-    11
-    12
+1 2 3 4 5 6 7 8 9 10 11 12
 
 **ControlSizeSmall**
 
@@ -13738,18 +12972,7 @@ No
 
 **List of possible values**
 
-    1
-    2
-    3
-    4
-    5
-    6
-    7
-    8
-    9
-    10
-    11
-    12
+1 2 3 4 5 6 7 8 9 10 11 12
 
 **DBField**
 
@@ -13866,8 +13089,7 @@ more control over editing the text.
 
 **List of possible values**
 
-    simple
-    advanced
+simple advanced
 
 **Icon**
 
@@ -13897,8 +13119,7 @@ content, right means after it. Defaults to left.
 
 **List of possible values**
 
-    left
-    right
+left right
 
 **Label**
 
@@ -13946,18 +13167,7 @@ Visual control label size for extra small screens.
 
 **List of possible values**
 
-    1
-    2
-    3
-    4
-    5
-    6
-    7
-    8
-    9
-    10
-    11
-    12
+1 2 3 4 5 6 7 8 9 10 11 12
 
 **LabelSizeLarge**
 
@@ -13977,18 +13187,7 @@ Visual control label size for large screens.
 
 **List of possible values**
 
-    1
-    2
-    3
-    4
-    5
-    6
-    7
-    8
-    9
-    10
-    11
-    12
+1 2 3 4 5 6 7 8 9 10 11 12
 
 **LabelSizeMedium**
 
@@ -14008,18 +13207,7 @@ Visual control label size for medium screens.
 
 **List of possible values**
 
-    1
-    2
-    3
-    4
-    5
-    6
-    7
-    8
-    9
-    10
-    11
-    12
+1 2 3 4 5 6 7 8 9 10 11 12
 
 **LabelSizeSmall**
 
@@ -14039,18 +13227,7 @@ Visual control label size for small screens.
 
 **List of possible values**
 
-    1
-    2
-    3
-    4
-    5
-    6
-    7
-    8
-    9
-    10
-    11
-    12
+1 2 3 4 5 6 7 8 9 10 11 12
 
 **Name**
 
@@ -14112,8 +13289,7 @@ false
 
 **List of possible values**
 
-    false
-    true
+false true
 
 **Required**
 
@@ -14453,18 +13629,7 @@ No
 
 **List of possible values**
 
-    1
-    2
-    3
-    4
-    5
-    6
-    7
-    8
-    9
-    10
-    11
-    12
+1 2 3 4 5 6 7 8 9 10 11 12
 
 **ControlSizeLarge**
 
@@ -14482,18 +13647,7 @@ No
 
 **List of possible values**
 
-    1
-    2
-    3
-    4
-    5
-    6
-    7
-    8
-    9
-    10
-    11
-    12
+1 2 3 4 5 6 7 8 9 10 11 12
 
 **ControlSizeMedium**
 
@@ -14511,18 +13665,7 @@ No
 
 **List of possible values**
 
-    1
-    2
-    3
-    4
-    5
-    6
-    7
-    8
-    9
-    10
-    11
-    12
+1 2 3 4 5 6 7 8 9 10 11 12
 
 **ControlSizeSmall**
 
@@ -14540,18 +13683,7 @@ No
 
 **List of possible values**
 
-    1
-    2
-    3
-    4
-    5
-    6
-    7
-    8
-    9
-    10
-    11
-    12
+1 2 3 4 5 6 7 8 9 10 11 12
 
 **DBField**
 
@@ -14697,18 +13829,7 @@ Visual control label size for extra small screens.
 
 **List of possible values**
 
-    1
-    2
-    3
-    4
-    5
-    6
-    7
-    8
-    9
-    10
-    11
-    12
+1 2 3 4 5 6 7 8 9 10 11 12
 
 **LabelSizeLarge**
 
@@ -14728,18 +13849,7 @@ Visual control label size for large screens.
 
 **List of possible values**
 
-    1
-    2
-    3
-    4
-    5
-    6
-    7
-    8
-    9
-    10
-    11
-    12
+1 2 3 4 5 6 7 8 9 10 11 12
 
 **LabelSizeMedium**
 
@@ -14759,18 +13869,7 @@ Visual control label size for medium screens.
 
 **List of possible values**
 
-    1
-    2
-    3
-    4
-    5
-    6
-    7
-    8
-    9
-    10
-    11
-    12
+1 2 3 4 5 6 7 8 9 10 11 12
 
 **LabelSizeSmall**
 
@@ -14790,18 +13889,7 @@ Visual control label size for small screens.
 
 **List of possible values**
 
-    1
-    2
-    3
-    4
-    5
-    6
-    7
-    8
-    9
-    10
-    11
-    12
+1 2 3 4 5 6 7 8 9 10 11 12
 
 **Name**
 
@@ -15278,8 +14366,7 @@ content, right means after it. Defaults to left.
 
 **List of possible values**
 
-    left
-    right
+left right
 
 **Label**
 
@@ -15392,18 +14479,7 @@ Text type eg. headings, paragraph, block quote, etc.
 
 **List of possible values**
 
-    p
-    span
-    h1
-    h2
-    h3
-    h4
-    h5
-    h6
-    blockquote
-    footer
-    var
-    samp
+p span h1 h2 h3 h4 h5 h6 blockquote footer var samp
 
 **Value**
 
@@ -15716,18 +14792,7 @@ No
 
 **List of possible values**
 
-    1
-    2
-    3
-    4
-    5
-    6
-    7
-    8
-    9
-    10
-    11
-    12
+1 2 3 4 5 6 7 8 9 10 11 12
 
 **ControlSizeLarge**
 
@@ -15745,18 +14810,7 @@ No
 
 **List of possible values**
 
-    1
-    2
-    3
-    4
-    5
-    6
-    7
-    8
-    9
-    10
-    11
-    12
+1 2 3 4 5 6 7 8 9 10 11 12
 
 **ControlSizeMedium**
 
@@ -15774,18 +14828,7 @@ No
 
 **List of possible values**
 
-    1
-    2
-    3
-    4
-    5
-    6
-    7
-    8
-    9
-    10
-    11
-    12
+1 2 3 4 5 6 7 8 9 10 11 12
 
 **ControlSizeSmall**
 
@@ -15803,18 +14846,7 @@ No
 
 **List of possible values**
 
-    1
-    2
-    3
-    4
-    5
-    6
-    7
-    8
-    9
-    10
-    11
-    12
+1 2 3 4 5 6 7 8 9 10 11 12
 
 **DBField**
 
@@ -15994,8 +15026,7 @@ content, right means after it. Defaults to left.
 
 **List of possible values**
 
-    left
-    right
+left right
 
 **Label**
 
@@ -16043,18 +15074,7 @@ Visual control label size for extra small screens.
 
 **List of possible values**
 
-    1
-    2
-    3
-    4
-    5
-    6
-    7
-    8
-    9
-    10
-    11
-    12
+1 2 3 4 5 6 7 8 9 10 11 12
 
 **LabelSizeLarge**
 
@@ -16074,18 +15094,7 @@ Visual control label size for large screens.
 
 **List of possible values**
 
-    1
-    2
-    3
-    4
-    5
-    6
-    7
-    8
-    9
-    10
-    11
-    12
+1 2 3 4 5 6 7 8 9 10 11 12
 
 **LabelSizeMedium**
 
@@ -16105,18 +15114,7 @@ Visual control label size for medium screens.
 
 **List of possible values**
 
-    1
-    2
-    3
-    4
-    5
-    6
-    7
-    8
-    9
-    10
-    11
-    12
+1 2 3 4 5 6 7 8 9 10 11 12
 
 **LabelSizeSmall**
 
@@ -16136,18 +15134,7 @@ Visual control label size for small screens.
 
 **List of possible values**
 
-    1
-    2
-    3
-    4
-    5
-    6
-    7
-    8
-    9
-    10
-    11
-    12
+1 2 3 4 5 6 7 8 9 10 11 12
 
 **ListFilter**
 
@@ -16309,8 +15296,7 @@ false
 
 **List of possible values**
 
-    false
-    true
+false true
 
 **Required**
 
@@ -16705,18 +15691,7 @@ No
 
 **List of possible values**
 
-    1
-    2
-    3
-    4
-    5
-    6
-    7
-    8
-    9
-    10
-    11
-    12
+1 2 3 4 5 6 7 8 9 10 11 12
 
 **ControlSizeLarge**
 
@@ -16734,18 +15709,7 @@ No
 
 **List of possible values**
 
-    1
-    2
-    3
-    4
-    5
-    6
-    7
-    8
-    9
-    10
-    11
-    12
+1 2 3 4 5 6 7 8 9 10 11 12
 
 **ControlSizeMedium**
 
@@ -16763,18 +15727,7 @@ No
 
 **List of possible values**
 
-    1
-    2
-    3
-    4
-    5
-    6
-    7
-    8
-    9
-    10
-    11
-    12
+1 2 3 4 5 6 7 8 9 10 11 12
 
 **ControlSizeSmall**
 
@@ -16792,18 +15745,7 @@ No
 
 **List of possible values**
 
-    1
-    2
-    3
-    4
-    5
-    6
-    7
-    8
-    9
-    10
-    11
-    12
+1 2 3 4 5 6 7 8 9 10 11 12
 
 **DBField**
 
@@ -16955,8 +15897,7 @@ content, right means after it. Defaults to left.
 
 **List of possible values**
 
-    left
-    right
+left right
 
 **Label**
 
@@ -17002,18 +15943,7 @@ Visual control label size for extra small screens.
 
 **List of possible values**
 
-    1
-    2
-    3
-    4
-    5
-    6
-    7
-    8
-    9
-    10
-    11
-    12
+1 2 3 4 5 6 7 8 9 10 11 12
 
 **LabelSizeLarge**
 
@@ -17033,18 +15963,7 @@ Visual control label size for large screens.
 
 **List of possible values**
 
-    1
-    2
-    3
-    4
-    5
-    6
-    7
-    8
-    9
-    10
-    11
-    12
+1 2 3 4 5 6 7 8 9 10 11 12
 
 **LabelSizeMedium**
 
@@ -17064,18 +15983,7 @@ Visual control label size for medium screens.
 
 **List of possible values**
 
-    1
-    2
-    3
-    4
-    5
-    6
-    7
-    8
-    9
-    10
-    11
-    12
+1 2 3 4 5 6 7 8 9 10 11 12
 
 **LabelSizeSmall**
 
@@ -17095,18 +16003,7 @@ Visual control label size for small screens.
 
 **List of possible values**
 
-    1
-    2
-    3
-    4
-    5
-    6
-    7
-    8
-    9
-    10
-    11
-    12
+1 2 3 4 5 6 7 8 9 10 11 12
 
 **ListFilter**
 
@@ -17175,8 +16072,7 @@ false
 
 **List of possible values**
 
-    true
-    false
+true false
 
 **ReadOnly**
 
@@ -17194,8 +16090,7 @@ false
 
 **List of possible values**
 
-    false
-    true
+false true
 
 **Required**
 
@@ -17533,18 +16428,7 @@ No
 
 **List of possible values**
 
-    1
-    2
-    3
-    4
-    5
-    6
-    7
-    8
-    9
-    10
-    11
-    12
+1 2 3 4 5 6 7 8 9 10 11 12
 
 **ControlSizeLarge**
 
@@ -17562,18 +16446,7 @@ No
 
 **List of possible values**
 
-    1
-    2
-    3
-    4
-    5
-    6
-    7
-    8
-    9
-    10
-    11
-    12
+1 2 3 4 5 6 7 8 9 10 11 12
 
 **ControlSizeMedium**
 
@@ -17591,18 +16464,7 @@ No
 
 **List of possible values**
 
-    1
-    2
-    3
-    4
-    5
-    6
-    7
-    8
-    9
-    10
-    11
-    12
+1 2 3 4 5 6 7 8 9 10 11 12
 
 **ControlSizeSmall**
 
@@ -17620,18 +16482,7 @@ No
 
 **List of possible values**
 
-    1
-    2
-    3
-    4
-    5
-    6
-    7
-    8
-    9
-    10
-    11
-    12
+1 2 3 4 5 6 7 8 9 10 11 12
 
 **DBField**
 
@@ -17759,8 +16610,7 @@ content, right means after it. Defaults to left.
 
 **List of possible values**
 
-    left
-    right
+left right
 
 **Label**
 
@@ -17806,18 +16656,7 @@ Visual control label size for extra small screens.
 
 **List of possible values**
 
-    1
-    2
-    3
-    4
-    5
-    6
-    7
-    8
-    9
-    10
-    11
-    12
+1 2 3 4 5 6 7 8 9 10 11 12
 
 **LabelSizeLarge**
 
@@ -17835,18 +16674,7 @@ Visual control label size for large screens.
 
 **List of possible values**
 
-    1
-    2
-    3
-    4
-    5
-    6
-    7
-    8
-    9
-    10
-    11
-    12
+1 2 3 4 5 6 7 8 9 10 11 12
 
 **LabelSizeMedium**
 
@@ -17866,18 +16694,7 @@ Visual control label size for medium screens.
 
 **List of possible values**
 
-    1
-    2
-    3
-    4
-    5
-    6
-    7
-    8
-    9
-    10
-    11
-    12
+1 2 3 4 5 6 7 8 9 10 11 12
 
 **LabelSizeSmall**
 
@@ -17895,18 +16712,7 @@ Visual control label size for small screens.
 
 **List of possible values**
 
-    1
-    2
-    3
-    4
-    5
-    6
-    7
-    8
-    9
-    10
-    11
-    12
+1 2 3 4 5 6 7 8 9 10 11 12
 
 **Name**
 
@@ -18283,18 +17089,7 @@ No
 
 **List of possible values**
 
-    1
-    2
-    3
-    4
-    5
-    6
-    7
-    8
-    9
-    10
-    11
-    12
+1 2 3 4 5 6 7 8 9 10 11 12
 
 **ControlSizeLarge**
 
@@ -18312,18 +17107,7 @@ No
 
 **List of possible values**
 
-    1
-    2
-    3
-    4
-    5
-    6
-    7
-    8
-    9
-    10
-    11
-    12
+1 2 3 4 5 6 7 8 9 10 11 12
 
 **ControlSizeMedium**
 
@@ -18341,18 +17125,7 @@ No
 
 **List of possible values**
 
-    1
-    2
-    3
-    4
-    5
-    6
-    7
-    8
-    9
-    10
-    11
-    12
+1 2 3 4 5 6 7 8 9 10 11 12
 
 **ControlSizeSmall**
 
@@ -18370,18 +17143,7 @@ No
 
 **List of possible values**
 
-    1
-    2
-    3
-    4
-    5
-    6
-    7
-    8
-    9
-    10
-    11
-    12
+1 2 3 4 5 6 7 8 9 10 11 12
 
 **DBField**
 
@@ -18509,8 +17271,7 @@ content, right means after it. Defaults to left.
 
 **List of possible values**
 
-    left
-    right
+left right
 
 **Label**
 
@@ -18558,18 +17319,7 @@ Visual control label size for extra small screens.
 
 **List of possible values**
 
-    1
-    2
-    3
-    4
-    5
-    6
-    7
-    8
-    9
-    10
-    11
-    12
+1 2 3 4 5 6 7 8 9 10 11 12
 
 **LabelSizeLarge**
 
@@ -18589,18 +17339,7 @@ Visual control label size for large screens.
 
 **List of possible values**
 
-    1
-    2
-    3
-    4
-    5
-    6
-    7
-    8
-    9
-    10
-    11
-    12
+1 2 3 4 5 6 7 8 9 10 11 12
 
 **LabelSizeMedium**
 
@@ -18620,18 +17359,7 @@ Visual control label size for medium screens.
 
 **List of possible values**
 
-    1
-    2
-    3
-    4
-    5
-    6
-    7
-    8
-    9
-    10
-    11
-    12
+1 2 3 4 5 6 7 8 9 10 11 12
 
 **LabelSizeSmall**
 
@@ -18651,18 +17379,7 @@ Visual control label size for small screens.
 
 **List of possible values**
 
-    1
-    2
-    3
-    4
-    5
-    6
-    7
-    8
-    9
-    10
-    11
-    12
+1 2 3 4 5 6 7 8 9 10 11 12
 
 **MaxLength**
 
@@ -18740,8 +17457,7 @@ false
 
 **List of possible values**
 
-    false
-    true
+false true
 
 **Required**
 
@@ -19379,9 +18095,7 @@ table
 
 **List of possible values**
 
-    table
-    div
-    div-responsive
+table div div-responsive
 
 **HelpText**
 
@@ -19568,9 +18282,7 @@ ExactMatch
 
 **List of possible values**
 
-    ExactMatch
-    LastSmallerOrEqual
-    LastLargerOrEqual
+ExactMatch LastSmallerOrEqual LastLargerOrEqual
 
 **MarkerValue**
 
@@ -19717,8 +18429,7 @@ Yes
 
 **List of possible values**
 
-    DATABASE
-    SESSION
+DATABASE SESSION
 
 **PublishFilterSQL**
 
@@ -19983,8 +18694,7 @@ No
 
 **List of possible values**
 
-    ASC
-    DESC
+ASC DESC
 
 **Style**
 
@@ -20076,8 +18786,7 @@ Default view mode of grid
 
 **List of possible values**
 
-    GRID
-    CHART
+GRID CHART
 
 **Visible**
 
@@ -21325,8 +20034,7 @@ content, right means after it. Defaults to left.
 
 **List of possible values**
 
-    left
-    right
+left right
 
 **Label**
 
@@ -21852,8 +20560,7 @@ content, right means after it. Defaults to left.
 
 **List of possible values**
 
-    left
-    right
+left right
 
 **Label**
 
@@ -22407,9 +21114,7 @@ submenuitem
 
 **List of possible values**
 
-    menu
-    submenu
-    submenuitem
+menu submenu submenuitem
 
 **MiddleClick**
 
@@ -22972,8 +21677,7 @@ false
 
 **List of possible values**
 
-    false
-    true
+false true
 
 **RefreshOnLoad**
 
@@ -23003,7 +21707,7 @@ true
 
 **List of possible values**
 
-    Show or hide fit zoom button on Google Maps
+Show or hide fit zoom button on Google Maps
 
 **ShowLegend**
 
@@ -23121,18 +21825,9 @@ Defines the position of the map zoom control. Defaults to top left.
 
 **List of possible values**
 
-    TOP_CENTER
-    TOP_LEFT
-    TOP_RIGHT
-    LEFT_TOP
-    RIGHT_TOP
-    LEFT_CENTER
-    RIGHT_CENTER
-    LEFT_BOTTOM
-    RIGHT_BOTTOM
-    BOTTOM_CENTER
-    BOTTOM_LEFT
-    BOTTOM_RIGHT
+TOP_CENTER TOP_LEFT TOP_RIGHT LEFT_TOP RIGHT_TOP LEFT_CENTER
+RIGHT_CENTER LEFT_BOTTOM RIGHT_BOTTOM BOTTOM_CENTER BOTTOM_LEFT
+BOTTOM_RIGHT
 
 **ZoomLevel**
 
@@ -23395,6 +22090,21 @@ true
 
 AutoOpen component between construct and render time. Defaults to false.
 
+**AutoOpenAlwaysRequired**
+
+BOOLEAN
+
+No
+
+Yes
+
+Yes
+
+false
+
+In Optimized mode it forces the application to automatically opens the
+component
+
 **CacheID**
 
 STRING
@@ -23440,9 +22150,7 @@ component always reads the cache, never writes.
 
 **List of possible values**
 
-    ReadWrite
-    WriteOnly
-    ReadOnly
+ReadWrite WriteOnly ReadOnly
 
 **CachePartitionedBy**
 
@@ -23497,9 +22205,7 @@ What to do if the SQL stored in cache is different from the actual one
 
 **List of possible values**
 
-    ReadCache
-    DisableCaching
-    RewriteCache
+ReadCache DisableCaching RewriteCache
 
 **CacheUsed**
 
@@ -23541,9 +22247,7 @@ Caching methodology
 
 **List of possible values**
 
-    Disabled
-    Private
-    Shared
+Disabled Private Shared
 
 **DatabaseIndex**
 
@@ -23644,10 +22348,7 @@ Plain text format
 
 **List of possible values**
 
-    KEY=VALUE
-    KEY:VALUE
-    KEY
-    VALUE
+KEY=VALUE KEY:VALUE KEY VALUE
 
 **PlainTextRecordSeparator**
 
@@ -23677,12 +22378,7 @@ generators. JSON and PLAINTEXT are self-explanatory.
 
 **List of possible values**
 
-    HTML
-    JSON
-    JSONDATA
-    PLAINTEXT
-    XML
-    NONE
+HTML JSON JSONDATA PLAINTEXT XML NONE
 
 **XMLNamespace**
 
@@ -23815,9 +22511,9 @@ Description
 
 BOOLEAN
 
-Yes
-
 No
+
+Yes
 
 No
 
@@ -23826,6 +22522,23 @@ false
 [TDataProvider](javascript:jumpToDoc('TDataProvider');)
 
 AutoOpen component between construct and render time. Defaults to false.
+
+**AutoOpenAlwaysRequired**
+
+BOOLEAN
+
+No
+
+Yes
+
+No
+
+false
+
+[TDataProvider](javascript:jumpToDoc('TDataProvider');)
+
+In Optimized mode it forces the application to automatically opens the
+component
 
 **curlDebug**
 
@@ -23936,15 +22649,7 @@ POST
 
 **List of possible values**
 
-    GET
-    HEAD
-    POST
-    PUT
-    DELETE
-    CONNECT
-    OPTIONS
-    TRACE
-    PATCH
+GET HEAD POST PUT DELETE CONNECT OPTIONS TRACE PATCH
 
 **JSONParameters**
 
@@ -24003,10 +22708,7 @@ Plain text format
 
 **List of possible values**
 
-    KEY=VALUE
-    KEY:VALUE
-    KEY
-    VALUE
+KEY=VALUE KEY:VALUE KEY VALUE
 
 **PlainTextRecordSeparator**
 
@@ -24066,12 +22768,7 @@ generators. JSON and PLAINTEXT are self-explanatory.
 
 **List of possible values**
 
-    HTML
-    JSON
-    JSONDATA
-    PLAINTEXT
-    XML
-    NONE
+HTML JSON JSONDATA PLAINTEXT XML NONE
 
 **Result**
 
@@ -24097,8 +22794,7 @@ ARRAY
 
 **List of possible values**
 
-    ARRAY
-    JSON
+ARRAY JSON
 
 **RowCount**
 
@@ -24315,6 +23011,23 @@ true
 
 AutoOpen component between construct and render time. Defaults to false.
 
+**AutoOpenAlwaysRequired**
+
+BOOLEAN
+
+No
+
+Yes
+
+No
+
+true
+
+[TDataProvider](javascript:jumpToDoc('TDataProvider');)
+
+In Optimized mode it forces the application to automatically opens the
+component
+
 **DevNote**
 
 TEXT
@@ -24441,10 +23154,7 @@ Plain text format
 
 **List of possible values**
 
-    KEY=VALUE
-    KEY:VALUE
-    KEY
-    VALUE
+KEY=VALUE KEY:VALUE KEY VALUE
 
 **PlainTextRecordSeparator**
 
@@ -24478,12 +23188,7 @@ generators. JSON and PLAINTEXT are self-explanatory.
 
 **List of possible values**
 
-    HTML
-    JSON
-    JSONDATA
-    PLAINTEXT
-    XML
-    NONE
+HTML JSON JSONDATA PLAINTEXT XML NONE
 
 **XMLNamespace**
 
@@ -24634,6 +23339,23 @@ false
 
 AutoOpen component between construct and render time. Defaults to false.
 
+**AutoOpenAlwaysRequired**
+
+BOOLEAN
+
+No
+
+Yes
+
+Yes
+
+false
+
+[TDataProvider](javascript:jumpToDoc('TDataProvider');)
+
+In Optimized mode it forces the application to automatically opens the
+component
+
 **DataResultField**
 
 STRING
@@ -24735,12 +23457,7 @@ generators. JSON and PLAINTEXT are self-explanatory.
 
 **List of possible values**
 
-    HTML
-    JSON
-    JSONDATA
-    PLAINTEXT
-    XML
-    NONE
+HTML JSON JSONDATA PLAINTEXT XML NONE
 
 ### TJSONDataProvider events
 
@@ -24867,6 +23584,23 @@ true
 
 AutoOpen component between construct and render time. Defaults to false.
 
+**AutoOpenAlwaysRequired**
+
+BOOLEAN
+
+No
+
+Yes
+
+No
+
+false
+
+[TDataProvider](javascript:jumpToDoc('TDataProvider');)
+
+In Optimized mode it forces the application to automatically opens the
+component
+
 **CacheID**
 
 STRING
@@ -24918,9 +23652,7 @@ component always reads the cache, never writes.
 
 **List of possible values**
 
-    ReadWrite
-    WriteOnly
-    ReadOnly
+ReadWrite WriteOnly ReadOnly
 
 **CachePartitionedBy**
 
@@ -24985,9 +23717,7 @@ What to do if the SQL stored in cache is different from the actual one
 
 **List of possible values**
 
-    ReadCache
-    DisableCaching
-    RewriteCache
+ReadCache DisableCaching RewriteCache
 
 **CacheUsed**
 
@@ -25035,9 +23765,7 @@ Caching methodology
 
 **List of possible values**
 
-    Disabled
-    Private
-    Shared
+Disabled Private Shared
 
 **CountTotalRows**
 
@@ -25270,10 +23998,7 @@ Plain text format
 
 **List of possible values**
 
-    KEY=VALUE
-    KEY:VALUE
-    KEY
-    VALUE
+KEY=VALUE KEY:VALUE KEY VALUE
 
 **PlainTextHeader**
 
@@ -25357,12 +24082,7 @@ generators. JSON and PLAINTEXT are self-explanatory.
 
 **List of possible values**
 
-    HTML
-    JSON
-    JSONDATA
-    PLAINTEXT
-    XML
-    NONE
+HTML JSON JSONDATA PLAINTEXT XML NONE
 
 **Result**
 
@@ -25388,8 +24108,7 @@ ARRAY
 
 **List of possible values**
 
-    ARRAY
-    JSON
+ARRAY JSON
 
 **RowCount**
 
@@ -25616,13 +24335,30 @@ No
 
 Yes
 
-Yes
+No
 
 true
 
 [TDataProvider](javascript:jumpToDoc('TDataProvider');)
 
 AutoOpen component between construct and render time. Defaults to false.
+
+**AutoOpenAlwaysRequired**
+
+BOOLEAN
+
+No
+
+Yes
+
+No
+
+false
+
+[TDataProvider](javascript:jumpToDoc('TDataProvider');)
+
+In Optimized mode it forces the application to automatically opens the
+component
 
 **CacheID**
 
@@ -25675,9 +24411,7 @@ component always reads the cache, never writes.
 
 **List of possible values**
 
-    ReadWrite
-    WriteOnly
-    ReadOnly
+ReadWrite WriteOnly ReadOnly
 
 **CacheRefresh**
 
@@ -25711,9 +24445,7 @@ What to do if the SQL stored in cache is different from the actual one
 
 **List of possible values**
 
-    ReadCache
-    DisableCaching
-    RewriteCache
+ReadCache DisableCaching RewriteCache
 
 **CacheUsed**
 
@@ -25761,9 +24493,7 @@ Caching methodology
 
 **List of possible values**
 
-    Disabled
-    Private
-    Shared
+Disabled Private Shared
 
 **DataProxy**
 
@@ -25857,12 +24587,7 @@ generators. JSON and PLAINTEXT are self-explanatory.
 
 **List of possible values**
 
-    HTML
-    JSON
-    JSONDATA
-    PLAINTEXT
-    XML
-    NONE
+HTML JSON JSONDATA PLAINTEXT XML NONE
 
 ### TQueryGroup events
 
@@ -25976,6 +24701,23 @@ false
 [TDataProvider](javascript:jumpToDoc('TDataProvider');)
 
 AutoOpen component between construct and render time. Defaults to false.
+
+**AutoOpenAlwaysRequired**
+
+BOOLEAN
+
+No
+
+Yes
+
+No
+
+false
+
+[TDataProvider](javascript:jumpToDoc('TDataProvider');)
+
+In Optimized mode it forces the application to automatically opens the
+component
 
 **CallbackParameter**
 
@@ -26186,11 +24928,7 @@ NONE
 
 **List of possible values**
 
-    NONE
-    UPPERCASE
-    LOWERCASE
-    CAMELCASE
-    UNCAMELCASE
+NONE UPPERCASE LOWERCASE CAMELCASE UNCAMELCASE
 
 **ParameterPrefix**
 
@@ -26226,10 +24964,7 @@ Plain text format
 
 **List of possible values**
 
-    KEY=VALUE
-    KEY:VALUE
-    KEY
-    VALUE
+KEY=VALUE KEY:VALUE KEY VALUE
 
 **Procedure**
 
@@ -26263,12 +24998,7 @@ generators. JSON and PLAINTEXT are self-explanatory.
 
 **List of possible values**
 
-    HTML
-    JSON
-    JSONDATA
-    PLAINTEXT
-    XML
-    NONE
+HTML JSON JSONDATA PLAINTEXT XML NONE
 
 **Result**
 
@@ -26314,8 +25044,7 @@ JSON
 
 **List of possible values**
 
-    ARRAY
-    JSON
+ARRAY JSON
 
 **RollbackOnError**
 
@@ -26539,6 +25268,23 @@ false
 
 AutoOpen component between construct and render time. Defaults to false.
 
+**AutoOpenAlwaysRequired**
+
+BOOLEAN
+
+No
+
+Yes
+
+No
+
+false
+
+[TDataProvider](javascript:jumpToDoc('TDataProvider');)
+
+In Optimized mode it forces the application to automatically opens the
+component
+
 **CallbackParameter**
 
 [TDBParam](javascript:jumpToDoc('TDBParam');)
@@ -26742,15 +25488,7 @@ POST
 
 **List of possible values**
 
-    GET
-    HEAD
-    POST
-    PUT
-    DELETE
-    CONNECT
-    OPTIONS
-    TRACE
-    PATCH
+GET HEAD POST PUT DELETE CONNECT OPTIONS TRACE PATCH
 
 **HTTPResponseType**
 
@@ -26851,11 +25589,7 @@ NONE
 
 **List of possible values**
 
-    NONE
-    UPPERCASE
-    LOWERCASE
-    CAMELCASE
-    UNCAMELCASE
+NONE UPPERCASE LOWERCASE CAMELCASE UNCAMELCASE
 
 **ParameterPrefix**
 
@@ -26889,10 +25623,7 @@ Plain text format
 
 **List of possible values**
 
-    KEY=VALUE
-    KEY:VALUE
-    KEY
-    VALUE
+KEY=VALUE KEY:VALUE KEY VALUE
 
 **ResponseType**
 
@@ -26914,12 +25645,7 @@ generators. JSON and PLAINTEXT are self-explanatory.
 
 **List of possible values**
 
-    HTML
-    JSON
-    JSONDATA
-    PLAINTEXT
-    XML
-    NONE
+HTML JSON JSONDATA PLAINTEXT XML NONE
 
 **Result**
 
@@ -26971,8 +25697,7 @@ No
 
 **List of possible values**
 
-    ARRAY
-    JSON
+ARRAY JSON
 
 **SendAuthHeader**
 
@@ -27395,17 +26120,8 @@ Data type of the field
 
 **List of possible values**
 
-    integer
-    string
-    text
-    bool
-    date
-    datetime
-    datetimehm
-    timestamp
-    time
-    float
-    JSON
+integer string text bool date datetime datetimehm timestamp time float
+JSON
 
 **DateFormatParameter**
 
@@ -27425,10 +26141,7 @@ format is multilingual compatible. Lang parameter will be concatenated.
 
 **List of possible values**
 
-    date
-    datetime
-    datetimehm
-    dateUniversal
+date datetime datetimehm dateUniversal
 
 **DBValue**
 
@@ -27560,68 +26273,19 @@ Yes
 
 **List of possible values**
 
-    OCI8.BFILE
-    OCI8.BLOB
-    OCI8.CFILE
-    OCI8.CHAR
-    OCI8.CLOB
-    OCI8.DATE
-    OCI8.DATETIME
-    OCI8.MLSLABEL
-    OCI8.NAMEDCOLLECTION
-    OCI8.NCHAR
-    OCI8.NCLOB
-    OCI8.NUMBER
-    OCI8.OBJECT
-    OCI8.OPAQUE
-    OCI8.RAW
-    OCI8.REF
-    OCI8.TABLE
-    OCI8.TIMESTAMP
-    OCI8.TIMESTAMP_DS
-    OCI8.TIMESTAMP_LTZ
-    OCI8.TIMESTAMP_TZ
-    OCI8.TIMESTAMP_YM
-    OCI8.VARCHAR
-    OCI8.VARCHAR2
-    OCI8.VARRAY
-    PGSQL.ANYARRAY
-    PGSQL.BOOL
-    PGSQL.BYTEA
-    PGSQL.CHAR
-    PGSQL.DATE
-    PGSQL.FLOAT4
-    PGSQL.FLOAT8
-    PGSQL.INET
-    PGSQL.INT2
-    PGSQL.INT2VECTOR
-    PGSQL.INT4
-    PGSQL.INT8
-    PGSQL.INTERVAL
-    PGSQL.NAME
-    PGSQL.NUMERIC
-    PGSQL.OID
-    PGSQL.OIDVECTOR
-    PGSQL.PG_DEPENDENCIES
-    PGSQL.PG_LSN
-    PGSQL.PG_MCV_LIST
-    PGSQL.PG_NDISTINCT
-    PGSQL.PG_NODE_TREE
-    PGSQL.REGPROC
-    PGSQL.REGTYPE
-    PGSQL.TEXT
-    PGSQL.TIMESTAMP
-    PGSQL.TIMESTAMPTZ
-    PGSQL.VARCHAR
-    PGSQL.XID
-    JSON.STRING
-    JSON.INTEGER
-    JSON.NUMBER
-    JSON.BOOL
-    JSON.TIMESTAMP
-    JSON.DATE
-    JSON.TIME
-    JSON.DATE-TIME
+OCI8.BFILE OCI8.BLOB OCI8.CFILE OCI8.CHAR OCI8.CLOB OCI8.DATE
+OCI8.DATETIME OCI8.MLSLABEL OCI8.NAMEDCOLLECTION OCI8.NCHAR OCI8.NCLOB
+OCI8.NUMBER OCI8.OBJECT OCI8.OPAQUE OCI8.RAW OCI8.REF OCI8.TABLE
+OCI8.TIMESTAMP OCI8.TIMESTAMP_DS OCI8.TIMESTAMP_LTZ OCI8.TIMESTAMP_TZ
+OCI8.TIMESTAMP_YM OCI8.VARCHAR OCI8.VARCHAR2 OCI8.VARRAY PGSQL.ANYARRAY
+PGSQL.BOOL PGSQL.BYTEA PGSQL.CHAR PGSQL.DATE PGSQL.FLOAT4 PGSQL.FLOAT8
+PGSQL.INET PGSQL.INT2 PGSQL.INT2VECTOR PGSQL.INT4 PGSQL.INT8
+PGSQL.INTERVAL PGSQL.NAME PGSQL.NUMERIC PGSQL.OID PGSQL.OIDVECTOR
+PGSQL.PG_DEPENDENCIES PGSQL.PG_LSN PGSQL.PG_MCV_LIST PGSQL.PG_NDISTINCT
+PGSQL.PG_NODE_TREE PGSQL.REGPROC PGSQL.REGTYPE PGSQL.TEXT
+PGSQL.TIMESTAMP PGSQL.TIMESTAMPTZ PGSQL.VARCHAR PGSQL.XID JSON.STRING
+JSON.INTEGER JSON.NUMBER JSON.BOOL JSON.TIMESTAMP JSON.DATE JSON.TIME
+JSON.DATE-TIME
 
 **NullResultParameter**
 
@@ -27784,17 +26448,8 @@ Data type of the field
 
 **List of possible values**
 
-    integer
-    string
-    text
-    bool
-    date
-    datetime
-    datetimehm
-    timestamp
-    time
-    float
-    JSON
+integer string text bool date datetime datetimehm timestamp time float
+JSON
 
 **DateFormatParameter**
 
@@ -27816,10 +26471,7 @@ format is multilingual compatible. Lang parameter will be concatenated.
 
 **List of possible values**
 
-    date
-    datetime
-    datetimehm
-    dateUniversal
+date datetime datetimehm dateUniversal
 
 **DBValue**
 
@@ -28115,17 +26767,8 @@ Data type of the field
 
 **List of possible values**
 
-    integer
-    string
-    text
-    bool
-    date
-    datetime
-    datetimehm
-    timestamp
-    time
-    float
-    JSON
+integer string text bool date datetime datetimehm timestamp time float
+JSON
 
 **DateFormatParameter**
 
@@ -28145,10 +26788,7 @@ format is multilingual compatible. Lang parameter will be concatenated.
 
 **List of possible values**
 
-    date
-    datetime
-    datetimehm
-    dateUniversal
+date datetime datetimehm dateUniversal
 
 **DefaultValue**
 
@@ -28201,16 +26841,7 @@ Yes
 
 **List of possible values**
 
-    text
-    boolean
-    integer
-    decimal
-    float
-    date
-    time
-    timestamp
-    clob
-    blob
+text boolean integer decimal float date time timestamp clob blob
 
 **Name**
 
@@ -28253,68 +26884,19 @@ Yes
 
 **List of possible values**
 
-    OCI8.BFILE
-    OCI8.BLOB
-    OCI8.CFILE
-    OCI8.CHAR
-    OCI8.CLOB
-    OCI8.DATE
-    OCI8.DATETIME
-    OCI8.MLSLABEL
-    OCI8.NAMEDCOLLECTION
-    OCI8.NCHAR
-    OCI8.NCLOB
-    OCI8.NUMBER
-    OCI8.OBJECT
-    OCI8.OPAQUE
-    OCI8.RAW
-    OCI8.REF
-    OCI8.TABLE
-    OCI8.TIMESTAMP
-    OCI8.TIMESTAMP_DS
-    OCI8.TIMESTAMP_LTZ
-    OCI8.TIMESTAMP_TZ
-    OCI8.TIMESTAMP_YM
-    OCI8.VARCHAR
-    OCI8.VARCHAR2
-    OCI8.VARRAY
-    PGSQL.ANYARRAY
-    PGSQL.BOOL
-    PGSQL.BYTEA
-    PGSQL.CHAR
-    PGSQL.DATE
-    PGSQL.FLOAT4
-    PGSQL.FLOAT8
-    PGSQL.INET
-    PGSQL.INT2
-    PGSQL.INT2VECTOR
-    PGSQL.INT4
-    PGSQL.INT8
-    PGSQL.INTERVAL
-    PGSQL.NAME
-    PGSQL.NUMERIC
-    PGSQL.OID
-    PGSQL.OIDVECTOR
-    PGSQL.PG_DEPENDENCIES
-    PGSQL.PG_LSN
-    PGSQL.PG_MCV_LIST
-    PGSQL.PG_NDISTINCT
-    PGSQL.PG_NODE_TREE
-    PGSQL.REGPROC
-    PGSQL.REGTYPE
-    PGSQL.TEXT
-    PGSQL.TIMESTAMP
-    PGSQL.TIMESTAMPTZ
-    PGSQL.VARCHAR
-    PGSQL.XID
-    JSON.STRING
-    JSON.INTEGER
-    JSON.NUMBER
-    JSON.BOOL
-    JSON.TIMESTAMP
-    JSON.DATE
-    JSON.TIME
-    JSON.DATE-TIME
+OCI8.BFILE OCI8.BLOB OCI8.CFILE OCI8.CHAR OCI8.CLOB OCI8.DATE
+OCI8.DATETIME OCI8.MLSLABEL OCI8.NAMEDCOLLECTION OCI8.NCHAR OCI8.NCLOB
+OCI8.NUMBER OCI8.OBJECT OCI8.OPAQUE OCI8.RAW OCI8.REF OCI8.TABLE
+OCI8.TIMESTAMP OCI8.TIMESTAMP_DS OCI8.TIMESTAMP_LTZ OCI8.TIMESTAMP_TZ
+OCI8.TIMESTAMP_YM OCI8.VARCHAR OCI8.VARCHAR2 OCI8.VARRAY PGSQL.ANYARRAY
+PGSQL.BOOL PGSQL.BYTEA PGSQL.CHAR PGSQL.DATE PGSQL.FLOAT4 PGSQL.FLOAT8
+PGSQL.INET PGSQL.INT2 PGSQL.INT2VECTOR PGSQL.INT4 PGSQL.INT8
+PGSQL.INTERVAL PGSQL.NAME PGSQL.NUMERIC PGSQL.OID PGSQL.OIDVECTOR
+PGSQL.PG_DEPENDENCIES PGSQL.PG_LSN PGSQL.PG_MCV_LIST PGSQL.PG_NDISTINCT
+PGSQL.PG_NODE_TREE PGSQL.REGPROC PGSQL.REGTYPE PGSQL.TEXT
+PGSQL.TIMESTAMP PGSQL.TIMESTAMPTZ PGSQL.VARCHAR PGSQL.XID JSON.STRING
+JSON.INTEGER JSON.NUMBER JSON.BOOL JSON.TIMESTAMP JSON.DATE JSON.TIME
+JSON.DATE-TIME
 
 **ParameterMapping**
 
@@ -28343,9 +26925,7 @@ IN
 
 **List of possible values**
 
-    IN
-    OUT
-    INOUT
+IN OUT INOUT
 
 **ParameterName**
 
@@ -29199,9 +27779,7 @@ Content alignment
 
 **List of possible values**
 
-    left
-    center
-    right
+left center right
 
 **ChartOptions**
 
@@ -29231,12 +27809,7 @@ Chart available based on grid values
 
 **List of possible values**
 
-    bar
-    line
-    radar
-    polarArea
-    pie
-    doughnut
+bar line radar polarArea pie doughnut
 
 **Class**
 
@@ -29457,8 +28030,7 @@ No
 
 **List of possible values**
 
-    ASC
-    DESC
+ASC DESC
 
 **SortingDirection**
 
@@ -29474,8 +28046,7 @@ ASC
 
 **List of possible values**
 
-    ASC
-    DESC
+ASC DESC
 
 **Style**
 
@@ -29672,17 +28243,8 @@ Data type of the field
 
 **List of possible values**
 
-    integer
-    string
-    text
-    bool
-    date
-    datetime
-    datetimehm
-    timestamp
-    time
-    float
-    JSON
+integer string text bool date datetime datetimehm timestamp time float
+JSON
 
 **DBField**
 
@@ -29711,16 +28273,7 @@ Default relation
 
 **List of possible values**
 
-    eq
-    neq
-    gt
-    gteq
-    lt
-    lteq
-    NULL
-    NOT NULL
-    in
-    notin
+eq neq gt gteq lt lteq NULL NOT NULL in notin
 
 **DevNote**
 
@@ -30558,9 +29111,7 @@ Placement
 
 **List of possible values**
 
-    head
-    inplace
-    foot
+head inplace foot
 
 **URL**
 
@@ -31017,9 +29568,7 @@ Yes
 
 **List of possible values**
 
-    Markers
-    Polylines
-    Polygons
+Markers Polylines Polygons
 
 **Master**
 
@@ -31100,7 +29649,7 @@ false
 
 **List of possible values**
 
-    TMapSource loading status
+TMapSource loading status
 
 **StrokeColor**
 
@@ -32610,17 +31159,8 @@ Data type of the field
 
 **List of possible values**
 
-    integer
-    string
-    text
-    bool
-    date
-    datetime
-    datetimehm
-    timestamp
-    time
-    float
-    JSON
+integer string text bool date datetime datetimehm timestamp time float
+JSON
 
 **DateFormatParameter**
 
@@ -32640,10 +31180,7 @@ format is multilingual compatible. Lang parameter will be concatenated.
 
 **List of possible values**
 
-    date
-    datetime
-    datetimehm
-    dateUniversal
+date datetime datetimehm dateUniversal
 
 **DefaultValue**
 
@@ -32751,68 +31288,19 @@ Yes
 
 **List of possible values**
 
-    OCI8.BFILE
-    OCI8.BLOB
-    OCI8.CFILE
-    OCI8.CHAR
-    OCI8.CLOB
-    OCI8.DATE
-    OCI8.DATETIME
-    OCI8.MLSLABEL
-    OCI8.NAMEDCOLLECTION
-    OCI8.NCHAR
-    OCI8.NCLOB
-    OCI8.NUMBER
-    OCI8.OBJECT
-    OCI8.OPAQUE
-    OCI8.RAW
-    OCI8.REF
-    OCI8.TABLE
-    OCI8.TIMESTAMP
-    OCI8.TIMESTAMP_DS
-    OCI8.TIMESTAMP_LTZ
-    OCI8.TIMESTAMP_TZ
-    OCI8.TIMESTAMP_YM
-    OCI8.VARCHAR
-    OCI8.VARCHAR2
-    OCI8.VARRAY
-    PGSQL.ANYARRAY
-    PGSQL.BOOL
-    PGSQL.BYTEA
-    PGSQL.CHAR
-    PGSQL.DATE
-    PGSQL.FLOAT4
-    PGSQL.FLOAT8
-    PGSQL.INET
-    PGSQL.INT2
-    PGSQL.INT2VECTOR
-    PGSQL.INT4
-    PGSQL.INT8
-    PGSQL.INTERVAL
-    PGSQL.NAME
-    PGSQL.NUMERIC
-    PGSQL.OID
-    PGSQL.OIDVECTOR
-    PGSQL.PG_DEPENDENCIES
-    PGSQL.PG_LSN
-    PGSQL.PG_MCV_LIST
-    PGSQL.PG_NDISTINCT
-    PGSQL.PG_NODE_TREE
-    PGSQL.REGPROC
-    PGSQL.REGTYPE
-    PGSQL.TEXT
-    PGSQL.TIMESTAMP
-    PGSQL.TIMESTAMPTZ
-    PGSQL.VARCHAR
-    PGSQL.XID
-    JSON.STRING
-    JSON.INTEGER
-    JSON.NUMBER
-    JSON.BOOL
-    JSON.TIMESTAMP
-    JSON.DATE
-    JSON.TIME
-    JSON.DATE-TIME
+OCI8.BFILE OCI8.BLOB OCI8.CFILE OCI8.CHAR OCI8.CLOB OCI8.DATE
+OCI8.DATETIME OCI8.MLSLABEL OCI8.NAMEDCOLLECTION OCI8.NCHAR OCI8.NCLOB
+OCI8.NUMBER OCI8.OBJECT OCI8.OPAQUE OCI8.RAW OCI8.REF OCI8.TABLE
+OCI8.TIMESTAMP OCI8.TIMESTAMP_DS OCI8.TIMESTAMP_LTZ OCI8.TIMESTAMP_TZ
+OCI8.TIMESTAMP_YM OCI8.VARCHAR OCI8.VARCHAR2 OCI8.VARRAY PGSQL.ANYARRAY
+PGSQL.BOOL PGSQL.BYTEA PGSQL.CHAR PGSQL.DATE PGSQL.FLOAT4 PGSQL.FLOAT8
+PGSQL.INET PGSQL.INT2 PGSQL.INT2VECTOR PGSQL.INT4 PGSQL.INT8
+PGSQL.INTERVAL PGSQL.NAME PGSQL.NUMERIC PGSQL.OID PGSQL.OIDVECTOR
+PGSQL.PG_DEPENDENCIES PGSQL.PG_LSN PGSQL.PG_MCV_LIST PGSQL.PG_NDISTINCT
+PGSQL.PG_NODE_TREE PGSQL.REGPROC PGSQL.REGTYPE PGSQL.TEXT
+PGSQL.TIMESTAMP PGSQL.TIMESTAMPTZ PGSQL.VARCHAR PGSQL.XID JSON.STRING
+JSON.INTEGER JSON.NUMBER JSON.BOOL JSON.TIMESTAMP JSON.DATE JSON.TIME
+JSON.DATE-TIME
 
 **ParameterName**
 
@@ -32842,8 +31330,7 @@ has default value.
 
 **List of possible values**
 
-    false
-    true
+false true
 
 **Relation**
 
@@ -33052,10 +31539,7 @@ Yes
 
 **List of possible values**
 
-    AND
-    OR
-    AND NOT
-    OR NOT
+AND OR AND NOT OR NOT
 
 **Name**
 
@@ -33349,8 +31833,7 @@ Type of list of function codes in header
 
 **List of possible values**
 
-    JSON
-    CSV
+JSON CSV
 
 **InitSessionProvider**
 
@@ -34066,8 +32549,7 @@ msec
 
 **List of possible values**
 
-    interval
-    timeout
+interval timeout
 
 **WaitOnInactiveTab**
 
