@@ -1488,7 +1488,7 @@
       }
       if ($this->getProperty('ViewMode', 'GRID') === 'GRID') {
         $listSource->setProperty('QueryLimit', $this->getProperty('RowsPerPage', '0'));
-        $listSource->setProperty('QueryOffset', (((integer)$this->getProperty('RowsPerPage', '0')) * (((integer)$this->getProperty('ActivePage', '1')) - 1)));
+        $listSource->setProperty('QueryOffset', (((int)$this->getProperty('RowsPerPage', '0')) * (((int)$this->getProperty('ActivePage', '1')) - 1)));
       }
       $listSource->setProperty('CountTotalRows', 'true');
       
@@ -1523,7 +1523,7 @@
 
       $this->setProperty('RowCount', $listSource->getProperty('RowCount', '0'));
       $this->setProperty('TotalRowCount',
-        (integer)$this->getProperty('RowsPerPage', '0') > 0
+        (int)$this->getProperty('RowsPerPage', '0') > 0
           ? $listSource->getProperty('TotalRowCount', '0')
           : $listSource->getProperty('RowCount', '0'));
       
@@ -1757,7 +1757,7 @@
         
         $pageItems = '';
         
-        if ((integer)$this->getProperty('RowsPerPage', '0') > 0 /* and $pageCount>1 */) {
+        if ((int)$this->getProperty('RowsPerPage', '0') > 0 /* and $pageCount>1 */) {
           if (max(min($activePage - 5, $pageCount - 10), 1) > 1) {
             $pageItems .= Eisodos::$templateEngine->getTemplate('tholos/' . $this->_componentType . '.pagination.item',
               array('pagenum' => max(min($activePage - 5, $pageCount - 10), 1) - 1,

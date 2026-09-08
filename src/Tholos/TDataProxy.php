@@ -111,12 +111,13 @@
         Tholos::$logger->trace('Proxy parameters: ' . print_r($data, true), $this);
         
         $result = file_get_contents($url, false, $context);
+        $responseHeaders = http_get_last_response_headers() ?? [];
         if ($result === false) {
           throw new RuntimeException('False result');
         }
         
         Tholos::$logger->trace($result);
-        $header = $this->parseHeaders($http_response_header);
+        $header = $this->parseHeaders($responseHeaders);
         Tholos::$logger->trace(print_r($header, true), $this);
         
         if (array_key_exists('Location', $header)) {

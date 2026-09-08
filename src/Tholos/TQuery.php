@@ -148,7 +148,7 @@
           
           if ($this->getProperty('Caching', 'Disabled') === 'Disabled') {
             $DBSyntax = Eisodos::$dbConnectors->connector($this->getProperty('DatabaseIndex'))->DBSyntax();
-            if ((integer)$this->getProperty('QueryOffset', '0') !== 0) {
+            if ((int)$this->getProperty('QueryOffset', '0') !== 0) {
               if ($DBSyntax === 'oci8') {
                 $sql .= "\n" .
                   ' OFFSET ' . $this->getProperty('QueryOffset', '0') . ' ROWS ';
@@ -160,7 +160,7 @@
               }
             }
             
-            if ((integer)$this->getProperty('QueryLimit', '0') !== 0) {
+            if ((int)$this->getProperty('QueryLimit', '0') !== 0) {
               if ($DBSyntax === 'oci8') {
                 $sql .= "\n" .
                   ' FETCH FIRST ' . $this->getProperty('QueryLimit', '0') . ' ROWS ONLY ';
@@ -382,11 +382,11 @@
           
           if ($this->getProperty('Caching', 'Disabled') !== 'Disabled') {
             $this->setProperty('TotalRowCount', count($back));
-            if ((integer)$this->getProperty('QueryOffset', '0') !== 0) {
-              $back = array_slice($back, (integer)$this->getProperty('QueryOffset', '0'));
+            if ((int)$this->getProperty('QueryOffset', '0') !== 0) {
+              $back = array_slice($back, (int)$this->getProperty('QueryOffset', '0'));
             }
-            if ((integer)$this->getProperty('QueryLimit', '0') !== 0) {
-              $back = array_slice($back, 0, (integer)$this->getProperty('QueryLimit', '0'));
+            if ((int)$this->getProperty('QueryLimit', '0') !== 0) {
+              $back = array_slice($back, 0, (int)$this->getProperty('QueryLimit', '0'));
             }
           } else if ($this->getProperty('CountTotalRows', 'false') === 'true' &&
             $this->getProperty('TotalRowCountField', '') !== '') {

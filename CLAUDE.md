@@ -11,7 +11,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 Tholos is a PHP GUI framework built on top of the **Eisodos** framework (`offsite-solutions/eisodos`). It provides a component-based architecture for building server-rendered HTML applications with database-driven component definitions.
 
 - **Package**: `offsite-solutions/tholos` (Composer library)
-- **PHP**: >= 8.4
+- **PHP**: >= 8.4 (tested on 8.5)
 - **Autoloading**: PSR-0 under `src/Tholos/`
 - **Namespace**: `Tholos\`
 

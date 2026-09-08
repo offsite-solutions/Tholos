@@ -119,7 +119,6 @@
           $httpResponse = curl_exec($curl);
           $httpCode = curl_getinfo($curl, CURLINFO_HTTP_CODE);
           $httpError = curl_error($curl);
-          curl_close($curl);
           
           if ($this->getProperty('curlVerbose') == 'true') {
             rewind($streamVerboseHandle);

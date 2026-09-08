@@ -180,7 +180,7 @@
      *
      * @var array[] $components = {
      *  'name'        => (string) Name of the component
-     *  'parent_id'   => (integer) Parent component's ID
+     *  'parent_id'   => (int) Parent component's ID
      *  'class_name'  => (string) Class name
      *  'object'      => (TComponent) Object itself
      * }

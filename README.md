@@ -6,7 +6,7 @@ Applications are designed visually using **TholosBuilder** (a companion web app)
 
 ## Requirements
 
-- PHP >= 8.4
+- PHP >= 8.4 (tested on 8.5)
 - Eisodos framework (`offsite-solutions/eisodos`)
 - Database: Oracle or PostgreSQL (via Eisodos connectors)
 - Redis (optional, for caching)

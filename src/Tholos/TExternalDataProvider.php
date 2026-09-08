@@ -123,13 +123,13 @@
         }
         $JSONParameters['orderBy'] = $orderBy_;
         
-        if ((integer)$this->getProperty('QueryOffset', '0') != 0) {
+        if ((int)$this->getProperty('QueryOffset', '0') != 0) {
           $JSONParameters['offset'] = $this->getProperty('QueryOffset', '0');
         } else {
           $JSONParameters['offset'] = NULL;
         }
         
-        if ((integer)$this->getProperty('QueryLimit', '0') != 0) {
+        if ((int)$this->getProperty('QueryLimit', '0') != 0) {
           $JSONParameters['limit'] = $this->getProperty('QueryLimit', '0');
         } else {
           $JSONParameters['limit'] = NULL;
@@ -245,7 +245,6 @@
           $httpResponse = curl_exec($curl);
           $httpCode = curl_getinfo($curl, CURLINFO_HTTP_CODE);
           $httpError = curl_error($curl);
-          curl_close($curl);
           
           if ($this->getProperty('curlVerbose') == 'true') {
             rewind($streamVerboseHandle);
