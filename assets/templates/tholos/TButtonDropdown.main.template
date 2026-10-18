@@ -6,6 +6,7 @@ $templateabs_tholos__TComponent_properties
     $templateabs_tholos__TComponent_basedata
     type="button"
     data-bs-toggle="dropdown"
+    data-bs-popper-config='{"strategy":"fixed"}'
     aria-expanded="false"
     class="btn dropdown-toggle
          [%_function_name=Tholos\TholosCallback::_eqs;param=prop_bootstrapsize;value=;true=</>;false=btn-$prop_bootstrapsize%]

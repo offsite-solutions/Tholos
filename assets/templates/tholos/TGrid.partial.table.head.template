@@ -1,4 +1,11 @@
 <div class="card card-px-0 mb-3"><div class="card-body p-1">
+<%FUNC%
+_function_name=Tholos\TholosCallback::_eqs
+param=prop_scrollonlywhenfocused
+value=true
+true=[%_function_name=Tholos\TholosCallback::_eqs;param=prop_scrollabley;value=true;true=<span class="TGrid-scroll-focus-icon"><i class="fa-regular fa-bullseye-pointer"></i></span>;false=%]
+false=
+%FUNC%>
 <div id="data_$prop_id"
   class="
 <%FUNC%
@@ -16,6 +23,7 @@ false=TGrid-not-transposed TGrid-not-scrollable [%_function_name=Tholos\TholosCa
 %FUNC%>
 <<
 %FUNC%>
+    [%_function_name=Tholos\TholosCallback::_eqs;param=prop_scrollonlywhenfocused;value=true;true=TGrid-scroll-on-focus;false=%]
     $prop_DataContainerClass">
 <table class="
     table

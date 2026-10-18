@@ -724,3 +724,14 @@ $(document).ready(function () {
     $(this).height($(this).contents().find("body").height());
   });
 });
+
+// ScrollOnlyWhenFocused: pointerdown activates the grid's own scrolling, leaving or clicking elsewhere releases it
+document.addEventListener('pointerdown', function (e) {
+  let grid = $(e.target).closest('div.TGrid-scroll-on-focus');
+  $('div.TGrid-scroll-active').not(grid).removeClass('TGrid-scroll-active');
+  grid.addClass('TGrid-scroll-active');
+}, true);
+
+$(document).on('mouseleave', 'div.TGrid-scroll-on-focus', function () {
+  $(this).removeClass('TGrid-scroll-active');
+});

@@ -365,3 +365,40 @@ table.TGrid-transposed td.TGrid-changed {
   transform: scale(1.1);
   accent-color: #888;
 }
+
+/* ScrollOnlyWhenFocused: the mouse wheel scrolls the page until the grid is clicked */
+div.TGrid-scrollable-y.TGrid-scroll-on-focus {
+  overflow-y: hidden;
+  scrollbar-gutter: stable;
+}
+
+div.TGrid-scrollable-y.TGrid-scroll-on-focus.TGrid-scroll-active {
+  overflow-y: scroll;
+  overscroll-behavior: contain;
+}
+
+div.card-body:has(> .TGrid-scroll-focus-icon) {
+  position: relative;
+}
+
+.TGrid-scroll-focus-icon {
+  position: absolute;
+  top: 0.5rem;
+  right: 1.25rem;
+  z-index: 100;
+  padding: 0.25rem 0.4rem;
+  border-radius: 0.375rem;
+  background-color: var(--bs-primary, #0d6efd);
+  color: #fff;
+  opacity: 0.5;
+  pointer-events: none;
+  line-height: 1;
+}
+
+.TGrid-scroll-focus-icon i {
+  color: inherit;
+}
+
+div.card-body:has(> .TGrid-scroll-on-focus.TGrid-scroll-active) > .TGrid-scroll-focus-icon {
+  display: none;
+}
