@@ -102,6 +102,14 @@
       $this->setProperty('SelectedValues', '[]');
       $this->setProperty('SelectedCount', '0');
 
+      // MasterDBField without a Master is a misconfiguration: the grid would be a detail grid
+      // with an always empty MasterValue, so it would never return rows
+      if ($this->getPropertyComponentId('MasterDBField', NULL) !== NULL
+        && $this->getPropertyComponentId('Master', NULL) === NULL) {
+        Tholos::$logger->warning('TGrid MasterDBField is set without a Master, MasterDBField ignored', $this);
+        $this->setProperty('MasterDBField', '', 'COMPONENT', '');
+      }
+
       if ($this->getProperty('MultiSelect', 'false') === 'true'
         && $this->getPropertyComponentId('MultiSelectDBField', false) === false) {
         Tholos::$logger->warning('TGrid MultiSelect=true requires a MultiSelectDBField; checkbox column will be skipped', $this);

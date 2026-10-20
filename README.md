@@ -278,7 +278,7 @@ All form controls extend `TFormControl` which extends `TControl`. Common propert
 | `GridHTMLType` | `table` or `div` rendering mode |
 | `UUID` | Unique ID for persistent state |
 | `Persistent` | Session key for saving grid state |
-| `MasterDBField` | Detail grid: TDBField of the ListSource filtered by `MasterValue` |
+| `MasterDBField` | Detail grid: TDBField of the ListSource filtered by `MasterValue`; ignored (with a warning in the log) when `Master` is not set |
 | `MasterValue` | Filter value for master-detail relationships; when empty (with `MasterDBField` set) the grid renders headers only, see *Structure-only mode* |
 | `ViewMode` | `GRID` or `CHART` |
 | `ShowRefreshButton` | Show refresh button (boolean) |
