@@ -67,7 +67,25 @@
       if ($this->getProperty('URL')) {
         
         Tholos::$logger->trace('BEGIN', $this);
-        
+
+        // structure info only (e.g. empty TGrid MasterValue or AJAX header-only render):
+        // the structure comes from the TDBField children, so the external call is not needed
+        if ($this->getProperty('StructureInfoOnly', 'false') === 'true') {
+          Tholos::$logger->debug('Structure info only, external call skipped', $this);
+          $this->setProperty('StructureInfoOnly', 'false');
+          $this->setProperty('StructureRequester', '');
+          $this->setProperty('Success', 'true');
+          $this->setProperty('Opened', 'true');
+          $this->setProperty('Result', [], 'ARRAY');
+          $this->setProperty('ResultType', 'ARRAY');
+          $this->setProperty('RowCount', 0);
+          $this->setProperty('TotalRowCount', 0);
+          Tholos::$app->eventHandler($this, 'onSuccess');
+          Tholos::$logger->trace('END', $this);
+
+          return;
+        }
+
         $JSONParameters = $this->getProperty('JSONParameters', []);
         
         $this->setProperty('FilterError', 'false');

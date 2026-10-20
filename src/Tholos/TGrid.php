@@ -642,17 +642,6 @@
           $listSource = Tholos::$app->findComponentByID($this->getPropertyComponentId('ListSource'));
           $listSource->setProperty('StructureInfoOnly', 'true');
           $listSource->setProperty('StructureRequester', $this->_id);
-          $JSONFilter = [
-            'fieldName' => '0',
-            'value' => '1',
-            'valueArray' => NULL,
-            'operator' => 'eq',
-            'relation' => NULL,
-            'nativeDataType' => NULL,
-            'dataType' => NULL,
-            'isNull' => false,
-            'isNotNull' => false
-          ];
         } else {
           $dbField = Tholos::$app->findComponentByID($this->getPropertyComponentId('MasterDBField', NULL));
           
@@ -708,8 +697,8 @@
             'isNull' => false,
             'isNotNull' => false
           ];
+          $filter_array[] = $JSONFilter;
         }
-        $filter_array[] = $JSONFilter;
       }
       
       $this->setProperty('FilterSQL', str_replace("\n", ' ', $this->filterSQL));
@@ -1459,21 +1448,6 @@
         $emptyWhere = "\n and 0=1";
         $listSource->setProperty('StructureInfoOnly', 'true');
         $listSource->setProperty('StructureRequester', $this->_id);
-        $JSONFilter = [
-          'fieldName' => '0',
-          'value' => '1',
-          'valueArray' => NULL,
-          'operator' => 'eq',
-          'relation' => NULL,
-          'nativeDataType' => NULL,
-          'dataType' => NULL,
-          'isNull' => false,
-          'isNotNull' => false
-        ];
-        /* @var $filter_array array */
-        $filter_array = $this->getProperty('JSONFilters', []);
-        $filter_array[] = $JSONFilter;
-        $this->setProperty('JSONFilters', $filter_array);
       }
       $listSource->setProperty('JSONFilters', $this->getProperty('JSONFilters'));
       $listSource->setProperty('Filter', $this->filterSQL . $emptyWhere); // TODO a zero based-et lecacheltetni a listSource-val

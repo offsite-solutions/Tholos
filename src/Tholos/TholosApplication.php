@@ -1459,7 +1459,7 @@
       
       $sender->setProperty('CacheInfo', array());
       
-      if (Eisodos::$parameterHandler->eq('Tholos.CacheMethod', 'file')) {
+      if (Eisodos::$parameterHandler->eq('Tholos.CacheMethod', 'file', 'file')) {
         
         $cacheIndexFilename = Eisodos::$parameterHandler->getParam('Tholos.CacheDir') .
           '/' .
@@ -1649,7 +1649,7 @@
      */
     private function writeCacheContent(string $filename_, mixed $content_, string $validity_ = ''): void {
       
-      if (Eisodos::$parameterHandler->eq('Tholos.CacheMethod', 'file')) {
+      if (Eisodos::$parameterHandler->eq('Tholos.CacheMethod', 'file', 'file')) {
         $lockWait = 1 * Eisodos::$parameterHandler->getParam('Tholos.CacheLockWait', '100');
         $lockLoop = 0;
         $maxLockLoop = 1 * Eisodos::$parameterHandler->getParam('Tholos.CacheLockLoop', '20');
@@ -1746,7 +1746,7 @@
           
           // removing old cache files
           
-          if (Eisodos::$parameterHandler->eq('Tholos.CacheMethod', 'file')
+          if (Eisodos::$parameterHandler->eq('Tholos.CacheMethod', 'file', 'file')
             && file_exists($cacheIndexFilename)
             && ($filesize = filesize($cacheIndexFilename))) {
             $file = fopen($cacheIndexFilename, 'rb');

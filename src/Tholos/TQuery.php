@@ -90,6 +90,10 @@
         // preparing sql
         $back = array();
         
+        // structure info only (e.g. empty TGrid MasterValue or AJAX header-only render):
+        // no data is fetched and no cache is read or written
+        $structureInfoOnly = ($this->getProperty('StructureInfoOnly', 'false') === 'true');
+        
         $this->setProperty('FilterError', 'false');
         
         $sql = $nativeSQL !== '' ? $nativeSQL : $this->getProperty('sql');
@@ -130,7 +134,9 @@
           if ($this->getProperty('Caching', 'Disabled') === 'Disabled'
             || Eisodos::$parameterHandler->neq('TholosCacheAction', 'refresh')
             || $this->getProperty('CacheRefresh', 'false') === 'true') {
-            if ($this->getProperty('CountTotalRows', 'false') === 'true' &&
+            if ($structureInfoOnly) { // structure only: no rows to count
+              $this->setProperty('TotalRowCount', '0');
+            } elseif ($this->getProperty('CountTotalRows', 'false') === 'true' &&
               $this->getProperty('TotalRowCountField', '') === '') {
               Tholos::$logger->trace('Counting rows started', $this);
               $this->openDatabase(true);
@@ -190,7 +196,8 @@
           
           // AuthProcedure
           
-          if (($authProc_ID = $this->getPropertyComponentId('AuthProcedure'))  // TODO: giga bug
+          if (!$structureInfoOnly // structure only: no data, no auth needed
+            && ($authProc_ID = $this->getPropertyComponentId('AuthProcedure'))  // TODO: giga bug
             &&
             (
               (!Tholos::$app->findComponentByID($authProc_ID)->getPropertyComponentId('DataProxy') // nincs proxyzva
@@ -216,7 +223,8 @@
             }
           }
           
-          if ($this->getProperty('Caching', 'Disabled') !== 'Disabled'
+          if (!$structureInfoOnly
+            && $this->getProperty('Caching', 'Disabled') !== 'Disabled'
             && Eisodos::$parameterHandler->neq('TholosCacheAction', 'refresh')
             && $this->getProperty('CacheRefresh', 'false') === 'false'
             && $this->getProperty('CacheMode') !== 'WriteOnly') {
@@ -235,6 +243,13 @@
               $this->getProperty('CacheSQLConflict', 'DisableCaching'));
           } else {
             $cacheResult = false;
+          }
+          
+          // structure only: no data needed, proxy and database calls are skipped
+          if ($structureInfoOnly) {
+            Tholos::$logger->debug('Structure info only, query skipped', $this);
+            $cacheResult = [];
+            $this->setProperty('TotalRowCount', '0');
           }
           
           if ($cacheResult === false
@@ -294,51 +309,17 @@
               }
             }
             
-            // check if structure info only and if it is already cached
-            if ($this->getProperty('StructureInfoOnly', 'false') == 'true') {
-              $cacheResult = Tholos::$app->readCache(
-                $this,
-                'Private',
-                $this->getProperty("CacheID") . '.StructureOnly.' . $this->getProperty('StructureRequester', ''),
-                '',
+            Tholos::$logger->debug("SQL query opening", $this);
+            $this->openDatabase(true);
+            try {
+              Eisodos::$dbConnectors->connector($this->getProperty('DatabaseIndex'))->query(
+                RT_ALL_ROWS,
                 $sql,
-                'ReadCache');
-              // clear cache info
-              $this->setProperty("CacheInfo", array());
-            }
-            
-            if (!is_array($cacheResult)) {
-              Tholos::$logger->debug("SQL query opening", $this);
-              $this->openDatabase(true);
-              try {
-                if ($this->getProperty('StructureInfoOnly', 'false') != 'true') {
-                  Eisodos::$dbConnectors->connector($this->getProperty('DatabaseIndex'))->query(
-                    RT_ALL_ROWS,
-                    $sql,
-                    $back);
-                } else {
-                  $back=[];
-                }
-                
-                if ($this->getProperty('StructureInfoOnly', 'false') == 'true') {
-                  Tholos::$logger->debug('Structure written to cache for grid', $this);
-                  Tholos::$app->writeCache('Private',
-                    $this->getProperty("CacheID") . '.StructureOnly.' . $this->getProperty('StructureRequester', ''),
-                    $back,
-                    '',
-                    24 * 60,
-                    '',
-                    $sql
-                  );
-                }
-                
-              } catch (Exception $e) {
-                Tholos::$logger->writeErrorLog($e);
-                Tholos::$app->eventHandler($this, "onError");
-                throw $e;
-              }
-            } else {
-              Tholos::$logger->debug('Structure read from cache for grid', $this);
+                $back);
+            } catch (Exception $e) {
+              Tholos::$logger->writeErrorLog($e);
+              Tholos::$app->eventHandler($this, "onError");
+              throw $e;
             }
             
           } else if (is_array($cacheResult)) {
@@ -348,8 +329,8 @@
             $this->setProperty('CacheRefresh', 'false');
           }
           
-          // reseting structure info cache property to its default for parallel usage
-          Tholos::$logger->debug('Resetting structure info cache', $this);
+          // reseting structure info property to its default for parallel usage
+          Tholos::$logger->debug('Resetting structure info', $this);
           $this->setProperty('StructureInfoOnly', 'false');
           $this->setProperty('StructureRequester', '');
           
@@ -357,7 +338,8 @@
           
           Tholos::$logger->debug('SQL query has finished', $this);
           
-          if ($this->getProperty('CacheMode') !== 'ReadOnly'
+          if (!$structureInfoOnly // structure only: never overwrite the query cache with the empty result
+            && $this->getProperty('CacheMode') !== 'ReadOnly'
             && $this->getProperty('Caching', 'Disabled') !== 'Disabled'
             && ($this->getProperty('CacheRefresh', 'false') === 'true'
               || Eisodos::$parameterHandler->eq('TholosCacheAction', 'refresh'))

@@ -278,7 +278,8 @@ All form controls extend `TFormControl` which extends `TControl`. Common propert
 | `GridHTMLType` | `table` or `div` rendering mode |
 | `UUID` | Unique ID for persistent state |
 | `Persistent` | Session key for saving grid state |
-| `MasterValue` | Filter value for master-detail relationships |
+| `MasterDBField` | Detail grid: TDBField of the ListSource filtered by `MasterValue` |
+| `MasterValue` | Filter value for master-detail relationships; when empty (with `MasterDBField` set) the grid renders headers only, see *Structure-only mode* |
 | `ViewMode` | `GRID` or `CHART` |
 | `ShowRefreshButton` | Show refresh button (boolean) |
 | `ShowScrollCheckbox` | Show scroll toggle (boolean) |
@@ -301,6 +302,19 @@ Filters are submitted as parameters in the format `gridname_f_N=columnname:relat
 **Grid AJAX Refresh:**
 
 `TGrid_submit(sender, target, urldata)` posts form data to the action URL, receives `{html: "..."}` JSON, and replaces the grid DOM. Emits `masterDataChange` for detail grids.
+
+**Structure-only mode:**
+
+When the grid only needs its column structure, it sets `StructureInfoOnly=true` on its ListSource:
+- on a detail grid (`MasterDBField` set) when `MasterValue` is empty,
+- on the first, header-only render of an AJAX grid (`AutoLoad=false` / `AJAXMode=true`).
+
+In this mode the data provider returns an empty result (`RowCount` and `TotalRowCount` 0) without calling the data source:
+
+- `TQuery` skips the `AuthProcedure`, `InitProcedure`, the row count query, the database query and the `DataProxy` call. It neither reads nor writes the query cache, so the query's real cache can't be overwritten by the empty result.
+- `TExternalDataProvider` skips the HTTP call. The JSON filters no longer carry a dummy `0=1` filter.
+
+The flag resets after each open.
 
 ### Composite Components
 
@@ -527,7 +541,7 @@ TAction's `ResponseType` property determines how the rendered output is delivere
 
 ## Caching System
 
-Tholos supports three caching backends configured via `Tholos.CacheMethod`:
+Tholos supports three caching backends configured via `Tholos.CacheMethod` (default `file` when not set):
 
 | Backend | Setting | Description |
 |---------|---------|-------------|
@@ -551,6 +565,8 @@ Set on TQuery via `Caching` property:
 | `Partitioned` | Cache by `PartitionedBy` field value |
 
 `CacheValidity` sets lifetime in minutes. `CacheSQLConflict` controls behavior when cached SQL doesn't match current query: `ReadCache`, `RewriteCache`, or `DisableCaching`.
+
+Structure-only opens (see *Grid System*) bypass the cache entirely: no read, no write.
 
 ### Cache File Structure
 
