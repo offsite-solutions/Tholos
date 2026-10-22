@@ -307,9 +307,14 @@
           }
           
           $this->setProperty('Opened', 'true');
-          $this->setProperty('Result', $resultParameters[$this->getProperty('ResultParameter', 'result')], 'ARRAY');
+          // a response without the result field (e.g. empty filter) is an empty result, not an error
+          $result = $resultParameters[$this->getProperty('ResultParameter', 'result')] ?? [];
+          if (!is_array($result)) {
+            $result = [];
+          }
+          $this->setProperty('Result', $result, 'ARRAY');
           $this->setProperty('ResultType', 'ARRAY');
-          $this->setProperty('RowCount', count($resultParameters[$this->getProperty('ResultParameter', 'result')]));
+          $this->setProperty('RowCount', count($result));
           $this->setProperty('TotalRowCount', Eisodos::$utils->safe_array_value($resultParameters, $this->getProperty('TotalRowCountField'), $this->getProperty('RowCount')));
           
           Tholos::$app->eventHandler($this, 'onSuccess');

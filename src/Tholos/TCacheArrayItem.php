@@ -40,7 +40,7 @@
         $currentCache_ = Eisodos::$parameterHandler->getParam($cacheName, '');
         if ($currentCache_ != '') {
           /** @var array $currentCache */
-          $currentCache = unserialize($currentCache_, false);
+          $currentCache = unserialize($currentCache_, ['allowed_classes' => false]);
         } else {
           $currentCache = Tholos::$app->readCache($this, 'Private', $this->getProperty('CacheId'));
         }

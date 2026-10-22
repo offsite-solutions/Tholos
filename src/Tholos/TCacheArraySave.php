@@ -32,7 +32,7 @@
       $cacheName = 'Tholos.CacheArray.' . $this->getProperty('CacheId');
       $currentCache_ = Eisodos::$parameterHandler->getParam($cacheName, '');
       if ($currentCache_ != '') {
-        $currentCache = unserialize($currentCache_, false);
+        $currentCache = unserialize($currentCache_, ['allowed_classes' => false]);
       } else {
         $currentCache = [];
       }
