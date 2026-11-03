@@ -98,6 +98,12 @@
         $parent=Tholos::$app->instantiateComponent($this->_parent_id, true);
         $parent?->init();
       }
+      // An opened parent has already propagated its current row into this provider. Running it
+      // again would propagate its first row and reset the fields of every row being iterated
+      // above (e.g. a TIterator over a nested JSON provider inside another TIterator).
+      if ($parent->getProperty('Opened', 'false') === 'true') {
+        return;
+      }
       $parent->run($sender);
     }
     

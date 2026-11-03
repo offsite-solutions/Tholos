@@ -36,6 +36,10 @@
       } else {
         $currentCache = Tholos::$app->readCache($this, 'Private', $this->getProperty('CacheId'));
       }
+      // readCache() and a broken session value give false, which PHP 8 does not treat as an array
+      if (!is_array($currentCache)) {
+        $currentCache = [];
+      }
       Tholos::$logger->debug('Rendering from array cache - ' . count($currentCache) . ' items', $this);
       
       if (!$currentCache || (is_array($currentCache) && count($currentCache) == 0)) {

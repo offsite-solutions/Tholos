@@ -44,6 +44,10 @@
         } else {
           $currentCache = Tholos::$app->readCache($this, 'Private', $this->getProperty('CacheId'));
         }
+        // readCache() and a broken session value give false, which PHP 8 does not treat as an array
+        if (!is_array($currentCache)) {
+          $currentCache = [];
+        }
       }
       
       // if it's a new render phase, set sync mode to purge
