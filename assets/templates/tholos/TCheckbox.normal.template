@@ -27,7 +27,13 @@ false=<label class="form-check-label">$prop_label</label>
           [%_function_name=Tholos\TholosCallback::_eqs;param=prop_attributes;value=;true=</>;false= $prop_attributes%]
           name="$prop_name" type="checkbox"
           [%_function_name=Tholos\TholosCallback::_eqs;param=prop_DBField;value=;true=value="$prop_valuechecked";false=value="$prop_value"%]
-          [%_function_name=Tholos\TholosCallback::_eqs;param=prop_required;value=true;true=required;false=</>%]
+<%FUNC%
+_function_name=Tholos\TholosCallback::_eqs
+param=prop_tristate
+value=true
+true=
+false=[%_function_name=Tholos\TholosCallback::_eqs;param=prop_required;value=true;true=required;false=</>%]
+%FUNC%>
           [%_function_name=Tholos\TholosCallback::_eqs;param=prop_value;value=^prop_valuechecked;true=checked="checked";false=%]
           [%_function_name=Tholos\TholosCallback::_eqs;param=prop_enabled;value=false;true=disabled="disabled";false=</>%]
           [%_function_name=Tholos\TholosCallback::_eqs;param=prop_readonly;value=true;true=disabled="disabled";false=</>%]
@@ -53,6 +59,7 @@ false=<label class="form-check-label">$prop_label</label>
   </div>
 </div>
 <script type="text/javascript" nonce="$Tholos_nonce">
+  Tholos.methods.TCheckbox_initTriState("$prop_id", "$prop_id", "$prop_route");
   var cbVal = $("#$prop_id").prop("checked") ? "$prop_valuechecked" : "$prop_valueunchecked";
   $("#$prop_id").after('<input type="hidden" name="' + "$prop_name" + '" value="' + Tholos.methods.TCheckbox_getValue("$prop_id", "$prop_id", "$prop_route") + '"/>');
   $("#$prop_id").on("change", function () {

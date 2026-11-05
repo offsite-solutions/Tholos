@@ -3,6 +3,10 @@
 <!-- RELEASE HISTORY START -->
 ## Release history
 
+- **2026-11-05** — `Tholos_Component_Types-20261105105125.html`
+  - `TCheckbox`: new property **`TriState`** (BOOLEAN, mandatory, hidden, default `false`) — "Tri state checkbox". Enables a third, indeterminate (NULL) state the user can select by clicking: unchecked → checked → indeterminate → unchecked.
+  - `TCheckbox`: new property **`ValueNull`** (STRING, hidden) — "In case of tri-state mode the value represents the indeterminated state"; empty by default, so the hidden input submits an empty string (NULL).
+  - `TCheckbox`: new event **`onIndeterminate`** (GUI) — fires when the user switches the checkbox to the indeterminate state in tri-state mode.
 - **2026-10-18** — `Tholos_Component_Types-20261018223525.html`
   - `TGrid`: **`ScrollOnlyWhenFocused`** — *Hidden data* flag corrected Yes→No.
 - **2026-10-18** — `Tholos_Component_Types-20261018221320.html`
@@ -10624,6 +10628,20 @@ No
 
 Style information
 
+**TriState**
+
+BOOLEAN
+
+Yes
+
+No
+
+Yes
+
+false
+
+Tri state checkbox
+
 **Value**
 
 STRING
@@ -10651,6 +10669,18 @@ Yes
 Y
 
 String representation of the value of checkbox checked, eg. Y
+
+**ValueNull**
+
+STRING
+
+No
+
+No
+
+Yes
+
+In case of tri-state mode the value represents the indeterminated state
 
 **ValueUnchecked**
 
@@ -10761,6 +10791,15 @@ GUI
 [TControl](javascript:jumpToDoc('TControl');)
 
 Fired when component transitions from shown to hidden
+
+**onIndeterminate**
+
+GUI
+
+[](javascript:jumpToDoc('');)
+
+In case of tri-state mode it fires when user change its state to
+indeterminated
 
 **onMouseDown**
 

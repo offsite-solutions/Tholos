@@ -14,6 +14,13 @@ _function_name=Tholos\TholosCallback::_eqs
 param=event_onunchecked
 value=
 true=
-false=<script type="text/javascript" nonce="$Tholos_nonce">$("#$prop_id").on('change', function (e) { if (!$("#$prop_id").prop("checked")) $event_onunchecked });</script>
+false=<script type="text/javascript" nonce="$Tholos_nonce">$("#$prop_id").on('change', function (e) { if (!$("#$prop_id").prop("checked") && !$("#$prop_id").prop("indeterminate")) $event_onunchecked });</script>
+%FUNC%>
+<%FUNC%
+_function_name=Tholos\TholosCallback::_eqs
+param=event_onindeterminate
+value=
+true=
+false=<script type="text/javascript" nonce="$Tholos_nonce">$("#$prop_id").on('change', function (e) { if ($("#$prop_id").prop("indeterminate")) $event_onindeterminate });</script>
 %FUNC%>
 ## <!-- /Checkbox $prop_name -->

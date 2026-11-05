@@ -2,6 +2,7 @@
 <script type="text/javascript" nonce="$Tholos_nonce">
   Tholos.i18n = {
     TFileUpload_UploadError: "[:TFILEUPLOAD.UPLOADERROR,Feltöltési hiba:]",
+    TCheckbox_ValueMissing: "[:TCHECKBOX.VALUEMISSING,Kérem, válasszon!:]",
     TLOV_Loading: "[:TLOV.LOADING,Kérem várjon...:]",
     TApplication_HTTP_0: "[:TAPPLICATION.HTTP_0,Hívás blokkolva (0)!:]",
     TApplication_HTTP_200_1: "[:TAPPLICATION.HTTP_200,Értelmezhetetlen válasz (200/1)!:]",

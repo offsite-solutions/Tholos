@@ -149,7 +149,56 @@ var Tholos = {
       var o = Tholos.getObject(target);
       var d = Tholos.getData(target);
 
+      if (d.tristate === true && o.prop("indeterminate")) {
+        return (d.valuenull === undefined ? "" : d.valuenull);
+      }
       return (o.prop("checked") ? d.valuechecked : d.valueunchecked);
+    },
+    TCheckbox_initTriState: function (sender, target, route, eventData) {
+      Tholos.trace("TCheckbox_initTriState()", sender, target, route, eventData);
+      var o = Tholos.getObject(target);
+      var d = Tholos.getData(target);
+      if (d.tristate !== true) {
+        return true;
+      }
+      Tholos.methods.TCheckbox_setTriState(target, d.value);
+      // click cycle: unchecked -> checked -> indeterminate -> unchecked
+      // the browser has already toggled "checked" when the handler runs, the change event fires afterwards
+      o.on("click", function () {
+        var prev = o.data("tristate");
+        if (prev === "checked") {
+          o.prop("checked", false).prop("indeterminate", true);
+          o.data("tristate", "null");
+        } else if (prev === "null") {
+          o.prop("checked", false).prop("indeterminate", false);
+          o.data("tristate", "unchecked");
+        } else {
+          o.prop("checked", true).prop("indeterminate", false);
+          o.data("tristate", "checked");
+        }
+      });
+      o.on("change", function () {
+        Tholos.methods.TCheckbox_validateTriState(target);
+      });
+      // deferred, so Tholos.i18n is already loaded on a full page render
+      $(function () {
+        Tholos.methods.TCheckbox_validateTriState(target);
+      });
+      return true;
+    },
+    TCheckbox_setTriState: function (target, value) {
+      var o = Tholos.getObject(target);
+      var d = Tholos.getData(target);
+      var v = (value === undefined || value === null ? "" : String(value));
+      var state = (v === String(d.valuechecked) ? "checked" : (v === String(d.valueunchecked) ? "unchecked" : "null"));
+      o.prop("checked", state === "checked").prop("indeterminate", state === "null");
+      o.data("tristate", state);
+    },
+    TCheckbox_validateTriState: function (target) {
+      var o = Tholos.getObject(target);
+      var d = Tholos.getData(target);
+      var missing = (String(d.required) === "true" && o.prop("indeterminate"));
+      o[0].setCustomValidity(missing ? ((Tholos.i18n && Tholos.i18n.TCheckbox_ValueMissing) || "Required") : "");
     },
     TRadio_getValue: function (sender, target, route, eventData) {
       Tholos.trace("TRadio_getValue()", sender, target, route, eventData);
@@ -222,7 +271,12 @@ var Tholos = {
       return true;
     },
     TCheckbox_setRequired: function (sender, target, route, eventData) {
-      //Checkbox is always required
+      //Checkbox is always required, except in tri-state mode, where required means the indeterminate state is invalid
+      var d = Tholos.getData(target);
+      if (d.tristate === true) {
+        Tholos.setData(target, "required", eventData.required);
+        Tholos.methods.TCheckbox_validateTriState(target);
+      }
       return true;
     },
     TControl_setVisible: function (sender, target, route, eventData) {
@@ -419,7 +473,10 @@ var Tholos = {
       var d = Tholos.getData(target);
       Tholos.setData(target, "value", eventData.value);
       Tholos.trace("TCheckbox_setValue(): Triggering change");
-      if (typeof d.valuechecked === "boolean") {
+      if (d.tristate === true) {
+        Tholos.methods.TCheckbox_setTriState(target, eventData.value);
+        o.trigger("change");
+      } else if (typeof d.valuechecked === "boolean") {
         o.prop("checked", eventData.value === "true").trigger("change");
       } else {
         o.prop("checked", (d.valuechecked === eventData.value)).trigger("change");

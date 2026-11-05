@@ -225,7 +225,7 @@ All form controls extend `TFormControl` which extends `TControl`. Common propert
 |-----------|-------------|
 | `TForm` | HTML `<form>` wrapper. Properties: `URL`, `Method`, `Target`, `Validator`, `ValidateOnInit`. Events: `onBeforeSubmit`, `onSubmitSuccess`, `onSubmitError`, `onValidateSuccess`, `onValidateError`, `onSuccessAlert`, `onErrorAlert`, `onCancel`. |
 | `TEdit` | Text input (`<input>`). Properties: `HTMLInputType` (text, password, email, etc.), `MaxLength`, `Autocomplete`. Event: `onEnterKeyPressed`. |
-| `TCheckbox` | Checkbox control. Properties: `CheckedValue`, `UncheckedValue`. |
+| `TCheckbox` | Checkbox control. Properties: `ValueChecked`, `ValueUnchecked`; with `TriState=true` a third, indeterminate state submits `ValueNull` (clicks cycle unchecked → checked → indeterminate), `Required` rejects the indeterminate state, and `onIndeterminate` fires on entering it. |
 | `TRadio` | Radio button group. Child `TRadio.item` entries define options. |
 | `TDateTimePicker` | Date/time picker (Tempus Dominus). Properties: `DateFormat`, `DateFormatParameter`. |
 | `TLOV` | List of Values -- dropdown/autocomplete. Properties: `LOVSource` (data provider), `AjaxURL` for remote search, `Multiple`. Child `TLOVParameter` for parameters. |
