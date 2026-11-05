@@ -6,4 +6,5 @@
 /composer.dev.json
 /composer.dev.lock
 /docs/*.html
+/docs/Tholos_Component_Types-*.md
 .DS_Store
