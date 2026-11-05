@@ -55,7 +55,7 @@ All UI components extend **TComponent**, which holds:
 - **Events** — named handlers (`GUI` or `PHP` type) that can reference methods on other components
 - Component definitions are loaded from `.tcd` files (compiled by Tholos Builder Compiler)
 
-The authoritative reference for all component types — including their properties, events, methods, inheritance, and allowed parent types — is `docs/Tholos_Component_Types.md` (sourced from `docs/Tholos_Component_Types.html`). Always consult this file when you need component-level details.
+The authoritative reference for all component types — including their properties, events, methods, inheritance, and allowed parent types — is `docs/Tholos_Component_Types.md` (generated from the newest `docs/Tholos_Component_Types-<timestamp>.md` extract, downloaded from Tholos Editor). Each type lists only its own members; collect inherited members along its Inheritance line. Always consult this file when you need component-level details.
 
 Key component classes:
 - `TPage` / `TTemplate` — layout wrappers that delegate to Eisodos template engine
