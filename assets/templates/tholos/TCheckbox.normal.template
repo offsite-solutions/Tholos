@@ -59,7 +59,8 @@ false=<label class="form-check-label">$prop_label</label>
   </div>
 </div>
 <script type="text/javascript" nonce="$Tholos_nonce">
-  Tholos.methods.TCheckbox_initTriState("$prop_id", "$prop_id", "$prop_route");
+  // guarded: a browser may still have the TholosApplication.js of an earlier release in its cache
+  if (Tholos.methods.TCheckbox_initTriState) Tholos.methods.TCheckbox_initTriState("$prop_id", "$prop_id", "$prop_route");
   var cbVal = $("#$prop_id").prop("checked") ? "$prop_valuechecked" : "$prop_valueunchecked";
   $("#$prop_id").after('<input type="hidden" name="' + "$prop_name" + '" value="' + Tholos.methods.TCheckbox_getValue("$prop_id", "$prop_id", "$prop_route") + '"/>');
   $("#$prop_id").on("change", function () {
