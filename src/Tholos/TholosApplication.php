@@ -7,6 +7,7 @@
   
   namespace Tholos;
   
+  use Composer\InstalledVersions;
   use DateTime;
   use Eisodos\Abstracts\Singleton;
   use Eisodos\Eisodos;
@@ -259,6 +260,23 @@
     }
     
     /**
+     * Release identifier of the installed Tholos package: the short commit hash, or the version when there is none
+     *
+     * @return string
+     */
+    private function getTholosRelease(): string {
+      try {
+        if (class_exists(InstalledVersions::class) && InstalledVersions::isInstalled('offsite-solutions/tholos')) {
+          $reference = InstalledVersions::getReference('offsite-solutions/tholos');
+          return $reference ? substr($reference, 0, 7) : (string)InstalledVersions::getPrettyVersion('offsite-solutions/tholos');
+        }
+      } catch (Throwable) {
+      }
+      
+      return 'dev';
+    }
+    
+    /**
      *
      */
     public function generateSessionID(): void {
@@ -312,6 +330,11 @@
           Eisodos::$parameterHandler->setParam('Tholos.nonce', Eisodos::$parameterHandler->getParam('random') . Eisodos::$parameterHandler->getParam('random') . Eisodos::$parameterHandler->getParam('random'), true);
         }
         Eisodos::$parameterHandler->setParam('Tholos_nonce', Eisodos::$parameterHandler->getParam('Tholos.nonce'));
+        
+        // cache-busting version of the Tholos assets, unless the application config sets it
+        if (Eisodos::$parameterHandler->eq('last_tholos_release', '')) {
+          Eisodos::$parameterHandler->setParam('last_tholos_release', $this->getTholosRelease());
+        }
         
         $this->BoolFalse = explode(',', strtolower(Eisodos::$parameterHandler->getParam('Tholos.BoolFalse')));
         $this->BoolTrue = explode(',', strtolower(Eisodos::$parameterHandler->getParam('Tholos.BoolTrue')));

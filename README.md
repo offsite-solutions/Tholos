@@ -613,6 +613,12 @@ Key Eisodos parameters used by Tholos (typically set in application config):
 | `Tholos.BoolFalse` | `false,f,n,0` | Comma-separated values treated as false |
 | `Tholos.BoolTrue` | `true,t,y,1,*` | Comma-separated values treated as true |
 
+### Asset Versioning
+
+| Parameter | Default | Description |
+|-----------|---------|-------------|
+| `last_tholos_release` | short commit hash of the installed `offsite-solutions/tholos` package | Appended as `?v=` to the Tholos JS URLs, so browsers load the new files after an update; set it in the config to override |
+
 ### PDF
 
 | Parameter | Description |
