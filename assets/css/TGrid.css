@@ -45,6 +45,11 @@ div.TGrid-not-scrollable table.TGrid thead {
     z-index: 99;
 }
 
+/* the 72px offset clears the fixed page header; in a modal the modal itself scrolls, so the offset would push the header onto the rows */
+.modal div.TGrid-not-scrollable table.TGrid thead {
+    top: 0;
+}
+
 table.TGrid th {
   text-overflow: ellipsis;
 }
