@@ -142,14 +142,20 @@
             throw new \RuntimeException('401 Not Authorized');
           }
           
+          // A CURLOPT_HEADER miatt a válasz eleje fejléc. Redirect, 100 Continue vagy proxy esetén
+          // több fejlécblokk is jöhet, ezért a törzset a teljes fejlécméret alapján vágjuk le.
+          $httpBody = substr($httpResponse, curl_getinfo($curl, CURLINFO_HEADER_SIZE));
+
           if (1 * $httpCode >= 200 && 1 * $httpCode < 300) {
-            if (str_starts_with($httpResponse, 'HTTP/')) {
-              $httpNormalResponse = explode("\r\n\r\n", $httpResponse, 2);
-              if (count($httpNormalResponse) > 1) {
-                $resultParameters = json_decode((trim($httpNormalResponse[1])===''?'{}':$httpNormalResponse[1]), true, 512, JSON_THROW_ON_ERROR);
+            if (trim($httpBody) !== '') {
+              try {
+                $resultParameters = json_decode($httpBody, true, 512, JSON_THROW_ON_ERROR);
+              } catch (\JsonException $e) {
+                throw new RuntimeException('Invalid JSON response (HTTP ' . $httpCode . ', ' . $e->getMessage() . '): ' . mb_substr($httpBody, 0, 500), 0, $e);
               }
-            } else {
-              $resultParameters = json_decode((trim($httpResponse)===''?'{}':$httpResponse), true, 512, JSON_THROW_ON_ERROR);
+              if (!is_array($resultParameters)) {
+                $resultParameters = [];
+              }
             }
             $this->setProperty('Success', 'true');
           } else {
@@ -162,9 +168,11 @@
              *
              * {"timestamp":"2020-06-24T19:33:56.816+00:00","status":400,"error":"Bad Request","message":"","path":"/nop/institution"}
              */
-            $httpErrorResponse = explode("\r\n\r\n", $httpResponse, 2);
-            if (count($httpErrorResponse) > 1) {
-              $resultParameters = json_decode($httpErrorResponse[1], true, 512, JSON_THROW_ON_ERROR);
+            // nem JSON hibatörzs (pl. proxy HTML 502) esetén a HTTP kód lesz a hibakód és az üzenet
+            $resultParameters = json_decode($httpBody, true);
+            if (!is_array($resultParameters)) {
+              Tholos::$logger->error('Non-JSON error response (HTTP ' . $httpCode . '): ' . mb_substr($httpBody, 0, 500), $this);
+              $resultParameters = [];
             }
             $this->setProperty('ResultErrorCode', Eisodos::$utils->safe_array_value($resultParameters, $this->getProperty('ErrorCodeJSONField'), $httpCode)); // todo
             $this->setProperty('ResultErrorMessage', Eisodos::$utils->safe_array_value($resultParameters, $this->getProperty('ErrorMessageJSONField'), $httpCode)); // todo
