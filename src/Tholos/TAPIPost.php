@@ -101,7 +101,7 @@
             CURLOPT_USERAGENT => 'Tholos (' . Eisodos::$parameterHandler->getParam('last_tholos_release', 'dev') . ')',
             CURLOPT_HTTPHEADER => array_merge(['X-Tholos-SessionID: ' . Eisodos::$parameterHandler->getParam('Tholos_sessionID'),
               'Expect:'], // JAVA Rest API nem jól kezeli a 'Expect: 100-continue' headert
-              explode("\n", Eisodos::$templateEngine->replaceParamInString(implode("\n", explode('\n', str_replace('_dollar_','$',$this->getProperty('HTTPRequestHeader')))))),
+              explode("\n", Eisodos::$templateEngine->replaceParamInString(implode("\n", explode('\n', str_replace('_dollar_', '$', $this->getProperty('HTTPRequestHeader')))))),
               Tholos::$app->roleManager->getHTTPRequestAuthHeaders()
             ),
             CURLOPT_HEADER => true,
@@ -145,13 +145,17 @@
           // A CURLOPT_HEADER miatt a válasz eleje fejléc. Redirect, 100 Continue vagy proxy esetén
           // több fejlécblokk is jöhet, ezért a törzset a teljes fejlécméret alapján vágjuk le.
           $httpBody = substr($httpResponse, curl_getinfo($curl, CURLINFO_HEADER_SIZE));
-
+          
           if (1 * $httpCode >= 200 && 1 * $httpCode < 300) {
             if (trim($httpBody) !== '') {
-              try {
-                $resultParameters = json_decode($httpBody, true, 512, JSON_THROW_ON_ERROR);
-              } catch (\JsonException $e) {
-                throw new RuntimeException('Invalid JSON response (HTTP ' . $httpCode . ', ' . $e->getMessage() . '): ' . mb_substr($httpBody, 0, 500), 0, $e);
+              if ($this->getProperty('HTTPResponseType', 'JSON') === 'JSON') {
+                try {
+                  $resultParameters = json_decode($httpBody, true, 512, JSON_THROW_ON_ERROR);
+                } catch (\JsonException $e) {
+                  throw new RuntimeException('Invalid JSON response (HTTP ' . $httpCode . ', ' . $e->getMessage() . '): ' . mb_substr($httpBody, 0, 500), 0, $e);
+                }
+              } else {
+                $resultParameters = [];
               }
               if (!is_array($resultParameters)) {
                 $resultParameters = [];
